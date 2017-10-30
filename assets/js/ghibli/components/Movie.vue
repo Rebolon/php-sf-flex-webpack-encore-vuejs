@@ -2,11 +2,15 @@
   <div class="movie">
     <h1>{{ msg }}</h1>
 
-    <div>
+    <div v-if="!isLoading">
       <strong>"{{ movie.title }}"</strong> : {{ movie.description }}<br />
 
       <cite>The movie has been released in {{ movie.release_date }}</cite>
     </div>
+
+    <Loader v-else="!isLoading"></Loader>
+
+    <router-link :to="{name: 'Movies'}">back</router-link>
   </div>
 </template>
 
@@ -17,11 +21,14 @@ export default {
   data() {
     return {
       msg: 'Detail of the movie',
+      isLoading: true,
       movie: {},
     };
   },
   created() {
     if (this.id === undefined) {
+      this.isLoading = false
+
       return
     }
 
@@ -30,6 +37,7 @@ export default {
         .then(res => res.json())
         .then(res => {
             this.movie = res
+            this.isLoading = false
         })
   },
 };

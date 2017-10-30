@@ -21,8 +21,9 @@ Encore
     })
 
     // uncomment to define the assets of the project
-    .addEntry('js/main', './assets/js/main.js')
-    .addStyleEntry('css/main', './assets/css/app.scss')
+    .addEntry('js/app', './assets/js/app.js')
+    .addEntry('js/ghibli', './assets/js/ghibli/app.js')
+    .addStyleEntry('css/app', './assets/css/app.scss')
 
     // uncomment if you use Sass/SCSS files
     // parameters are not mandatory, only if webpack build is slow with bootstrap (http://symfony.com/doc/current/frontend/encore/bootstrap.html)
