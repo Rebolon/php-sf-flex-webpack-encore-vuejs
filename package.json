@@ -1,0 +1,24 @@
+{
+    "devDependencies": {
+        "@symfony/webpack-encore": "^0.12.0",
+        "babel-preset-es2017": "^6.24.1",
+        "bootstrap": "4.0.0-beta.2",
+        "node-sass": "^4.5.3",
+        "sass-loader": "^6.0.6",
+        "vue": "^2.5.2",
+        "vue-loader": "^13.3.0",
+        "vue-template-compiler": "^2.5.2"
+    },
+    "license": "UNLICENSED",
+    "private": true,
+    "scripts": {
+        "dev-server": "encore dev-server",
+        "dev-server-hot": "encore dev-server --hot",
+        "dev": "encore dev",
+        "watch": "encore dev --watch",
+        "build": "encore production"
+    },
+    "dependencies": {
+        "vue-router": "^3.0.1"
+    }
+}
