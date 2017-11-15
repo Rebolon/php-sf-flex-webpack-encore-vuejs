@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container">
+        <h1>List of demos</h1>
+        <ul class="list-group">
+        {% for routeName, route in routes %}
+            <li class="list-group-item"><a href='{{ path(routeName) }}'>{{ routeName }}</a></li>
+        {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

@@ -2,6 +2,12 @@ index:
     path: /
     defaults: { _controller: 'App\Controller\DefaultController::index' }
 
+simple:
+    path: /demo/simple
+    defaults: { _controller: 'App\Controller\SimpleController::index' }
+    methods:
+        - "GET"
+
 # first, run composer req annotations
 controllers:
     resource: ../src/Controller/
