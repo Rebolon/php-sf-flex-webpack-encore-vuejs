@@ -22,7 +22,8 @@ Encore
 
     // uncomment to define the assets of the project
     .addEntry('js/app', './assets/js/app.js')
-    .addEntry('js/ghibli', './assets/js/ghibli/app.js')
+    .addEntry('js/vuejs', './assets/js/vuejs/app.js')
+    .addEntry('js/quasar', './assets/js/quasar/app.js')
     .addStyleEntry('css/app', './assets/css/app.scss')
 
     // uncomment if you use Sass/SCSS files

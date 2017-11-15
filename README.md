@@ -12,7 +12,7 @@ Here is how it has been created
 * cd sf-flex-encore-vuejs
 * composer require symfony/webpack-encore-pack
 * composer require annotations twig api profiler
-* yarn add vue vue-router
+* yarn add vue vue-router quasar-framework quasar-extras
 * yarn add --dev vue-loader vue-template-compiler vue-router babel-preset-es2017 sass-loader node-sass bootstrap@4.0.0-beta.2
 * yarn install 
 

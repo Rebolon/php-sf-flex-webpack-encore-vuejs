@@ -19,6 +19,8 @@
         "build": "encore production"
     },
     "dependencies": {
+        "quasar-extras": "0.0.8",
+        "quasar-framework": "^0.14.7",
         "vue": "^2.5.2",
         "vue-router": "^3.0.1"
     }
