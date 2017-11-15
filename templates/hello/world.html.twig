@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    Hello {{ name | default('world') }} !
+    Hello {{ name | default('world') }} ! <br />
+    it's {{ "now"|date('d') }} of {{ "now"|date("F")|lower }} {{ "now"|date('G:i:s') }}
 {% endblock %}
