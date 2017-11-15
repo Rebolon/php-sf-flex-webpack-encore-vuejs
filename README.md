@@ -37,17 +37,32 @@ bootstrap: the beta 4 version of the first class css framework
 
 ## run
 
-* install with : composer install & npm install
+* install with : composer install & npm install & npm run dev
 * Run your application:
   1. Change to the project directory
-  2. Execute the `php -S 127.0.0.1:8080 -t public` command;
-  3. Browse to the http://localhost:8080/ URL.
+  2. Execute the `npm run dev-server-hot` command to start the asset server that will build your assets and your manifest.json and serve the assets with hot module replacment when you do a modification on a vuejs file 
+  2. Execute the `php -S 127.0.0.1:80 -t public` command;
+  3. Browse to the http://localhost:80/ URL.
 
     Quit the server with CTRL-C.
     Run composer require symfony/web-server-bundle for a better web server.
-    And launch `php bin/console server:start 127.0.0.1:8080`
+    And launch `php bin/console server:start 127.0.0.1:80`
 
 * Read the documentation at https://symfony.com/doc
+
+## webpack
+
+everything is managed by 'encore' symfony package, so have a look at the webpack.config.js and then read their [docs](http://symfony.com/doc/current/frontend.html)
+ * npm run dev : will build your assets (in this project it's /public/build/)
+ * npm run watch : does the same thing than npm run dev, but it watches files modifictaion to re-generate the assets
+ * npm run dev-server :  build the manifest.json that map your assets qith their url from the asset server and start a web server that will serve those assets
+ * npm run dev-server-hot : does the same thing as previously, but with vuejs framework it also does Hot Module Replacement 
+ * npm run build : build your assets for production
+ 
+Take care, the asset server listen to port 8080 so don't start your main server on that port, or specify another port for the dev-server using ` --port 9999` for example
+
+Also, if you want to use the asset server finely, you have to add the assets configuration in the config/packages/framework.yaml file :
+`json_manifest_path: '%kernel.project_dir%/public/build/manifest.json'`. In fact the npm command will build asset in memory only, and modify the manifest file to map asset to a new url served by the asset server instead of the main web server.
 
 ## todo
 
