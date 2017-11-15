@@ -66,7 +66,4 @@ Also, if you want to use the asset server finely, you have to add the assets con
 
 ## todo
 
-* what is the difference between the dev-server and the build  (package.json ?) coz i don't 
-understand how to use them ... the first one seems to watch but doesn't write to disk...
-* add quasar (or any other UX library)
 * improve this tutorial with an API Route built with Api platform (without DB) and install the vue-generator from api-platform for a crud sample
