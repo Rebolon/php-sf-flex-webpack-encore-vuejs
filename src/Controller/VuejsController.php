@@ -5,13 +5,13 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 
-class GhibliController extends Controller
+class VuejsController extends Controller
 {
     /**
-     * @Route("/ghibli")
+     * @Route("/vuejs")
      */
     public function index() {
-        return $this->render('ghibli/app.html.twig');
+        return $this->render('vuejs/app.html.twig');
     }
 
 }
