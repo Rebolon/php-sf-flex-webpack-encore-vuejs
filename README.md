@@ -10,8 +10,7 @@ Here is how it has been created
 
 * composer create-project symfony/skeleton sf-flex-encore-vuejs
 * cd sf-flex-encore-vuejs
-* composer require symfony/webpack-encore-pack
-* composer require annotations twig api profiler log
+* composer req encore annotations twig api profiler log
 * yarn add vue vue-router quasar-framework quasar-extras
 * yarn add --dev vue-loader vue-template-compiler vue-router babel-preset-es2017 sass-loader node-sass bootstrap@4.0.0-beta.2
 * yarn install 
