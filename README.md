@@ -17,19 +17,23 @@ Here is how it has been created
 
 Then 3 simple php controller has been created on following routes :
  
- * / : DefaultController with route config in routes.yaml
- * /hellow/world : HelloController with route config in annotations and twig template
- * /ghibli : GhibliController with route config in annotations and VueJS app with specific js/css import
+ * / : DefaultController with the menu to navigate throught different controllers
+ * /demo/simple : SimpleController with route config in routes.yaml and logger injection with autowiring
+ * /demo/hello/:name : HelloController with route config in annotations and twig template
+ * /demo/vuejs : VuejsController with route config in annotations and VueJS app with specific js/css import
+ * /demo/quasar : QuasarController like VuejsController but with the Quasar framework for UX components
  
 ## components
 
 flex: new symfony system to make web dev life easier ; it works with recipes
 vuejs: top js framework to build SPA, or just widget on classic page
+quasar: UX component library based on VueJS
 encore: symfony solution to wrap webpack config and, once again, make your life simpler
 annotations: use annotations everywher in your PHP code
 twig: symfony tempalte solution
 api: api-platform (instead of fosrestbundle)
 profiler: for debugging purpose
+log: a logger for symfony
 babel-preset-es2017: do you really need explanation ?
 sass: hey, we are not in nineties, we don't write css now
 bootstrap: the beta 4 version of the first class css framework
