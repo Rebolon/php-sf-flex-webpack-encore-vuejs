@@ -67,3 +67,5 @@ Also, if you want to use the asset server finely, you have to add the assets con
 ## todo
 
 * improve this tutorial with an API Route built with Api platform (without DB) and install the vue-generator from api-platform for a crud sample
+* Fail with authentification : inmemory doesn't seems to be a success => should i keep this feature ? if no, i have to clean all related config : session, security, ... (maybe use full sf form to test inmemory user)
+* 2nd FAIL : the click on the form button seems to trigger a form submit, need to check this

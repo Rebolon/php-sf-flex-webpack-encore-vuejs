@@ -20,7 +20,7 @@ class FormController extends Controller
 
     /**
      * @Route("login")
-     * @Method({"GET", "POST"})
+     * @Method({"GET"})
      */
     public function login() {
         return $this->index();

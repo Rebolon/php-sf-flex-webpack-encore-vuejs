@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <form class="login">
+    <form class="login" @submit="prevent">
       <label class="title">
         <h5 class="welcome">Welcome to</h5>
         the demo of Symfony 3.3+ / Webpack encore / Vuejs / Quasar
@@ -84,7 +84,12 @@ export default {
     }
   },
   methods: {
-    submit () {
+    prevent(ev) {
+      ev.preventDefault()
+      console.log('form submitted')
+    },
+    submit (ev) {
+      ev.stopPropagation()
       this.$v.form.$touch()
 
       if (this.$v.form.$error) {
@@ -93,7 +98,9 @@ export default {
         return
       }
 
-      const body = new FormData(this.$v.form)
+      const body = new FormData()
+      body.append('login_username', this.form.username)
+      body.append('login_password', this.form.password)
       const myHeaders = new Headers()
       const myInit = {
           method: 'POST',
@@ -104,11 +111,11 @@ export default {
       }
 
       this.isLoading = true
-      fetch('/login', myInit)
+      fetch('/authenticate', myInit)
       .then(response => {
         this.isLoading = false
         if (response.ok) {
-            // @todo check the uri : does it contain login or not ?
+          // @todo check the uri : does it contain login or not ?
           this.$router.push('/demo/form')
 
           return
