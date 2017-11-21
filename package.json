@@ -13,7 +13,7 @@
     "scripts": {
         "sf-dev": "php -S 127.0.0.1:80 -t public",
         "dev-server": "encore dev-server",
-        "dev-server-hot": "encore dev-server --hot --port 8085",
+        "dev-server-hot": "encore dev-server --hot",
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production"

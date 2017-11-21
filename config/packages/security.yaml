@@ -1,7 +1,15 @@
 security:
     # https://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
-        in_memory: { memory: ~ }
+        in_memory:
+            memory:
+                 users:
+                     test_user:
+                         password:           test_pwd
+                         roles:              ROLE_USER
+                     admin_pwd:
+                         password:           admin_pwd
+                         roles:              [ROLE_USER, ROLE_ADMIN]
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -18,6 +26,7 @@ security:
             # https://symfony.com/doc/current/cookbook/security/form_login_setup.html
 
             form_login:
+                login_path: /login
                 check_path: /login
                 # field names for the username and password fields
                 username_parameter: login_username

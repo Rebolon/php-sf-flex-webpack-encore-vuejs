@@ -13,13 +13,13 @@ const isLoggedIn = (to, from, next) => {
 export default new Router({
     routes: [
         {
-            path: '/login',
+            path: '/',
             name: 'Login',
             component: Login,
             props: true,
         },
         {
-            path: '/',
+            path: '/todos',
             name: 'Todos',
             component: Todos,
             props: true,

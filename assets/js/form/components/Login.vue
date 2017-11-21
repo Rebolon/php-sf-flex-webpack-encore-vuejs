@@ -2,61 +2,54 @@
   <div class="login">
     <form class="login">
       <label class="title">
-        <h3 class="welcome">Welcome to</h3>
-        Company Product Name
-        <h5 class="hint">Use your Company ID to sign in or create one now</h5>
+        <h5 class="welcome">Welcome to</h5>
+        the demo of Symfony 3.3+ / Webpack encore / Vuejs / Quasar
+        <h6 class="hint">You can login with test_user/test_pwd</h6>
       </label>
       <div class="login-group">
         <q-field
                 icon="account_circle"
                 label="Username"
-                :error="$v.username.$error"
+                :error="$v.form.username.$error"
                 error-label="This field is mandatory"
                 inset="icon"
         >
           <q-input
                   type="text"
-                  class="username"
-                  id="login_username"
                   placeholder="Username"
                   v-model="form.username"
-                  @blur="$v.username.$touch"
+                  @blur="$v.form.username.$touch"
           />
         </q-field>
 
         <q-field
-                icon="key"
+                icon="https"
                 label="Password"
-                :error="$v.password.$error"
+                :error="$v.form.password.$error"
                 error-label="This field is mandatory"
                 inset="icon"
         >
           <q-input
                   type="text"
-                  class="password"
-                  id="login_password"
                   placeholder="Password"
                   v-model="form.password"
-                  @blur="$v.username.$touch"
+                  @blur="$v.form.password.$touch"
                   @keyup.enter="submit"
           />
         </q-field>
 
-        <div class="error active">
-          You can login with test_user/test_pwd
-        </div>
-
-        <q-btn flat color="primary" @click="submit">NEXT</q-btn>
+        <q-btn flat color="primary" @click="submit">LOGIN</q-btn>
       </div>
     </form>
 
-    <q-spinner-circles v-if="isLoading" size="150px"/>
+    <q-spinner-circles v-if="isLoading" size="20px"/>
   </div>
 </template>
 
 <script>
 import {
   QField,
+  QIcon,
   QInput,
   QBtn,
   QSpinnerCircles,
@@ -68,6 +61,7 @@ export default {
   name: 'Login',
   components: {
     QField,
+    QIcon,
     QInput,
     QBtn,
     QSpinnerCircles,
@@ -76,7 +70,7 @@ export default {
   data() {
     return {
       msg: 'Login',
-      isLoading: true,
+      isLoading: false,
       form: {
         username: '',
         password: '',
@@ -109,11 +103,13 @@ export default {
           body: body,
       }
 
-      fetch('/api/login', myInit)
+      this.isLoading = true
+      fetch('/login', myInit)
       .then(response => {
+        this.isLoading = false
         if (response.ok) {
             // @todo check the uri : does it contain login or not ?
-          router.push('/demo/form')
+          this.$router.push('/demo/form')
 
           return
         }
