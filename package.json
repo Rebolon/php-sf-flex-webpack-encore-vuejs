@@ -3,7 +3,7 @@
         "@symfony/webpack-encore": "^0.12.0",
         "babel-preset-es2017": "^6.24.1",
         "bootstrap": "4.0.0-beta.2",
-        "node-sass": "^4.5.3",
+        "node-sass": "^4.7.2",
         "sass-loader": "^6.0.6",
         "vue-loader": "^13.3.0",
         "vue-template-compiler": "^2.5.2"
@@ -13,7 +13,7 @@
     "scripts": {
         "sf-dev": "php -S 127.0.0.1:80 -t public",
         "dev-server": "encore dev-server",
-        "dev-server-hot": "encore dev-server --hot",
+        "dev-server-hot": "encore dev-server --hot --port 8085",
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production"
@@ -22,6 +22,7 @@
         "quasar-extras": "0.0.8",
         "quasar-framework": "^0.14.7",
         "vue": "^2.5.2",
-        "vue-router": "^3.0.1"
+        "vue-router": "^3.0.1",
+        "vuelidate": "^0.6.1"
     }
 }

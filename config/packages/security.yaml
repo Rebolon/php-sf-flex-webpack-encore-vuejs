@@ -16,3 +16,29 @@ security:
 
             # form_login: ~
             # https://symfony.com/doc/current/cookbook/security/form_login_setup.html
+
+            form_login:
+                check_path: /login
+                # field names for the username and password fields
+                username_parameter: login_username
+                password_parameter: login_password
+
+                # csrf token options
+                csrf_parameter:       _csrf_token
+                #csrf_token_id:        authenticate
+                #csrf_token_generator: my.csrf_token_generator.id
+
+            remember_me:
+                secret: "%env(APP_SECRET)%"
+                name: demoSpaRemember
+                lifetime: 3600 # in seconds
+                path: /demo/form
+                domain: localhost
+                secure: false
+                httponly: true
+                always_remember_me: true
+
+            logout:
+                path:   /logout
+                target: /demo/form
+                invalidate_session: false

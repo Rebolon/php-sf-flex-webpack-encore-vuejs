@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {% if useParent is defined and useParent %} {{ parent() }} {% endif %}
+    <link rel="stylesheet" href="{{ asset('build/js/' ~ appName ~ '.css') }}">{% endblock %}
+{% block javascripts %}<script src="{{ asset('build/js/' ~ appName ~ '.js') }}"></script>{% endblock %}
+
+{% block body %}
+    <div id="app"></div>
+{% endblock %}

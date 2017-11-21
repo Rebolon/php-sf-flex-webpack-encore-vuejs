@@ -1,5 +1,5 @@
 <template>
-  <div class="movies">
+  <div class="todos">
     <q-toolbar color="primary">
       <q-toolbar-title>
         {{ msg }}
@@ -7,12 +7,8 @@
     </q-toolbar>
 
     <q-list highlight>
-      <q-item v-for="movie in movies" :key="movie.id"
-              v-on:click="showMovie($event)"
-              :to="{name: 'Movie', params: { id: movie.id } }">
-        <q-item-main>
-          <q-item-tile label>{{ movie.title }}</q-item-tile>
-        </q-item-main>
+      <q-item v-for="todo in todos" :key="todo.id">
+        <Todo :todo="todo" @remove="remove(ev)"/>
       </q-item>
     </q-list>
 
@@ -31,9 +27,10 @@ import {
   QItemTile,
   QSpinnerCircles
 } from 'quasar-framework'
+import Todo from './Todo.vue'
 
 export default {
-  name: 'Movies',
+  name: 'Todos',
   components: {
     QToolbar,
     QToolbarTitle,
@@ -41,28 +38,31 @@ export default {
     QItem,
     QItemMain,
     QItemTile,
-    QSpinnerCircles
+    QSpinnerCircles,
+    Todo,
   },
   data() {
     return {
-      msg: 'List of Ghibli movies',
+      msg: 'List of todos',
       isLoading: true,
-      movies: [],
+      todos: [],
       id: undefined,
     };
   },
   created() {
-    const uri = 'https://ghibliapi.herokuapp.com/films'
+    const uri = '/api/todos'
     fetch(uri)
         .then(res => res.json())
         .then(res => {
-            this.movies = res
+            this.todos = res
             this.isLoading = false
         })
   },
   methods: {
-    showMovie(ev) {
+    remove(ev) {
       console.log(ev, 'todo route to the movie page')
+      const idx = this.todos.findIndex(todo => todo.id === ev)
+      this.todos.splice(idx, 1)
     },
   },
 };

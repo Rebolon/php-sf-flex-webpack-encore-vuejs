@@ -24,6 +24,7 @@ Encore
     .addEntry('js/app', './assets/js/app.js')
     .addEntry('js/vuejs', './assets/js/vuejs/app.js')
     .addEntry('js/quasar', './assets/js/quasar/app.js')
+    .addEntry('js/form', './assets/js/form/app.js')
     .addStyleEntry('css/app', './assets/css/app.scss')
 
     // uncomment if you use Sass/SCSS files
