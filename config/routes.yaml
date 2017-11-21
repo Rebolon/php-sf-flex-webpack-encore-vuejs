@@ -12,3 +12,11 @@ simple:
 controllers:
     resource: ../src/Controller/
     type: annotation
+
+# for authentification
+#login:
+#    path: /login
+login_check:
+    path: /authenticate
+logout:
+    path: /logout
