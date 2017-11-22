@@ -14,7 +14,7 @@
     <input type="password" id="password" name="login_password" />
 
     <input type="hidden" name="_csrf_token"
-        value="{{ csrf_token('authenticate') }}"
+        value="{{ token }}"
     >
 
     <button type="submit">login</button>
