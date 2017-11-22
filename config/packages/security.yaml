@@ -36,9 +36,9 @@ security:
                 password_parameter: login_password
 
                 # csrf token options
-                csrf_parameter:       _csrf_token
+                csrf_parameter:       "%csrf_token_parameter%"
                 csrf_token_generator: security.csrf.token_manager
-                csrf_token_id: "%csrf_token_id%"
+                csrf_token_id:        "%csrf_token_id%"
 #
 #             remember_me:
 #                secret: "%env(APP_SECRET)%"
