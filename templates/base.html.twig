@@ -3,13 +3,15 @@
     <head>
         <meta charset="UTF-8">
         {% block stylesheets %}
-            <link rel="stylesheet" href="{{ asset('build/css/app.css') }}">
+            <link rel="stylesheet" href="{{ asset('build/vendor.css') }}">
         {% endblock %}
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}Demo sf-flex-encore-vuejs{% endblock %}</title>
     </head>
-    <body>
+    <body class="mat">
         {% block body %}{% endblock %}
+
+        <script src="{{ asset('build/manifest.js') }}"></script>
+        <script src="{{ asset('build/vendor.js') }}"></script>
         {% block javascripts %}{% endblock %}
-        <script src="{{ asset('build/js/app.js') }}"></script>
     </body>
 </html>

@@ -1,11 +1,14 @@
-{% extends 'base.html.twig' %}
+{% extends 'spa.html.twig' %}
 
 {% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('build/js/vuejs.css') }}">
+{{ parent() }}
+<link rel="stylesheet" href="{{ asset('build/js/vuejs.css') }}">
 {% endblock %}
-{% block javascripts %}<script src="{{ asset('build/js/vuejs.js') }}"></script>{% endblock %}
+
+{% block javascripts %}
+<script src="{{ asset('build/js/vuejs.js') }}"></script>
+{% endblock %}
 
 {% block body %}
-    <div id="app"></div>
+<div id="app"></div>
 {% endblock %}

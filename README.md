@@ -12,7 +12,7 @@ Here is how it has been created
 * cd sf-flex-encore-vuejs
 * composer req encore annotations twig api profiler log
 * yarn add vue vue-router quasar-framework quasar-extras
-* yarn add --dev vue-loader vue-template-compiler vue-router babel-preset-es2017 sass-loader node-sass bootstrap@4.0.0-beta.2
+* yarn add --dev vue-loader vue-template-compiler vue-router babel-preset-es2017 testcafe sass-loader node-sass bootstrap@4.0.0-beta.2
 * yarn install 
 
 Then 3 simple php controller has been created on following routes :
@@ -22,6 +22,7 @@ Then 3 simple php controller has been created on following routes :
  * /demo/hello/:name : HelloController with route config in annotations and twig template
  * /demo/vuejs : VuejsController with route config in annotations and VueJS app with specific js/css import
  * /demo/quasar : QuasarController like VuejsController but with the Quasar framework for UX components
+ * /login : LoginController managed by Symfony for validation, but managed by the code to render the login form
  
 ## components
 
@@ -29,14 +30,15 @@ flex: new symfony system to make web dev life easier ; it works with recipes
 vuejs: top js framework to build SPA, or just widget on classic page
 quasar: UX component library based on VueJS
 encore: symfony solution to wrap webpack config and, once again, make your life simpler
-annotations: use annotations everywher in your PHP code
-twig: symfony tempalte solution
-api: api-platform (instead of fosrestbundle)
+annotations: use annotations everywhere in your PHP code
+twig: symfony template solution, useless if you don't want to render template with symfony, but usefull to be able to use assets twig helper with webpack encore
+api: api-platform to build REST api(instead of fosrestbundle)
 profiler: for debugging purpose
 log: a logger for symfony
 babel-preset-es2017: do you really need explanation ?
+testcafe: a test framework (might be changed by chimp or anything else)
 sass: hey, we are not in nineties, we don't write css now
-bootstrap: the beta 4 version of the first class css framework
+bootstrap: the beta 4 version of the first class css framework (not used with quasar)
 
 ## run
 
@@ -44,12 +46,14 @@ bootstrap: the beta 4 version of the first class css framework
 * Run your application:
   1. Change to the project directory
   2. Execute the `npm run dev-server-hot` command to start the asset server that will build your assets and your manifest.json and serve the assets with hot module replacment when you do a modification on a vuejs file 
-  2. Execute the `php -S 127.0.0.1:80 -t public` command;
+  2. Execute the `npm run sf-dev` command;
   3. Browse to the http://localhost:80/ URL.
 
     Quit the server with CTRL-C.
     Run composer require symfony/web-server-bundle for a better web server.
     And launch `php bin/console server:start 127.0.0.1:80`
+    
+  4. Run frontend tests with `npm run test`
 
 * Read the documentation at https://symfony.com/doc
 

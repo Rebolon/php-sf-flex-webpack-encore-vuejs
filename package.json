@@ -1,27 +1,43 @@
 {
-    "devDependencies": {
-        "@symfony/webpack-encore": "^0.12.0",
-        "babel-preset-es2017": "^6.24.1",
-        "bootstrap": "4.0.0-beta.2",
-        "node-sass": "^4.5.3",
-        "sass-loader": "^6.0.6",
-        "vue-loader": "^13.3.0",
-        "vue-template-compiler": "^2.5.2"
-    },
-    "license": "UNLICENSED",
+    "name": "sf-flex-encore-vuejs",
+    "version": "0.0.1",
+    "homepage": "https://github.com/Rebolon/php-sf-flex-webpack-encore-vuejs",
+    "license": "MIT License",
     "private": true,
+    "config": {
+        "server_port_web": "80",
+        "server_port_asset": "8080",
+        "test_browser": "chrome,firefox"
+    },
     "scripts": {
-        "sf-dev": "php -S 127.0.0.1:80 -t public",
+        "sf-dev": "npm run sf-dev:linux",
+        "sf-dev:linux": "php -S 127.0.0.1:$npm_package_config_server_port_web -t public",
+        "sf-dev:windows": "php -S 127.0.0.1:%npm_package_config_server_port_web% -t public",
         "dev-server": "encore dev-server",
-        "dev-server-hot": "encore dev-server --hot",
+        "dev-server-hot": "npm run dev-server-hot:linux",
+        "dev-server-hot:linux": "encore dev-server --hot --port $npm_package_config_server_port_asset",
+        "dev-server-hot:windows": "encore dev-server --hot --port %npm_package_config_server_port_asset%",
         "dev": "encore dev",
         "watch": "encore dev --watch",
-        "build": "encore production"
+        "build": "encore production",
+        "test" : "npm test:linux",
+        "test:linux": "testcafe $npm_package_config_test_browser ./assets/tests",
+        "test:windows": "testcafe %npm_package_config_test_browser% ./assets/tests"
     },
     "dependencies": {
         "quasar-extras": "0.0.8",
         "quasar-framework": "^0.14.7",
         "vue": "^2.5.2",
         "vue-router": "^3.0.1"
+    },
+    "devDependencies": {
+        "@symfony/webpack-encore": "^0.12.0",
+        "babel-preset-es2017": "^6.24.1",
+        "bootstrap": "4.0.0-beta.2",
+        "node-sass": "^4.5.3",
+        "sass-loader": "^6.0.6",
+        "testcafe": "^0.18.4",
+        "vue-loader": "^13.3.0",
+        "vue-template-compiler": "^2.5.2"
     }
 }

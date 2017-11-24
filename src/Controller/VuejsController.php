@@ -13,7 +13,7 @@ class VuejsController extends Controller
      * @Method({"GET"})
      */
     public function index() {
-        return $this->render('vuejs/app.html.twig');
+        return $this->render('vuejs/app.html.twig', ['appName' => 'vuejs', 'useParent' => true, ]);
     }
 
 }

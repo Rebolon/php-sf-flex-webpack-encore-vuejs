@@ -13,7 +13,7 @@ class QuasarController extends Controller
      * @Method({"GET"})
      */
     public function index() {
-        return $this->render('quasar/app.html.twig');
+        return $this->render('quasar/app.html.twig', ['appName' => 'quasar', ]);
     }
 
 }
