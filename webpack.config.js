@@ -21,10 +21,18 @@ Encore
     })
 
     // uncomment to define the assets of the project
-    .addEntry('js/app', './assets/js/app.js')
     .addEntry('js/vuejs', './assets/js/vuejs/app.js')
     .addEntry('js/quasar', './assets/js/quasar/app.js')
-    .addStyleEntry('css/app', './assets/css/app.scss')
+
+    // this creates a 'vendor.js' file with common js code
+    // these modules will *not* be included in js/vuejs.js or js/quasar.js anymore
+    .createSharedEntry('vendor', [
+        './assets/js/app.js',
+
+        // you can also extract CSS - this will create a 'vendor.css' file
+        // this CSS will *not* be included in vuejs.css anymore
+        './assets/css/app.scss'
+    ])
 
     // uncomment if you use Sass/SCSS files
     // parameters are not mandatory, only if webpack build is slow with bootstrap (http://symfony.com/doc/current/frontend/encore/bootstrap.html)
