@@ -11,13 +11,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-class LoginController extends Controller
+class FormController extends Controller
 {
     /**
-     * Try to test this security when the one on the bottom works Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * Try to access todos (will change the route when login is fine)
      *
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     * @Route("/demo/login/secured")
+     * @Route("/demo/form")
      * @Method({"GET"})
      */
     public function index() {
@@ -25,7 +25,7 @@ class LoginController extends Controller
     }
 
     /**
-    * @Route("/login", name="login")
+    * @Route("/demo/form/login", name="demo_login")
     */
     public function login(Request $request, AuthenticationUtils $authUtils, CsrfTokenManagerInterface $tokenManager)
     {
@@ -37,12 +37,14 @@ class LoginController extends Controller
 
         // token for csrf protection (no need to check validity from request coz it's up to Symfony to do this with
         // internal mecanisms
+        $tokenParam = $this->getParameter('csrf_token_parameter');
         $tokenId = $this->getParameter('csrf_token_id');
         $token = $tokenManager->getToken($tokenId);
 
         return $this->render('form/login.html.twig', array(
             'last_username' => $lastUsername,
             'token'         => $token,
+            'token_param'   => $tokenParam,
             'error'         => $error,
         ));
     }

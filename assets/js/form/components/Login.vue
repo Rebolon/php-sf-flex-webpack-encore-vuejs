@@ -1,0 +1,128 @@
+<template>
+    <div class="login">
+        <form class="login" @submit="prevent">
+            <label class="title">
+                <h5 class="welcome">Welcome to</h5>
+                the demo of Symfony 3.3+ / Webpack encore / Vuejs / Quasar
+                <h6 class="hint">You can login with test_user/test_pwd</h6>
+            </label>
+            <div class="login-group">
+                <q-field
+                        icon="account_circle"
+                        label="Username"
+                        :error="$v.form.username.$error"
+                        error-label="This field is mandatory"
+                        inset="icon"
+                >
+                    <q-input
+                            type="text"
+                            placeholder="Username"
+                            v-model="form.username"
+                            @blur="$v.form.username.$touch"
+                    />
+                </q-field>
+
+                <q-field
+                        icon="https"
+                        label="Password"
+                        :error="$v.form.password.$error"
+                        error-label="This field is mandatory"
+                        inset="icon"
+                >
+                    <q-input
+                            type="text"
+                            placeholder="Password"
+                            v-model="form.password"
+                            @blur="$v.form.password.$touch"
+                            @keyup.enter="submit"
+                    />
+                </q-field>
+
+                <q-btn flat color="primary" @click="submit">LOGIN</q-btn>
+            </div>
+        </form>
+
+        <q-spinner-circles v-if="isLoading" size="20px"/>
+    </div>
+</template>
+
+<script>
+    import {
+        QField,
+        QIcon,
+        QInput,
+        QBtn,
+        QSpinnerCircles,
+        Toast
+    } from 'quasar-framework'
+    import { required } from 'vuelidate/lib/validators'
+    export default {
+        name: 'Login',
+        components: {
+            QField,
+            QIcon,
+            QInput,
+            QBtn,
+            QSpinnerCircles,
+            Toast,
+        },
+        data() {
+            return {
+                msg: 'Login',
+                isLoading: false,
+                form: {
+                    username: '',
+                    password: '',
+                },
+            }
+        },
+        validations: {
+            form: {
+                username: { required },
+                password: { required },
+            }
+        },
+        methods: {
+            prevent(ev) {
+                debugger
+                ev.preventDefault()
+                console.log('form submitted')
+            },
+            submit (ev) {
+                debugger
+                ev.stopPropagation()
+                this.$v.form.$touch()
+                if (this.$v.form.$error) {
+                    Toast.create.warning('Please review fields again.')
+                    return
+                }
+                const body = new FormData()
+                body.append('login_username', this.form.username)
+                body.append('login_password', this.form.password)
+                const myHeaders = new Headers()
+                const myInit = {
+                    method: 'POST',
+                    headers: myHeaders,
+                    mode: 'cors',
+                    cache: 'default',
+                    body: body,
+                }
+                this.isLoading = true
+                fetch('/authenticate', myInit)
+                    .then(response => {
+                        this.isLoading = false
+                        if (response.ok) {
+                            // @todo check the uri : does it contain login or not ?
+                            this.$router.push('/demo/form')
+                            return
+                        }
+                        Toast.create.negative('Invalid user name or password')
+                    })
+            }
+        }
+    };
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+</style>

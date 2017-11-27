@@ -20,7 +20,7 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production",
-        "test" : "npm test:linux",
+        "test": "npm test:linux",
         "test:linux": "testcafe $npm_package_config_test_browser ./assets/tests",
         "test:windows": "testcafe %npm_package_config_test_browser% ./assets/tests"
     },
@@ -28,7 +28,8 @@
         "quasar-extras": "0.0.8",
         "quasar-framework": "^0.14.7",
         "vue": "^2.5.2",
-        "vue-router": "^3.0.1"
+        "vue-router": "^3.0.1",
+        "vuelidate": "^0.6.1"
     },
     "devDependencies": {
         "@symfony/webpack-encore": "^0.12.0",
