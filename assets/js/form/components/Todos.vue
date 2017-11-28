@@ -1,5 +1,9 @@
 <template>
     <div class="todos">
+        <label class="title">
+            <h5 class="title">List of todos</h5>
+            <h6 class="hint">But it needs to store something somewhere, or it won't be possible to display anything neither do anything in fact</h6>
+        </label>
         <q-toolbar color="primary">
             <q-toolbar-title>
                 {{ msg }}
