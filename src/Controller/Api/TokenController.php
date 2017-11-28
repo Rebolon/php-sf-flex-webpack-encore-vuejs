@@ -8,8 +8,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Csrf\CsrfToken;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use App\Security\CsrfToken;
 
 class TokenController extends Controller
 {
@@ -18,19 +17,20 @@ class TokenController extends Controller
      *
      * @Route("/token", name="token")
      * @param Request $request
+     * @param \App\Security\CsrfToken $csrfTokenManager
      * @return JsonResponse
      */
-    public function token(Request $request, CsrfTokenManagerInterface $tokenManager) {
+    public function token(Request $request, CsrfToken $csrfTokenManager) {
         try {
             // get current token and return it if exists and valid
-            $this->get(\App\Controller\Api\TokenController::class)->tokenCheck($request, $tokenManager);
+            $this->get(\App\Controller\Api\TokenController::class)->tokenCheck($request, $csrfTokenManager);
             $tokenKey = $this->getParameter('csrf_token_parameter');
 
             return new JsonResponse($request->get($tokenKey));
-        } catch (HttpException $e) {
+        } catch (\Exception $e) {
             // else create a new one and return it
             $tokenId = $this->getParameter('csrf_token_id');
-            $token = $tokenManager->getToken($tokenId);
+            $token = $csrfTokenManager->getToken($tokenId);
 
             return new JsonResponse($token->getValue());
         }
@@ -39,16 +39,15 @@ class TokenController extends Controller
     /**
      * @Route("/token_check", name="token_check")
      * @param Request $request
-     * @param CsrfTokenManagerInterface $tokenManager
+     * @param \App\Security\CsrfToken $csrfTokenManager
      * @return Response
      */
-    public function tokenCheck(Request $request, CsrfTokenManagerInterface $tokenManager) {
+    public function tokenCheck(Request $request, CsrfToken $csrfTokenManager) {
         $tokenId = $this->getParameter('csrf_token_id');
         $tokenKey = $this->getParameter('csrf_token_parameter');
         $tokenValue = $request->get($tokenKey);
-        $token = new CsrfToken($tokenId, $tokenValue);
 
-        if (!$tokenValue || !$tokenManager->isTokenValid($token)) {
+        if (!$csrfTokenManager->tokenCheck($tokenId, $tokenValue)) {
             throw new HttpException(400, 'Invalid token');
         }
 

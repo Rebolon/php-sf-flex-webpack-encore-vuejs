@@ -11,7 +11,7 @@ Here is how it has been created
 * composer create-project symfony/skeleton sf-flex-encore-vuejs
 * cd sf-flex-encore-vuejs
 * composer req encore annotations twig api profiler log
-* yarn add vue vue-router quasar-framework quasar-extras
+* yarn add vue vue-router quasar-framework quasar-extras vuelidate 
 * yarn add --dev vue-loader vue-template-compiler vue-router babel-preset-es2017 testcafe sass-loader node-sass bootstrap@4.0.0-beta.2
 * yarn install 
 
@@ -56,6 +56,9 @@ bootstrap: the beta 4 version of the first class css framework (not used with qu
   4. Run frontend tests with `npm run test`
 
 * Read the documentation at https://symfony.com/doc
+
+If you want to change default ports, you can use package.json > config : server_port_web for the web server (php built in server), and server_port_asset for the asset server.
+Default ports are 80 and 8080.
 
 ## webpack
 
