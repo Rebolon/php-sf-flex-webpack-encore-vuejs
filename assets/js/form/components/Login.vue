@@ -38,7 +38,7 @@
                     />
                 </q-field>
 
-                <q-btn flat color="primary" @click="submit">LOGIN</q-btn>
+                <q-btn flat color="primary" @click="submit" :disabled="!form.csrf">LOGIN</q-btn>
             </div>
         </form>
 
@@ -56,6 +56,7 @@
         Toast
     } from 'quasar-framework'
     import { required } from 'vuelidate/lib/validators'
+    import getToken from '../../csrf_token'
     export default {
         name: 'Login',
         components: {
@@ -73,8 +74,13 @@
                 form: {
                     username: '',
                     password: '',
+                    csrf: '',
                 },
             }
+        },
+        created () {
+           getToken(this)
+               .then(csrf_token => this.form.csrf = csrf_token)
         },
         validations: {
             form: {
@@ -84,39 +90,46 @@
         },
         methods: {
             prevent(ev) {
-                debugger
                 ev.preventDefault()
-                console.log('form submitted')
+                console.log('login submitted')
             },
             submit (ev) {
-                debugger
                 ev.stopPropagation()
                 this.$v.form.$touch()
                 if (this.$v.form.$error) {
                     Toast.create.warning('Please review fields again.')
                     return
                 }
-                const body = new FormData()
-                body.append('login_username', this.form.username)
-                body.append('login_password', this.form.password)
+                const body = {
+                    'username': this.form.username,
+                    'password': this.form.password,
+                    'csrf': this.form.csrf,
+                }
                 const myHeaders = new Headers()
+                myHeaders.append("Accept", "application/json")
+                myHeaders.append("Content-Type", "application/json")
                 const myInit = {
                     method: 'POST',
                     headers: myHeaders,
                     mode: 'cors',
                     cache: 'default',
-                    body: body,
+                    body: JSON.stringify(body),
                 }
                 this.isLoading = true
-                fetch('/authenticate', myInit)
+                fetch('/demo/login/json?XDEBUG_SESSION_START=1', myInit)
+                    .then(response => {
+                        return response.json()
+                    })
                     .then(response => {
                         this.isLoading = false
-                        if (response.ok) {
-                            // @todo check the uri : does it contain login or not ?
-                            this.$router.push('/demo/form')
+                        if (!response.error) {
+                            this.$router.push('/demo/todos')
+
                             return
                         }
-                        Toast.create.negative('Invalid user name or password')
+
+                        const msg = response.error.message ? response.error.message : response.error
+                        Toast.create.negative(`Invalid user name or password (${msg})`)
                     })
             }
         }

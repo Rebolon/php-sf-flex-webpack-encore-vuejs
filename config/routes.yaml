@@ -14,9 +14,12 @@ controllers:
     type: annotation
 
 # for authentification
-#login:
-#    path: /login
-login_check:
-    path: /authenticate
+#sf_login:
+#    path: /demo/login/standard
+#json_login:
+#    path: /demo/login/json
+demo_login_standard_check:
+    # take care : the route must be behind your firewall : in main section we have to add this route to the pattern node
+    path: /demo/login/authenticate
 logout:
     path: /logout
