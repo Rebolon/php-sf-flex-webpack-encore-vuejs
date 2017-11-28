@@ -9,7 +9,17 @@ export default function getToken(loaderToActivate)
         } else {
             loaderToActivate.isLoading = true
             const uri = '/token'
-            fetch(uri)
+            const myHeaders = new Headers()
+            myHeaders.append("Accept", "application/json")
+            myHeaders.append("Content-Type", "application/json")
+            const myInit = {
+              method: 'GET',
+              headers: myHeaders,
+              credentials: 'same-origin',
+              mode: 'cors',
+              cache: 'no-cache',
+            }
+            fetch(uri, myInit)
             // @todo manage http error
                 .then(res => res.json())
                 .then(res => {

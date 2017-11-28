@@ -111,6 +111,7 @@
                 const myInit = {
                     method: 'POST',
                     headers: myHeaders,
+                    credentials: 'same-origin',
                     mode: 'cors',
                     cache: 'default',
                     body: JSON.stringify(body),
