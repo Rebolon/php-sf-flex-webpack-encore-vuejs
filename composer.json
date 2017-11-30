@@ -9,10 +9,10 @@
         "symfony/framework-bundle": "^3.3",
         "symfony/monolog-bundle": "^3.1",
         "symfony/profiler-pack": "^1.0",
-        "symfony/webpack-encore-pack": "^1.0",
         "symfony/yaml": "^3.3"
     },
     "require-dev": {
+        "symfony/webpack-encore-pack": "^1.0",
         "symfony/flex": "^1.0",
         "symfony/dotenv": "^3.3"
     },
