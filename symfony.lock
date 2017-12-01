@@ -59,23 +59,11 @@
             "ref": "f75ac166398e107796ca94cc57fa1edaa06ec47f"
         }
     },
-    "paragonie/random_compat": {
-        "version": "v2.0.11"
-    },
-    "symfony/polyfill-php70": {
-        "version": "v1.6.0"
-    },
     "symfony/inflector": {
         "version": "v3.3.13"
     },
     "symfony/property-access": {
         "version": "v3.3.13"
-    },
-    "symfony/polyfill-util": {
-        "version": "v1.6.0"
-    },
-    "symfony/polyfill-php56": {
-        "version": "v1.6.0"
     },
     "symfony/security": {
         "version": "v3.3.13"
@@ -94,9 +82,6 @@
             "version": "3.3",
             "ref": "85834af1496735f28d831489d12ab1921a875e0d"
         }
-    },
-    "symfony/polyfill-apcu": {
-        "version": "v1.6.0"
     },
     "psr/simple-cache": {
         "version": "1.0.0"
@@ -180,9 +165,6 @@
         }
     },
     "symfony/finder": {
-        "version": "v3.3.13"
-    },
-    "symfony/class-loader": {
         "version": "v3.3.13"
     },
     "symfony/framework-bundle": {
@@ -286,5 +268,8 @@
     },
     "symfony/dotenv": {
         "version": "v3.3.13"
+    },
+    "symfony/polyfill-php72": {
+        "version": "v1.6.0"
     }
 }

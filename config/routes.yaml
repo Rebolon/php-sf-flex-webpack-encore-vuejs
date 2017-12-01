@@ -8,11 +8,6 @@ simple:
     methods:
         - "GET"
 
-# first, run composer req annotations
-controllers:
-    resource: ../src/Controller/
-    type: annotation
-
 # for authentification
 #sf_login:
 #    path: /demo/login/standard
