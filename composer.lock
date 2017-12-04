@@ -1406,16 +1406,16 @@
         },
         {
             "name": "sensio/framework-extra-bundle",
-            "version": "v5.1.2",
+            "version": "v5.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sensiolabs/SensioFrameworkExtraBundle.git",
-                "reference": "28792a4e1a3237088ee1694098767833d079d56d"
+                "reference": "0696496cb3e2d23add645d424699e5c723238aad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/28792a4e1a3237088ee1694098767833d079d56d",
-                "reference": "28792a4e1a3237088ee1694098767833d079d56d",
+                "url": "https://api.github.com/repos/sensiolabs/SensioFrameworkExtraBundle/zipball/0696496cb3e2d23add645d424699e5c723238aad",
+                "reference": "0696496cb3e2d23add645d424699e5c723238aad",
                 "shasum": ""
             },
             "require": {
@@ -1471,7 +1471,7 @@
                 "annotations",
                 "controllers"
             ],
-            "time": "2017-12-01T00:43:37+00:00"
+            "time": "2017-12-04T18:33:55+00:00"
         },
         {
             "name": "symfony/asset",
@@ -3965,16 +3965,16 @@
         },
         {
             "name": "symfony/flex",
-            "version": "v1.0.42",
+            "version": "v1.0.44",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/flex.git",
-                "reference": "a1117ae366eae895a449db63eda58035b112dda9"
+                "reference": "061fb1d3b3c5d3450afcb4d15c809a27ccdd4c3f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/flex/zipball/a1117ae366eae895a449db63eda58035b112dda9",
-                "reference": "a1117ae366eae895a449db63eda58035b112dda9",
+                "url": "https://api.github.com/repos/symfony/flex/zipball/061fb1d3b3c5d3450afcb4d15c809a27ccdd4c3f",
+                "reference": "061fb1d3b3c5d3450afcb4d15c809a27ccdd4c3f",
                 "shasum": ""
             },
             "require": {
@@ -4007,7 +4007,7 @@
                     "email": "fabien.potencier@gmail.com"
                 }
             ],
-            "time": "2017-11-29T02:36:07+00:00"
+            "time": "2017-12-03T00:59:08+00:00"
         },
         {
             "name": "symfony/webpack-encore-pack",

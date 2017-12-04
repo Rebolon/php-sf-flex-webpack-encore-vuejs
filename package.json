@@ -11,9 +11,17 @@
         "test_browser": "chrome,firefox"
     },
     "scripts": {
+        "init-project": "npm run init-project:linux",
+        "init-project:linux": "composer install && npm install &&  && npm run db-init:linux",
+        "init-project:windows": "composer install && npm install && npm run db-init:windows",
+        "db-init": "npm run db-init:linux",
+        "db-init:linux": "$npm_package_config_php bin/console doctrine:database:create && $npm_package_config_php bin/console doctrine:schema:create",
+        "db-init:windows": "%npm_package_config_php% bin/console doctrine:database:create && %npm_package_config_php% bin/console doctrine:schema:create",
+
         "sf-dev": "npm run sf-dev:linux",
         "sf-dev:linux": "$npm_package_config_php -S 127.0.0.1:$npm_package_config_server_port_web -t public",
         "sf-dev:windows": "%npm_package_config_php% -S 127.0.0.1:%npm_package_config_server_port_web% -t public",
+
         "dev-server": "npm run dev-server:linux",
         "dev-server:linux": "encore dev-server --port $npm_package_config_server_port_asset",
         "dev-server:windows": "encore dev-server --port %npm_package_config_server_port_asset%",
@@ -23,6 +31,7 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production",
+
         "test": "npm run test:linux",
         "test:linux": "testcafe $npm_package_config_test_browser ./assets/tests",
         "test:windows": "testcafe %npm_package_config_test_browser% ./assets/tests"
@@ -30,7 +39,7 @@
     "dependencies": {
         "quasar-extras": "0.0.8",
         "quasar-framework": "^0.14.7",
-        "vue": "^2.5.2",
+        "vue": "^2.5.9",
         "vue-router": "^3.0.1",
         "vuelidate": "^0.6.1"
     },
@@ -40,7 +49,7 @@
         "bootstrap": "4.0.0-beta.2",
         "node-sass": "^4.5.3",
         "sass-loader": "^6.0.6",
-        "testcafe": "^0.18.4",
+        "testcafe": "^0.18.5",
         "vue-loader": "^13.3.0",
         "vue-template-compiler": "^2.5.2"
     }

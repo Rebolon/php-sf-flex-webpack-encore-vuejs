@@ -23,6 +23,7 @@ Then 3 simple php controller has been created on following routes :
  * /demo/vuejs : VuejsController with route config in annotations and VueJS app with specific js/css import
  * /demo/quasar : QuasarController like VuejsController but with the Quasar framework for UX components
  * /login : LoginController managed by Symfony for validation, but managed by the code to render the login form
+ * /api : access ApiPlatform api doc
  
 ## components
 
@@ -42,7 +43,11 @@ bootstrap: the beta 4 version of the first class css framework (not used with qu
 
 ## run
 
-* install with : composer install & npm install & npm run dev
+* install the project with `npm run init-project` which will launch :
+  1. php dependancies installation: `composer install`
+  2. nodejs tooling installation: `npm install`
+  3. assets generation: `npm run dev`
+  4. db init: `php bin/console doctrine:database:create` & `doctrine:schema:create`
 * Run your application:
   1. Change to the project directory
   2. Execute the `npm run dev-server-hot` command to start the asset server that will build your assets and your manifest.json and serve the assets with hot module replacment when you do a modification on a vuejs file 
@@ -76,4 +81,5 @@ Also, if you want to use the asset server finely, you have to add the assets con
 
 ## todo
 
-* improve this tutorial with an API Route built with Api platform (without DB) and install the vue-generator from api-platform for a crud sample
+* improve this tutorial with ~~an API Route built with Api platform (without DB)~~ and install the vue-generator from api-platform for a crud sample
+* add db fixtures at init ! almost 40 books and some reviews (at least 3 for 5 1st books)

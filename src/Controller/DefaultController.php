@@ -13,7 +13,8 @@ class DefaultController extends Controller
      * @return Response
      */
     public function index() {
-        $routes = $this->get('router')->getRouteCollection()->all();
+        $router = $this->get('router');
+        $routes = $router->getRouteCollection()->all();
 
         $demoRoutes = [];
         foreach ($routes as $routeName => $route) {
@@ -22,6 +23,8 @@ class DefaultController extends Controller
                 $demoRoutes[$routeName] = $route;
             }
         }
+
+        $demoRoutes['api_entrypoint'] = $router->generate('api_entrypoint');
 
         $render = $this->render('default/menu.html.twig', ['routes' => $demoRoutes,]);
 

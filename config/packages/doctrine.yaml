@@ -1,6 +1,8 @@
 doctrine:
     dbal:
-        url: '%env(DATABASE_URL)%'
+#        should use env instead of hard conf here
+#        url: '%env(DATABASE_URL)%'
+        url: 'sqlite:///%kernel.project_dir%\var\data\main.db'
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
         naming_strategy: doctrine.orm.naming_strategy.underscore
