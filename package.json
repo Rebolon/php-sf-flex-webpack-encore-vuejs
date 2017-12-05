@@ -17,11 +17,9 @@
         "db-init": "npm run db-init:linux",
         "db-init:linux": "$npm_package_config_php bin/console doctrine:database:create && $npm_package_config_php bin/console doctrine:schema:create",
         "db-init:windows": "%npm_package_config_php% bin/console doctrine:database:create && %npm_package_config_php% bin/console doctrine:schema:create",
-
         "sf-dev": "npm run sf-dev:linux",
         "sf-dev:linux": "$npm_package_config_php -S 127.0.0.1:$npm_package_config_server_port_web -t public",
         "sf-dev:windows": "%npm_package_config_php% -S 127.0.0.1:%npm_package_config_server_port_web% -t public",
-
         "dev-server": "npm run dev-server:linux",
         "dev-server:linux": "encore dev-server --port $npm_package_config_server_port_asset",
         "dev-server:windows": "encore dev-server --port %npm_package_config_server_port_asset%",
@@ -31,10 +29,9 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production",
-
         "test": "npm run test:linux",
-        "test:linux": "testcafe $npm_package_config_test_browser ./assets/tests",
-        "test:windows": "testcafe %npm_package_config_test_browser% ./assets/tests"
+        "test:linux": "./node_modules/.bin/testcafe $npm_package_config_test_browser ./assets/tests",
+        "test:windows": "./node_modules/.bin/testcafe %npm_package_config_test_browser% ./assets/tests"
     },
     "dependencies": {
         "quasar-extras": "0.0.8",
