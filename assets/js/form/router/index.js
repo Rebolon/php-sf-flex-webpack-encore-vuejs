@@ -8,9 +8,9 @@ Vue.use(Router);
 const isLoggedIn = (to, from, next) => {
     // do check on cookie/token and let it go if ok, or redirect to login
     if (!localStorage.getItem('isLoggedIn')) {
-        next('/login')
+        next(false)
     } else {
-        next(to)
+        next()
     }
 }
 

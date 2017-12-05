@@ -17,6 +17,7 @@
                     <q-input
                             type="text"
                             placeholder="Username"
+                            name="username"
                             v-model="form.username"
                             @blur="$v.form.username.$touch"
                     />
@@ -32,6 +33,7 @@
                     <q-input
                             type="text"
                             placeholder="Password"
+                            name="password"
                             v-model="form.password"
                             @blur="$v.form.password.$touch"
                             @keyup.enter="submit"
@@ -117,18 +119,21 @@
                     body: JSON.stringify(body),
                 }
                 this.isLoading = true
-                fetch('/demo/login/json?XDEBUG_SESSION_START=1', myInit)
+                fetch('/demo/login/json', myInit)
                     .then(response => {
                         return response.json()
                     })
                     .then(response => {
                         this.isLoading = false
                         if (!response.error) {
-                            this.$router.push('/demo/todos')
+                            // @todo find a good pattern to remove this item: with a delay ? when we fist enter on the route => Sf twig should add extra Js script to force a call to server and check authentification... ?
+                            localStorage.setItem('isLoggedIn', true)
+                            this.$router.push('/todos')
 
                             return
                         }
 
+                        localStorage.removeItem('isLoggedIn')
                         const msg = response.error.message ? response.error.message : response.error
                         Toast.create.negative(`Invalid user name or password (${msg})`)
                     })
