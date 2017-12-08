@@ -2,6 +2,7 @@
 namespace App\Entity\Library;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -41,10 +42,12 @@ class Book
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Library\Review", mappedBy="Book")
+     * @ApiSubresource
      */
     private $Reviews;
 
     /**
+     * @var ProjectBookCreation
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookCreation", mappedBy="book")
      */
     private $projectBookCreation;
@@ -57,6 +60,7 @@ class Book
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Library\Serie", inversedBy="book")
      * @ORM\JoinColumn(name="serie_id", referencedColumnName="id")
+     * @ApiSubresource
      */
     private $serie;
 
@@ -174,5 +178,36 @@ class Book
     public function getSerie()
     {
         return $this->serie;
+    }
+
+    /**
+     * @param Author $author
+     * @param int $role
+     * @return $this
+     */
+    public function addAuthor(Author $author, int $role)
+    {
+        $this->projectBookCreation
+            ->setAuthor($author)
+            ->setRole($role)
+            ->setBook($this);
+
+        return $this;
+    }
+
+    /**
+     * @param Editor $editor
+     * @param \DateTime $date
+     * @param null $collection
+     * @return $this
+     */
+    public function addEditor(Editor $editor, \DateTime $date, $collection = null)
+    {
+        $this->projectBookEdition
+            ->setEditor($editor)
+            ->setDate($date)
+            ->setCollection($collection);
+
+        return $this;
     }
 }

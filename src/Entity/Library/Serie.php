@@ -2,6 +2,7 @@
 namespace App\Entity\Library;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -24,6 +25,7 @@ class Serie
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Library\Book", mappedBy="serie")
+     * @ApiSubresource
      */
     private $book;
 

@@ -2,6 +2,7 @@
 namespace App\Entity\Library;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -40,6 +41,7 @@ class Review
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Library\Book", inversedBy="Reviews")
      * @ORM\JoinColumn(name="book_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ApiSubresource
      */
     private $Book;
 

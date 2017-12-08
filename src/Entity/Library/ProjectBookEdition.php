@@ -2,10 +2,10 @@
 namespace App\Entity\Library;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource
  * @ORM\Entity
  * @ORM\Table(name="project_book_edition")
  */
@@ -35,6 +35,7 @@ class ProjectBookEdition
      *     fetch="EAGER"
      * )
      * @ORM\JoinColumn(name="editor_id", referencedColumnName="id")
+     * @ApiSubresource
      */
     private $editor;
 
@@ -45,6 +46,7 @@ class ProjectBookEdition
      *     fetch="EAGER"
      * )
      * @ORM\JoinColumn(name="book_id", referencedColumnName="id")
+     * @ApiSubresource
      */
     private $book;
 
@@ -92,6 +94,17 @@ class ProjectBookEdition
     public function getEditor()
     {
         return $this->editor;
+    }
+
+    /**
+     * @param Editor $editor
+     * @return $this
+     */
+    public function setAuthor(Editor $editor)
+    {
+        $this->editor = $editor;
+
+        return $this;
     }
 
     /**
