@@ -1,41 +1,64 @@
 <?php
-namespace App\Entity\Project;
+namespace App\Entity\Library;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * A Serie of books.
- *
  * @ApiResource
  * @ORM\Entity
  */
 class Serie
 {
     /**
-     * @var int The id of this serie.
-     *
      * @ORM\Id
-     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
-     * @var string The serie name.
-     *
-     * @ORM\Column
-     * @Assert\NotBlank
+     * @ORM\Column(type="string", length=512, nullable=false)
      */
     private $name;
 
     /**
-     * @var string The books of this serie.
-     *
-     * @ORM\Column
-     * @Assert\NotBlank
-     * @ORM\OneToMany(targetEntity="Book", mappedBy="serie")
+     * @ORM\OneToMany(targetEntity="App\Entity\Library\Book", mappedBy="serie")
      */
-    private $books;
+    private $book;
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param mixed $name
+     * @return Serie
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getBook()
+    {
+        return $this->book;
+    }
 }

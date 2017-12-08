@@ -1,103 +1,67 @@
 <?php
-namespace App\Entity\Project;
+namespace App\Entity\Library;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * A book.
- *
  * @ApiResource
  * @ORM\Entity
  */
 class Book
 {
     /**
-     * @var int The id of this book.
-     *
      * @ORM\Id
-     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
-     * @var string|null The ISBN number of this book (or null if doesn't have one).
-     *
      * @ORM\Column(nullable=true)
      * @Assert\Isbn
      */
     private $isbn;
 
     /**
-     * @var string The title of this book.
-     *
-     * @ORM\Column
-     * @Assert\NotBlank
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $title;
 
     /**
-     * @var string The description of this book.
-     *
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank
+     * @ORM\Column(type="text", nullable=true)
      */
     private $description;
 
     /**
-     * @var string The authors of this book.
-     *
-     * @ORM\Column
-     * @Assert\NotBlank
-     * @ORM\OneToMany(targetEntity="Project", mappedBy="book")
+     * @ORM\Column(type="integer", nullable=true)
      */
-    private $authors;
+    private $index_in_serie;
 
     /**
-     * @var string The serie of this book.
-     *
-     * @ORM\Column(nullable=true)
-     * @ORM\ManyToOne(targetEntity="Serie", inversedBy="books")
-     * @JoinColumn(name="serie_id", referencedColumnName="id")
+     * @ORM\OneToMany(targetEntity="App\Entity\Library\Review", mappedBy="Book")
+     */
+    private $Reviews;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookCreation", mappedBy="book")
+     */
+    private $projectBookCreation;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookEdition", mappedBy="book")
+     */
+    private $projectBookEdition;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Library\Serie", inversedBy="book")
+     * @ORM\JoinColumn(name="serie_id", referencedColumnName="id")
      */
     private $serie;
 
     /**
-     * @var string The index of this book in the serie.
-     *
-     * @ORM\Column(nullable=true)
-     */
-    private $indexInSerie;
-
-    /**
-     * @var string The authors of this book.
-     *
-     * @ORM\Column
-     * @Assert\NotBlank
-     * @ORM\ManyToOne(targetEntity="Editor", inversedBy="books")
-     * @JoinColumn(name="editor_id", referencedColumnName="id")
-     */
-    private $editor;
-
-    /**
-     * @var \DateTimeInterface The publication date of this book.
-     *
-     * @ORM\Column(type="datetime")
-     * @Assert\NotNull
-     */
-    private $publicationDate;
-
-    /**
-     * @var Review[] Available reviews for this book.
-     *
-     * @ORM\OneToMany(targetEntity="Review", mappedBy="book")
-     */
-    private $reviews;
-
-    /**
-     * @return int
+     * @return mixed
      */
     public function getId()
     {
@@ -105,18 +69,7 @@ class Book
     }
 
     /**
-     * @param int $id
-     * @return Book
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    /**
-     * @return null|string
+     * @return mixed
      */
     public function getIsbn()
     {
@@ -124,7 +77,7 @@ class Book
     }
 
     /**
-     * @param null|string $isbn
+     * @param mixed $isbn
      * @return Book
      */
     public function setIsbn($isbn)
@@ -135,7 +88,7 @@ class Book
     }
 
     /**
-     * @return string
+     * @return mixed
      */
     public function getTitle()
     {
@@ -143,7 +96,7 @@ class Book
     }
 
     /**
-     * @param string $title
+     * @param mixed $title
      * @return Book
      */
     public function setTitle($title)
@@ -154,7 +107,7 @@ class Book
     }
 
     /**
-     * @return string
+     * @return mixed
      */
     public function getDescription()
     {
@@ -162,7 +115,7 @@ class Book
     }
 
     /**
-     * @param string $description
+     * @param mixed $description
      * @return Book
      */
     public function setDescription($description)
@@ -173,60 +126,53 @@ class Book
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getAuthor()
+    public function getIndexInSerie()
     {
-        return $this->author;
+        return $this->index_in_serie;
     }
 
     /**
-     * @param string $author
+     * @param mixed $indexInSerie
      * @return Book
      */
-    public function setAuthor($author)
+    public function setIndexInSerie($indexInSerie)
     {
-        $this->author = $author;
+        $this->index_in_serie = $indexInSerie;
 
         return $this;
     }
 
     /**
-     * @return \DateTimeInterface
-     */
-    public function getPublicationDate()
-    {
-        return $this->publicationDate;
-    }
-
-    /**
-     * @param \DateTimeInterface $publicationDate
-     * @return Book
-     */
-    public function setPublicationDate($publicationDate)
-    {
-        $this->publicationDate = $publicationDate;
-
-        return $this;
-    }
-
-    /**
-     * @return Review[]
+     * @return mixed
      */
     public function getReviews()
     {
-        return $this->reviews;
+        return $this->Reviews;
     }
 
     /**
-     * @param Review[] $reviews
-     * @return Book
+     * @return mixed
      */
-    public function setReviews($reviews)
+    public function getProjectBookCreation()
     {
-        $this->reviews = $reviews;
-
-        return $this;
+        return $this->projectBookCreation;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getProjectBookEdition()
+    {
+        return $this->projectBookEdition;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSerie()
+    {
+        return $this->serie;
+    }
 }
