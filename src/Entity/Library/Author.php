@@ -1,47 +1,90 @@
 <?php
-namespace App\Entity\Project;
+namespace App\Entity\Library;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * A book.
- *
  * @ApiResource
  * @ORM\Entity
  */
 class Author
 {
     /**
-     * @var int The id of this author.
-     *
      * @ORM\Id
-     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
-     * @var string The firstname of this author.
-     *
-     * @ORM\Column
-     * @Assert\NotBlank
+     * @ORM\Column(type="string", nullable=false)
      */
     private $firstname;
 
     /**
-     * @var string The lastname of this author.
-     *
-     * @ORM\Column
+     * @ORM\Column(type="string", nullable=true)
      */
     private $lastname;
 
     /**
-     * @var string Books created by this author.
-     *
-     * @ORM\Column
-     * @ORM\OneToMany(targetEntity="Project", mappedBy="author")
+     * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookCreation", mappedBy="author")
+     * @ApiSubresource
      */
-    private $books;
+    private $projectBookCreation;
+
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFirstname()
+    {
+        return $this->firstname;
+    }
+
+    /**
+     * @param mixed $firstname
+     * @return Author
+     */
+    public function setFirstname($firstname)
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLastname()
+    {
+        return $this->lastname;
+    }
+
+    /**
+     * @param mixed $lastname
+     * @return Author
+     */
+    public function setLastname($lastname)
+    {
+        $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getProjectBookCreation()
+    {
+        return $this->projectBookCreation;
+    }
 }

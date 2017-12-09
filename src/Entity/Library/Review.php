@@ -1,69 +1,52 @@
 <?php
-namespace App\Entity\Project;
+namespace App\Entity\Library;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * A review of a book.
- *
  * @ApiResource
  * @ORM\Entity
  */
 class Review
 {
     /**
-     * @var int The id of this review.
-     *
      * @ORM\Id
-     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
-     * @var int The rating of this review (between 0 and 5).
-     *
-     * @ORM\Column(type="smallint")
-     * @Assert\Range(min=0, max=5)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $rating;
 
     /**
-     * @var string the body of the review.
-     *
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank
+     * @ORM\Column(type="text", nullable=true)
      */
     private $body;
 
     /**
-     * @var string The author of the review.
-     *
-     * @ORM\Column
-     * @Assert\NotBlank
+     * @ORM\Column(type="string", length=512, nullable=true)
      */
-    private $author;
+    private $username;
 
     /**
-     * @var \DateTimeInterface The date of publication of this review.
-     *
-     * @ORM\Column(type="datetime")
-     * @Assert\NotBlank
+     * @ORM\Column(type="datetime", nullable=false, options={"default":"now()"})
      */
-    private $publicationDate;
+    private $publication_date;
 
     /**
-     * @var Book The book this review is about.
-     *
-     * @ORM\ManyToOne(targetEntity="Book", inversedBy="reviews")
-     * @Assert\NotNull
+     * @ORM\ManyToOne(targetEntity="App\Entity\Library\Book", inversedBy="Reviews")
+     * @ORM\JoinColumn(name="book_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ApiSubresource
      */
-    private $book;
+    private $Book;
 
     /**
-     * @return int
+     * @return mixed
      */
     public function getId()
     {
@@ -71,18 +54,7 @@ class Review
     }
 
     /**
-     * @param int $id
-     * @return Review
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    /**
-     * @return int
+     * @return mixed
      */
     public function getRating()
     {
@@ -90,7 +62,7 @@ class Review
     }
 
     /**
-     * @param int $rating
+     * @param mixed $rating
      * @return Review
      */
     public function setRating($rating)
@@ -101,7 +73,7 @@ class Review
     }
 
     /**
-     * @return string
+     * @return mixed
      */
     public function getBody()
     {
@@ -109,7 +81,7 @@ class Review
     }
 
     /**
-     * @param string $body
+     * @param mixed $body
      * @return Review
      */
     public function setBody($body)
@@ -120,60 +92,48 @@ class Review
     }
 
     /**
-     * @return string
+     * @return mixed
      */
-    public function getAuthor()
+    public function getUsername()
     {
-        return $this->author;
+        return $this->username;
     }
 
     /**
-     * @param string $author
+     * @param mixed $username
      * @return Review
      */
-    public function setAuthor($author)
+    public function setUsername($username)
     {
-        $this->author = $author;
+        $this->username = $username;
 
         return $this;
     }
 
     /**
-     * @return \DateTimeInterface
+     * @return mixed
      */
     public function getPublicationDate()
     {
-        return $this->publicationDate;
+        return $this->publication_date;
     }
 
     /**
-     * @param \DateTimeInterface $publicationDate
+     * @param mixed $publication_date
      * @return Review
      */
-    public function setPublicationDate($publicationDate)
+    public function setPublicationDate($publication_date)
     {
-        $this->publicationDate = $publicationDate;
+        $this->publication_date = $publication_date;
 
         return $this;
     }
 
     /**
-     * @return Book
+     * @return mixed
      */
     public function getBook()
     {
-        return $this->book;
+        return $this->Book;
     }
-
-    /**
-     * @param Book $book
-     * @return Review
-     */
-    public function setBook($book)
-    {
-        $this->book = $book;
-
-        return $this;
-    }
-
 }
