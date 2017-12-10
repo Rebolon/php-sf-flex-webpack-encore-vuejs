@@ -42,7 +42,7 @@ class Book
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Library\Review", mappedBy="Book")
-     * @ApiSubresource
+     * @ApiSubresource(maxDepth=1)
      */
     private $Reviews;
 
@@ -60,7 +60,7 @@ class Book
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Library\Serie", inversedBy="book")
      * @ORM\JoinColumn(name="serie_id", referencedColumnName="id")
-     * @ApiSubresource
+     * @ApiSubresource(maxDepth=1)
      */
     private $serie;
 

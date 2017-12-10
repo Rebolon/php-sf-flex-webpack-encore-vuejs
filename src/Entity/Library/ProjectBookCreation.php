@@ -30,7 +30,6 @@ class ProjectBookCreation
      *     fetch="EAGER"
      * )
      * @ORM\JoinColumn(name="book_id", referencedColumnName="id")
-     * @ApiSubresource
      */
     private $book;
 
@@ -41,7 +40,6 @@ class ProjectBookCreation
      *     fetch="EAGER"
      * )
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
-     * @ApiSubresource
      */
     private $author;
 

@@ -1,3 +1,6 @@
 api_platform:
+    title: 'My comics library'
+    description: 'My comics library allow to manage your comics collection in a simple way'
+    version: '1.0.0'
     mapping:
         paths: ['%kernel.project_dir%/src/Entity']
