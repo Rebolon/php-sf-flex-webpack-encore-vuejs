@@ -30,7 +30,6 @@ class Author
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookCreation", mappedBy="author")
-     * @ApiSubresource
      */
     private $projectBookCreation;
 

@@ -44,10 +44,11 @@ bootstrap: the beta 4 version of the first class css framework (not used with qu
 ## run
 
 * install the project with `npm run init-project` which will launch :
-  1. php dependancies installation: `composer install`
-  2. nodejs tooling installation: `npm install`
-  3. assets generation: `npm run dev`
-  4. db init: `php bin/console doctrine:database:create` & `doctrine:schema:create`
+  1. copy the env file (or set them on your system) : `cp .env.dist .env`
+  2. php dependancies installation: `composer install`
+  3. nodejs tooling installation: `npm install`
+  4. assets generation: `npm run dev`
+  5. db init: `php bin/console doctrine:database:create` & `doctrine:schema:create`
 * Run your application:
   1. Change to the project directory
   2. Execute the `npm run dev-server-hot` command to start the asset server that will build your assets and your manifest.json and serve the assets with hot module replacment when you do a modification on a vuejs file 

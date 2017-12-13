@@ -41,7 +41,7 @@ class Review
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Library\Book", inversedBy="Reviews")
      * @ORM\JoinColumn(name="book_id", referencedColumnName="id", onDelete="CASCADE")
-     * @ApiSubresource
+     * @ApiSubresource(maxDepth=1)
      */
     private $Book;
 

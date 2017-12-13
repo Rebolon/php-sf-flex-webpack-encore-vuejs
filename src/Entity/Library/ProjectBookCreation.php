@@ -1,8 +1,6 @@
 <?php
 namespace App\Entity\Library;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -30,7 +28,6 @@ class ProjectBookCreation
      *     fetch="EAGER"
      * )
      * @ORM\JoinColumn(name="book_id", referencedColumnName="id")
-     * @ApiSubresource
      */
     private $book;
 
@@ -41,7 +38,6 @@ class ProjectBookCreation
      *     fetch="EAGER"
      * )
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
-     * @ApiSubresource
      */
     private $author;
 

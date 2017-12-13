@@ -1,9 +1,8 @@
 <?php
 namespace App\Entity\Library;
 
-use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -29,13 +28,18 @@ class ProjectBookEdition
     private $collection;
 
     /**
+     * @ORM\Column(nullable=true)
+     * @Assert\Isbn
+     */
+    private $isbn;
+
+    /**
      * @ORM\ManyToOne(
      *     targetEntity="App\Entity\Library\Editor",
      *     inversedBy="projectBookEdition",
      *     fetch="EAGER"
      * )
      * @ORM\JoinColumn(name="editor_id", referencedColumnName="id")
-     * @ApiSubresource
      */
     private $editor;
 
@@ -46,7 +50,6 @@ class ProjectBookEdition
      *     fetch="EAGER"
      * )
      * @ORM\JoinColumn(name="book_id", referencedColumnName="id")
-     * @ApiSubresource
      */
     private $book;
 
@@ -84,6 +87,26 @@ class ProjectBookEdition
     public function setCollection($collection)
     {
         $this->collection = $collection;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getIsbn()
+    {
+        return $this->isbn;
+    }
+
+    /**
+     * @param mixed $isbn
+     *
+     * @return ProjectBookEdition
+     */
+    public function setIsbn($isbn)
+    {
+        $this->isbn = $isbn;
 
         return $this;
     }

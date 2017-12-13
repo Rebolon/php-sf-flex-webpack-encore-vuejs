@@ -1,7 +1,4 @@
 {
-    "api-platform/api-pack": {
-        "version": "v1.0.1"
-    },
     "api-platform/core": {
         "version": "2.1",
         "recipe": {
@@ -30,7 +27,7 @@
         "version": "v2.7.3"
     },
     "doctrine/dbal": {
-        "version": "v2.5.13"
+        "version": "v2.6.3"
     },
     "doctrine/doctrine-bundle": {
         "version": "1.6",
@@ -48,13 +45,13 @@
         "version": "v1.2.0"
     },
     "doctrine/instantiator": {
-        "version": "1.0.5"
+        "version": "1.1.0"
     },
     "doctrine/lexer": {
         "version": "v1.0.1"
     },
     "doctrine/orm": {
-        "version": "v2.5.12"
+        "version": "v2.5.13"
     },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
@@ -66,7 +63,7 @@
         "version": "1.0.1"
     },
     "phpdocumentor/reflection-docblock": {
-        "version": "4.1.1"
+        "version": "4.2.0"
     },
     "phpdocumentor/type-resolver": {
         "version": "0.4.0"
@@ -93,7 +90,7 @@
         }
     },
     "symfony/asset": {
-        "version": "v3.3.13"
+        "version": "v4.0.1"
     },
     "symfony/cache": {
         "version": "v3.3.13"
@@ -117,7 +114,7 @@
         "version": "v3.3.13"
     },
     "symfony/doctrine-bridge": {
-        "version": "v3.3.13"
+        "version": "v4.0.1"
     },
     "symfony/dotenv": {
         "version": "v3.3.13"
@@ -126,7 +123,7 @@
         "version": "v3.3.13"
     },
     "symfony/expression-language": {
-        "version": "v3.3.13"
+        "version": "v4.0.1"
     },
     "symfony/filesystem": {
         "version": "v3.3.13"
@@ -198,7 +195,7 @@
         }
     },
     "symfony/security": {
-        "version": "v3.3.13"
+        "version": "v4.0.1"
     },
     "symfony/security-bundle": {
         "version": "3.3",
@@ -221,7 +218,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "3.3",
-            "ref": "124be9a2b7cc035fd8c56f4fd2e19c907c1f3fb8"
+            "ref": "6bcd6c570c017ea6ae5a7a6a027c929fd3542cd8"
         }
     },
     "symfony/twig-bridge": {
@@ -237,7 +234,7 @@
         }
     },
     "symfony/validator": {
-        "version": "v3.3.13"
+        "version": "v4.0.1"
     },
     "symfony/var-dumper": {
         "version": "v3.3.13"

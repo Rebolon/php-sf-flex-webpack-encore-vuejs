@@ -4,7 +4,6 @@ namespace App\Entity\Library;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource
@@ -18,12 +17,6 @@ class Book
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
-    /**
-     * @ORM\Column(nullable=true)
-     * @Assert\Isbn
-     */
-    private $isbn;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=false)
@@ -42,7 +35,7 @@ class Book
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Library\Review", mappedBy="Book")
-     * @ApiSubresource
+     * @ApiSubresource(maxDepth=1)
      */
     private $Reviews;
 
@@ -60,7 +53,7 @@ class Book
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Library\Serie", inversedBy="book")
      * @ORM\JoinColumn(name="serie_id", referencedColumnName="id")
-     * @ApiSubresource
+     * @ApiSubresource(maxDepth=1)
      */
     private $serie;
 
