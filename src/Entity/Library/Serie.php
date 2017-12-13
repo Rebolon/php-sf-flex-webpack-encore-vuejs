@@ -3,6 +3,7 @@ namespace App\Entity\Library;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,6 +29,14 @@ class Serie
      * @ApiSubresource(maxDepth=1)
      */
     private $book;
+
+    /**
+     * Serie constructor.
+     */
+    public function __construct()
+    {
+        $this->book = new ArrayCollection();
+    }
 
     /**
      * @return mixed

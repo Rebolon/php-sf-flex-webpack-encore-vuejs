@@ -2,7 +2,7 @@
 namespace App\Entity\Library;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiSubresource;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -32,6 +32,14 @@ class Author
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookCreation", mappedBy="author")
      */
     private $projectBookCreation;
+
+    /**
+     * Author constructor.
+     */
+    public function __construct()
+    {
+        $this->projectBookCreation = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -85,5 +93,16 @@ class Author
     public function getProjectBookCreation()
     {
         return $this->projectBookCreation;
+    }
+
+    /**
+     * @todo the content of the methods + the route mapping for the api
+     * Return the list of Books for all projects book creation of this author
+     *
+     * @return collection|ProjectBookCreation
+     */
+    public function getBooks()
+    {
+        // list ProjectBookCreation with fields id/role/book (author is omitted)
     }
 }

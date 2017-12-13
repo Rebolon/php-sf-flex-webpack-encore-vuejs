@@ -3,6 +3,11 @@
 ## requirements
 
 You need PHP (7.x), composer, and npm
+You also need to configure your php with curl and openssl
+You have to setup the certificates [download pem file](https://curl.haxx.se/docs/caextract.html), put it somewhere on your system and set your php.ini with those values:
+ 
+ * curl.cainfo = PATH_TO_YOUR_CERTIFICATE/cacert.pe
+ * openssl.cafile = PATH_TO_YOUR_CERTIFICATE/cacert.pem
 
 ## explanation
 This application has been realized to get a sample front app with sf3+ & vuejs
@@ -10,7 +15,7 @@ Here is how it has been created
 
 * composer create-project symfony/skeleton sf-flex-encore-vuejs
 * cd sf-flex-encore-vuejs
-* composer req encore annotations twig api profiler log
+* composer req encore annotations twig api http profiler log doctrine-migrations
 * yarn add vue vue-router quasar-framework quasar-extras vuelidate 
 * yarn add --dev vue-loader vue-template-compiler vue-router babel-preset-es2017 testcafe sass-loader node-sass bootstrap@4.0.0-beta.2
 * yarn install 
@@ -70,7 +75,7 @@ Default ports are 80 and 8080.
 
 everything is managed by 'encore' symfony package, so have a look at the webpack.config.js and then read their [docs](http://symfony.com/doc/current/frontend.html)
  * npm run dev : will build your assets (in this project it's /public/build/)
- * npm run watch : does the same thing than npm run dev, but it watches files modifictaion to re-generate the assets
+ * npm run watch : does the same thing than npm run dev, but it watches files modification to re-generate the assets
  * npm run dev-server :  build the manifest.json that map your assets qith their url from the asset server and start a web server that will serve those assets
  * npm run dev-server-hot : does the same thing as previously, but with vuejs framework it also does Hot Module Replacement 
  * npm run build : build your assets for production
@@ -84,4 +89,3 @@ Also, if you want to use the asset server finely, you have to add the assets con
 
 * improve this tutorial with ~~an API Route built with Api platform (without DB)~~ and install the vue-generator from api-platform for a crud sample
 * add db fixtures at init ! almost 40 books and some reviews (at least 3 for 5 1st books)
-* add http-plug (via flex for instance it seems to fail) and an api controller that makes a call to external API and return the result (a kind of proxy) 

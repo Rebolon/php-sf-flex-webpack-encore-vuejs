@@ -3,6 +3,7 @@ namespace App\Entity\Library;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -34,10 +35,10 @@ class Book
     private $index_in_serie;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Library\Review", mappedBy="Book")
+     * @ORM\OneToMany(targetEntity="App\Entity\Library\Review", mappedBy="book")
      * @ApiSubresource(maxDepth=1)
      */
-    private $Reviews;
+    private $reviews;
 
     /**
      * @var ProjectBookCreation
@@ -46,6 +47,7 @@ class Book
     private $projectBookCreation;
 
     /**
+     * @var ProjectBookEdition
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookEdition", mappedBy="book")
      */
     private $projectBookEdition;
@@ -56,6 +58,16 @@ class Book
      * @ApiSubresource(maxDepth=1)
      */
     private $serie;
+
+    /**
+     * Book constructor.
+     */
+    public function __construct()
+    {
+        $this->reviews = new ArrayCollection();
+        $this->projectBookCreation = new ArrayCollection();
+        $this->projectBookEdition = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -142,11 +154,11 @@ class Book
     }
 
     /**
-     * @return mixed
+     * @return Collection|Reviews[]
      */
     public function getReviews()
     {
-        return $this->Reviews;
+        return $this->reviews;
     }
 
     /**
@@ -166,7 +178,7 @@ class Book
     }
 
     /**
-     * @return mixed
+     * @return Serie
      */
     public function getSerie()
     {
@@ -189,18 +201,62 @@ class Book
     }
 
     /**
+     * Return the list of Authors with their job for this project book creation
+     * @todo
+     *
+     * @return collection|ProjectBookCreation
+     */
+    public function getAuthors()
+    {
+        // list ProjectBookCreation with fields id/role/author (book is omitted)
+    }
+
+    /**
      * @param Editor $editor
      * @param \DateTime $date
+     * @param null $isbn
      * @param null $collection
      * @return $this
      */
-    public function addEditor(Editor $editor, \DateTime $date, $collection = null)
+    public function addEditor(Editor $editor, \DateTime $date, $isbn = null, $collection = null)
     {
         $this->projectBookEdition
             ->setEditor($editor)
             ->setDate($date)
+            ->setIsbn($isbn)
             ->setCollection($collection);
 
         return $this;
+    }
+
+    /**
+     * @todo the content of the methods + the route mapping for the api
+     * Return the list of Editors for all projects book edition of this book
+     *
+     * @return collection|ProjectBookEdition
+     */
+    public function getEditors()
+    {
+        // list ProjectBookEdition with fields id/publicationdate/collection/isbn/editor (book is omitted)
+    }
+
+    /**
+     * @todo
+     * Allow to add a full project book creation
+     * @return Array of Author + job ([job => author, ] or [[author: Author, job: jobValue, ], ])
+     */
+    public function addProjectBookCreation()
+    {
+
+    }
+
+    /**
+     * @todo
+     * Allow to add a full project book edition
+     * @return Array of Editor + publication date + collection + isbn (editor: Editor, publicationdate: '', collection: '', isbn: '')
+     */
+    public function addProjectBookEdition()
+    {
+
     }
 }

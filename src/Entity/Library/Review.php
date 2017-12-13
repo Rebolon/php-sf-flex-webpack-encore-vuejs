@@ -39,11 +39,11 @@ class Review
     private $publication_date;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Library\Book", inversedBy="Reviews")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Library\Book", inversedBy="reviews")
      * @ORM\JoinColumn(name="book_id", referencedColumnName="id", onDelete="CASCADE")
      * @ApiSubresource(maxDepth=1)
      */
-    private $Book;
+    private $book;
 
     /**
      * @return mixed
@@ -134,6 +134,6 @@ class Review
      */
     public function getBook()
     {
-        return $this->Book;
+        return $this->book;
     }
 }
