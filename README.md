@@ -84,3 +84,4 @@ Also, if you want to use the asset server finely, you have to add the assets con
 
 * improve this tutorial with ~~an API Route built with Api platform (without DB)~~ and install the vue-generator from api-platform for a crud sample
 * add db fixtures at init ! almost 40 books and some reviews (at least 3 for 5 1st books)
+* add http-plug (via flex for instance it seems to fail) and an api controller that makes a call to external API and return the result (a kind of proxy) 
