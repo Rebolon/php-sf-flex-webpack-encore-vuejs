@@ -10,7 +10,8 @@ You have to setup the certificates [download pem file](https://curl.haxx.se/docs
  * openssl.cafile = PATH_TO_YOUR_CERTIFICATE/cacert.pem
 
 ## explanation
-This application has been realized to get a sample front app with sf3+ & vuejs
+This application has been realized to get a sample front app with sf3+ & vuejs but it also show basic controllers with what most developpers do :
+basic controller, controller with twig, http call to external API, logging, ... We will try to not use front manipulation outside of VueJS (the sample with twig are really basic and won't use form per example)
 Here is how it has been created
 
 * composer create-project symfony/skeleton sf-flex-encore-vuejs
@@ -53,7 +54,7 @@ bootstrap: the beta 4 version of the first class css framework (not used with qu
   2. php dependancies installation: `composer install`
   3. nodejs tooling installation: `npm install`
   4. assets generation: `npm run dev`
-  5. db init: `php bin/console doctrine:database:create` & `doctrine:schema:create`
+  5. db init: `php bin/console doctrine:database:create` & `doctrine:schema:create` & `doctrine:migrations:migrate`
 * Run your application:
   1. Change to the project directory
   2. Execute the `npm run dev-server-hot` command to start the asset server that will build your assets and your manifest.json and serve the assets with hot module replacment when you do a modification on a vuejs file 
