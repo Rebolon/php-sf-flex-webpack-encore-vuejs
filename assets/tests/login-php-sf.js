@@ -1,6 +1,6 @@
 import { Selector, ClientFunction } from 'testcafe'
-import { StandardSfAccUser } from './tests/tools/authentification'
-import { phpLoginFormPath, phpLoginSuccessPath } from './tests/tools/uris'
+import { StandardSfAccUser } from './tools/authentification'
+import { phpLoginFormPath, phpLoginSuccessPath } from './tools/uris'
 
 fixture `Test symfony login`
     .page `http://localhost:${process.env.npm_package_config_server_port_web}/${phpLoginFormPath}`
