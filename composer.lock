@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "92648222d1c32db737be00d25e6da2da",
+    "content-hash": "8c9c8ce2380f4e02f95e4e23e0649b99",
     "packages": [
         {
             "name": "api-platform/core",
@@ -2500,6 +2500,43 @@
                 "simple-cache"
             ],
             "time": "2017-01-02T13:31:39+00:00"
+        },
+        {
+            "name": "rebolon/api-pack",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Rebolon/api-pack.git",
+                "reference": "fb99f9104cba36d993bd432926f4254a135dbb0f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Rebolon/api-pack/zipball/fb99f9104cba36d993bd432926f4254a135dbb0f",
+                "reference": "fb99f9104cba36d993bd432926f4254a135dbb0f",
+                "shasum": ""
+            },
+            "require": {
+                "api-platform/core": "dev-master",
+                "doctrine/annotations": "^1.0",
+                "doctrine/doctrine-bundle": "^1.6",
+                "doctrine/orm": "^2.4.5",
+                "php": "^7.0",
+                "phpdocumentor/reflection-docblock": "^3.0 || ^4.0",
+                "symfony/asset": "^3.0 || ^4.0",
+                "symfony/expression-language": "^3.0 || ^4.0",
+                "symfony/security-bundle": "^3.0 || ^4.0",
+                "symfony/twig-bundle": "^3.0 || ^4.0",
+                "symfony/validator": "^3.0 || ^4.0"
+            },
+            "type": "symfony-pack",
+            "license": [
+                "MIT"
+            ],
+            "description": "A pack for API Platform",
+            "support": {
+                "source": "https://github.com/Rebolon/api-pack/tree/master"
+            },
+            "time": "2017-12-14T20:53:38+00:00"
         },
         {
             "name": "sensio/framework-extra-bundle",
@@ -5291,11 +5328,9 @@
         }
     ],
     "aliases": [],
-    "minimum-stability": "stable",
-    "stability-flags": {
-        "api-platform/core": 20
-    },
-    "prefer-stable": false,
+    "minimum-stability": "dev",
+    "stability-flags": [],
+    "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
         "php": "^7.0.8",
