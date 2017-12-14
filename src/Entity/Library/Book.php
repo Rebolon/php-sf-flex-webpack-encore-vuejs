@@ -192,10 +192,19 @@ class Book
      */
     public function addAuthor(Author $author, int $role)
     {
-        $this->projectBookCreation
+        $project = (new ProjectBookCreation())
             ->setAuthor($author)
-            ->setRole($role)
-            ->setBook($this);
+            ->setRole($role);
+
+        // @test this feature to check that it really works
+        foreach ($this->projectBookCreation as $projectToCheck) {
+            if ($projectToCheck->author === $author
+            && $projectToCheck->role === $role) {
+                return;
+            }
+        }
+
+        $this->projectBookCreation[] = $project;
 
         return $this;
     }
@@ -208,7 +217,8 @@ class Book
      */
     public function getAuthors()
     {
-        // list ProjectBookCreation with fields id/role/author (book is omitted)
+        // @todo list ProjectBookCreation with fields id/role/author (book is omitted)
+        return $this->projectBookCreation;
     }
 
     /**
@@ -220,11 +230,23 @@ class Book
      */
     public function addEditor(Editor $editor, \DateTime $date, $isbn = null, $collection = null)
     {
-        $this->projectBookEdition
+        $project = (new ProjectBookEdition())
             ->setEditor($editor)
             ->setDate($date)
             ->setIsbn($isbn)
             ->setCollection($collection);
+
+        // @test this feature to check that it really works
+        foreach ($this->projectBookEdition as $projectToCheck) {
+            if ($projectToCheck->getEditor() === $editor
+                && $projectToCheck->getPublicationDate() === $date
+                && $projectToCheck->getISBN() === $isbn
+                && $projectToCheck->getCollection() === $collection) {
+                return;
+            }
+        }
+
+        $this->projectBookEdition[] = $project;
 
         return $this;
     }
@@ -237,26 +259,7 @@ class Book
      */
     public function getEditors()
     {
-        // list ProjectBookEdition with fields id/publicationdate/collection/isbn/editor (book is omitted)
-    }
-
-    /**
-     * @todo
-     * Allow to add a full project book creation
-     * @return Array of Author + job ([job => author, ] or [[author: Author, job: jobValue, ], ])
-     */
-    public function addProjectBookCreation()
-    {
-
-    }
-
-    /**
-     * @todo
-     * Allow to add a full project book edition
-     * @return Array of Editor + publication date + collection + isbn (editor: Editor, publicationdate: '', collection: '', isbn: '')
-     */
-    public function addProjectBookEdition()
-    {
-
+        //@todo list ProjectBookEdition with fields id/publicationdate/collection/isbn/editor (book is omitted)
+        return $this->projectBookEdition;
     }
 }
