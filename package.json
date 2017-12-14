@@ -43,8 +43,12 @@
     "devDependencies": {
         "@symfony/webpack-encore": "^0.12.0",
         "babel-preset-es2017": "^6.24.1",
+        "babel-preset-react": "^6.24.1",
         "bootstrap": "4.0.0-beta.2",
         "node-sass": "^4.5.3",
+        "prop-types": "^15.6.0",
+        "react": "^16.2.0",
+        "react-dom": "^16.2.0",
         "sass-loader": "^6.0.6",
         "testcafe": "^0.18.5",
         "vue-loader": "^13.3.0",

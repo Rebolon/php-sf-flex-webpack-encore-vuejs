@@ -19,6 +19,7 @@ Here is how it has been created
 * composer req encore annotations twig api http profiler log doctrine-migrations admin
 * yarn add vue vue-router quasar-framework quasar-extras vuelidate 
 * yarn add --dev vue-loader vue-template-compiler vue-router babel-preset-es2017 testcafe sass-loader node-sass bootstrap@4.0.0-beta.2
+* yarn add --dev react react-dom prop-types babel-preset-react
 * yarn install 
 
 Then 3 simple php controller has been created on following routes :
@@ -93,3 +94,4 @@ Also, if you want to use the asset server finely, you have to add the assets con
 * improve this tutorial with ~~an API Route built with Api platform (without DB)~~ and install the vue-generator from api-platform for a crud sample
 * add db fixtures at init ! almost 40 books and some reviews (at least 3 for 5 1st books)
 * customize easyAdminBundle to add author/editor from Book and display those related infos on Book admin page (same for other author/editor entities and serie/reviews)
+* create api-admin with react following this doc https://api-platform.com/docs/admin/getting-started

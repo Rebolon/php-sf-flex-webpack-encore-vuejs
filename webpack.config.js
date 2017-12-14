@@ -12,6 +12,7 @@ Encore
 
     // first, install any presets you want to use (e.g. yarn add babel-preset-es2017)
     // then, modify the default Babel configuration
+    // if you prefer using a .babelrc file then this configureBabel will be omit, reactPreset will also need to be loaded with babelrc file
     .configureBabel(function(babelConfig) {
         // add additional presets
         babelConfig.presets.push('es2017')
@@ -24,6 +25,7 @@ Encore
     .addEntry('js/vuejs', './assets/js/vuejs/app.js')
     .addEntry('js/quasar', './assets/js/quasar/app.js')
     .addEntry('js/form', './assets/js/form/app.js')
+    .addEntry('js/api-platform-admin-react', './assets/js/api-platform-admin-react/src/index.js')
 
     // for specific page css (not managed by vue file per example
     //.addStyleEntry('css/app', './assets/css/app.scss')
@@ -46,6 +48,9 @@ Encore
 
     // VueJS
     .enableVueLoader()
+
+    // ReactJS
+    .enableReactPreset()
 
     // uncomment for legacy applications that require $/jQuery as a global variable
     // .autoProvidejQuery()
