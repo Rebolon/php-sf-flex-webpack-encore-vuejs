@@ -16,7 +16,7 @@ Here is how it has been created
 
 * composer create-project symfony/skeleton sf-flex-encore-vuejs
 * cd sf-flex-encore-vuejs
-* composer req encore annotations twig api http profiler log doctrine-migrations
+* composer req encore annotations twig api http profiler log doctrine-migrations admin
 * yarn add vue vue-router quasar-framework quasar-extras vuelidate 
 * yarn add --dev vue-loader vue-template-compiler vue-router babel-preset-es2017 testcafe sass-loader node-sass bootstrap@4.0.0-beta.2
 * yarn install 
@@ -28,8 +28,10 @@ Then 3 simple php controller has been created on following routes :
  * /demo/hello/:name : HelloController with route config in annotations and twig template
  * /demo/vuejs : VuejsController with route config in annotations and VueJS app with specific js/css import
  * /demo/quasar : QuasarController like VuejsController but with the Quasar framework for UX components
+ * /demo/http-plug : HttpPlugController to show how to call external API from your controller
  * /login : LoginController managed by Symfony for validation, but managed by the code to render the login form
  * /api : access ApiPlatform api doc
+ * / admin : use the easy admin bundle to allow a comparison between fullstack PHP and PHP/VueJS
  
 ## components
 
@@ -90,3 +92,4 @@ Also, if you want to use the asset server finely, you have to add the assets con
 
 * improve this tutorial with ~~an API Route built with Api platform (without DB)~~ and install the vue-generator from api-platform for a crud sample
 * add db fixtures at init ! almost 40 books and some reviews (at least 3 for 5 1st books)
+* customize easyAdminBundle to add author/editor from Book and display those related infos on Book admin page (same for other author/editor entities and serie/reviews)

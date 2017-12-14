@@ -71,6 +71,15 @@
     "guzzlehttp/psr7": {
         "version": "1.4.2"
     },
+    "javiereguiluz/easyadmin-bundle": {
+        "version": "1.17",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.17",
+            "ref": "66070ea553247b0cd5275e21d0fe5399a25f40be"
+        }
+    },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
@@ -82,6 +91,9 @@
     },
     "ocramius/proxy-manager": {
         "version": "2.1.1"
+    },
+    "pagerfanta/pagerfanta": {
+        "version": "v1.0.5"
     },
     "php-http/cache-plugin": {
         "version": "v1.5.0"
@@ -212,6 +224,9 @@
             "ref": "e921bdbfe20cdefa3b82f379d1cd36df1bc8d115"
         }
     },
+    "symfony/form": {
+        "version": "v4.0.1"
+    },
     "symfony/framework-bundle": {
         "version": "3.3",
         "recipe": {
@@ -230,6 +245,9 @@
     "symfony/inflector": {
         "version": "v3.3.13"
     },
+    "symfony/intl": {
+        "version": "v4.0.1"
+    },
     "symfony/monolog-bridge": {
         "version": "v3.3.13"
     },
@@ -244,6 +262,9 @@
     },
     "symfony/options-resolver": {
         "version": "v4.0.1"
+    },
+    "symfony/polyfill-intl-icu": {
+        "version": "v1.6.0"
     },
     "symfony/polyfill-mbstring": {
         "version": "v1.6.0"
@@ -334,6 +355,15 @@
     },
     "symfony/yaml": {
         "version": "v3.3.13"
+    },
+    "twig/extensions": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "4851df0afc426b8f07204379d21fca25b6df5d68"
+        }
     },
     "twig/twig": {
         "version": "v2.4.4"
