@@ -33,7 +33,23 @@ Then 3 simple php controller has been created on following routes :
  * /login : LoginController managed by Symfony for validation, but managed by the code to render the login form
  * /api : access ApiPlatform api doc
  * / admin : use the easy admin bundle to allow a comparison between fullstack PHP and PHP/VueJS
- 
+
+## configuration
+You can change the php executable (if you want to use a php version with xdebug, or just another version of php) using
+package.json in the config section. Default php uses the one in path if exists.
+You can also change the web server port and the asset server port in the same config section.
+
+```
+    "config": {
+        "php": "php",
+        "server_port_web": "80",
+        "server_port_asset": "8080",
+        "test_browser": "chrome,firefox"
+    },
+```
+
+The test_browser section represent all the browsers you want to use with the testcafe testing tool.
+
 ## components
 
 flex: new symfony system to make web dev life easier ; it works with recipes
@@ -95,3 +111,4 @@ Also, if you want to use the asset server finely, you have to add the assets con
 * add db fixtures at init ! almost 40 books and some reviews (at least 3 for 5 1st books)
 * customize easyAdminBundle to add author/editor from Book and display those related infos on Book admin page (same for other author/editor entities and serie/reviews)
 * create api-admin with react following this doc https://api-platform.com/docs/admin/getting-started
+* inject api uri into react admin application instead of using hard coded uri in js
