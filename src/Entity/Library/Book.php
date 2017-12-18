@@ -1,13 +1,14 @@
 <?php
 namespace App\Entity\Library;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource
+ * @ApiResource(iri="http://bib.schema.org/ComicStory")
  * @ORM\Entity
  */
 class Book
@@ -20,21 +21,57 @@ class Book
     private $id;
 
     /**
+     * @ApiProperty(
+     *     iri="http://schema.org/headline",
+     *     attributes={
+     *         "jsonld_context"={
+     *             "@type"="http://www.w3.org/2001/XMLSchema#string"
+     *         }
+     *     }
+     * )
+     *
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $title;
 
     /**
+     * @ApiProperty(
+     *     iri="http://schema.org/description",
+     *     attributes={
+     *         "jsonld_context"={
+     *             "@type"="http://www.w3.org/2001/XMLSchema#string"
+     *         }
+     *     }
+     * )
+     *
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
 
     /**
+     * @ApiProperty(
+     *     iri="http://schema.org/position",
+     *     attributes={
+     *         "jsonld_context"={
+     *             "@type"="http://www.w3.org/2001/XMLSchema#integer"
+     *         }
+     *     }
+     * )
+     *
      * @ORM\Column(type="integer", nullable=true)
      */
     private $index_in_serie;
 
     /**
+     * @ApiProperty(
+     *     iri="http://schema.org/reviews",
+     *     attributes={
+     *         "jsonld_context"={
+     *             "@type"="http://www.w3.org/2001/XMLSchema#integer"
+     *         }
+     *     }
+     * )
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\Review", mappedBy="book")
      * @ApiSubresource(maxDepth=1)
      */
