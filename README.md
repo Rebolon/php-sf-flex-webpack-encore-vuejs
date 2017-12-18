@@ -10,9 +10,10 @@ You have to setup the certificates [download pem file](https://curl.haxx.se/docs
  * openssl.cafile = PATH_TO_YOUR_CERTIFICATE/cacert.pem
 
 ## explanation
+
 This application has been realized to get a sample front app with sf3+ & vuejs but it also show basic controllers with what most developpers do :
-basic controller, controller with twig, http call to external API, logging, ... We will try to not use front manipulation outside of VueJS (the sample with twig are really basic and won't use form per example)
-Here is how it has been created
+basic controller, controller with twig, http call to external API, logging, API... We will try to not use front manipulation outside of VueJS (the sample with twig are really basic and won't use form per example)
+Here is how it has been created:
 
 * composer create-project symfony/skeleton sf-flex-encore-vuejs
 * cd sf-flex-encore-vuejs
@@ -21,7 +22,7 @@ Here is how it has been created
 * yarn add --dev vue-loader vue-template-compiler vue-router babel-preset-es2017 testcafe sass-loader node-sass bootstrap@4.0.0-beta.2
 * yarn install 
 
-Then 3 simple php controller has been created on following routes :
+Then some php controllers has been created on following routes :
  
  * / : DefaultController with the menu to navigate throught different controllers
  * /demo/simple : SimpleController with route config in routes.yaml and logger injection with autowiring
@@ -31,7 +32,7 @@ Then 3 simple php controller has been created on following routes :
  * /demo/http-plug : HttpPlugController to show how to call external API from your controller
  * /login : LoginController managed by Symfony for validation, but managed by the code to render the login form
  * /api : access ApiPlatform api doc
- * / admin : use the easy admin bundle to allow a comparison between fullstack PHP and PHP/VueJS
+ * /admin : use the easy admin bundle to allow a comparison between fullstack PHP and PHP/VueJS
  
 ## components
 
@@ -42,6 +43,7 @@ encore: symfony solution to wrap webpack config and, once again, make your life 
 annotations: use annotations everywhere in your PHP code
 twig: symfony template solution, useless if you don't want to render template with symfony, but usefull to be able to use assets twig helper with webpack encore
 api: api-platform to build REST api(instead of fosrestbundle)
+admin: easy admin component to build quick backend with auto form
 profiler: for debugging purpose
 log: a logger for symfony
 babel-preset-es2017: do you really need explanation ?
@@ -60,14 +62,14 @@ bootstrap: the beta 4 version of the first class css framework (not used with qu
 * Run your application:
   1. Change to the project directory
   2. Execute the `npm run dev-server-hot` command to start the asset server that will build your assets and your manifest.json and serve the assets with hot module replacment when you do a modification on a vuejs file 
-  2. Execute the `npm run sf-dev` command;
-  3. Browse to the http://localhost:80/ URL.
+  3. Execute the `npm run sf-dev` command;
+  4. Browse to the http://localhost:80/ URL.
 
     Quit the server with CTRL-C.
     Run composer require symfony/web-server-bundle for a better web server.
     And launch `php bin/console server:start 127.0.0.1:80`
     
-  4. Run frontend tests with `npm run test`
+  5. Run frontend tests with `npm run test`
 
 * Read the documentation at https://symfony.com/doc
 
@@ -76,7 +78,7 @@ Default ports are 80 and 8080.
 
 ## webpack
 
-everything is managed by 'encore' symfony package, so have a look at the webpack.config.js and then read their [docs](http://symfony.com/doc/current/frontend.html)
+Everything is managed by 'encore' symfony package, so have a look at the webpack.config.js and then read their [docs](http://symfony.com/doc/current/frontend.html)
  * npm run dev : will build your assets (in this project it's /public/build/)
  * npm run watch : does the same thing than npm run dev, but it watches files modification to re-generate the assets
  * npm run dev-server :  build the manifest.json that map your assets qith their url from the asset server and start a web server that will serve those assets
@@ -90,6 +92,7 @@ Also, if you want to use the asset server finely, you have to add the assets con
 
 ## todo
 
-* improve this tutorial with ~~an API Route built with Api platform (without DB)~~ and install the vue-generator from api-platform for a crud sample
+* improve this tutorial with ~~an API Route built with Api platform (without DB)~~ and install the vue-generator from api-platform for a crud sample :
+    * The question for instance is `How to override ApiPlatform routing: i want some route to be overloaded: POST/PUT Book should be able to add also Auhtors and/or Editors`
 * add db fixtures at init ! almost 40 books and some reviews (at least 3 for 5 1st books)
 * customize easyAdminBundle to add author/editor from Book and display those related infos on Book admin page (same for other author/editor entities and serie/reviews)
