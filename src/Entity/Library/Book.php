@@ -186,6 +186,17 @@ class Book
     }
 
     /**
+     * @param ProjectBookCreation $project
+     * @return $this
+     */
+    public function setAuthor(ProjectBookCreation $project)
+    {
+        $this->projectBookCreation[] = $project;
+
+        return $this;
+    }
+
+    /**
      * @param Author $author
      * @param int $role
      * @return $this
@@ -199,12 +210,12 @@ class Book
         // @test this feature to check that it really works
         foreach ($this->projectBookCreation as $projectToCheck) {
             if ($projectToCheck->author === $author
-            && $projectToCheck->role === $role) {
+                && $projectToCheck->role === $role) {
                 return;
             }
         }
 
-        $this->projectBookCreation[] = $project;
+        $this->setAuthor($project);
 
         return $this;
     }
@@ -219,6 +230,17 @@ class Book
     {
         // @todo list ProjectBookCreation with fields id/role/author (book is omitted)
         return $this->projectBookCreation;
+    }
+
+    /**
+     * @param ProjectBookEdition $project
+     * @return $this
+     */
+    public function setEditor(ProjectBookEdition $project)
+    {
+        $this->projectBookEdition[] = $project;
+
+        return $this;
     }
 
     /**
@@ -246,7 +268,7 @@ class Book
             }
         }
 
-        $this->projectBookEdition[] = $project;
+        $this->setEditor($project);
 
         return $this;
     }
