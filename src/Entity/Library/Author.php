@@ -88,14 +88,6 @@ class Author
     }
 
     /**
-     * @return mixed
-     */
-    public function getProjectBookCreation()
-    {
-        return $this->projectBookCreation;
-    }
-
-    /**
      * @todo the content of the methods + the route mapping for the api
      * Return the list of Books for all projects book creation of this author
      *
@@ -104,5 +96,6 @@ class Author
     public function getBooks()
     {
         // list ProjectBookCreation with fields id/role/book (author is omitted)
+        return $this->projectBookCreation;
     }
 }
