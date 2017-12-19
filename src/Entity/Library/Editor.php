@@ -1,12 +1,13 @@
 <?php
 namespace App\Entity\Library;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource
+ * @ApiResource(iri="http://schema.org/publisher")
  * @ORM\Entity
  */
 class Editor
@@ -19,6 +20,9 @@ class Editor
     private $id;
 
     /**
+     * @ApiProperty(
+     *     iri="http://schema.org/legalName"
+     * )
      * @ORM\Column(type="string", length=512, nullable=false)
      */
     private $name;

@@ -14,6 +14,15 @@ use Doctrine\ORM\Mapping as ORM;
 class Book
 {
     /**
+     * @ApiProperty(
+     *     iri="http://schema.org/identifier",
+     *     attributes={
+     *         "jsonld_context"={
+     *             "@type"="http://www.w3.org/2001/XMLSchema#integer"
+     *         }
+     *     }
+     * )
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -63,13 +72,9 @@ class Book
     private $index_in_serie;
 
     /**
+     * @todo it doesn't seems to be a good iri : reviews is a collection !
      * @ApiProperty(
-     *     iri="http://schema.org/reviews",
-     *     attributes={
-     *         "jsonld_context"={
-     *             "@type"="http://www.w3.org/2001/XMLSchema#integer"
-     *         }
-     *     }
+     *     iri="http://schema.org/reviews"
      * )
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\Review", mappedBy="book")

@@ -1,12 +1,13 @@
 <?php
 namespace App\Entity\Library;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource
+ * @ApiResource(iri="http://schema.org/author")
  * @ORM\Entity
  */
 class Author
@@ -19,11 +20,17 @@ class Author
     private $id;
 
     /**
+     * @ApiProperty (
+     *     iri="http://schema.org/givenName"
+     * )
      * @ORM\Column(type="string", nullable=false)
      */
     private $firstname;
 
     /**
+     * @ApiProperty (
+     *     iri="http://schema.org/familyName"
+     * )
      * @ORM\Column(type="string", nullable=true)
      */
     private $lastname;

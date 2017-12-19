@@ -1,12 +1,13 @@
 <?php
 namespace App\Entity\Library;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource
+ * @ApiResource(iri="http://schema.org/Review")
  * @ORM\Entity
  */
 class Review
@@ -19,26 +20,41 @@ class Review
     private $id;
 
     /**
+     * @ApiProperty(
+     *     iri="http://schema.org/reviewRating"
+     * )
      * @ORM\Column(type="integer", nullable=true)
      */
     private $rating;
 
     /**
+     * @ApiProperty(
+     *     iri="http://schema.org/reviewBody"
+     * )
      * @ORM\Column(type="text", nullable=true)
      */
     private $body;
 
     /**
+     * @ApiProperty(
+     *     iri="http://schema.org/givenName"
+     * )
      * @ORM\Column(type="string", length=512, nullable=true)
      */
     private $username;
 
     /**
+     * @ApiProperty(
+     *     iri="http://schema.org/datePublished"
+     * )
      * @ORM\Column(type="datetime", nullable=false, options={"default":"now()"})
      */
     private $publication_date;
 
     /**
+     * @ApiProperty(
+     *     iri="http://bib.schema.org/ComicStory"
+     * )
      * @ORM\ManyToOne(targetEntity="App\Entity\Library\Book", inversedBy="reviews")
      * @ORM\JoinColumn(name="book_id", referencedColumnName="id", onDelete="CASCADE")
      * @ApiSubresource(maxDepth=1)

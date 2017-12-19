@@ -1,6 +1,7 @@
 <?php
 namespace App\Entity\Library;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -28,6 +29,9 @@ class ProjectBookEdition
     private $collection;
 
     /**
+     * @ApiProperty(
+     *     iri="http://schema.org/isbn"
+     * )
      * @ORM\Column(nullable=true)
      * @Assert\Isbn
      */
