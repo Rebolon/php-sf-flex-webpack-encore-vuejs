@@ -33,7 +33,13 @@ Then some php controllers has been created on following routes :
  * /login : LoginController managed by Symfony for validation, but managed by the code to render the login form
  * /api : access ApiPlatform api doc
  * /admin : use the easy admin bundle to allow a comparison between fullstack PHP and PHP/VueJS
- 
+
+But, Vuejs, ReactJS and Angular together ? with Symfony4, WTF ???
+Yes it can seems completely stupid to use all this technologies together, but don't forget one thing : this is a POC !
+The aim is not to help you to mix all those techs, but just to help you to use some of them finely.
+The biggest problem in my case is the dependancy management : all those JS libraries may need the same deps but in different
+version... For instance it seems to be ok, but i think that in future it could be a real breain-teaser.
+
 ## components
 
 flex: new symfony system to make web dev life easier ; it works with recipes
@@ -96,3 +102,4 @@ Also, if you want to use the asset server finely, you have to add the assets con
     * The question for instance is `How to override ApiPlatform routing: i want some route to be overloaded: POST/PUT Book should be able to add also Auhtors and/or Editors`
 * add db fixtures at init ! almost 40 books and some reviews (at least 3 for 5 1st books)
 * customize easyAdminBundle to add author/editor from Book and display those related infos on Book admin page (same for other author/editor entities and serie/reviews)
+* manage Entity orphanRemoval / CASCADE onDelete

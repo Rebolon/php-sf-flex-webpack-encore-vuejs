@@ -35,7 +35,7 @@ class Book
     private $index_in_serie;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Library\Review", mappedBy="book")
+     * @ORM\OneToMany(targetEntity="App\Entity\Library\Review", mappedBy="book", orphanRemoval=true)
      * @ApiSubresource(maxDepth=1)
      */
     private $reviews;
