@@ -1,7 +1,7 @@
 <?php
 namespace App\DataFixtures\Library;
 
-use App\DataFixtures\ConnectionProxy;
+use App\DataFixtures\ConnectionFixtures;
 use App\Entity\Library\Author;
 use App\Entity\Library\Book;
 use App\Entity\Library\Editor;
@@ -9,17 +9,18 @@ use App\Entity\Library\Job;
 use App\Entity\Library\Serie;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\DBAL\Connection;
 
 class AppFixtures extends Fixture
 {
     /**
-     * @var ConnectionProxy
+     * @var Connection
      */
-    protected $dbProxy;
+    protected $dbCon;
 
-    public function __construct(ConnectionProxy $dbProxy)
+    public function __construct(ConnectionFixtures $dbCon)
     {
-        $this->dbProxy = $dbProxy;
+        $this->dbCon = $dbCon->get();
     }
 
     public function load(ObjectManager $manager)
@@ -35,40 +36,46 @@ class AppFixtures extends Fixture
             $jobs[$jobTitle] = $job;
         }
 
-        $dbh = $this->dbProxy->getFixtures();
+        $dbh = $this->dbCon;
 
         // add books && author && editor
-        $q = $dbh->query('SELECT t.* FROM books t LIMIT 10');
+        $q = $dbh->query('SELECT t.* FROM books t LIMIT 50');
         foreach ($q->fetchAll() as $row) {
-            $book = new Book();
-            $book->setTitle($row['title']);
-
-            if ($row['author_sort']) {
-                $dataAuthors = explode('& ', $row['author_sort']);
-                $i = 0;
-                foreach ($dataAuthors as $authorNames) {
-                    $authorName = explode(', ', $authorNames);
-                    $author = new Author();
-
-                    if (count($authorName) === 2) {
-                        $author->setLastname($authorName[0])
-                            ->setFirstname($authorName[1]);
-                    } else {
-                        $author->setFirstname($authorName[1]);
+            try {
+                $book = new Book();
+                $book->setTitle($row['title']);
+    
+                if ($row['author_sort']) {
+                    $dataAuthors = explode('& ', $row['author_sort']);
+                    $i = 0;
+                    foreach ($dataAuthors as $authorNames) {
+                        $authorName = explode(', ', $authorNames);
+                        $author = new Author();
+    
+                        if (count($authorName) === 2) {
+                            $author->setLastname($authorName[0])
+                                ->setFirstname($authorName[1]);
+                        } else {
+                            $author->setFirstname($authorName[0]);
+                        }
+    
+                        $manager->persist($author);
+    
+                        $job = $jobs['writer'];
+                        if ($i === 1) {
+                            $job = $jobs['cartoonist'];
+                        }
+                        $book->addAuthor($author, $job);
                     }
-
-                    $manager->persist($author);
-
-                    $job = $jobs['writer'];
-                    if ($i === 1) {
-                        $job = $jobs['cartoonist'];
-                    }
-                    $book->addAuthor($author, $job);
                 }
+    
+                $this->addSerie($row, $book, $dbh, $manager);
+                $this->addEditor($row, $book, $dbh, $manager);
+                
+                $manager->persist($book);
+            } catch (\Exception $e) {
+                throw $e;
             }
-
-            $this->addSerie($row, $book, $dbh, $manager);
-            $this->addEditor($row, $book, $dbh, $manager);
         }
 
         $manager->flush();
@@ -115,7 +122,8 @@ SQL
             $editor = (new Editor())
                 ->setName($row['name']);
             $manager->persist($editor);
-            $book->addEditor($editor, $bookFixture['pubdate'], $bookFixture['isbn']);
+            $dateTime = new \DateTime($bookFixture['pubdate']);
+            $book->addEditor($editor, $dateTime, $bookFixture['isbn']);
         }
     }
 

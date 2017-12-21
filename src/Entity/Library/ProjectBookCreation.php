@@ -18,7 +18,8 @@ class ProjectBookCreation
     private $id;
 
     /**
-     * @ORM\Column(type="integer", nullable=false)
+     * To be easier, should be a OneToOne ? with link on JobID
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $role;
 

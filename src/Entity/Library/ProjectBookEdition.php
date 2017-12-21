@@ -129,7 +129,7 @@ class ProjectBookEdition
      * @param Editor $editor
      * @return $this
      */
-    public function setAuthor(Editor $editor)
+    public function setEditor(Editor $editor)
     {
         $this->editor = $editor;
 

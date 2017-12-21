@@ -83,13 +83,13 @@ class Book
 
     /**
      * @var ProjectBookCreation
-     * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookCreation", mappedBy="book")
+     * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookCreation", mappedBy="book", cascade={"persist", "remove"})
      */
     private $projectBookCreation;
 
     /**
      * @var ProjectBookEdition
-     * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookEdition", mappedBy="book")
+     * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookEdition", mappedBy="book", cascade={"persist", "remove"})
      */
     private $projectBookEdition;
 
@@ -230,19 +230,19 @@ class Book
 
     /**
      * @param Author $author
-     * @param int $role
+     * @param Job $job
      * @return $this
      */
-    public function addAuthor(Author $author, int $role)
+    public function addAuthor(Author $author, Job $job)
     {
         $project = (new ProjectBookCreation())
             ->setAuthor($author)
-            ->setRole($role);
+            ->setRole($job->getId());
 
         // @test this feature to check that it really works
         foreach ($this->projectBookCreation as $projectToCheck) {
-            if ($projectToCheck->author === $author
-                && $projectToCheck->role === $role) {
+            if ($projectToCheck->getAuthor() === $author
+                && $projectToCheck->role === $job->getId()) {
                 return;
             }
         }
@@ -286,7 +286,7 @@ class Book
     {
         $project = (new ProjectBookEdition())
             ->setEditor($editor)
-            ->setDate($date)
+            ->setPublicationDate($date)
             ->setIsbn($isbn)
             ->setCollection($collection);
 

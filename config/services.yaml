@@ -30,8 +30,7 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
-    App\DataFixtures\ConnectionProxy:
+    App\DataFixtures\ConnectionFixtures:
         public: true
         arguments:
-            - '@doctrine.dbal.default_connection'
             - '@doctrine.dbal.fixtures_connection'
