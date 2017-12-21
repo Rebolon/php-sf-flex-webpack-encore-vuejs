@@ -236,6 +236,7 @@ class Book
     public function addAuthor(Author $author, Job $job)
     {
         $project = (new ProjectBookCreation())
+            ->setBook($this)
             ->setAuthor($author)
             ->setRole($job->getId());
 
@@ -285,6 +286,7 @@ class Book
     public function addEditor(Editor $editor, \DateTime $date, $isbn = null, $collection = null)
     {
         $project = (new ProjectBookEdition())
+            ->setBook($this)
             ->setEditor($editor)
             ->setPublicationDate($date)
             ->setIsbn($isbn)

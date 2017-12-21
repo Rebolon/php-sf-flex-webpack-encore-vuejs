@@ -143,4 +143,15 @@ class ProjectBookEdition
     {
         return $this->book;
     }
+
+    /**
+     * @param Book $book
+     * @return $this
+     */
+    public function setBook(Book $book)
+    {
+        $this->book = $book;
+
+        return $this;
+    }
 }

@@ -44,7 +44,10 @@ class AppFixtures extends Fixture
             try {
                 $book = new Book();
                 $book->setTitle($row['title']);
-    
+                $this->addSerie($row, $book, $dbh, $manager);
+                
+                $manager->persist($book);
+
                 if ($row['author_sort']) {
                     $dataAuthors = explode('& ', $row['author_sort']);
                     $i = 0;
@@ -68,8 +71,7 @@ class AppFixtures extends Fixture
                         $book->addAuthor($author, $job);
                     }
                 }
-    
-                $this->addSerie($row, $book, $dbh, $manager);
+
                 $this->addEditor($row, $book, $dbh, $manager);
                 
                 $manager->persist($book);
