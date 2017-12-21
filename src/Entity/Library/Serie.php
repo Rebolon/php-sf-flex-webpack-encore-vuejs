@@ -25,7 +25,7 @@ class Serie
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Library\Book", mappedBy="serie")
+     * @ORM\OneToMany(targetEntity="App\Entity\Library\Book", mappedBy="serie", orphanRemoval=true)
      * @ApiSubresource(maxDepth=1)
      */
     private $book;

@@ -37,7 +37,8 @@ class ProjectBookEdition
      * @ORM\ManyToOne(
      *     targetEntity="App\Entity\Library\Editor",
      *     inversedBy="projectBookEdition",
-     *     fetch="EAGER"
+     *     fetch="EAGER",
+     *     cascade={"remove"}
      * )
      * @ORM\JoinColumn(name="editor_id", referencedColumnName="id")
      */
@@ -47,7 +48,8 @@ class ProjectBookEdition
      * @ORM\ManyToOne(
      *     targetEntity="App\Entity\Library\Book",
      *     inversedBy="projectBookEdition",
-     *     fetch="EAGER"
+     *     fetch="EAGER",
+     *     cascade={"remove"}
      * )
      * @ORM\JoinColumn(name="book_id", referencedColumnName="id")
      */
