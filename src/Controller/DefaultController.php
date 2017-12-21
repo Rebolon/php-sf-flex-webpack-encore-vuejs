@@ -25,6 +25,7 @@ class DefaultController extends Controller
         }
 
         $demoRoutes['api_entrypoint'] = $router->generate('api_entrypoint');
+        $demoRoutes['easyadmin'] = $router->generate('admin');
 
         $render = $this->render('default/menu.html.twig', ['routes' => $demoRoutes,]);
 

@@ -3,14 +3,20 @@
 ## requirements
 
 You need PHP (7.x), composer, and npm
+You also need to configure your php with curl and openssl
+You have to setup the certificates [download pem file](https://curl.haxx.se/docs/caextract.html), put it somewhere on your system and set your php.ini with those values:
+ 
+ * curl.cainfo = PATH_TO_YOUR_CERTIFICATE/cacert.pe
+ * openssl.cafile = PATH_TO_YOUR_CERTIFICATE/cacert.pem
 
 ## explanation
-This application has been realized to get a sample front app with sf3+ & vuejs
+This application has been realized to get a sample front app with sf3+ & vuejs but it also show basic controllers with what most developpers do :
+basic controller, controller with twig, http call to external API, logging, ... We will try to not use front manipulation outside of VueJS (the sample with twig are really basic and won't use form per example)
 Here is how it has been created
 
 * composer create-project symfony/skeleton sf-flex-encore-vuejs
 * cd sf-flex-encore-vuejs
-* composer req encore annotations twig api profiler log
+* composer req encore annotations twig api http profiler log doctrine-migrations admin
 * yarn add vue vue-router quasar-framework quasar-extras vuelidate 
 * yarn add --dev vue-loader vue-template-compiler vue-router babel-preset-es2017 testcafe sass-loader node-sass bootstrap@4.0.0-beta.2
 * yarn install 
@@ -22,8 +28,10 @@ Then 3 simple php controller has been created on following routes :
  * /demo/hello/:name : HelloController with route config in annotations and twig template
  * /demo/vuejs : VuejsController with route config in annotations and VueJS app with specific js/css import
  * /demo/quasar : QuasarController like VuejsController but with the Quasar framework for UX components
+ * /demo/http-plug : HttpPlugController to show how to call external API from your controller
  * /login : LoginController managed by Symfony for validation, but managed by the code to render the login form
  * /api : access ApiPlatform api doc
+ * / admin : use the easy admin bundle to allow a comparison between fullstack PHP and PHP/VueJS
  
 ## components
 
@@ -44,10 +52,11 @@ bootstrap: the beta 4 version of the first class css framework (not used with qu
 ## run
 
 * install the project with `npm run init-project` which will launch :
-  1. php dependancies installation: `composer install`
-  2. nodejs tooling installation: `npm install`
-  3. assets generation: `npm run dev`
-  4. db init: `php bin/console doctrine:database:create` & `doctrine:schema:create`
+  1. copy the env file (or set them on your system) : `cp .env.dist .env`
+  2. php dependancies installation: `composer install`
+  3. nodejs tooling installation: `npm install`
+  4. assets generation: `npm run dev`
+  5. db init: `php bin/console doctrine:database:create` & `doctrine:schema:create` & `doctrine:migrations:migrate`
 * Run your application:
   1. Change to the project directory
   2. Execute the `npm run dev-server-hot` command to start the asset server that will build your assets and your manifest.json and serve the assets with hot module replacment when you do a modification on a vuejs file 
@@ -69,7 +78,7 @@ Default ports are 80 and 8080.
 
 everything is managed by 'encore' symfony package, so have a look at the webpack.config.js and then read their [docs](http://symfony.com/doc/current/frontend.html)
  * npm run dev : will build your assets (in this project it's /public/build/)
- * npm run watch : does the same thing than npm run dev, but it watches files modifictaion to re-generate the assets
+ * npm run watch : does the same thing than npm run dev, but it watches files modification to re-generate the assets
  * npm run dev-server :  build the manifest.json that map your assets qith their url from the asset server and start a web server that will serve those assets
  * npm run dev-server-hot : does the same thing as previously, but with vuejs framework it also does Hot Module Replacement 
  * npm run build : build your assets for production
@@ -83,3 +92,4 @@ Also, if you want to use the asset server finely, you have to add the assets con
 
 * improve this tutorial with ~~an API Route built with Api platform (without DB)~~ and install the vue-generator from api-platform for a crud sample
 * add db fixtures at init ! almost 40 books and some reviews (at least 3 for 5 1st books)
+* customize easyAdminBundle to add author/editor from Book and display those related infos on Book admin page (same for other author/editor entities and serie/reviews)
