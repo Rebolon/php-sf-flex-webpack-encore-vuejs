@@ -1,7 +1,9 @@
 <?php
 namespace App\DataFixtures\Library;
 
+use App\DataFixtures\ConnectionProxy;
 use App\Entity\Library\Author;
+use App\Entity\Library\Book;
 use App\Entity\Library\Editor;
 use App\Entity\Library\Job;
 use App\Entity\Library\Serie;
@@ -10,54 +12,111 @@ use Doctrine\Common\Persistence\ObjectManager;
 
 class AppFixtures extends Fixture
 {
+    /**
+     * @var ConnectionProxy
+     */
+    protected $dbProxy;
+
+    public function __construct(ConnectionProxy $dbProxy)
+    {
+        $this->dbProxy = $dbProxy;
+    }
+
     public function load(ObjectManager $manager)
     {
         // add job
-        foreach (['cartoonist', 'writer', 'color', ] as $jobTitle) {
+        $jobs = [];
+        foreach (['writer', 'cartoonist', 'color', ] as $jobTitle) {
             $job = (new Job())
                 ->setRole($jobTitle)
                 ->setTanslationKey('JOB_'.strtoupper($jobTitle));
 
             $manager->persist($job);
+            $jobs[$jobTitle] = $job;
         }
 
-        $dbh = new \PDO('sqlite:///' . __DIR__ . '/../../../var/data/fixtures.db');
+        $dbh = $this->dbProxy->getFixtures();
 
-        // add author
-        $q = $dbh->query('SELECT t.* FROM authors t LIMIT 10');
-        foreach ($q as $row) {
-            list($fname, $lname) = split('| ', $row['name']);
-            $author = (new Author())
-                ->setFirstname($fname)
-                ->setLastname($lname);
+        // add books && author && editor
+        $q = $dbh->query('SELECT t.* FROM books t LIMIT 10');
+        foreach ($q->fetchAll() as $row) {
+            $book = new Book();
+            $book->setTitle($row['title']);
 
-            $manager->persist($author);
+            if ($row['author_sort']) {
+                $dataAuthors = explode('& ', $row['author_sort']);
+                $i = 0;
+                foreach ($dataAuthors as $authorNames) {
+                    $authorName = explode(', ', $authorNames);
+                    $author = new Author();
+
+                    if (count($authorName) === 2) {
+                        $author->setLastname($authorName[0])
+                            ->setFirstname($authorName[1]);
+                    } else {
+                        $author->setFirstname($authorName[1]);
+                    }
+
+                    $manager->persist($author);
+
+                    $job = $jobs['writer'];
+                    if ($i === 1) {
+                        $job = $jobs['cartoonist'];
+                    }
+                    $book->addAuthor($author, $job);
+                }
+            }
+
+            $this->addSerie($row, $book, $dbh, $manager);
+            $this->addEditor($row, $book, $dbh, $manager);
         }
-        unset($q, $row);
-
-        // add serie
-        $q = $dbh->query('SELECT t.* FROM series t LIMIT 10');
-        foreach ($q as $row) {
-            $serie = (new Serie())
-                ->setName($row['name']);
-
-            $manager->persist($serie);
-        }
-        unset($q, $row);
-
-        // add editor
-        $q = $dbh->query('SELECT t.* FROM publishers t LIMIT 10');
-        foreach ($q as $row) {
-            $editor = (new Editor())
-                ->setName($row['name']);
-
-            $manager->persist($editor);
-        }
-        unset($q, $row);
-
-        // add book
-
 
         $manager->flush();
     }
+
+    protected function addSerie($bookFixture, Book $book, Connection $dbh, ObjectManager $manager)
+    {
+        $bookId = $bookFixture['id'];
+
+        // add serie
+        $qSerie = $dbh->query(
+            <<<SQL
+SELECT m.id, m.name
+FROM books_series_link AS t
+INNER JOIN series AS m ON t.series = m.id
+WHERE book = $bookId
+SQL
+        );
+        $rowSerie = $qSerie->fetch();
+        if ($rowSerie) {
+            $serie = (new Serie())
+                ->setName($rowSerie['name']);
+            $manager->persist($serie);
+            $book->setSerie($serie)
+                ->setIndexInSerie($bookFixture['series_index']);
+        }
+    }
+
+    protected function addEditor($bookFixture, Book $book, Connection $dbh, ObjectManager $manager)
+    {
+        $bookId = $bookFixture['id'];
+
+        // add editor
+        $q = $dbh->query(
+            <<<SQL
+SELECT m.id, m.name
+FROM books_publishers_link AS t
+INNER JOIN publishers AS m ON t.publisher = m.id
+WHERE book = $bookId
+SQL
+        );
+        $row = $q->fetch();
+        if ($row) {
+            $editor = (new Editor())
+                ->setName($row['name']);
+            $manager->persist($editor);
+            $book->addEditor($editor, $bookFixture['pubdate'], $bookFixture['isbn']);
+        }
+    }
+
 }

@@ -121,25 +121,6 @@ class Book
     /**
      * @return mixed
      */
-    public function getIsbn()
-    {
-        return $this->isbn;
-    }
-
-    /**
-     * @param mixed $isbn
-     * @return Book
-     */
-    public function setIsbn($isbn)
-    {
-        $this->isbn = $isbn;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getTitle()
     {
         return $this->title;
@@ -224,6 +205,16 @@ class Book
     public function getSerie()
     {
         return $this->serie;
+    }
+
+    /**
+     * @return Serie
+     */
+    public function setSerie(Serie $serie)
+    {
+        $this->serie = $serie;
+
+        return $this;
     }
 
     /**
