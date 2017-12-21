@@ -6,7 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource(iri="http://schema.org/Role)
+ * @ApiResource(iri="http://schema.org/Role")
  * @ORM\Entity
  */
 class Job

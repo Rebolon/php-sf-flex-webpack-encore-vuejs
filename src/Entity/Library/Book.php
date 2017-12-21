@@ -300,7 +300,7 @@ class Book
             ->setIsbn($isbn)
             ->setCollection($collection);
 
-        // @test this feature to check that it really works
+        // @todo test this feature to check that it really works
         foreach ($this->projectBookEdition as $projectToCheck) {
             if ($projectToCheck->getEditor() === $editor
                 && $projectToCheck->getPublicationDate() === $date
