@@ -1,18 +1,28 @@
 <?php
 namespace App\Entity\Library;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource
+ * @ApiResource(iri="http://bib.schema.org/ComicStory")
  * @ORM\Entity
  */
 class Book
 {
     /**
+     * @ApiProperty(
+     *     iri="http://schema.org/identifier",
+     *     attributes={
+     *         "jsonld_context"={
+     *             "@type"="http://www.w3.org/2001/XMLSchema#integer"
+     *         }
+     *     }
+     * )
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -20,22 +30,53 @@ class Book
     private $id;
 
     /**
+     * @ApiProperty(
+     *     iri="http://schema.org/headline",
+     *     attributes={
+     *         "jsonld_context"={
+     *             "@type"="http://www.w3.org/2001/XMLSchema#string"
+     *         }
+     *     }
+     * )
+     *
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     private $title;
 
     /**
+     * @ApiProperty(
+     *     iri="http://schema.org/description",
+     *     attributes={
+     *         "jsonld_context"={
+     *             "@type"="http://www.w3.org/2001/XMLSchema#string"
+     *         }
+     *     }
+     * )
+     *
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
 
     /**
+     * @ApiProperty(
+     *     iri="http://schema.org/position",
+     *     attributes={
+     *         "jsonld_context"={
+     *             "@type"="http://www.w3.org/2001/XMLSchema#integer"
+     *         }
+     *     }
+     * )
+     *
      * @ORM\Column(type="integer", nullable=true)
      */
     private $index_in_serie;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Library\Review", mappedBy="book", orphanRemoval=true)
+     * @ApiProperty(
+     *     iri="http://schema.org/reviews"
+     * )
+     *
      * @ApiSubresource(maxDepth=1)
      */
     private $reviews;
@@ -258,7 +299,7 @@ class Book
             ->setIsbn($isbn)
             ->setCollection($collection);
 
-        // @test this feature to check that it really works
+        // @todo test this feature to check that it really works
         foreach ($this->projectBookEdition as $projectToCheck) {
             if ($projectToCheck->getEditor() === $editor
                 && $projectToCheck->getPublicationDate() === $date

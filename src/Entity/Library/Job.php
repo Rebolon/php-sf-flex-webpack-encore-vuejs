@@ -1,11 +1,12 @@
 <?php
 namespace App\Entity\Library;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource
+ * @ApiResource(iri="http://schema.org/Role")
  * @ORM\Entity
  */
 class Job
@@ -18,11 +19,17 @@ class Job
     private $id;
 
     /**
+     * @ApiProperty(
+     *     iri="http://schema.org/name"
+     * )
      * @ORM\Column(type="string", length=256, nullable=false)
      */
     private $tanslation_key;
 
     /**
+     * @ApiProperty(
+     *     iri="http://schema.org/roleName"
+     * )
      * @ORM\Column(type="integer", nullable=true, options={"unsigned":true})
      */
     private $role;
