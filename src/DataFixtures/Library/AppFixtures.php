@@ -66,12 +66,12 @@ class AppFixtures extends Fixture
                 $this->addEditor($row, $book, $dbh, $manager);
 
                 $manager->persist($book);
+
+                $manager->flush();
             } catch (\Exception $e) {
                 throw $e;
             }
         }
-
-        $manager->flush();
     }
 
     /**
@@ -104,8 +104,9 @@ SQL
 
                 $this->cache['series'][] = $row['id'];
             } else {
-                // @todo retreive the serie in main.db with Doctrine
-                $serie = $manager->getRepository('\\App\\Entity\\Library\\Serie')->findOneBy(['name' => $row['name']]);
+                $serie = $manager
+                    ->getRepository('\\App\\Entity\\Library\\Serie')
+                    ->findOneBy(['name' => $row['name']]);
             }
 
             $book->setSerie($serie)
@@ -143,7 +144,9 @@ SQL
 
                 $this->cache['editors'][] = $row['id'];
             } else {
-                // @todo retreive the editor in main.db with Doctrine
+                $editor = $manager
+                    ->getRepository('\\App\\Entity\\Library\\Editor')
+                    ->findOneBy(['name' => $row['name']]);
             }
 
             $dateTime = new \DateTime($bookFixture['pubdate']);
@@ -178,12 +181,12 @@ SQL
             && count($rows)) {
             $i = 0;
             foreach ($rows as $row) {
+                $authorName = explode('| ', $row['name']);
                 if (!in_array($row['id'], $this->cache['authors'])) {
-                    $authorName = explode('| ', $row['name']);
                     $author = new Author();
                     if (count($authorName) === 2) {
-                        $author->setLastname($authorName[0])
-                            ->setFirstname($authorName[1]);
+                        $author->setFirstname($authorName[0])
+                            ->setLastname($authorName[1]);
                     } else {
                         $author->setFirstname($authorName[0]);
                     }
@@ -192,7 +195,13 @@ SQL
 
                     $this->cache['authors'][] = $row['id'];
                 } else {
-                    // @todo retreive the author in main.db with Doctrine
+                    $criterias = ['firstname' => $authorName[0], 'lastname' => null, ];
+                    if (count($authorName) === 2) {
+                        $criterias['lastname'] = $authorName[1];
+                    }
+                    $author = $manager
+                        ->getRepository('\\App\\Entity\\Library\\Author')
+                        ->findOneBy($criterias);
                 }
 
                 $job = $this->cache['jobs'][0];
