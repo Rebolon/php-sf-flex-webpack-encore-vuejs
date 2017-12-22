@@ -14,26 +14,39 @@ use Doctrine\DBAL\Connection;
 class AppFixtures extends Fixture
 {
     /**
+     * @var array
+     */
+    protected $cache = ["series" => [], "authors" => [], "editors" => [], "jobs" => [], ];
+
+    /**
      * @var Connection
      */
     protected $dbCon;
 
+    /**
+     * AppFixtures constructor.
+     * @param ConnectionFixtures $dbCon
+     */
     public function __construct(ConnectionFixtures $dbCon)
     {
         $this->dbCon = $dbCon->get();
     }
 
+    /**
+     * @param ObjectManager $manager
+     * @throws \Doctrine\DBAL\DBALException
+     * @throws \Exception
+     */
     public function load(ObjectManager $manager)
     {
         // add job
-        $jobs = [];
         foreach (['writer', 'cartoonist', 'color', ] as $jobTitle) {
             $job = (new Job())
                 ->setRole($jobTitle)
                 ->setTanslationKey('JOB_'.strtoupper($jobTitle));
 
             $manager->persist($job);
-            $jobs[$jobTitle] = $job;
+            $this->cache['jobs'][] = $job;
         }
 
         $dbh = $this->dbCon;
@@ -45,35 +58,13 @@ class AppFixtures extends Fixture
                 $book = new Book();
                 $book->setTitle($row['title']);
                 $this->addSerie($row, $book, $dbh, $manager);
-                
+
+                // @todo does this persist mandatory ?
                 $manager->persist($book);
 
-                if ($row['author_sort']) {
-                    $dataAuthors = explode('& ', $row['author_sort']);
-                    $i = 0;
-                    foreach ($dataAuthors as $authorNames) {
-                        $authorName = explode(', ', $authorNames);
-                        $author = new Author();
-    
-                        if (count($authorName) === 2) {
-                            $author->setLastname($authorName[0])
-                                ->setFirstname($authorName[1]);
-                        } else {
-                            $author->setFirstname($authorName[0]);
-                        }
-    
-                        $manager->persist($author);
-    
-                        $job = $jobs['writer'];
-                        if ($i === 1) {
-                            $job = $jobs['cartoonist'];
-                        }
-                        $book->addAuthor($author, $job);
-                    }
-                }
-
+                $this->addAuthor($row, $book, $dbh, $manager);
                 $this->addEditor($row, $book, $dbh, $manager);
-                
+
                 $manager->persist($book);
             } catch (\Exception $e) {
                 throw $e;
@@ -83,36 +74,59 @@ class AppFixtures extends Fixture
         $manager->flush();
     }
 
+    /**
+     * @param $bookFixture
+     * @param Book $book
+     * @param Connection $dbh
+     * @param ObjectManager $manager
+     * @throws \Doctrine\DBAL\DBALException
+     */
     protected function addSerie($bookFixture, Book $book, Connection $dbh, ObjectManager $manager)
     {
         $bookId = $bookFixture['id'];
 
         // add serie
-        $qSerie = $dbh->query(
-            <<<SQL
+        $q = $dbh->query(
+<<<SQL
 SELECT m.id, m.name
 FROM books_series_link AS t
 INNER JOIN series AS m ON t.series = m.id
 WHERE book = $bookId
 SQL
         );
-        $rowSerie = $qSerie->fetch();
-        if ($rowSerie) {
-            $serie = (new Serie())
-                ->setName($rowSerie['name']);
-            $manager->persist($serie);
+        $row = $q->fetch();
+
+        if ($row) {
+            if (!in_array($row['id'], $this->cache['series'])) {
+                $serie = (new Serie())
+                    ->setName($row['name']);
+                $manager->persist($serie);
+
+                $this->cache['series'][] = $row['id'];
+            } else {
+                // @todo retreive the serie in main.db with Doctrine
+                $serie = $manager->getRepository('\\App\\Entity\\Library\\Serie')->findOneBy(['name' => $row['name']]);
+            }
+
             $book->setSerie($serie)
                 ->setIndexInSerie($bookFixture['series_index']);
         }
     }
 
+    /**
+     * @param $bookFixture
+     * @param Book $book
+     * @param Connection $dbh
+     * @param ObjectManager $manager
+     * @throws \Doctrine\DBAL\DBALException
+     */
     protected function addEditor($bookFixture, Book $book, Connection $dbh, ObjectManager $manager)
     {
         $bookId = $bookFixture['id'];
 
         // add editor
         $q = $dbh->query(
-            <<<SQL
+<<<SQL
 SELECT m.id, m.name
 FROM books_publishers_link AS t
 INNER JOIN publishers AS m ON t.publisher = m.id
@@ -120,13 +134,75 @@ WHERE book = $bookId
 SQL
         );
         $row = $q->fetch();
+
         if ($row) {
-            $editor = (new Editor())
-                ->setName($row['name']);
-            $manager->persist($editor);
+            if (!in_array($row['id'], $this->cache['editors'])) {
+                $editor = (new Editor())
+                    ->setName($row['name']);
+                $manager->persist($editor);
+
+                $this->cache['editors'][] = $row['id'];
+            } else {
+                // @todo retreive the editor in main.db with Doctrine
+            }
+
             $dateTime = new \DateTime($bookFixture['pubdate']);
             $book->addEditor($editor, $dateTime, $bookFixture['isbn']);
         }
     }
 
+    /**
+     * @param $bookFixture
+     * @param Book $book
+     * @param Connection $dbh
+     * @param ObjectManager $manager
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    protected function addAuthor($bookFixture, Book $book, Connection $dbh, ObjectManager $manager)
+    {
+        $bookId = $bookFixture['id'];
+
+        // add editor
+        $q = $dbh->query(
+<<<SQL
+SELECT m.id, m.name
+FROM books_authors_link AS t
+INNER JOIN authors AS m ON t.author = m.id
+WHERE book = $bookId
+ORDER BY t.id
+SQL
+        );
+        $rows = $q->fetchAll();
+
+        if ($rows
+            && count($rows)) {
+            $i = 0;
+            foreach ($rows as $row) {
+                if (!in_array($row['id'], $this->cache['authors'])) {
+                    $authorName = explode('| ', $row['name']);
+                    $author = new Author();
+                    if (count($authorName) === 2) {
+                        $author->setLastname($authorName[0])
+                            ->setFirstname($authorName[1]);
+                    } else {
+                        $author->setFirstname($authorName[0]);
+                    }
+
+                    $manager->persist($author);
+
+                    $this->cache['authors'][] = $row['id'];
+                } else {
+                    // @todo retreive the author in main.db with Doctrine
+                }
+
+                $job = $this->cache['jobs'][0];
+                if ($i === 1) {
+                    $job = $this->cache['jobs'][0];
+                }
+                $book->addAuthor($author, $job);
+
+                $i++;
+            }
+        }
+    }
 }
