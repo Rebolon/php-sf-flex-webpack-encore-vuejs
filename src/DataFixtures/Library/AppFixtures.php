@@ -10,6 +10,7 @@ use App\Entity\Library\Serie;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\DBAL\Connection;
+use \PDO;
 
 class AppFixtures extends Fixture
 {
@@ -52,7 +53,7 @@ class AppFixtures extends Fixture
         $dbh = $this->dbCon;
 
         // add books && author && editor
-        $q = $dbh->query('SELECT t.* FROM books t LIMIT 50');
+        $q = $dbh->query('SELECT t.* FROM books t');
         foreach ($q->fetchAll() as $row) {
             try {
                 $book = new Book();
@@ -86,15 +87,17 @@ class AppFixtures extends Fixture
         $bookId = $bookFixture['id'];
 
         // add serie
-        $q = $dbh->query(
+        $sth = $dbh->prepare(
 <<<SQL
 SELECT m.id, m.name
 FROM books_series_link AS t
 INNER JOIN series AS m ON t.series = m.id
-WHERE book = $bookId
+WHERE book = :bookId
 SQL
         );
-        $row = $q->fetch();
+        $sth->bindParam('bookId', $bookId, PDO::PARAM_INT);
+        $sth->execute();
+        $row = $sth->fetch();
 
         if ($row) {
             if (!in_array($row['id'], $this->cache['series'])) {
@@ -126,15 +129,17 @@ SQL
         $bookId = $bookFixture['id'];
 
         // add editor
-        $q = $dbh->query(
+        $sth = $dbh->prepare(
 <<<SQL
 SELECT m.id, m.name
 FROM books_publishers_link AS t
 INNER JOIN publishers AS m ON t.publisher = m.id
-WHERE book = $bookId
+WHERE book = :bookId
 SQL
         );
-        $row = $q->fetch();
+        $sth->bindParam('bookId', $bookId, PDO::PARAM_INT);
+        $sth->execute();
+        $row = $sth->fetch();
 
         if ($row) {
             if (!in_array($row['id'], $this->cache['editors'])) {
@@ -166,16 +171,18 @@ SQL
         $bookId = $bookFixture['id'];
 
         // add editor
-        $q = $dbh->query(
+        $sth = $dbh->prepare(
 <<<SQL
 SELECT m.id, m.name
 FROM books_authors_link AS t
 INNER JOIN authors AS m ON t.author = m.id
-WHERE book = $bookId
+WHERE book = :bookId
 ORDER BY t.id
 SQL
         );
-        $rows = $q->fetchAll();
+        $sth->bindParam('bookId', $bookId, PDO::PARAM_INT);
+        $sth->execute();
+        $rows = $sth->fetchAll();
 
         if ($rows
             && count($rows)) {
