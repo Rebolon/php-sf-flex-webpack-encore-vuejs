@@ -101,6 +101,6 @@ Also, if you want to use the asset server finely, you have to add the assets con
 
 * improve this tutorial with ~~an API Route built with Api platform (without DB)~~ and install the vue-generator from api-platform for a crud sample :
     * The question for instance is `How to override ApiPlatform routing: i want some route to be overloaded: POST/PUT Book should be able to add also Auhtors and/or Editors`
-* add db fixtures at init ! almost 40 books and some reviews (at least 3 for 5 1st books)
+* ~~add db fixtures at init ! almost 40 books and some reviews (at least 3 for 5 1st books)~~ all sqlite fixtures is converted into the final db model
 * customize easyAdminBundle to add author/editor from Book and display those related infos on Book admin page (same for other author/editor entities and serie/reviews)
 * manage Entity orphanRemoval / CASCADE onDelete
