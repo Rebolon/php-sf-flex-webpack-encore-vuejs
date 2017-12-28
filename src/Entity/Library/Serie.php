@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * @ApiResource(iri="http://schema.org/Series")
@@ -30,33 +31,34 @@ class Serie
 
     /**
      * @ApiProperty(
-     *      iri="http://pending.schema.org/about"
+     *      iri="http://pending.schema.org/ComicStory"
      * )
-     * @ORM\OneToMany(targetEntity="App\Entity\Library\Book", mappedBy="serie")
      * @ApiSubresource(maxDepth=1)
+     * @ORM\OneToMany(targetEntity="App\Entity\Library\Book", mappedBy="serie", orphanRemoval=true)
      */
-    private $book;
+    private $books;
 
     /**
      * Serie constructor.
      */
     public function __construct()
     {
-        $this->book = new ArrayCollection();
+        $this->books = new ArrayCollection();
     }
 
     /**
-     * @return mixed
+     * id can be null until flush is done
+     * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -65,7 +67,7 @@ class Serie
      * @param mixed $name
      * @return Serie
      */
-    public function setName($name)
+    public function setName($name): Serie
     {
         $this->name = $name;
 
@@ -73,10 +75,10 @@ class Serie
     }
 
     /**
-     * @return mixed
+     * @return PersistentCollection
      */
-    public function getBook()
+    public function getBooks(): PersistentCollection
     {
-        return $this->book;
+        return $this->books;
     }
 }

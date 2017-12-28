@@ -17,6 +17,7 @@
         "symfony/yaml": "^4.0.0"
     },
     "require-dev": {
+        "doctrine/doctrine-fixtures-bundle": "^3.0",
         "symfony/dotenv": "^4.0.0",
         "symfony/flex": "^1.0",
         "symfony/webpack-encore-pack": "^1.0"

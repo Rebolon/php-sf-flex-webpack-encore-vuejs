@@ -2,10 +2,12 @@
 namespace App\Entity\Library;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource()
  * @ORM\Entity
  * @ORM\Table(name="project_book_edition")
  */
@@ -40,8 +42,9 @@ class ProjectBookEdition
     /**
      * @ORM\ManyToOne(
      *     targetEntity="App\Entity\Library\Editor",
-     *     inversedBy="projectBookEdition",
-     *     fetch="EAGER"
+     *     inversedBy="books",
+     *     fetch="EAGER",
+     *     cascade={"remove"}
      * )
      * @ORM\JoinColumn(name="editor_id", referencedColumnName="id")
      */
@@ -50,17 +53,28 @@ class ProjectBookEdition
     /**
      * @ORM\ManyToOne(
      *     targetEntity="App\Entity\Library\Book",
-     *     inversedBy="projectBookEdition",
-     *     fetch="EAGER"
+     *     inversedBy="editors",
+     *     fetch="EAGER",
+     *     cascade={"remove"}
      * )
      * @ORM\JoinColumn(name="book_id", referencedColumnName="id")
      */
     private $book;
 
     /**
-     * @return mixed
+     * mandatory for api-platform to get a valid IRI
+     *
+     * @return int
      */
-    public function getPublicationDate()
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getPublicationDate(): \DateTime
     {
         return $this->publication_date;
     }
@@ -69,7 +83,7 @@ class ProjectBookEdition
      * @param mixed $publication_date
      * @return ProjectBookEdition
      */
-    public function setPublicationDate($publication_date)
+    public function setPublicationDate($publication_date): ProjectBookEdition
     {
         $this->publication_date = $publication_date;
 
@@ -77,9 +91,9 @@ class ProjectBookEdition
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getCollection()
+    public function getCollection(): ?string
     {
         return $this->collection;
     }
@@ -88,7 +102,7 @@ class ProjectBookEdition
      * @param mixed $collection
      * @return ProjectBookEdition
      */
-    public function setCollection($collection)
+    public function setCollection($collection): ProjectBookEdition
     {
         $this->collection = $collection;
 
@@ -96,9 +110,9 @@ class ProjectBookEdition
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getIsbn()
+    public function getIsbn(): ?string
     {
         return $this->isbn;
     }
@@ -108,7 +122,7 @@ class ProjectBookEdition
      *
      * @return ProjectBookEdition
      */
-    public function setIsbn($isbn)
+    public function setIsbn($isbn): ProjectBookEdition
     {
         $this->isbn = $isbn;
 
@@ -116,9 +130,9 @@ class ProjectBookEdition
     }
 
     /**
-     * @return mixed
+     * @return Editor
      */
-    public function getEditor()
+    public function getEditor(): Editor
     {
         return $this->editor;
     }
@@ -127,7 +141,7 @@ class ProjectBookEdition
      * @param Editor $editor
      * @return $this
      */
-    public function setAuthor(Editor $editor)
+    public function setEditor(Editor $editor): ProjectBookEdition
     {
         $this->editor = $editor;
 
@@ -135,10 +149,21 @@ class ProjectBookEdition
     }
 
     /**
-     * @return mixed
+     * @return Book
      */
-    public function getBook()
+    public function getBook(): Book
     {
         return $this->book;
+    }
+
+    /**
+     * @param Book $book
+     * @return $this
+     */
+    public function setBook(Book $book): ProjectBookEdition
+    {
+        $this->book = $book;
+
+        return $this;
     }
 }

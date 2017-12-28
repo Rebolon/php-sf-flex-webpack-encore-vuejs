@@ -5,6 +5,7 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Flex\Response;
 
 /**
  * @ApiResource(iri="http://schema.org/Review")
@@ -55,24 +56,25 @@ class Review
      * @ApiProperty(
      *     iri="http://bib.schema.org/ComicStory"
      * )
+     * @ApiSubresource(maxDepth=1)
      * @ORM\ManyToOne(targetEntity="App\Entity\Library\Book", inversedBy="reviews")
      * @ORM\JoinColumn(name="book_id", referencedColumnName="id", onDelete="CASCADE")
-     * @ApiSubresource(maxDepth=1)
      */
     private $book;
 
     /**
-     * @return mixed
+     * id can be null until flush is done
+     * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getRating()
+    public function getRating(): int
     {
         return $this->rating;
     }
@@ -81,7 +83,7 @@ class Review
      * @param mixed $rating
      * @return Review
      */
-    public function setRating($rating)
+    public function setRating($rating): Review
     {
         $this->rating = $rating;
 
@@ -89,9 +91,9 @@ class Review
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getBody()
+    public function getBody(): ?string
     {
         return $this->body;
     }
@@ -100,7 +102,7 @@ class Review
      * @param mixed $body
      * @return Review
      */
-    public function setBody($body)
+    public function setBody($body): Review
     {
         $this->body = $body;
 
@@ -108,9 +110,9 @@ class Review
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getUsername()
+    public function getUsername(): ?string
     {
         return $this->username;
     }
@@ -119,7 +121,7 @@ class Review
      * @param mixed $username
      * @return Review
      */
-    public function setUsername($username)
+    public function setUsername($username): Review
     {
         $this->username = $username;
 
@@ -127,9 +129,9 @@ class Review
     }
 
     /**
-     * @return mixed
+     * @return \DateTime
      */
-    public function getPublicationDate()
+    public function getPublicationDate(): \DateTime
     {
         return $this->publication_date;
     }
@@ -138,7 +140,7 @@ class Review
      * @param mixed $publication_date
      * @return Review
      */
-    public function setPublicationDate($publication_date)
+    public function setPublicationDate($publication_date): Review
     {
         $this->publication_date = $publication_date;
 
@@ -146,9 +148,9 @@ class Review
     }
 
     /**
-     * @return mixed
+     * @return Book
      */
-    public function getBook()
+    public function getBook(): Book
     {
         return $this->book;
     }
