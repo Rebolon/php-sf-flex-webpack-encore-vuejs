@@ -26,7 +26,7 @@ class Version20171213134148 extends AbstractMigration
         $this->addSql('DROP INDEX IDX_9A80042B16A2B381');
         $this->addSql('CREATE TEMPORARY TABLE __temp__project_book_creation AS SELECT id, book_id, author_id, role FROM project_book_creation');
         $this->addSql('DROP TABLE project_book_creation');
-        $this->addSql('CREATE TABLE project_book_creation (id INTEGER NOT NULL, book_id INTEGER DEFAULT NULL, author_id INTEGER DEFAULT NULL, role INTEGER NOT NULL, PRIMARY KEY(id), CONSTRAINT FK_9A80042B16A2B381 FOREIGN KEY (book_id) REFERENCES book (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_9A80042BF675F31B FOREIGN KEY (author_id) REFERENCES author (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE project_book_creation (id INTEGER NOT NULL, book_id INTEGER DEFAULT NULL, author_id INTEGER DEFAULT NULL, role INTEGER DEFAULT NULL, PRIMARY KEY(id), CONSTRAINT FK_9A80042B16A2B381 FOREIGN KEY (book_id) REFERENCES book (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_9A80042BF675F31B FOREIGN KEY (author_id) REFERENCES author (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('INSERT INTO project_book_creation (id, book_id, author_id, role) SELECT id, book_id, author_id, role FROM __temp__project_book_creation');
         $this->addSql('DROP TABLE __temp__project_book_creation');
         $this->addSql('CREATE INDEX IDX_9A80042BF675F31B ON project_book_creation (author_id)');

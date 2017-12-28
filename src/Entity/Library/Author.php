@@ -1,12 +1,14 @@
 <?php
 namespace App\Entity\Library;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 /**
- * @ApiResource
+ * @ApiResource(iri="http://schema.org/author")
  * @ORM\Entity
  */
 class Author
@@ -19,11 +21,17 @@ class Author
     private $id;
 
     /**
+     * @ApiProperty (
+     *     iri="http://schema.org/givenName"
+     * )
      * @ORM\Column(type="string", nullable=false)
      */
     private $firstname;
 
     /**
+     * @ApiProperty (
+     *     iri="http://schema.org/familyName"
+     * )
      * @ORM\Column(type="string", nullable=true)
      */
     private $lastname;
@@ -31,28 +39,29 @@ class Author
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookCreation", mappedBy="author")
      */
-    private $projectBookCreation;
+    private $books;
 
     /**
      * Author constructor.
      */
     public function __construct()
     {
-        $this->projectBookCreation = new ArrayCollection();
+        $this->books = new ArrayCollection();
     }
 
     /**
-     * @return mixed
+     * id can be null until flush is done
+     * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getFirstname()
+    public function getFirstname(): string
     {
         return $this->firstname;
     }
@@ -61,7 +70,7 @@ class Author
      * @param mixed $firstname
      * @return Author
      */
-    public function setFirstname($firstname)
+    public function setFirstname($firstname): Author
     {
         $this->firstname = $firstname;
 
@@ -69,9 +78,9 @@ class Author
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getLastname()
+    public function getLastname(): ?string
     {
         return $this->lastname;
     }
@@ -80,7 +89,7 @@ class Author
      * @param mixed $lastname
      * @return Author
      */
-    public function setLastname($lastname)
+    public function setLastname($lastname): Author
     {
         $this->lastname = $lastname;
 
@@ -88,21 +97,14 @@ class Author
     }
 
     /**
-     * @return mixed
-     */
-    public function getProjectBookCreation()
-    {
-        return $this->projectBookCreation;
-    }
-
-    /**
      * @todo the content of the methods + the route mapping for the api
      * Return the list of Books for all projects book creation of this author
      *
-     * @return collection|ProjectBookCreation
+     * @return PersistentCollection
      */
-    public function getBooks()
+    public function getBooks(): PersistentCollection
     {
-        // list ProjectBookCreation with fields id/role/book (author is omitted)
+        // list ProjectBookCreation with fields id/role/book (author should be omitted to prevent circular reference)
+        return $this->books;
     }
 }

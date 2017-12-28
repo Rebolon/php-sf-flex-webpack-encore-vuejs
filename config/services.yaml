@@ -29,3 +29,8 @@ services:
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
+
+    App\DataFixtures\ConnectionFixtures:
+        public: true
+        arguments:
+            - '@doctrine.dbal.fixtures_connection'

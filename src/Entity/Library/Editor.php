@@ -1,12 +1,14 @@
 <?php
 namespace App\Entity\Library;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 /**
- * @ApiResource
+ * @ApiResource(iri="http://schema.org/publisher")
  * @ORM\Entity
  */
 class Editor
@@ -19,6 +21,9 @@ class Editor
     private $id;
 
     /**
+     * @ApiProperty(
+     *     iri="http://schema.org/legalName"
+     * )
      * @ORM\Column(type="string", length=512, nullable=false)
      */
     private $name;
@@ -26,28 +31,29 @@ class Editor
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookEdition", mappedBy="editor")
      */
-    private $projectBookEdition;
+    private $books;
 
     /**
      * Editor constructor.
      */
     public function __construct()
     {
-        $this->projectBookEdition = new ArrayCollection();
+        $this->books = new ArrayCollection();
     }
 
     /**
-     * @return mixed
+     * id can be null until flush is done
+     * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -56,7 +62,7 @@ class Editor
      * @param mixed $name
      * @return Editor
      */
-    public function setName($name)
+    public function setName($name): Editor
     {
         $this->name = $name;
 
@@ -64,21 +70,14 @@ class Editor
     }
 
     /**
-     * @return mixed
-     */
-    public function getProjectBookEdition()
-    {
-        return $this->projectBookEdition;
-    }
-
-    /**
      * @todo the content of the methods + the route mapping for the api
      * Return the list of Books for all projects book edition of this editor
      *
-     * @return collection|ProjectBookEdition
+     * @return PersistentCollection
      */
-    public function getBooks()
+    public function getBooks(): PersistentCollection
     {
-        // list ProjectBookEdition with fields id/publicationdate/collection/isbn/book (editor is omitted)
+        // list ProjectBookEdition with fields id/publicationdate/collection/isbn/book (editor should be omitted to prevent circular reference)
+        return $this->books;
     }
 }

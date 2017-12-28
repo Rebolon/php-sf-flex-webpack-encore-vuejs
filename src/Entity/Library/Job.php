@@ -1,11 +1,12 @@
 <?php
 namespace App\Entity\Library;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource
+ * @ApiResource(iri="http://schema.org/Role")
  * @ORM\Entity
  */
 class Job
@@ -18,27 +19,34 @@ class Job
     private $id;
 
     /**
+     * @ApiProperty(
+     *     iri="http://schema.org/name"
+     * )
      * @ORM\Column(type="string", length=256, nullable=false)
      */
     private $tanslation_key;
 
     /**
+     * @ApiProperty(
+     *     iri="http://schema.org/roleName"
+     * )
      * @ORM\Column(type="integer", nullable=true, options={"unsigned":true})
      */
     private $role;
 
     /**
-     * @return mixed
+     * id can be null until flush is done
+     * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getTanslationKey()
+    public function getTanslationKey(): string
     {
         return $this->tanslation_key;
     }
@@ -47,7 +55,7 @@ class Job
      * @param mixed $tanslation_key
      * @return Job
      */
-    public function setTanslationKey($tanslation_key)
+    public function setTanslationKey($tanslation_key): Job
     {
         $this->tanslation_key = $tanslation_key;
 
@@ -55,9 +63,9 @@ class Job
     }
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getRole()
+    public function getRole(): int
     {
         return $this->role;
     }
@@ -66,7 +74,7 @@ class Job
      * @param mixed $role
      * @return Job
      */
-    public function setRole($role)
+    public function setRole($role): Job
     {
         $this->role = $role;
 

@@ -1,9 +1,12 @@
 <?php
 namespace App\Entity\Library;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ApiResource()
  * @ORM\Entity
  * @ORM\Table(name="project_book_creation")
  */
@@ -17,15 +20,17 @@ class ProjectBookCreation
     private $id;
 
     /**
-     * @ORM\Column(type="integer", nullable=false)
+     * To be easier, should be a OneToOne ? with link on JobID
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $role;
 
     /**
      * @ORM\ManyToOne(
      *     targetEntity="App\Entity\Library\Book",
-     *     inversedBy="projectBookCreation",
-     *     fetch="EAGER"
+     *     inversedBy="authors",
+     *     fetch="EAGER",
+     *     cascade={"remove"}
      * )
      * @ORM\JoinColumn(name="book_id", referencedColumnName="id")
      */
@@ -34,17 +39,28 @@ class ProjectBookCreation
     /**
      * @ORM\ManyToOne(
      *     targetEntity="App\Entity\Library\Author",
-     *     inversedBy="projectBookCreation",
-     *     fetch="EAGER"
+     *     inversedBy="books",
+     *     fetch="EAGER",
+     *     cascade={"remove"}
      * )
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
      */
     private $author;
 
     /**
-     * @return mixed
+     * mandatory for api-platform to get a valid IRI
+     *
+     * @return int
      */
-    public function getRole()
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getRole(): int
     {
         return $this->role;
     }
@@ -53,7 +69,7 @@ class ProjectBookCreation
      * @param mixed $role
      * @return ProjectBookCreation
      */
-    public function setRole($role)
+    public function setRole($role): ProjectBookCreation
     {
         $this->role = $role;
 
@@ -61,9 +77,9 @@ class ProjectBookCreation
     }
 
     /**
-     * @return mixed
+     * @return Book
      */
-    public function getBook()
+    public function getBook(): Book
     {
         return $this->book;
     }
@@ -72,7 +88,7 @@ class ProjectBookCreation
      * @param Book $book
      * @return $this
      */
-    public function setBook(Book $book)
+    public function setBook(Book $book): ProjectBookCreation
     {
         $this->book = $book;
 
@@ -80,9 +96,9 @@ class ProjectBookCreation
     }
 
     /**
-     * @return mixed
+     * @return Author
      */
-    public function getAuthor()
+    public function getAuthor(): Author
     {
         return $this->author;
     }
@@ -91,7 +107,7 @@ class ProjectBookCreation
      * @param Author $author
      * @return $this
      */
-    public function setAuthor(Author $author)
+    public function setAuthor(Author $author): ProjectBookCreation
     {
         $this->author = $author;
 
