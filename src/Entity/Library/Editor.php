@@ -5,6 +5,7 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * @ApiResource(iri="http://schema.org/publisher")
@@ -30,14 +31,14 @@ class Editor
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookEdition", mappedBy="editor")
      */
-    private $projectBookEdition;
+    private $books;
 
     /**
      * Editor constructor.
      */
     public function __construct()
     {
-        $this->projectBookEdition = new ArrayCollection();
+        $this->books = new ArrayCollection();
     }
 
     /**
@@ -72,11 +73,11 @@ class Editor
      * @todo the content of the methods + the route mapping for the api
      * Return the list of Books for all projects book edition of this editor
      *
-     * @return ArrayCollection
+     * @return PersistentCollection
      */
-    public function getBooks(): ArrayCollection
+    public function getBooks(): PersistentCollection
     {
         // list ProjectBookEdition with fields id/publicationdate/collection/isbn/book (editor should be omitted to prevent circular reference)
-        return $this->projectBookEdition;
+        return $this->books;
     }
 }

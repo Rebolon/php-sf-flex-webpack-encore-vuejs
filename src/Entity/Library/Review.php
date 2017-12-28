@@ -56,9 +56,9 @@ class Review
      * @ApiProperty(
      *     iri="http://bib.schema.org/ComicStory"
      * )
+     * @ApiSubresource(maxDepth=1)
      * @ORM\ManyToOne(targetEntity="App\Entity\Library\Book", inversedBy="reviews")
      * @ORM\JoinColumn(name="book_id", referencedColumnName="id", onDelete="CASCADE")
-     * @ApiSubresource(maxDepth=1)
      */
     private $book;
 

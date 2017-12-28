@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * @ApiResource(iri="http://schema.org/Series")
@@ -29,20 +30,20 @@ class Serie
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Library\Book", mappedBy="serie", orphanRemoval=true)
      * @ApiProperty(
      *      iri="http://pending.schema.org/ComicStory"
      * )
      * @ApiSubresource(maxDepth=1)
+     * @ORM\OneToMany(targetEntity="App\Entity\Library\Book", mappedBy="serie", orphanRemoval=true)
      */
-    private $book;
+    private $books;
 
     /**
      * Serie constructor.
      */
     public function __construct()
     {
-        $this->book = new ArrayCollection();
+        $this->books = new ArrayCollection();
     }
 
     /**
@@ -74,10 +75,10 @@ class Serie
     }
 
     /**
-     * @return Book
+     * @return PersistentCollection
      */
-    public function getBook(): Book
+    public function getBooks(): PersistentCollection
     {
-        return $this->book;
+        return $this->books;
     }
 }

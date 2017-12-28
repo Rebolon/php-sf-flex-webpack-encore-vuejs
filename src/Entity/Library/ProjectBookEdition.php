@@ -40,7 +40,7 @@ class ProjectBookEdition
     /**
      * @ORM\ManyToOne(
      *     targetEntity="App\Entity\Library\Editor",
-     *     inversedBy="projectBookEdition",
+     *     inversedBy="books",
      *     fetch="EAGER",
      *     cascade={"remove"}
      * )
@@ -51,7 +51,7 @@ class ProjectBookEdition
     /**
      * @ORM\ManyToOne(
      *     targetEntity="App\Entity\Library\Book",
-     *     inversedBy="projectBookEdition",
+     *     inversedBy="editors",
      *     fetch="EAGER",
      *     cascade={"remove"}
      * )

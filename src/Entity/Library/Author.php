@@ -5,6 +5,7 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * @ApiResource(iri="http://schema.org/author")
@@ -38,14 +39,14 @@ class Author
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookCreation", mappedBy="author")
      */
-    private $projectBookCreation;
+    private $books;
 
     /**
      * Author constructor.
      */
     public function __construct()
     {
-        $this->projectBookCreation = new ArrayCollection();
+        $this->books = new ArrayCollection();
     }
 
     /**
@@ -99,11 +100,11 @@ class Author
      * @todo the content of the methods + the route mapping for the api
      * Return the list of Books for all projects book creation of this author
      *
-     * @return ArrayCollection
+     * @return PersistentCollection
      */
-    public function getBooks(): ArrayCollection
+    public function getBooks(): PersistentCollection
     {
         // list ProjectBookCreation with fields id/role/book (author should be omitted to prevent circular reference)
-        return $this->projectBookCreation;
+        return $this->books;
     }
 }

@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * @ApiResource(iri="http://bib.schema.org/ComicStory")
@@ -15,12 +16,7 @@ class Book
 {
     /**
      * @ApiProperty(
-     *     iri="http://schema.org/identifier",
-     *     attributes={
-     *         "jsonld_context"={
-     *             "@type"="http://www.w3.org/2001/XMLSchema#integer"
-     *         }
-     *     }
+     *     iri="http://schema.org/identifier"
      * )
      *
      * @ORM\Id
@@ -31,12 +27,7 @@ class Book
 
     /**
      * @ApiProperty(
-     *     iri="http://schema.org/headline",
-     *     attributes={
-     *         "jsonld_context"={
-     *             "@type"="http://www.w3.org/2001/XMLSchema#string"
-     *         }
-     *     }
+     *     iri="http://schema.org/headline"
      * )
      *
      * @ORM\Column(type="string", length=255, nullable=false)
@@ -45,12 +36,7 @@ class Book
 
     /**
      * @ApiProperty(
-     *     iri="http://schema.org/description",
-     *     attributes={
-     *         "jsonld_context"={
-     *             "@type"="http://www.w3.org/2001/XMLSchema#string"
-     *         }
-     *     }
+     *     iri="http://schema.org/description"
      * )
      *
      * @ORM\Column(type="text", nullable=true)
@@ -72,31 +58,38 @@ class Book
     private $index_in_serie;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Library\Review", mappedBy="book", orphanRemoval=true)
      * @ApiProperty(
      *     iri="http://schema.org/reviews"
      * )
+     * @ ApiSubresource(maxDepth=1)
      *
-     * @ApiSubresource(maxDepth=1)
+     * @ORM\OneToMany(targetEntity="App\Entity\Library\Review", mappedBy="book", orphanRemoval=true)
      */
     private $reviews;
 
     /**
      * @var ProjectBookCreation
+     *
+     * @ ApiSubresource(maxDepth=1)
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookCreation", mappedBy="book", cascade={"persist", "remove"})
      */
-    private $projectBookCreation;
+    private $authors;
 
     /**
      * @var ProjectBookEdition
+     *
+     * @ ApiSubresource(maxDepth=1)
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookEdition", mappedBy="book", cascade={"persist", "remove"})
      */
-    private $projectBookEdition;
+    private $editors;
 
     /**
+     * @ ApiSubresource(maxDepth=1)
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Library\Serie", inversedBy="book")
      * @ORM\JoinColumn(name="serie_id", referencedColumnName="id")
-     * @ApiSubresource(maxDepth=1)
      */
     private $serie;
 
@@ -106,8 +99,8 @@ class Book
     public function __construct()
     {
         $this->reviews = new ArrayCollection();
-        $this->projectBookCreation = new ArrayCollection();
-        $this->projectBookEdition = new ArrayCollection();
+        $this->authors = new ArrayCollection();
+        $this->editors = new ArrayCollection();
     }
 
     /**
@@ -141,7 +134,7 @@ class Book
     /**
      * @return mixed
      */
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -160,7 +153,7 @@ class Book
     /**
      * @return mixed
      */
-    public function getIndexInSerie(): int
+    public function getIndexInSerie(): ?int
     {
         return $this->index_in_serie;
     }
@@ -177,28 +170,28 @@ class Book
     }
 
     /**
-     * @return ArrayCollection
+     * @return PersistentCollection
      */
-    public function getReviews(): ArrayCollection
+    public function getReviews(): PersistentCollection
     {
         return $this->reviews;
     }
 
-    /**
-     * @return ProjectBookCreation
-     */
-    public function getProjectBookCreation(): ?ProjectBookCreation
-    {
-        return $this->projectBookCreation;
-    }
+//    /**
+//     * @return PersistentCollection
+//     */
+//    public function getProjectBookCreation(): PersistentCollection
+//    {
+//        return $this->projectBookCreation;
+//    }
 
-    /**
-     * @return ProjectBookEdition
-     */
-    public function getProjectBookEdition(): ?ProjectBookEdition
-    {
-        return $this->projectBookEdition;
-    }
+//    /**
+//     * @return PersistentCollection
+//     */
+//    public function getProjectBookEdition(): PersistentCollection
+//    {
+//        return $this->projectBookEdition;
+//    }
 
     /**
      * @return Serie
@@ -224,7 +217,7 @@ class Book
      */
     public function setAuthor(ProjectBookCreation $project): Book
     {
-        $this->projectBookCreation[] = $project;
+        $this->authors[] = $project;
 
         return $this;
     }
@@ -242,7 +235,7 @@ class Book
             ->setRole($job->getId());
 
         // @test this feature to check that it really works vs if ($this->projectBookCreation->contains($project)) return $this;
-        foreach ($this->projectBookCreation as $projectToCheck) {
+        foreach ($this->authors as $projectToCheck) {
             if ($projectToCheck->getAuthor() === $author
                 && $projectToCheck->role === $job->getId()) {
                 return $this;
@@ -257,12 +250,12 @@ class Book
     /**
      * Return the list of Authors with their job for this project book creation
      *
-     * @return ArrayCollection
+     * @return PersistentCollection
      */
-    public function getAuthors(): ArrayCollection
+    public function getAuthors(): PersistentCollection
     {
         // @todo list ProjectBookCreation with fields id/role/author (book should be omitted to prevent circular reference)
-        return $this->projectBookCreation;
+        return $this->authors;
     }
 
     /**
@@ -271,7 +264,7 @@ class Book
      */
     public function setEditor(ProjectBookEdition $project): Book
     {
-        $this->projectBookEdition[] = $project;
+        $this->editors[] = $project;
 
         return $this;
     }
@@ -293,7 +286,7 @@ class Book
             ->setCollection($collection);
 
         // @todo test this feature to check that it really works vs if ($this->projectBookEdition->contains($project)) return $this;
-        foreach ($this->projectBookEdition as $projectToCheck) {
+        foreach ($this->editors as $projectToCheck) {
             if ($projectToCheck->getEditor() === $editor
                 && $projectToCheck->getPublicationDate() === $date
                 && $projectToCheck->getISBN() === $isbn
@@ -311,11 +304,11 @@ class Book
      * @todo the content of the methods + the route mapping for the api
      * Return the list of Editors for all projects book edition of this book
      *
-     * @return ArrayCollection
+     * @return PersistentCollection
      */
-    public function getEditors(): ArrayCollection
+    public function getEditors(): PersistentCollection
     {
         //@todo list ProjectBookEdition with fields id/publicationdate/collection/isbn/editor (book should be omitted to prevent circular reference)
-        return $this->projectBookEdition;
+        return $this->editors;
     }
 }
