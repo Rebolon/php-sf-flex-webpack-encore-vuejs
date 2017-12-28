@@ -46,17 +46,18 @@ class Serie
     }
 
     /**
-     * @return mixed
+     * id can be null until flush is done
+     * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -65,7 +66,7 @@ class Serie
      * @param mixed $name
      * @return Serie
      */
-    public function setName($name)
+    public function setName($name): Serie
     {
         $this->name = $name;
 
@@ -73,9 +74,9 @@ class Serie
     }
 
     /**
-     * @return mixed
+     * @return Book
      */
-    public function getBook()
+    public function getBook(): Book
     {
         return $this->book;
     }

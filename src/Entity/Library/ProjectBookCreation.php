@@ -46,9 +46,9 @@ class ProjectBookCreation
     private $author;
 
     /**
-     * @return mixed
+     * @return int
      */
-    public function getRole()
+    public function getRole(): int
     {
         return $this->role;
     }
@@ -57,7 +57,7 @@ class ProjectBookCreation
      * @param mixed $role
      * @return ProjectBookCreation
      */
-    public function setRole($role)
+    public function setRole($role): ProjectBookCreation
     {
         $this->role = $role;
 
@@ -65,9 +65,9 @@ class ProjectBookCreation
     }
 
     /**
-     * @return mixed
+     * @return Book
      */
-    public function getBook()
+    public function getBook(): Book
     {
         return $this->book;
     }
@@ -76,7 +76,7 @@ class ProjectBookCreation
      * @param Book $book
      * @return $this
      */
-    public function setBook(Book $book)
+    public function setBook(Book $book): ProjectBookCreation
     {
         $this->book = $book;
 
@@ -84,9 +84,9 @@ class ProjectBookCreation
     }
 
     /**
-     * @return mixed
+     * @return Author
      */
-    public function getAuthor()
+    public function getAuthor(): Author
     {
         return $this->author;
     }
@@ -95,7 +95,7 @@ class ProjectBookCreation
      * @param Author $author
      * @return $this
      */
-    public function setAuthor(Author $author)
+    public function setAuthor(Author $author): ProjectBookCreation
     {
         $this->author = $author;
 

@@ -49,6 +49,7 @@ class AppFixtures extends Fixture
             $manager->persist($job);
             $this->cache['jobs'][] = $job;
         }
+        $manager->flush(); // save in db and Ids are created
 
         $dbh = $this->dbCon;
 

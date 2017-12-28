@@ -111,9 +111,10 @@ class Book
     }
 
     /**
-     * @return mixed
+     * id can be null until flush is done
+     * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -121,7 +122,7 @@ class Book
     /**
      * @return mixed
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -130,7 +131,7 @@ class Book
      * @param mixed $title
      * @return Book
      */
-    public function setTitle($title)
+    public function setTitle($title): Book
     {
         $this->title = $title;
 
@@ -140,7 +141,7 @@ class Book
     /**
      * @return mixed
      */
-    public function getDescription()
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -149,7 +150,7 @@ class Book
      * @param mixed $description
      * @return Book
      */
-    public function setDescription($description)
+    public function setDescription($description): Book
     {
         $this->description = $description;
 
@@ -159,7 +160,7 @@ class Book
     /**
      * @return mixed
      */
-    public function getIndexInSerie()
+    public function getIndexInSerie(): int
     {
         return $this->index_in_serie;
     }
@@ -168,7 +169,7 @@ class Book
      * @param mixed $indexInSerie
      * @return Book
      */
-    public function setIndexInSerie($indexInSerie)
+    public function setIndexInSerie($indexInSerie): Book
     {
         $this->index_in_serie = $indexInSerie;
 
@@ -176,25 +177,25 @@ class Book
     }
 
     /**
-     * @return Collection|Reviews[]
+     * @return ArrayCollection
      */
-    public function getReviews()
+    public function getReviews(): ArrayCollection
     {
         return $this->reviews;
     }
 
     /**
-     * @return mixed
+     * @return ProjectBookCreation
      */
-    public function getProjectBookCreation()
+    public function getProjectBookCreation(): ?ProjectBookCreation
     {
         return $this->projectBookCreation;
     }
 
     /**
-     * @return mixed
+     * @return ProjectBookEdition
      */
-    public function getProjectBookEdition()
+    public function getProjectBookEdition(): ?ProjectBookEdition
     {
         return $this->projectBookEdition;
     }
@@ -202,15 +203,15 @@ class Book
     /**
      * @return Serie
      */
-    public function getSerie()
+    public function getSerie(): ?Serie
     {
         return $this->serie;
     }
 
     /**
-     * @return Serie
+     * @return $this
      */
-    public function setSerie(Serie $serie)
+    public function setSerie(Serie $serie): Book
     {
         $this->serie = $serie;
 
@@ -221,7 +222,7 @@ class Book
      * @param ProjectBookCreation $project
      * @return $this
      */
-    public function setAuthor(ProjectBookCreation $project)
+    public function setAuthor(ProjectBookCreation $project): Book
     {
         $this->projectBookCreation[] = $project;
 
@@ -233,18 +234,18 @@ class Book
      * @param Job $job
      * @return $this
      */
-    public function addAuthor(Author $author, Job $job)
+    public function addAuthor(Author $author, Job $job): Book
     {
         $project = (new ProjectBookCreation())
             ->setBook($this)
             ->setAuthor($author)
             ->setRole($job->getId());
 
-        // @test this feature to check that it really works
+        // @test this feature to check that it really works vs if ($this->projectBookCreation->contains($project)) return $this;
         foreach ($this->projectBookCreation as $projectToCheck) {
             if ($projectToCheck->getAuthor() === $author
                 && $projectToCheck->role === $job->getId()) {
-                return;
+                return $this;
             }
         }
 
@@ -255,13 +256,12 @@ class Book
 
     /**
      * Return the list of Authors with their job for this project book creation
-     * @todo
      *
-     * @return collection|ProjectBookCreation
+     * @return ArrayCollection
      */
-    public function getAuthors()
+    public function getAuthors(): ArrayCollection
     {
-        // @todo list ProjectBookCreation with fields id/role/author (book is omitted)
+        // @todo list ProjectBookCreation with fields id/role/author (book should be omitted to prevent circular reference)
         return $this->projectBookCreation;
     }
 
@@ -269,7 +269,7 @@ class Book
      * @param ProjectBookEdition $project
      * @return $this
      */
-    public function setEditor(ProjectBookEdition $project)
+    public function setEditor(ProjectBookEdition $project): Book
     {
         $this->projectBookEdition[] = $project;
 
@@ -283,7 +283,7 @@ class Book
      * @param null $collection
      * @return $this
      */
-    public function addEditor(Editor $editor, \DateTime $date, $isbn = null, $collection = null)
+    public function addEditor(Editor $editor, \DateTime $date, $isbn = null, $collection = null): Book
     {
         $project = (new ProjectBookEdition())
             ->setBook($this)
@@ -292,13 +292,13 @@ class Book
             ->setIsbn($isbn)
             ->setCollection($collection);
 
-        // @todo test this feature to check that it really works
+        // @todo test this feature to check that it really works vs if ($this->projectBookEdition->contains($project)) return $this;
         foreach ($this->projectBookEdition as $projectToCheck) {
             if ($projectToCheck->getEditor() === $editor
                 && $projectToCheck->getPublicationDate() === $date
                 && $projectToCheck->getISBN() === $isbn
                 && $projectToCheck->getCollection() === $collection) {
-                return;
+                return $this;
             }
         }
 
@@ -311,11 +311,11 @@ class Book
      * @todo the content of the methods + the route mapping for the api
      * Return the list of Editors for all projects book edition of this book
      *
-     * @return collection|ProjectBookEdition
+     * @return ArrayCollection
      */
-    public function getEditors()
+    public function getEditors(): ArrayCollection
     {
-        //@todo list ProjectBookEdition with fields id/publicationdate/collection/isbn/editor (book is omitted)
+        //@todo list ProjectBookEdition with fields id/publicationdate/collection/isbn/editor (book should be omitted to prevent circular reference)
         return $this->projectBookEdition;
     }
 }

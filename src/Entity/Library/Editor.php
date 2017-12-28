@@ -41,17 +41,18 @@ class Editor
     }
 
     /**
-     * @return mixed
+     * id can be null until flush is done
+     * @return int
      */
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -60,7 +61,7 @@ class Editor
      * @param mixed $name
      * @return Editor
      */
-    public function setName($name)
+    public function setName($name): Editor
     {
         $this->name = $name;
 
@@ -71,11 +72,11 @@ class Editor
      * @todo the content of the methods + the route mapping for the api
      * Return the list of Books for all projects book edition of this editor
      *
-     * @return collection|ProjectBookEdition
+     * @return ArrayCollection
      */
-    public function getBooks()
+    public function getBooks(): ArrayCollection
     {
-        // list ProjectBookEdition with fields id/publicationdate/collection/isbn/book (editor is omitted)
+        // list ProjectBookEdition with fields id/publicationdate/collection/isbn/book (editor should be omitted to prevent circular reference)
         return $this->projectBookEdition;
     }
 }
