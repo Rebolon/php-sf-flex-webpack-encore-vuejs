@@ -43,20 +43,23 @@ version... For instance it seems to be ok, but i think that in future it could b
 
 ## components
 
-flex: new symfony system to make web dev life easier ; it works with recipes
-vuejs: top js framework to build SPA, or just widget on classic page
-quasar: UX component library based on VueJS
-encore: symfony solution to wrap webpack config and, once again, make your life simpler
-annotations: use annotations everywhere in your PHP code
-twig: symfony template solution, useless if you don't want to render template with symfony, but usefull to be able to use assets twig helper with webpack encore
-api: api-platform to build REST api(instead of fosrestbundle)
-admin: easy admin component to build quick backend with auto form
-profiler: for debugging purpose
-log: a logger for symfony
-babel-preset-es2017: do you really need explanation ?
-testcafe: a test framework (might be changed by chimp or anything else)
-sass: hey, we are not in nineties, we don't write css now
-bootstrap: the beta 4 version of the first class css framework (not used with quasar)
+* flex: new symfony system to make web dev life easier ; it works with recipes
+* vuejs: top js framework to build SPA, or just widget on classic page
+* quasar: UX component library based on VueJS
+* encore: symfony solution to wrap webpack config and, once again, make your life simpler
+* annotations: use annotations everywhere in your PHP code
+* twig: symfony template solution, useless if you don't want to render template with symfony, but usefull to be able to use assets twig helper with webpack encore
+* api: api-platform to build REST api(instead of fosrestbundle)
+* http: a cool library to do http call from http (you could switch it with Guzzle)
+* doctrine-migrations: based on Doctrine ORM, it make it easy to change your db during a project life
+* doctrine-fixture: also based on Doctrine to help you to add fixtures in your DB (for your tests or for project init)
+* admin: easy admin component to build quick backend with auto form
+* profiler: for debugging purpose
+* log: a logger for symfony
+* babel-preset-es2017: do you really need explanation ?
+* testcafe: a test framework (might be changed with chimp or anything else, gimme better idea)
+* sass: hey, we are not in nineties, we don't write css now
+* bootstrap: the beta 4 version of the first class css framework (not used with quasar)
 
 ## run
 
