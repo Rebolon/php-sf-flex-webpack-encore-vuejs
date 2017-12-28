@@ -61,7 +61,7 @@ class Book
      * @ApiProperty(
      *     iri="http://schema.org/reviews"
      * )
-     * @ ApiSubresource(maxDepth=1)
+     * @ApiSubresource(maxDepth=1)
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\Review", mappedBy="book", orphanRemoval=true)
      */
@@ -70,7 +70,7 @@ class Book
     /**
      * @var ProjectBookCreation
      *
-     * @ ApiSubresource(maxDepth=1)
+     * @ApiSubresource(maxDepth=1)
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookCreation", mappedBy="book", cascade={"persist", "remove"})
      */
@@ -79,14 +79,14 @@ class Book
     /**
      * @var ProjectBookEdition
      *
-     * @ ApiSubresource(maxDepth=1)
+     * @ApiSubresource(maxDepth=1)
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookEdition", mappedBy="book", cascade={"persist", "remove"})
      */
     private $editors;
 
     /**
-     * @ ApiSubresource(maxDepth=1)
+     * @ApiSubresource(maxDepth=1)
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Library\Serie", inversedBy="book")
      * @ORM\JoinColumn(name="serie_id", referencedColumnName="id")
