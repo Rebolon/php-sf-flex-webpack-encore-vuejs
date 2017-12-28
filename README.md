@@ -17,7 +17,7 @@ Here is how it has been created:
 
 * composer create-project symfony/skeleton sf-flex-encore-vuejs
 * cd sf-flex-encore-vuejs
-* composer req encore annotations twig api http profiler log doctrine-migrations admin
+* composer req encore annotations twig api http profiler log doctrine-migrations admin composer webonyx/graphql-php
 * composer require --dev doctrine/doctrine-fixtures-bundle
 * yarn add vue vue-router quasar-framework quasar-extras vuelidate 
 * yarn add --dev vue-loader vue-template-compiler vue-router babel-preset-es2017 testcafe sass-loader node-sass bootstrap@4.0.0-beta.2
@@ -32,9 +32,12 @@ Then some php controllers has been created on following routes :
  * /demo/vuejs : VuejsController with route config in annotations and VueJS app with specific js/css import
  * /demo/quasar : QuasarController like VuejsController but with the Quasar framework for UX components
  * /demo/http-plug : HttpPlugController to show how to call external API from your controller
- * /login : LoginController managed by Symfony for validation, but managed by the code to render the login form
- * /api : access ApiPlatform api doc
+ * /demo/form : @todo complex form that explain VueJS form usage with vuelidate and api call (graphQL & REST)
+ * /demo/login/secured : LoginController managed by Symfony for validation, but managed by the code to render the login form
+ * /demo/api-platform-admin : ApiPlatformReactAdminController which serve the react-admin component from apiPlatform
  * /admin : use the easy admin bundle to allow a comparison between fullstack PHP and PHP/VueJS
+ * /api : access ApiPlatform api doc using the REST API
+ * /api/graphql : access ApiPlatform using the graphQL API
 
 But, Vuejs, ReactJS and Angular together ? with Symfony4, WTF ???
 Yes it can seems completely stupid to use all this technologies together, but don't forget one thing : this is a POC !

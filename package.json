@@ -38,7 +38,9 @@
         "quasar-framework": "^0.14.7",
         "vue": "^2.5.9",
         "vue-router": "^3.0.1",
-        "vuelidate": "^0.6.1"
+        "vuelidate": "^0.6.1",
+        "@api-platform/admin": "^0.2.0",
+        "react-scripts": "1.0.17"
     },
     "devDependencies": {
         "@symfony/webpack-encore": "^0.12.0",
