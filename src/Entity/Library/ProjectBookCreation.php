@@ -2,9 +2,11 @@
 namespace App\Entity\Library;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
+ * @ApiResource()
  * @ORM\Entity
  * @ORM\Table(name="project_book_creation")
  */
@@ -44,6 +46,16 @@ class ProjectBookCreation
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
      */
     private $author;
+
+    /**
+     * mandatory for api-platform to get a valid IRI
+     *
+     * @return int
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
     /**
      * @return int

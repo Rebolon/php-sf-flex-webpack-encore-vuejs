@@ -2,10 +2,12 @@
 namespace App\Entity\Library;
 
 use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource()
  * @ORM\Entity
  * @ORM\Table(name="project_book_edition")
  */
@@ -58,6 +60,16 @@ class ProjectBookEdition
      * @ORM\JoinColumn(name="book_id", referencedColumnName="id")
      */
     private $book;
+
+    /**
+     * mandatory for api-platform to get a valid IRI
+     *
+     * @return int
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
     /**
      * @return \DateTime
