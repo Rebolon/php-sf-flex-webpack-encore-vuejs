@@ -88,7 +88,7 @@ class Book
     /**
      * @ApiSubresource(maxDepth=1)
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Library\Serie", inversedBy="book")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Library\Serie", inversedBy="books")
      * @ORM\JoinColumn(name="serie_id", referencedColumnName="id")
      */
     private $serie;
