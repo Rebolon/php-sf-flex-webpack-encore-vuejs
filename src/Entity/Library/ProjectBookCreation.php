@@ -1,8 +1,8 @@
 <?php
 namespace App\Entity\Library;
 
-use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,8 +20,10 @@ class ProjectBookCreation
     private $id;
 
     /**
-     * To be easier, should be a OneToOne ? with link on JobID
-     * @ORM\Column(type="integer", nullable=true)
+     * @ApiSubresource(maxDepth=1)
+     *
+     * @ORM\ManyToOne(targetEntity="App\Entity\Library\Job")
+     * @ORM\JoinColumn(name="job_id", referencedColumnName="id")
      */
     private $role;
 
@@ -58,18 +60,18 @@ class ProjectBookCreation
     }
 
     /**
-     * @return int
+     * @return Job
      */
-    public function getRole(): int
+    public function getRole(): Job
     {
         return $this->role;
     }
 
     /**
-     * @param mixed $role
+     * @param Job $role
      * @return ProjectBookCreation
      */
-    public function setRole($role): ProjectBookCreation
+    public function setRole(Job $role): ProjectBookCreation
     {
         $this->role = $role;
 

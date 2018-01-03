@@ -68,7 +68,7 @@ version... For instance it seems to be ok, but i think that in future it could b
   2. php dependancies installation: `composer install`
   3. nodejs tooling installation: `npm install`
   4. assets generation: `npm run dev`
-  5. db init: `php bin/console doctrine:database:create` & `doctrine:schema:create` & `doctrine:migrations:migrate`
+  5. db init: `php bin/console doctrine:database:create` & `doctrine:schema:create` & `doctrine:fixtures:load`
 * Run your application:
   1. Change to the project directory
   2. Execute the `npm run dev-server-hot` command to start the asset server that will build your assets and your manifest.json and serve the assets with hot module replacment when you do a modification on a vuejs file 
@@ -85,6 +85,8 @@ version... For instance it seems to be ok, but i think that in future it could b
 
 If you want to change default ports, you can use package.json > config : server_port_web for the web server (php built in server), and server_port_asset for the asset server.
 Default ports are 80 and 8080.
+
+If you update the project, don't forget to run `doctrine:migrations:migrate` to take care of DB modifications.
 
 ## webpack
 

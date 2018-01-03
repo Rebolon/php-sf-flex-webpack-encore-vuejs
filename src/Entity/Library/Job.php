@@ -27,14 +27,6 @@ class Job
     private $tanslation_key;
 
     /**
-     * @ApiProperty(
-     *     iri="http://schema.org/roleName"
-     * )
-     * @ORM\Column(type="integer", nullable=true, options={"unsigned":true})
-     */
-    private $role;
-
-    /**
      * id can be null until flush is done
      * @return int
      */
@@ -58,25 +50,6 @@ class Job
     public function setTanslationKey($tanslation_key): Job
     {
         $this->tanslation_key = $tanslation_key;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getRole(): int
-    {
-        return $this->role;
-    }
-
-    /**
-     * @param mixed $role
-     * @return Job
-     */
-    public function setRole($role): Job
-    {
-        $this->role = $role;
 
         return $this;
     }

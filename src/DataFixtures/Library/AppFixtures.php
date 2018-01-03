@@ -40,10 +40,9 @@ class AppFixtures extends Fixture
      */
     public function load(ObjectManager $manager)
     {
-        // add job
+        // add job (indexed are 0->writer, 1->cartoonist, 2->color)
         foreach (['writer', 'cartoonist', 'color', ] as $jobTitle) {
             $job = (new Job())
-                ->setRole($jobTitle)
                 ->setTanslationKey('JOB_'.strtoupper($jobTitle));
 
             $manager->persist($job);
@@ -171,7 +170,7 @@ SQL
     {
         $bookId = $bookFixture['id'];
 
-        // add editor
+        // add author
         $sth = $dbh->prepare(
 <<<SQL
 SELECT m.id, m.name
