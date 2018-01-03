@@ -232,12 +232,12 @@ class Book
         $project = (new ProjectBookCreation())
             ->setBook($this)
             ->setAuthor($author)
-            ->setRole($job->getId());
+            ->setRole($job);
 
         // @test this feature to check that it really works vs if ($this->projectBookCreation->contains($project)) return $this;
         foreach ($this->authors as $projectToCheck) {
             if ($projectToCheck->getAuthor() === $author
-                && $projectToCheck->role === $job->getId()) {
+                && $projectToCheck->role === $job) {
                 return $this;
             }
         }
