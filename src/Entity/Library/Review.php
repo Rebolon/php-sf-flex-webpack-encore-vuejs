@@ -74,7 +74,7 @@ class Review
     /**
      * @return int
      */
-    public function getRating(): int
+    public function getRating(): ?int
     {
         return $this->rating;
     }
@@ -131,7 +131,7 @@ class Review
     /**
      * @return \DateTime
      */
-    public function getPublicationDate(): \DateTime
+    public function getPublicationDate(): ?\DateTime
     {
         return $this->publication_date;
     }
@@ -150,8 +150,22 @@ class Review
     /**
      * @return Book
      */
-    public function getBook(): Book
+    public function getBook(): ?Book
     {
         return $this->book;
     }
+
+    /**
+     * Mandatory for EasyAdminBundle (if i don't want to do custom dev)
+     *
+     * @param Book $book
+     * @return Review
+     */
+    public function setBook(Book $book): Review
+    {
+        $this->book = $book;
+
+        return $this;
+    }
+
 }

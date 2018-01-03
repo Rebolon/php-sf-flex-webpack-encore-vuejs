@@ -5,8 +5,8 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\PersistentCollection;
 
 /**
  * @ApiResource(iri="http://schema.org/Series")
@@ -75,10 +75,20 @@ class Serie
     }
 
     /**
-     * @return PersistentCollection
+     * @return Collection
      */
-    public function getBooks(): PersistentCollection
+    public function getBooks(): Collection
     {
         return $this->books;
+    }
+
+    /**
+     * Mandatory for EasyAdminBundle to build the select box
+     *
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getName();
     }
 }

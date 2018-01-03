@@ -38,7 +38,7 @@ class Job
     /**
      * @return string
      */
-    public function getTanslationKey(): string
+    public function getTanslationKey(): ?string
     {
         return $this->tanslation_key;
     }

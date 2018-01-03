@@ -5,8 +5,8 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\PersistentCollection;
 
 /**
  * @ApiResource(iri="http://bib.schema.org/ComicStory")
@@ -115,7 +115,7 @@ class Book
     /**
      * @return mixed
      */
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
@@ -170,28 +170,22 @@ class Book
     }
 
     /**
-     * @return PersistentCollection
+     * @return Collection
      */
-    public function getReviews(): PersistentCollection
+    public function getReviews(): Collection
     {
         return $this->reviews;
     }
+    /**
+     * @param Review $review
+     * @return $this
+     */
+    public function addReview(Review $review): Book
+    {
+        $this->reviews[] = $review;
 
-//    /**
-//     * @return PersistentCollection
-//     */
-//    public function getProjectBookCreation(): PersistentCollection
-//    {
-//        return $this->projectBookCreation;
-//    }
-
-//    /**
-//     * @return PersistentCollection
-//     */
-//    public function getProjectBookEdition(): PersistentCollection
-//    {
-//        return $this->projectBookEdition;
-//    }
+        return $this;
+    }
 
     /**
      * @return Serie
@@ -250,9 +244,9 @@ class Book
     /**
      * Return the list of Authors with their job for this project book creation
      *
-     * @return PersistentCollection
+     * @return Collection
      */
-    public function getAuthors(): PersistentCollection
+    public function getAuthors(): Collection
     {
         // @todo list ProjectBookCreation with fields id/role/author (book should be omitted to prevent circular reference)
         return $this->authors;
@@ -304,11 +298,21 @@ class Book
      * @todo the content of the methods + the route mapping for the api
      * Return the list of Editors for all projects book edition of this book
      *
-     * @return PersistentCollection
+     * @return Collection
      */
-    public function getEditors(): PersistentCollection
+    public function getEditors(): Collection
     {
         //@todo list ProjectBookEdition with fields id/publicationdate/collection/isbn/editor (book should be omitted to prevent circular reference)
         return $this->editors;
+    }
+
+    /**
+     * Mandatory for EasyAdminBundle to build the select box
+     *
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getTitle();
     }
 }
