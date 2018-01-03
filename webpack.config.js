@@ -41,7 +41,7 @@ Encore
     // uncomment if you use Sass/SCSS files
     // parameters are not mandatory, only if webpack build is slow with bootstrap (http://symfony.com/doc/current/frontend/encore/bootstrap.html)
     .enableSassLoader(function(sassOptions) {}, {
-        resolve_url_loader: false
+        resolveUrlLoader: false
     })
 
     // VueJS

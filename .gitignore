@@ -11,3 +11,5 @@
 
 /.idea/
 /public/build/
+
+/assets/js/config.js

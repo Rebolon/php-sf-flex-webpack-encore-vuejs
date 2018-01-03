@@ -128,7 +128,7 @@
                         if (!response.error) {
                             // @todo find a good pattern to remove this item: with a delay ? when we fist enter on the route => Sf twig should add extra Js script to force a call to server and check authentification... ?
                             localStorage.setItem('isLoggedIn', true)
-                            this.$router.push('/todos')
+                            this.$router.push('/books')
 
                             return
                         }

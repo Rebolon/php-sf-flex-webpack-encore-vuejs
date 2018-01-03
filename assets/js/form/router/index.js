@@ -1,9 +1,9 @@
-import Vue from 'vue';
-import Router from 'vue-router';
-import Login from '../components/Login.vue';
-import Todos from '../components/Todos.vue';
+import Vue from 'vue'
+import Router from 'vue-router'
+import Login from '../components/Login.vue'
+import Books from '../components/Books.vue'
 
-Vue.use(Router);
+Vue.use(Router)
 
 const isLoggedIn = (to, from, next) => {
     // do check on cookie/token and let it go if ok, or redirect to login
@@ -23,11 +23,11 @@ export default new Router({
             props: true,
         },
         {
-            path: '/todos',
-            name: 'Todos',
-            component: Todos,
+            path: '/books',
+            name: 'Books',
+            component: Books,
             props: true,
             beforeEnter: isLoggedIn,
         },
     ],
-});
+})
