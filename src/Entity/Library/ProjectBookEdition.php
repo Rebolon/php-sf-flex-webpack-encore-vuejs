@@ -166,4 +166,14 @@ class ProjectBookEdition
 
         return $this;
     }
+
+    /**
+     * Mandatory for EasyAdminBundle to build the select box
+     *
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getBook()->getTitle() . ' ' . $this->getEditor()->getName() . ' ' . $this->getCollection();
+    }
 }
