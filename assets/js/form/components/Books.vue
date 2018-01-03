@@ -12,7 +12,7 @@
 
         <q-list highlight>
             <q-item v-for="book in books" :key="book.id">
-                <Todo :book="book" @remove="remove(ev)"/>
+                <Book :book="book" @remove="remove(ev)"/>
             </q-item>
         </q-list>
 
@@ -51,10 +51,11 @@
                 isLoading: true,
                 books: [],
                 id: undefined,
+                paginationUris: {}
             };
         },
         created() {
-            this.getListByGraphQL()
+            this.getListByRest()
         },
         methods: {
           getListByRest() {
@@ -62,17 +63,21 @@
             fetch(uri)
             .then(res => res.json())
             .then(res => {
-              this.todos = res
+              this.books = res['hydra:member']
               this.isLoading = false
+
+              if (undefined !== res['hydra:view']) {
+                ['first', 'last', 'next', 'previous',].forEach(key => {
+                  if (undefined !== res['hydra:view'][`hydra:${key}`]) {
+                    this.paginationUris[key] = res['hydra:view'][`hydra:${key}`]
+                  }
+                })
+              }
             })
           },
-
-          getListByGraphQL() {
-            this.$apollo.queries.getList
-          }
         },
         apollo: {
-          fetchPolicy: "cache-and-network",
+          // @todo set variables in query to allow pagination navigation
           getList: gql`{
   books {
     edges {
