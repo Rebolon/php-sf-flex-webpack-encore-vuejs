@@ -2,7 +2,7 @@
     "type": "project",
     "license": "proprietary",
     "require": {
-        "php": "^7.0.8",
+        "php": "^7.0",
         "ext-curl": "*",
         "ext-pdo_sqlite": "*",
         "doctrine/doctrine-migrations-bundle": "^1.3",
