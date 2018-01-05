@@ -56,6 +56,7 @@
         },
         created() {
             this.getListByRest()
+            this.addBook()
         },
         methods: {
           getListByRest() {
@@ -75,6 +76,73 @@
               }
             })
           },
+
+          addBook() {
+            const newBook = {
+              "title": "test livre",
+              "description": "test livre",
+              "indexInSerie": 1,
+              "clientMutationId": "0",
+              "serie": {
+                "name": "test serie",
+                "clientMutationId": "1"
+              }
+            }
+
+            this.$apollo.mutate({
+              // Query
+              mutation: gql`mutation createBook(
+                                $book: createBookInput!
+                            ) {
+
+                                createBook(
+                                    input: $book
+                                ) {
+                                    title
+                                    id
+                                    serie {
+                                      name
+                                      id
+                                    }
+                                }
+                        }`,
+              // Parameters
+              variables: {
+                book: newBook,
+              },
+              // Update the cache with the result
+              // The query will be updated with the optimistic response
+              // and then with the real result of the mutation
+              update: (store, { data: { newBook } }) => {
+                console.log(store, arguments[1])
+                //// Read the data from our cache for this query.
+                //const data = store.readQuery({ query: TAGS_QUERY })
+                //// Add our tag from the mutation to the end
+                //data.tags.push(newTag)
+                //// Write our data back to the cache.
+                //store.writeQuery({ query: TAGS_QUERY, data })
+              },
+              // Optimistic UI
+              // Will be treated as a 'fake' result as soon as the request is made
+              // so that the UI can react quickly and the user be happy
+              //optimisticResponse: {
+              //  __typename: 'Mutation',
+              //  createBook: {
+              //    __typename: 'Book',
+              //    id: -1,
+              //    label: book,
+              //  },
+              //},
+            }).then((data) => {
+              // Result
+              console.log(data)
+            }).catch((error) => {
+              // Error
+              console.error("Books.vue error catched by apollo client: ", error)
+              //// We restore the initial user input
+              //this.newTag = newTag
+            })
+          }
         },
         apollo: {
           // @todo set variables in query to allow pagination navigation
