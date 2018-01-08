@@ -8,7 +8,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Flex\Response;
 
 /**
- * @ApiResource(iri="http://schema.org/Review")
+ * @ApiResource(
+ *     iri="http://schema.org/Review",
+ *     attributes={"access_control"="is_granted('ROLE_USER')"}
+ * )
  * @ORM\Entity
  */
 class Review

@@ -23,7 +23,7 @@ class LoginController extends Controller
      * @Method({"GET"})
      */
     public function index() {
-        return new Response('you are in');
+        return $this->render('login/index.html.twig');
     }
 
     /**
@@ -73,5 +73,21 @@ class LoginController extends Controller
         } catch (\Exception $e) {
             return new JsonResponse(["error" => ["code" => 400, "message" => $e->getMessage(), "exception" => $e, ], ]);
         }
+    }
+
+    /**
+     * Try to test this security when the one on the bottom works Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     *
+     * call it with .json extension and check if you have a 200
+     *
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Route(
+     *     "/demo/login/isloggedin",
+     *     name="demo_secured_page_is_logged_in",
+     *     )
+     * @Method({"GET"})
+     */
+    public function isLoggedIn() {
+        return new JsonResponse(['isLoggedIn' => 1, ]);
     }
 }

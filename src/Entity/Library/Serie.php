@@ -9,7 +9,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\PersistentCollection;
 
 /**
- * @ApiResource(iri="http://schema.org/Series")
+ * @ApiResource(
+ *     iri="http://schema.org/Series",
+ *     attributes={"access_control"="is_granted('ROLE_USER')"}
+ * )
  * @ORM\Entity
  */
 class Serie

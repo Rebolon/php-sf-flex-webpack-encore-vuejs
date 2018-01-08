@@ -56,14 +56,14 @@
         },
         created() {
             this.getListByRest()
-            this.addBook()
-            this.addSerie()
-            this.addBookWithSerie()
+            // this.addBook()
+            // this.addSerie()
+            // this.addBookWithSerie()
         },
         methods: {
           getListByRest() {
             const uri = '/api/books'
-            fetch(uri)
+            fetch(uri, {credentials: "same-origin"})
             .then(res => res.json())
             .then(res => {
               this.books = res['hydra:member']

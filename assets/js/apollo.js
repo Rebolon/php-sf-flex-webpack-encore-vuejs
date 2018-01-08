@@ -15,6 +15,7 @@ export const apolloClient = new ApolloClient({
   link: httpLink,
   cache: new InMemoryCache(),
   connectToDevTools: true,
+  credentials: 'same-origin',
 })
 
 export const apolloProvider = new VueApollo({

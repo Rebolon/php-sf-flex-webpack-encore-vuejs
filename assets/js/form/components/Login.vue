@@ -59,6 +59,7 @@
     } from 'quasar-framework'
     import { required } from 'vuelidate/lib/validators'
     import getToken from '../../csrf_token'
+    import isLoggedIn from '../../login'
     export default {
         name: 'Login',
         components: {
@@ -81,8 +82,14 @@
             }
         },
         created () {
-           getToken(this)
-               .then(csrf_token => this.form.csrf = csrf_token)
+            isLoggedIn()
+            .then(isTrue => {
+              Toast.create.info('You are logged in')
+              this.$router.push('/books')
+            })
+
+            getToken(this)
+                .then(csrf_token => this.form.csrf = csrf_token)
         },
         validations: {
             form: {
@@ -126,7 +133,6 @@
                     .then(response => {
                         this.isLoading = false
                         if (!response.error) {
-                            // @todo find a good pattern to remove this item: with a delay ? when we fist enter on the route => Sf twig should add extra Js script to force a call to server and check authentification... ?
                             localStorage.setItem('isLoggedIn', true)
                             this.$router.push('/books')
 
