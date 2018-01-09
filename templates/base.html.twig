@@ -11,6 +11,19 @@
         <title>{% block title %}Demo sf-flex-encore-vuejs{% endblock %}</title>
     </head>
     <body class="mat">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <h1>Demo of symfony 4
+                <span style="font-size: smaller">with flex,
+                    <span style="font-size: smaller">and webpack/encore,
+                        <span style="font-size: smaller">VueJS,
+                            <span style="font-size: smaller">ApiPlatform,
+                                <span style="font-size: smaller">HttpPlug,...</span>
+                            </span>
+                        </span>
+                    </span>
+                </span>
+            </h1>
+        </nav>
         {% block body %}{% endblock %}
 
         <script src="{{ asset('build/manifest.js') }}"></script>

@@ -2,7 +2,7 @@
 
 {% block body %}
     <div class="container">
-        <h1>List of demos</h1>
+        <h2>List of demos</h2>
         <ul class="list-group">
         {% for routeName, route in routes %}
             <li class="list-group-item"><a href='{{ path(routeName) }}'>{{ routeName }}</a></li>

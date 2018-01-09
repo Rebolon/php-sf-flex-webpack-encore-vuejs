@@ -12,6 +12,7 @@ Encore
 
     // first, install any presets you want to use (e.g. yarn add babel-preset-es2017)
     // then, modify the default Babel configuration
+    // if you prefer using a .babelrc file then this configureBabel will be omit, reactPreset will also need to be loaded with babelrc file
     .configureBabel(function(babelConfig) {
         // add additional presets
         babelConfig.presets.push('es2017')
