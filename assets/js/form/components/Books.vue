@@ -10,13 +10,18 @@
             </q-toolbar-title>
         </q-toolbar>
 
+        <q-spinner-circles v-if="isLoading" size="150px"/>
+
+        <q-pagination v-if="books.length" v-model="pagination.page" :max="pagination.total" @change="getOtherPage($event)"></q-pagination>
+
         <q-list highlight>
             <q-item v-for="book in books" :key="book.id">
                 <Book :book="book" @remove="remove(ev)"/>
             </q-item>
         </q-list>
 
-        <q-spinner-circles v-if="isLoading" size="150px"/>
+        <q-pagination v-if="books.length" v-model="pagination.page" :max="pagination.total" @change="getOtherPage($event)"></q-pagination>
+
     </div>
 </template>
 
@@ -29,7 +34,8 @@
         QItem,
         QItemMain,
         QItemTile,
-        QSpinnerCircles
+        QSpinnerCircles,
+        QPagination
     } from 'quasar-framework'
     import Book from './Book.vue'
     import gql from 'graphql-tag'
@@ -43,6 +49,7 @@
             QItemMain,
             QItemTile,
             QSpinnerCircles,
+            QPagination,
             Book,
         },
         data() {
@@ -51,7 +58,19 @@
                 isLoading: true,
                 books: [],
                 id: undefined,
-                paginationUris: {}
+                pagination: {
+                  page: 1,
+                  total: 1,
+                  uris: {},
+                  itemPerPage: 10,
+                  endCursor: '',
+                  nexEndCursor: ''
+                },
+
+                // dataStore for GraphQL Queries: vue-apollo will inject data in vue components based on the name of the query
+                getBooks: {
+                  pageInfo: {}
+                },
             };
         },
         created() {
@@ -61,8 +80,18 @@
             // this.addBookWithSerie()
         },
         methods: {
-          getListByRest() {
-            const uri = '/api/books'
+          getOtherPage(page) {
+            // for graphQl
+            // @todo find a way to identify if we get the data in the store or if we need to ask for new data
+            this.pagination.endCursor = this.getBooks.pageInfo.endCursor
+            // for Rest
+            this.getListByRest(page)
+          },
+
+          getListByRest(page = 1) {
+            this.isLoading = true
+            const pageInt = Number.parseInt(page)
+            const uri = `/api/books?page=${pageInt}`
             fetch(uri, {credentials: "same-origin"})
             .then(res => res.json())
             .then(res => {
@@ -72,7 +101,14 @@
               if (undefined !== res['hydra:view']) {
                 ['first', 'last', 'next', 'previous',].forEach(key => {
                   if (undefined !== res['hydra:view'][`hydra:${key}`]) {
-                    this.paginationUris[key] = res['hydra:view'][`hydra:${key}`]
+                    this.pagination.uris[key] = res['hydra:view'][`hydra:${key}`]
+
+                    if (key === 'last') {
+                      const pageParam = res['hydra:view'][`hydra:${key}`].match(/page=\d*/)
+                      if (pageParam) {
+                        this.pagination.total = Number.parseInt(pageParam[0].replace('page=', ''))
+                      }
+                    }
                   }
                 })
               }
@@ -267,16 +303,29 @@
           }
         },
         apollo: {
-          // @todo set variables in query to allow pagination navigation
-          getList: gql`{
-  books {
-    edges {
-      node {
-        title
+          getBooks: {
+            query: gql`query getBooksQry($first: Int, $after: String ) {
+    getBooks: books(first: $first, after: $after ) {
+      edges {
+        node {
+          id
+          title
+        }
+      }
+      pageInfo {
+        endCursor
       }
     }
-  }
-}`,
+  }`,
+            variables() {
+              return {
+                first: this.pagination.itemPerPage,
+                after: this.pagination.endCursor
+              }
+            },
+            // Additional options here
+            fetchPolicy: 'cache-and-network',
+        },
         }
     };
 </script>

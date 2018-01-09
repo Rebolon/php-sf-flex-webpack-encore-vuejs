@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/api-platform/core.git",
-                "reference": "d2a672902de3cba306ee22d9a4faeb6da01ade1f"
+                "reference": "a66132250ffba44c6318ca2c055e04cf9e68171d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/api-platform/core/zipball/d2a672902de3cba306ee22d9a4faeb6da01ade1f",
-                "reference": "d2a672902de3cba306ee22d9a4faeb6da01ade1f",
+                "url": "https://api.github.com/repos/api-platform/core/zipball/a66132250ffba44c6318ca2c055e04cf9e68171d",
+                "reference": "a66132250ffba44c6318ca2c055e04cf9e68171d",
                 "shasum": ""
             },
             "require": {
@@ -121,7 +121,7 @@
                 "rest",
                 "swagger"
             ],
-            "time": "2017-12-29T18:10:48+00:00"
+            "time": "2018-01-08T23:52:48+00:00"
         },
         {
             "name": "clue/stream-filter",

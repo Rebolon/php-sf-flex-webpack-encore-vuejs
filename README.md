@@ -19,7 +19,7 @@ Here is how it has been created:
 * cd sf-flex-encore-vuejs
 * composer req encore annotations twig api http profiler log doctrine-migrations admin
 * composer require --dev doctrine/doctrine-fixtures-bundle
-* yarn add vue vue-router quasar-framework quasar-extras vuelidate vue-apollo@next graphql apollo-client apollo-link apollo-link-http apollo-cache-inmemory graphql-tag
+* yarn add vue vue-router quasar-framework quasar-extras vuelidate vue-apollo@next graphql apollo-client apollo-link apollo-link-http apollo-link-error apollo-cache-inmemory graphql-tag
 * yarn add --dev vue-loader vue-template-compiler vue-router babel-preset-es2017 testcafe sass-loader node-sass bootstrap@4.0.0-beta.2
 * yarn install 
 

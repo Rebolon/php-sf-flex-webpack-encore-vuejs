@@ -1,3 +1,6 @@
+import router from './form/router/index'
+import { Toast } from 'quasar-framework'
+
 export default function isLoggedIn(loaderToActivate)
 {
     return new Promise((resolve, reject) => {
@@ -17,10 +20,9 @@ export default function isLoggedIn(loaderToActivate)
           cache: 'no-cache',
         }
         fetch(uri, myInit)
-            // @todo manage http error
             .then(res => {
-                if (res.status !== 200) {
-                  resetLoginInfo()
+                if ([500, 403, 401, ].find(code => code === res.status)) {
+                  logout()
                   reject()
 
                   return
@@ -40,4 +42,10 @@ export default function isLoggedIn(loaderToActivate)
 
 export const resetLoginInfo = function() {
   localStorage.removeItem('isLoggedIn')
+}
+
+export const logout = function() {
+  resetLoginInfo()
+  Toast.create.info('You have been logged out.')
+  router.go('/')
 }
