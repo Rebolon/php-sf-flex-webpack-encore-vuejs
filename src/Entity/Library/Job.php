@@ -6,7 +6,10 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource(iri="http://schema.org/Role")
+ * @ApiResource(
+ *     iri="http://schema.org/Role",
+ *     attributes={"access_control"="is_granted('ROLE_USER')"}
+ * )
  * @ORM\Entity
  */
 class Job

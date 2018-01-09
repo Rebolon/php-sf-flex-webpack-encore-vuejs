@@ -9,7 +9,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource(iri="http://bib.schema.org/ComicStory")
+ * @ApiResource(
+ *     iri="http://bib.schema.org/ComicStory",
+ *     attributes={"access_control"="is_granted('ROLE_USER')"}
+ * )
  * @ORM\Entity
  */
 class Book

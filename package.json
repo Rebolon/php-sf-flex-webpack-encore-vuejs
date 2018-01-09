@@ -6,20 +6,23 @@
     "private": true,
     "config": {
         "php": "php",
+        "server_host_web": "localhost",
         "server_port_web": "80",
         "server_port_asset": "8080",
         "test_browser": "chrome,firefox"
     },
     "scripts": {
         "init-project": "npm run init-project:linux",
-        "init-project:linux": "cp .env.dist .env && composer install && npm install && npm run db-init:linux",
-        "init-project:windows": "cp .env.dist .env && composer install && npm install && npm run db-init:windows",
+        "init-project:linux": "cp .env.dist .env && composer install && npm install && npm run db-init:linux && npm run dump-js-config:linux",
+        "init-project:windows": "cp .env.dist .env && composer install && npm install && npm run db-init:windows && npm run dump-js-config:windows",
         "db-init": "npm run db-init:linux",
         "db-init:linux": "$npm_package_config_php bin/console doctrine:database:create && $npm_package_config_php bin/console doctrine:schema:create && $npm_package_config_php bin/console doctrine:fixtures:load",
         "db-init:windows": "%npm_package_config_php% bin/console doctrine:database:create && %npm_package_config_php% bin/console doctrine:schema:create && %npm_package_config_php% bin/console doctrine:fixtures:load",
+        "dump-js-config:linux": "rm assets/js/config.js -f && echo export let host = '$npm_package_config_server_host_web:$npm_package_config_server_port_web' > assets/js/config.js",
+        "dump-js-config:windows": "rm assets/js/config.js -f && echo export let host = '%npm_package_config_server_host_web%:%npm_package_config_server_port_web%' > assets/js/config.js",
         "sf-dev": "npm run sf-dev:linux",
-        "sf-dev:linux": "$npm_package_config_php -S 127.0.0.1:$npm_package_config_server_port_web -t public",
-        "sf-dev:windows": "%npm_package_config_php% -S 127.0.0.1:%npm_package_config_server_port_web% -t public",
+        "sf-dev:linux": "$npm_package_config_php -S $npm_package_config_server_host_web:$npm_package_config_server_port_web -t public",
+        "sf-dev:windows": "%npm_package_config_php% -S %npm_package_config_server_host_web%:%npm_package_config_server_port_web% -t public",
         "dev-server": "npm run dev-server:linux",
         "dev-server:linux": "./node_modules/.bin/encore dev-server --port $npm_package_config_server_port_asset",
         "dev-server:windows": "./node_modules/.bin/encore dev-server --port %npm_package_config_server_port_asset%",
@@ -34,20 +37,28 @@
         "test:windows": "./node_modules/.bin/testcafe %npm_package_config_test_browser% ./assets/tests"
     },
     "dependencies": {
+        "apollo-cache-inmemory": "^1.1.4",
+        "apollo-client": "^2.0.4",
+        "apollo-link": "^1.0.7",
+        "apollo-link-error": "^1.0.3",
+        "apollo-link-http": "^1.3.2",
+        "graphql": "^0.12.3",
+        "graphql-tag": "^2.6.1",
         "quasar-extras": "0.0.8",
         "quasar-framework": "^0.14.7",
-        "vue": "^2.5.9",
+        "vue": "^2.5.13",
+        "vue-apollo": "^3.0.0-alpha.3",
         "vue-router": "^3.0.1",
         "vuelidate": "^0.6.1"
     },
     "devDependencies": {
-        "@symfony/webpack-encore": "^0.12.0",
+        "@symfony/webpack-encore": "^0.17.1",
         "babel-preset-es2017": "^6.24.1",
         "bootstrap": "4.0.0-beta.2",
         "node-sass": "^4.5.3",
         "sass-loader": "^6.0.6",
-        "testcafe": "^0.18.5",
+        "testcafe": "^0.18.6",
         "vue-loader": "^13.3.0",
-        "vue-template-compiler": "^2.5.2"
+        "vue-template-compiler": "^2.5.13"
     }
 }

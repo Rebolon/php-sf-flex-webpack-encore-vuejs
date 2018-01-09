@@ -5,6 +5,8 @@ import App from './App.vue'
 import router from './router'
 import Quasar from 'quasar-framework'
 import Vuelidate from 'vuelidate'
+import VueApollo from 'vue-apollo'
+import { apolloClient, apolloProvider } from '../apollo'
 
 require('../../../node_modules/quasar-framework/dist/quasar.mat.css')
 // not sure that fonts are loaded finely
@@ -18,12 +20,14 @@ Vue.config.productionTip = false
 
 Vue.use(Quasar)
 Vue.use(Vuelidate)
+Vue.use(VueApollo)
 
 Quasar.start(() => {
     /* eslint-disable no-new */
     new Vue({
         el: '#app',
         router,
+        apolloProvider,
         render: h => h(App)
     })
 })

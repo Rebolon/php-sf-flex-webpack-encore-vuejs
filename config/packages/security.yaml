@@ -18,7 +18,7 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         vuejs:
-            pattern: ^/demo/(todo|login/json)
+            pattern: ^/(demo/(form|login/(isloggedin|json))|api)
             anonymous: ~
             json_login:
                 check_path: /demo/login/json

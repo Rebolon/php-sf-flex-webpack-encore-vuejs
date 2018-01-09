@@ -8,7 +8,10 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ApiResource(iri="http://schema.org/publisher")
+ * @ApiResource(
+ *     iri="http://schema.org/publisher",
+ *     attributes={"access_control"="is_granted('ROLE_USER')"}
+ * )
  * @ORM\Entity
  */
 class Editor
