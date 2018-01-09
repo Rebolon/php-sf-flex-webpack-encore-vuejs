@@ -17,7 +17,7 @@ Here is how it has been created:
 
 * composer create-project symfony/skeleton sf-flex-encore-vuejs
 * cd sf-flex-encore-vuejs
-* composer req encore annotations twig api http profiler log doctrine-migrations admin
+* composer req encore annotations twig api http profiler log doctrine-migrations admin webonyx/graphql-php
 * composer require --dev doctrine/doctrine-fixtures-bundle
 * yarn add vue vue-router quasar-framework quasar-extras vuelidate vue-apollo@next graphql apollo-client apollo-link apollo-link-http apollo-link-error apollo-cache-inmemory graphql-tag
 * yarn add --dev vue-loader vue-template-compiler vue-router babel-preset-es2017 testcafe sass-loader node-sass bootstrap@4.0.0-beta.2
@@ -41,6 +41,24 @@ The aim is not to help you to mix all those techs, but just to help you to use s
 The biggest problem in my case is the dependancy management : all those JS libraries may need the same deps but in different
 version... For instance it seems to be ok, but i think that in future it could be a real breain-teaser.
 
+## configuration
+
+You can change the php executable (if you want to use a php version with xdebug, or just another version of php) using
+package.json in the config section. Default php uses the one in path if exists.
+You can also change the web server port and the asset server port in the same config section.
+
+```
+    "config": {
+        "php": "php",
+        "server_port_web": "80",
+        "server_port_asset": "8080",
+        "test_browser": "chrome,firefox"
+    },
+```
+
+The test_browser section represent all the browsers you want to use with the testcafe testing tool.
+
+ 
 ## components
 
 * flex: new symfony system to make web dev life easier ; it works with recipes

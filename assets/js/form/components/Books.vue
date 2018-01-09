@@ -37,6 +37,7 @@
         QSpinnerCircles,
         QPagination
     } from 'quasar-framework'
+    import { logout } from '../../login'
     import Book from './Book.vue'
     import gql from 'graphql-tag'
     export default {
@@ -93,11 +94,29 @@
             const pageInt = Number.parseInt(page)
             const uri = `/api/books?page=${pageInt}`
             fetch(uri, {credentials: "same-origin"})
-            .then(res => res.json())
+             .then(res => {
+               if ([500, 403, 401, ].find(code => code === res.status)) {
+                 logout()
+
+                 return
+               }
+
+               return res.json()
+            })
             .then(res => {
-              this.books = res['hydra:member']
               this.isLoading = false
 
+              // prevent response analyse
+              if (!res) {
+                return
+              }
+
+              // store data
+              if (undefined !== res['hydra:member']) {
+                this.books = res['hydra:member']
+              }
+
+              // manage pagination
               if (undefined !== res['hydra:view']) {
                 ['first', 'last', 'next', 'previous',].forEach(key => {
                   if (undefined !== res['hydra:view'][`hydra:${key}`]) {
@@ -302,7 +321,8 @@
             })
           }
         },
-        apollo: {
+        _apollo: {
+          // @todo externalize all this in mixins to be able to re-use it !
           getBooks: {
             query: gql`query getBooksQry($first: Int, $after: String ) {
     getBooks: books(first: $first, after: $after ) {

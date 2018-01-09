@@ -22,13 +22,14 @@ export default function isLoggedIn(loaderToActivate)
         fetch(uri, myInit)
             .then(res => {
                 if ([500, 403, 401, ].find(code => code === res.status)) {
-                  logout()
+                  resetLoginInfo()
+                  // logout()
                   reject()
 
                   return
                 }
 
-                res.json()
+                return res.json()
             })
             .then(res => {
                 if (loaderToActivate && loaderToActivate.isLoading) {
@@ -47,5 +48,7 @@ export const resetLoginInfo = function() {
 export const logout = function() {
   resetLoginInfo()
   Toast.create.info('You have been logged out.')
+
+  // @todo check if current route is !== from login then go to login else do nothing
   router.go('/')
 }
