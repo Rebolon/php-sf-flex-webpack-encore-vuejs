@@ -321,7 +321,7 @@
             })
           }
         },
-        _apollo: {
+        apollo: {
           // @todo externalize all this in mixins to be able to re-use it !
           getBooks: {
             query: gql`query getBooksQry($first: Int, $after: String ) {
