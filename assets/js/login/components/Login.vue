@@ -70,6 +70,7 @@
             QSpinnerCircles,
             Toast,
         },
+        props: ['redirect', ],
         data() {
             return {
                 msg: 'Login',
@@ -85,7 +86,10 @@
             isLoggedIn()
             .then(isTrue => {
               Toast.create.info('You are logged in')
-              this.$router.push('/books')
+
+              if (this.redirect) {
+                this.$router.push(this.redirect)
+              }
             })
 
             getToken(this)
@@ -134,7 +138,9 @@
                         this.isLoading = false
                         if (!response.error) {
                             localStorage.setItem('isLoggedIn', true)
-                            this.$router.push('/books')
+                            if (this.redirect) {
+                                this.$router.push(this.redirect)
+                            }
 
                             return
                         }

@@ -1,7 +1,6 @@
 export default function getToken(loaderToActivate)
 {
     let meta = document.querySelector('head meta[name=csrf_token]')
-    let metaContent = meta ? meta.getAttribute('content') : ''
 
     return new Promise((resolve, reject) => {
         if (loaderToActivate) {

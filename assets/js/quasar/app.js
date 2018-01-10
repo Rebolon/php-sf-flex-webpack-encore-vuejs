@@ -13,6 +13,7 @@ import 'quasar-extras/fontawesome'
 // import 'quasar-extras/ionicons'
 // import 'quasar-extras/animate'
 
+// @todo make it dynamic using npm scripts and fetching .env file
 Vue.config.productionTip = false
 
 Vue.use(Quasar)

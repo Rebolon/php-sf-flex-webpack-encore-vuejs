@@ -2,6 +2,7 @@
 
 {% block body %}
 <div class="container">
-You are in
+    Hello <strong>{{ user.getUserName() | capitalize }}</strong><br />
+    You are in
 </div>
 {% endblock %}

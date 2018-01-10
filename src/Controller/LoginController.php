@@ -23,7 +23,9 @@ class LoginController extends Controller
      * @Method({"GET"})
      */
     public function index() {
-        return $this->render('login/index.html.twig');
+        $user = $this->getUser();
+
+        return $this->render('login/index.html.twig', ['user' => $user, ]);
     }
 
     /**
@@ -49,45 +51,5 @@ class LoginController extends Controller
             'token'         => $token,
             'error'         => $error,
         ));
-    }
-
-    /**
-     * New Json authentification system from Symfony 3.3
-     * it will return a {error: {text|{code: "", "message": "": "exception: []}} or what you want from your own controller
-     *
-     * @Route("/demo/login/json", name="demo_login_json")
-     */
-    public function loginJson(Request $request, CsrfToken $csrfTokenManager)
-    {
-        try {
-            $tokenId = $this->getParameter('csrf_token_id');
-            $tokenKey = "csrf";
-            $content = $request->getContent();
-            $contentJson = json_decode($content, true);
-            if (!is_array($contentJson) || !array_key_exists($tokenKey, $contentJson)) {
-                throw new \InvalidArgumentException("Token mandatory");
-            }
-            $csrfTokenManager->tokenCheck($tokenId, $contentJson[$tokenKey]);
-
-            return new JsonResponse();
-        } catch (\Exception $e) {
-            return new JsonResponse(["error" => ["code" => 400, "message" => $e->getMessage(), "exception" => $e, ], ]);
-        }
-    }
-
-    /**
-     * Try to test this security when the one on the bottom works Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     *
-     * call it with .json extension and check if you have a 200
-     *
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     * @Route(
-     *     "/demo/login/isloggedin",
-     *     name="demo_secured_page_is_logged_in",
-     *     )
-     * @Method({"GET"})
-     */
-    public function isLoggedIn() {
-        return new JsonResponse(['isLoggedIn' => 1, ]);
     }
 }

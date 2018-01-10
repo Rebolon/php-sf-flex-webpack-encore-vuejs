@@ -24,6 +24,7 @@ Encore
     // uncomment to define the assets of the project
     .addEntry('js/vuejs', './assets/js/vuejs/app.js')
     .addEntry('js/quasar', './assets/js/quasar/app.js')
+    .addEntry('js/login', './assets/js/login/app.js')
     .addEntry('js/form', './assets/js/form/app.js')
 
     // for specific page css (not managed by vue file per example
