@@ -50,5 +50,5 @@ export const logout = function() {
   Toast.create.info('You have been logged out.')
 
   // @todo check if current route is !== from login then go to login else do nothing
-  router.go('/')
+  router.push('/')
 }

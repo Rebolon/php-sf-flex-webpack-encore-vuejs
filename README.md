@@ -31,8 +31,10 @@ Then some php controllers has been created on following routes :
  * /demo/vuejs : VuejsController with route config in annotations and VueJS app with specific js/css import
  * /demo/quasar : QuasarController like VuejsController but with the Quasar framework for UX components
  * /demo/http-plug : HttpPlugController to show how to call external API from your controller
- * /login : LoginController managed by Symfony for validation, but managed by the code to render the login form
- * /api : access ApiPlatform api doc
+ * /demo/login : LoginController for standard login by Symfony and also for json login with JS applications
+ * /demo/form : [Work in progress] authentification with javascript, and a full web application with vuejs and api-platform(rest/graphql)
+ * /api : access ApiPlatform api doc (you need to be authentified from /demo/form if you want to play with it)
+ * /api/graphql : access ApiPlatform GraphQL implementation (beta release)
  * /admin : use the easy admin bundle to allow a comparison between fullstack PHP and PHP/VueJS
 
 But, Vuejs, ReactJS and Angular together ? with Symfony4, WTF ???

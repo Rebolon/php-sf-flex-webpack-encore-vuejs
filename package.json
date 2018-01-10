@@ -7,8 +7,8 @@
     "config": {
         "php": "php",
         "server_host_web": "localhost",
-        "server_port_web": "80",
-        "server_port_asset": "8080",
+        "server_port_web": "85",
+        "server_port_asset": "8085",
         "test_browser": "chrome,firefox"
     },
     "scripts": {
@@ -18,7 +18,7 @@
         "db-init": "npm run db-init:linux",
         "db-init:linux": "$npm_package_config_php bin/console doctrine:database:create && $npm_package_config_php bin/console doctrine:schema:create && $npm_package_config_php bin/console doctrine:fixtures:load",
         "db-init:windows": "%npm_package_config_php% bin/console doctrine:database:create && %npm_package_config_php% bin/console doctrine:schema:create && %npm_package_config_php% bin/console doctrine:fixtures:load",
-        "dump-js-config:linux": "rm assets/js/config.js -f && echo export let host = '$npm_package_config_server_host_web:$npm_package_config_server_port_web' > assets/js/config.js",
+        "dump-js-config:linux": "rm assets/js/config.js -f && echo export let host = \\'$npm_package_config_server_host_web:$npm_package_config_server_port_web\\' > assets/js/config.js",
         "dump-js-config:windows": "rm assets/js/config.js -f && echo export let host = '%npm_package_config_server_host_web%:%npm_package_config_server_port_web%' > assets/js/config.js",
         "sf-dev": "npm run sf-dev:linux",
         "sf-dev:linux": "$npm_package_config_php -S $npm_package_config_server_host_web:$npm_package_config_server_port_web -t public",

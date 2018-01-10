@@ -140,8 +140,13 @@
                         }
 
                         localStorage.removeItem('isLoggedIn')
+
                         const msg = response.error.message ? response.error.message : response.error
-                        Toast.create.negative(`Invalid user name or password (${msg})`)
+                        if ('invalid token' === msg.toLowerCase()) {
+                          getToken().then(res => Toast.create.negative(`${msg}, please try again`))
+                        } else {
+                          Toast.create.negative(`Invalid user name or password (${msg})`)
+                        }
                     })
             }
         }
