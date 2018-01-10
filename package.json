@@ -7,8 +7,8 @@
     "config": {
         "php": "php",
         "server_host_web": "localhost",
-        "server_port_web": "80",
-        "server_port_asset": "8080",
+        "server_port_web": "85",
+        "server_port_asset": "8085",
         "test_browser": "chrome,firefox"
     },
     "scripts": {
