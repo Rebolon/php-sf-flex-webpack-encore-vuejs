@@ -31,7 +31,8 @@ Then some php controllers has been created on following routes :
  * /demo/vuejs : VuejsController with route config in annotations and VueJS app with specific js/css import
  * /demo/quasar : QuasarController like VuejsController but with the Quasar framework for UX components
  * /demo/http-plug : HttpPlugController to show how to call external API from your controller
- * /demo/login : LoginController for standard login by Symfony and also for json login with JS applications
+ * /demo/login : LoginController for standard login by Symfony
+ * /demo/vuejs/login : LoginJsonController for json login with JS applications
  * /demo/form : [Work in progress] authentification with javascript, and a full web application with vuejs and api-platform(rest/graphql)
  * /api : access ApiPlatform api doc (you need to be authentified from /demo/form if you want to play with it)
  * /api/graphql : access ApiPlatform GraphQL implementation (beta release)

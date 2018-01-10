@@ -8,7 +8,7 @@ export default function isLoggedIn(loaderToActivate)
           loaderToActivate.isLoading = true
         }
 
-        const uri = '/demo/login/isloggedin'
+        const uri = '/demo/login/json/isloggedin'
         const myHeaders = new Headers()
         myHeaders.append("Accept", "application/json")
         myHeaders.append("Content-Type", "application/json")
@@ -23,7 +23,6 @@ export default function isLoggedIn(loaderToActivate)
             .then(res => {
                 if ([500, 403, 401, ].find(code => code === res.status)) {
                   resetLoginInfo()
-                  // logout()
                   reject()
 
                   return
