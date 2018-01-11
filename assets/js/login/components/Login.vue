@@ -149,7 +149,7 @@
 
                         const msg = response.error.message ? response.error.message : response.error
                         if ('invalid token' === msg.toLowerCase()) {
-                          getToken().then(res => Toast.create.negative(`${msg}, please try again`))
+                          getToken().then(res => Toast.create.warning(`${msg}, please try again`))
                         } else {
                           Toast.create.negative(`Invalid user name or password (${msg})`)
                         }

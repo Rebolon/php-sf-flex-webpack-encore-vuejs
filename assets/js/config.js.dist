@@ -4,3 +4,4 @@
  *   - npm_package_config_server_port_web
  */
 export let host = 'localhost:80'
+export let env = 'dev'

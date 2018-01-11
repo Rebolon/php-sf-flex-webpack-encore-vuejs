@@ -54,7 +54,6 @@ security:
                 csrf_token_generator: security.csrf.token_manager
                 csrf_token_id:        "%csrf_token_id%"
 
-            # @TODO is it also available on Json_login ? need to test !
             logout:
                 path:   demo_login_standard_logout
                 target: index
