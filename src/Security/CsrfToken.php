@@ -10,7 +10,8 @@ class CsrfToken
      */
     protected $tokenManager;
 
-    public function __construct(CsrfTokenManagerInterface $tokenManager) {
+    public function __construct(CsrfTokenManagerInterface $tokenManager)
+    {
         $this->tokenManager = $tokenManager;
     }
 
@@ -18,7 +19,8 @@ class CsrfToken
      * @param $tokenId
      * @return \Symfony\Component\Security\Csrf\CsrfToken
      */
-    public function getToken($tokenId) {
+    public function getToken($tokenId)
+    {
         $token = $this->tokenManager->getToken($tokenId);
 
         return $token;

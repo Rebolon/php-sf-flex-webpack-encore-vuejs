@@ -12,7 +12,8 @@ class DefaultController extends Controller
      * @Route(path="/")
      * @return Response
      */
-    public function index() {
+    public function index()
+    {
         $router = $this->get('router');
 
         $demoRoutes['simple controller'] = $router->generate('simple');
@@ -37,5 +38,4 @@ class DefaultController extends Controller
 
         return $render;
     }
-
 }

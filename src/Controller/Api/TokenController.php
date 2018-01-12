@@ -20,10 +20,11 @@ class TokenController extends Controller
      * @param \App\Security\CsrfToken $csrfTokenManager
      * @return JsonResponse
      */
-    public function token(Request $request, CsrfToken $csrfTokenManager) {
+    public function token(Request $request, CsrfToken $csrfTokenManager)
+    {
         try {
             // get current token and return it if exists and valid
-            $this->get(\App\Controller\Api\TokenController::class)->tokenCheck($request, $csrfTokenManager);
+            $this->get(TokenController::class)->tokenCheck($request, $csrfTokenManager);
             $tokenKey = $this->getParameter('csrf_token_parameter');
 
             return new JsonResponse($request->get($tokenKey));
@@ -42,7 +43,8 @@ class TokenController extends Controller
      * @param \App\Security\CsrfToken $csrfTokenManager
      * @return Response
      */
-    public function tokenCheck(Request $request, CsrfToken $csrfTokenManager) {
+    public function tokenCheck(Request $request, CsrfToken $csrfTokenManager)
+    {
         $tokenId = $this->getParameter('csrf_token_id');
         $tokenKey = $this->getParameter('csrf_token_parameter');
         $tokenValue = $request->get($tokenKey);

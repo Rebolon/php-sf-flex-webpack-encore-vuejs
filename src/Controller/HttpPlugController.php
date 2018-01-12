@@ -23,7 +23,10 @@ class HttpPlugController extends Controller
     protected $httpClient;
 
     /**
+     * HttpPlugController constructor.
+     *
      * @param HttpAsyncClient $client
+     * @param MessageFactory $messageFactory
      */
     public function __construct(HttpAsyncClient $client, MessageFactory $messageFactory)
     {
@@ -42,7 +45,7 @@ class HttpPlugController extends Controller
         $promise = $this->httpClient->sendAsyncRequest($request);
         $response = $promise->wait();
 
-        if ($response->getStatusCode() >  299) {
+        if ($response->getStatusCode() > 299) {
             throw new \HttpResponseException($response->getReasonPhrase(), $response->getStatusCode());
         }
 

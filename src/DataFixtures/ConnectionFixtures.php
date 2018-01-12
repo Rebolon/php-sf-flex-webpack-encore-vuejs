@@ -1,4 +1,5 @@
 <?php
+
 namespace App\DataFixtures;
 
 use Doctrine\DBAL\Connection;

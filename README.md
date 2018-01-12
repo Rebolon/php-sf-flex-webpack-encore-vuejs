@@ -126,6 +126,16 @@ Take care, the asset server listen to port 8080 so don't start your main server 
 Also, if you want to use the asset server finely, you have to add the assets configuration in the config/packages/framework.yaml file :
 `json_manifest_path: '%kernel.project_dir%/public/build/manifest.json'`. In fact the npm command will build asset in memory only, and modify the manifest file to map asset to a new url served by the asset server instead of the main web server.
 
+# code quality
+
+You can install phpcs to check your code, for this run `composer require squizlabs/PHP_CodeSniffer`. This project follows 
+PSR1/PSR2 rules. Run this command `vendor/bin/phpcs src -n --standard=PSR1,PSR2 --report=summary` to get a summary of
+errors 
+
+For PHP you should configure your IDE to follow Symfony code style (or anything else if you prefer) for PHP, and Airbnb or any other check style for Javascript.
+You can use `friendsofphp/php-cs-fixer` package to fix your PHP code and `prettier`for Javascript.
+We may add those packages to the current stack if it's something requested.   
+
 ## todo
 
 * improve this tutorial with ~~an API Route built with Api platform (without DB)~~ and install the vue-generator from api-platform for a crud sample :

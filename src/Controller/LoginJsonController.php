@@ -8,10 +8,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class LoginJsonController extends Controller
 {
@@ -19,7 +16,8 @@ class LoginJsonController extends Controller
      * @Route("/demo/vuejs/login")
      * @Method({"GET"})
      */
-    public function index() {
+    public function index()
+    {
         return $this->render('spa.html.twig', ['appName' => 'login', 'useParent' => true, ]);
     }
 
@@ -28,22 +26,26 @@ class LoginJsonController extends Controller
      * it will return a {error: {text|{code: "", "message": "": "exception: []}} or what you want from your own controller
      *
      * @Route("/demo/login/json", name="demo_login_json")
+     * @param Request $request
+     * @param CsrfToken $csrfTokenManager
+     *
+     * @return JsonResponse
      */
     public function loginJson(Request $request, CsrfToken $csrfTokenManager)
     {
         try {
             $tokenId = $this->getParameter('csrf_token_id');
-            $tokenKey = "csrf";
+            $tokenKey = 'csrf';
             $content = $request->getContent();
             $contentJson = json_decode($content, true);
             if (!is_array($contentJson) || !array_key_exists($tokenKey, $contentJson)) {
-                throw new \InvalidArgumentException("Token mandatory");
+                throw new \InvalidArgumentException('Token mandatory');
             }
             $csrfTokenManager->tokenCheck($tokenId, $contentJson[$tokenKey]);
 
             return new JsonResponse();
         } catch (\Exception $e) {
-            return new JsonResponse(["error" => ["code" => 400, "message" => $e->getMessage(), "exception" => $e, ], ]);
+            return new JsonResponse(['error' => ['code' => 400, 'message' => $e->getMessage(), 'exception' => $e, ], ]);
         }
     }
 
@@ -62,10 +64,20 @@ class LoginJsonController extends Controller
      *     )
      * @Method({"GET"})
      */
-    public function isLoggedIn() {
+    public function isLoggedIn()
+    {
         // will be usefull if we decide to return always 200 + the real Json content represented by isLoggedIn: 0|1
         $authenticated = $this->isGranted('IS_AUTHENTICATED_FULLY');
+        $data = ['isLoggedIn' => (int)$authenticated, ];
 
-        return new JsonResponse(['isLoggedIn' => (int)$authenticated, ]);
+        if ($authenticated) {
+            $user = $this->getUser();
+            $data['me'] = [
+                'username' => $user->getUsername(),
+                'roles' => $user->getRoles(),
+                ];
+        }
+
+        return new JsonResponse($data);
     }
 }

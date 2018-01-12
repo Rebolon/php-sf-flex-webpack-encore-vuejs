@@ -13,9 +13,13 @@ class HelloController extends Controller
      * @Cache(expires="+1 hour")
      * @Route("/demo/hello/{name}", requirements={"name": "\w*"}, defaults={"name": "world"})
      * @Method({"GET"})
+     *
+     * @param $name
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function world($name) {
+    public function world($name)
+    {
         return $this->render('hello/world.html.twig', ['name' => $name,]);
     }
-
 }

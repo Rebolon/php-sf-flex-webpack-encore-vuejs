@@ -12,8 +12,8 @@ class VuejsController extends Controller
      * @Route("/demo/vuejs")
      * @Method({"GET"})
      */
-    public function index() {
+    public function index()
+    {
         return $this->render('vuejs/app.html.twig', ['appName' => 'vuejs', 'useParent' => true, ]);
     }
-
 }

@@ -7,8 +7,9 @@
 <script>
     import {
         QItemMain,
-        QItemTile
+        QItemTile,
     } from 'quasar-framework'
+
     export default {
         name: 'Book',
         components: {
@@ -16,7 +17,7 @@
             QItemTile,
         },
         props: ['book'],
-    };
+    }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

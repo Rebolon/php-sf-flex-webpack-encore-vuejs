@@ -16,6 +16,7 @@
         QToolbar,
         QToolbarTitle,
     } from 'quasar-framework'
+
     export default {
         name: 'Secured',
         components: {
@@ -26,9 +27,9 @@
             return {
                 user: {},
                 isLoading: true,
-            };
+            }
         },
-    };
+    }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

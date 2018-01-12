@@ -88,7 +88,7 @@ class AppFixtures extends Fixture
 
         // add serie
         $sth = $dbh->prepare(
-<<<SQL
+            <<<SQL
 SELECT m.id, m.name
 FROM books_series_link AS t
 INNER JOIN series AS m ON t.series = m.id
@@ -130,7 +130,7 @@ SQL
 
         // add editor
         $sth = $dbh->prepare(
-<<<SQL
+            <<<SQL
 SELECT m.id, m.name
 FROM books_publishers_link AS t
 INNER JOIN publishers AS m ON t.publisher = m.id
@@ -172,7 +172,7 @@ SQL
 
         // add author
         $sth = $dbh->prepare(
-<<<SQL
+            <<<SQL
 SELECT m.id, m.name
 FROM books_authors_link AS t
 INNER JOIN authors AS m ON t.author = m.id
@@ -191,7 +191,7 @@ SQL
                 $authorName = explode('| ', $row['name']);
                 if (!in_array($row['id'], $this->cache['authors'])) {
                     $author = new Author();
-                    if (count($authorName) === 2) {
+                    if (2 === count($authorName)) {
                         $author->setFirstname($authorName[0])
                             ->setLastname($authorName[1]);
                     } else {
@@ -203,7 +203,7 @@ SQL
                     $this->cache['authors'][] = $row['id'];
                 } else {
                     $criterias = ['firstname' => $authorName[0], 'lastname' => null, ];
-                    if (count($authorName) === 2) {
+                    if (2 === count($authorName)) {
                         $criterias['lastname'] = $authorName[1];
                     }
                     $author = $manager
@@ -212,7 +212,7 @@ SQL
                 }
 
                 $job = $this->cache['jobs'][0];
-                if ($i === 1) {
+                if (1 === $i) {
                     $job = $this->cache['jobs'][0];
                 }
                 $book->addAuthor($author, $job);

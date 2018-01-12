@@ -108,6 +108,7 @@ class Book
 
     /**
      * id can be null until flush is done
+     *
      * @return int
      */
     public function getId(): ?int
@@ -181,7 +182,7 @@ class Book
     }
     /**
      * @param Review $review
-     * @return $this
+     * @return Book
      */
     public function addReview(Review $review): Book
     {
@@ -199,7 +200,9 @@ class Book
     }
 
     /**
-     * @return $this
+     * @param Serie $serie
+     *
+     * @return Book
      */
     public function setSerie(Serie $serie): Book
     {
@@ -210,7 +213,8 @@ class Book
 
     /**
      * @param ProjectBookCreation $project
-     * @return $this
+     *
+     * @return Book
      */
     public function setAuthor(ProjectBookCreation $project): Book
     {
@@ -222,7 +226,7 @@ class Book
     /**
      * @param Author $author
      * @param Job $job
-     * @return $this
+     * @return Book
      */
     public function addAuthor(Author $author, Job $job): Book
     {
@@ -257,7 +261,7 @@ class Book
 
     /**
      * @param ProjectBookEdition $project
-     * @return $this
+     * @return Book
      */
     public function setEditor(ProjectBookEdition $project): Book
     {
