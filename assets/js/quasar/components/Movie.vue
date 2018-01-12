@@ -27,7 +27,21 @@
 </template>
 
 <script>
-    import {
+import {
+    QToolbar,
+    QToolbarTitle,
+    QCard,
+    QCardTitle,
+    QCardSeparator,
+    QCardMain,
+    QCardActions,
+    QBtn,
+    QSpinnerCircles,
+} from 'quasar-framework'
+
+export default {
+    name: 'Movie',
+    components: {
         QToolbar,
         QToolbarTitle,
         QCard,
@@ -37,43 +51,32 @@
         QCardActions,
         QBtn,
         QSpinnerCircles,
-    } from 'quasar-framework'
+    },
+    props: ['id'],
+    data() {
+        return {
+            msg: 'Detail of the movie',
+            isLoading: true,
+            movie: {},
+        }
+    },
+    created() {
+        if (this.id === undefined) {
+            return
+        }
 
-    export default {
-        name: 'Movie',
-        components: {
-            QToolbar,
-            QToolbarTitle,
-            QCard,
-            QCardTitle,
-            QCardSeparator,
-            QCardMain,
-            QCardActions,
-            QBtn,
-            QSpinnerCircles,
-        },
-        props: ['id'],
-        data() {
-            return {
-                msg: 'Detail of the movie',
-                isLoading: true,
-                movie: {},
-            }
-        },
-        created() {
-            if (this.id === undefined) {
-                return
-            }
-
-            const uri = `https://ghibliapi.herokuapp.com/films/${this.id}`
-            fetch(uri).then(res => res.json()).then(res => {
+        const uri = `https://ghibliapi.herokuapp.com/films/${this.id}`
+        fetch(uri)
+            .then(res => res.json())
+            .then(res => {
                 this.movie = res
                 this.isLoading = false
             })
-        },
-    }
+    },
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 </style>

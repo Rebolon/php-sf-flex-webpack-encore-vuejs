@@ -5,5 +5,11 @@ return PhpCsFixer\Config::create()
         '@PSR1' => true,
         '@PSR2' => true,
         'array_syntax' => ['syntax' => 'short'],
+        'protected_to_private' => false,
     ])
+    ->setFinder(
+        PhpCsFixer\Finder::create()
+            ->in(__DIR__.'/src')
+            ->append(array(__FILE__))
+    )
 ;

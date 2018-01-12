@@ -1,5 +1,5 @@
 import router from './form/router/index'
-import {Toast} from 'quasar-framework'
+import { Toast } from 'quasar-framework'
 
 export default function isLoggedIn(loaderToActivate) {
     return new Promise((resolve, reject) => {
@@ -18,22 +18,24 @@ export default function isLoggedIn(loaderToActivate) {
             mode: 'cors',
             cache: 'no-cache',
         }
-        fetch(uri, myInit).then(res => {
-            if ([500, 403, 401,].find(code => code === res.status)) {
-                resetLoginInfo()
-                reject()
+        fetch(uri, myInit)
+            .then(res => {
+                if ([500, 403, 401].find(code => code === res.status)) {
+                    resetLoginInfo()
+                    reject(new Error(res.message))
 
-                return
-            }
+                    return
+                }
 
-            return res.json()
-        }).then(res => {
-            if (loaderToActivate && loaderToActivate.isLoading) {
-                loaderToActivate.isLoading = false
-            }
+                return res.json()
+            })
+            .then(res => {
+                if (loaderToActivate && loaderToActivate.isLoading) {
+                    loaderToActivate.isLoading = false
+                }
 
-            resolve(true)
-        })
+                resolve(true)
+            })
     })
 }
 

@@ -19,6 +19,8 @@
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.0",
+        "friendsofphp/php-cs-fixer": "^2.10",
+        "squizlabs/PHP_CodeSniffer": "^3.2",
         "symfony/dotenv": "^4.0.0",
         "symfony/flex": "^1.0",
         "symfony/webpack-encore-pack": "^1.0"

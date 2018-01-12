@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '../../login/components/Login.vue'
 import Books from '../components/Books.vue'
-import {vueRouterIsLoggedIn} from '../../login/router/index'
+import { vueRouterIsLoggedIn } from '../../login/router/index'
 
 Vue.use(Router)
 

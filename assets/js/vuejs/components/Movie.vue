@@ -15,36 +15,38 @@
 </template>
 
 <script>
-    export default {
-        name: 'Movie',
-        props: ['id'],
-        data() {
-            return {
-                msg: 'Detail of the movie',
-                isLoading: true,
-                movie: {},
-            }
-        },
-        created() {
-            if (this.id === undefined) {
-                this.isLoading = false
+export default {
+    name: 'Movie',
+    props: ['id'],
+    data() {
+        return {
+            msg: 'Detail of the movie',
+            isLoading: true,
+            movie: {},
+        }
+    },
+    created() {
+        if (this.id === undefined) {
+            this.isLoading = false
 
-                return
-            }
+            return
+        }
 
-            const uri = `https://ghibliapi.herokuapp.com/films/${this.id}`
-            fetch(uri).then(res => res.json()).then(res => {
+        const uri = `https://ghibliapi.herokuapp.com/films/${this.id}`
+        fetch(uri)
+            .then(res => res.json())
+            .then(res => {
                 this.movie = res
                 this.isLoading = false
             })
-        },
-    }
+    },
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-    ul {
-        list-style-type: none;
-        padding: 0;
-    }
+ul {
+    list-style-type: none;
+    padding: 0;
+}
 </style>

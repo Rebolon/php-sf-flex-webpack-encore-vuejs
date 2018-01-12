@@ -18,14 +18,15 @@ export default function getToken(loaderToActivate) {
             cache: 'no-cache',
         }
         fetch(uri, myInit)
-        // @todo manage http error
-            .then(res => res.json()).then(res => {
-            changeMeta(meta, res)
-            if (loaderToActivate) {
-                loaderToActivate.isLoading = false
-            }
-            resolve(res)
-        })
+            // @todo manage http error
+            .then(res => res.json())
+            .then(res => {
+                changeMeta(meta, res)
+                if (loaderToActivate) {
+                    loaderToActivate.isLoading = false
+                }
+                resolve(res)
+            })
     })
 }
 

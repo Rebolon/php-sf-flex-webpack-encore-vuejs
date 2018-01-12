@@ -49,89 +49,84 @@
 </template>
 
 <script>
-    import {
+import { QField, QIcon, QInput, QBtn, QSpinnerCircles, Toast } from 'quasar-framework'
+import { required } from 'vuelidate/lib/validators'
+import getToken from '../../csrf_token'
+import isLoggedIn from '../../login'
+
+export default {
+    name: 'Login',
+    components: {
         QField,
         QIcon,
         QInput,
         QBtn,
         QSpinnerCircles,
         Toast,
-    } from 'quasar-framework'
-    import {required} from 'vuelidate/lib/validators'
-    import getToken from '../../csrf_token'
-    import isLoggedIn from '../../login'
-
-    export default {
-        name: 'Login',
-        components: {
-            QField,
-            QIcon,
-            QInput,
-            QBtn,
-            QSpinnerCircles,
-            Toast,
-        },
-        props: ['redirect',],
-        data() {
-            return {
-                msg: 'Login',
-                isLoading: false,
-                form: {
-                    username: '',
-                    password: '',
-                    csrf: '',
-                },
-            }
-        },
-        created() {
-            isLoggedIn().then(isTrue => {
-                Toast.create.info('You are logged in')
-
-                if (this.redirect) {
-                    this.$router.push(this.redirect)
-                }
-            })
-
-            getToken(this).then(csrf_token => this.form.csrf = csrf_token)
-        },
-        validations: {
+    },
+    props: ['redirect'],
+    data() {
+        return {
+            msg: 'Login',
+            isLoading: false,
             form: {
-                username: {required},
-                password: {required},
+                username: '',
+                password: '',
+                csrf: '',
             },
+        }
+    },
+    created() {
+        isLoggedIn().then(isTrue => {
+            Toast.create.info('You are logged in')
+
+            if (this.redirect) {
+                this.$router.push(this.redirect)
+            }
+        })
+
+        getToken(this).then(csrf_token => (this.form.csrf = csrf_token))
+    },
+    validations: {
+        form: {
+            username: { required },
+            password: { required },
         },
-        methods: {
-            prevent(ev) {
-                ev.preventDefault()
-                console.log('login submitted')
-            },
-            submit(ev) {
-                ev.stopPropagation()
-                this.$v.form.$touch()
-                if (this.$v.form.$error) {
-                    Toast.create.warning('Please review fields again.')
-                    return
-                }
-                const body = {
-                    'username': this.form.username,
-                    'password': this.form.password,
-                    'csrf': this.form.csrf,
-                }
-                const myHeaders = new Headers()
-                myHeaders.append('Accept', 'application/json')
-                myHeaders.append('Content-Type', 'application/json')
-                const myInit = {
-                    method: 'POST',
-                    headers: myHeaders,
-                    credentials: 'same-origin',
-                    mode: 'cors',
-                    cache: 'default',
-                    body: JSON.stringify(body),
-                }
-                this.isLoading = true
-                fetch('/demo/login/json', myInit).then(response => {
+    },
+    methods: {
+        prevent(ev) {
+            ev.preventDefault()
+            console.log('login submitted')
+        },
+        submit(ev) {
+            ev.stopPropagation()
+            this.$v.form.$touch()
+            if (this.$v.form.$error) {
+                Toast.create.warning('Please review fields again.')
+                return
+            }
+            const body = {
+                username: this.form.username,
+                password: this.form.password,
+                csrf: this.form.csrf,
+            }
+            const myHeaders = new Headers()
+            myHeaders.append('Accept', 'application/json')
+            myHeaders.append('Content-Type', 'application/json')
+            const myInit = {
+                method: 'POST',
+                headers: myHeaders,
+                credentials: 'same-origin',
+                mode: 'cors',
+                cache: 'default',
+                body: JSON.stringify(body),
+            }
+            this.isLoading = true
+            fetch('/demo/login/json', myInit)
+                .then(response => {
                     return response.json()
-                }).then(response => {
+                })
+                .then(response => {
                     this.isLoading = false
                     if (!response.error) {
                         localStorage.setItem('isLoggedIn', true)
@@ -151,11 +146,12 @@
                         Toast.create.negative(`Invalid user name or password (${msg})`)
                     }
                 })
-            },
         },
-    }
+    },
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 </style>

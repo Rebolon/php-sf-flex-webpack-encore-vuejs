@@ -1,4 +1,4 @@
-var Encore = require('@symfony/webpack-encore');
+var Encore = require('@symfony/webpack-encore')
 
 Encore
     // the project directory where compiled assets will be stored
@@ -28,7 +28,7 @@ Encore
     .addEntry('js/form', './assets/js/form/app.js')
 
     // for specific page css (not managed by vue file per example
-    //.addStyleEntry('css/app', './assets/css/app.scss')
+    // .addStyleEntry('css/app', './assets/css/app.scss')
 
     // this creates a 'vendor.js' file with common js code
     // these modules will *not* be included in js/vuejs.js or js/quasar.js anymore
@@ -37,13 +37,13 @@ Encore
 
         // you can also extract CSS - this will create a 'vendor.css' file
         // this CSS will *not* be included in vuejs.css anymore
-        './assets/css/app.scss'
+        './assets/css/app.scss',
     ])
 
     // uncomment if you use Sass/SCSS files
     // parameters are not mandatory, only if webpack build is slow with bootstrap (http://symfony.com/doc/current/frontend/encore/bootstrap.html)
     .enableSassLoader(function(sassOptions) {}, {
-        resolveUrlLoader: false
+        resolveUrlLoader: false,
     })
 
     // VueJS
@@ -51,6 +51,5 @@ Encore
 
     // uncomment for legacy applications that require $/jQuery as a global variable
     // .autoProvidejQuery()
-;
 
-module.exports = Encore.getWebpackConfig();
+module.exports = Encore.getWebpackConfig()

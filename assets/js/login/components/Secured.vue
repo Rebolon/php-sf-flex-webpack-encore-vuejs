@@ -12,26 +12,24 @@
 </template>
 
 <script>
-    import {
+import { QToolbar, QToolbarTitle } from 'quasar-framework'
+
+export default {
+    name: 'Secured',
+    components: {
         QToolbar,
         QToolbarTitle,
-    } from 'quasar-framework'
-
-    export default {
-        name: 'Secured',
-        components: {
-            QToolbar,
-            QToolbarTitle,
-        },
-        data() {
-            return {
-                user: {},
-                isLoading: true,
-            }
-        },
-    }
+    },
+    data() {
+        return {
+            user: {},
+            isLoading: true,
+        }
+    },
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
 </style>
