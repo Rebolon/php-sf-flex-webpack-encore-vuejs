@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -10,10 +11,14 @@ class DefaultController extends Controller
 {
     /**
      * @Route(path="/")
+     * @param Request $request
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $devServerStringFoundAtPos = strpos($request->server->get('SERVER_SOFTWARE'), 'Development Server');
+        $isPhpBuiltInServer = false === $devServerStringFoundAtPos ? false : (bool) $devServerStringFoundAtPos;
+
         $router = $this->get('router');
 
         $demoRoutes['simple controller'] = $router->generate('simple');
@@ -34,7 +39,20 @@ class DefaultController extends Controller
         $demoRoutes['api-platform: graphql'] = $router->generate('api_graphql_entrypoint');
         $demoRoutes['easy admin'] = $router->generate('admin');
 
-        $render = $this->render('default/menu.html.twig', ['routes' => $demoRoutes,]);
+        if ($isPhpBuiltInServer) {
+            $demoRoutes['api-platform: rest'] = [
+                'uri' => $demoRoutes['api-platform: rest'],
+                'note' => 'You are using PHP Built-in server, api indexes for json/jsonld or html may not work and return a 404 Not Found',
+                ];
+        }
+
+        $render = $this->render(
+            'default/menu.html.twig',
+            [
+            'routes' => $demoRoutes,
+            'isPhpBuiltInServer' => $isPhpBuiltInServer,
+            ]
+        );
 
         return $render;
     }
