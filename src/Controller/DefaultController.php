@@ -37,13 +37,21 @@ class DefaultController extends Controller
 
         $demoRoutes['api-platform: rest'] = $router->generate('api_entrypoint');
         $demoRoutes['api-platform: graphql'] = $router->generate('api_graphql_entrypoint');
+        $demoRoutes['api-platform: admin react'] = $router->generate('app_apiplatformadminreact_index');
         $demoRoutes['easy admin'] = $router->generate('admin');
 
         if ($isPhpBuiltInServer) {
+            $note = 'You are using PHP Built-in server, api indexes for json/jsonld or html may not work and return a '
+            . '404 Not Found';
             $demoRoutes['api-platform: rest'] = [
                 'uri' => $demoRoutes['api-platform: rest'],
-                'note' => 'You are using PHP Built-in server, api indexes for json/jsonld or html may not work and return a 404 Not Found',
+                'note' => $note,
                 ];
+
+            $demoRoutes['api-platform: admin react'] = [
+                'uri' => $router->generate('app_apiplatformadminreact_index'),
+                'note' => $note,
+            ];
         }
 
         $render = $this->render(

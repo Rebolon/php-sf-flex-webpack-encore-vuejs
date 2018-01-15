@@ -24,8 +24,8 @@ Here is how it has been created:
 * cd sf-flex-encore-vuejs
 * composer req encore annotations twig api http profiler log doctrine-migrations admin webonyx/graphql-php
 * composer require --dev doctrine/doctrine-fixtures-bundle
-* yarn add vue vue-router quasar-framework quasar-extras vuelidate vue-apollo@next graphql apollo-client apollo-link apollo-link-http apollo-link-error apollo-cache-inmemory graphql-tag
-* yarn add --dev vue-loader vue-template-compiler vue-router babel-preset-es2017 testcafe sass-loader node-sass bootstrap@4.0.0-beta.2
+* yarn add vue vue-router quasar-framework quasar-extras vuelidate vue-apollo@next graphql apollo-client apollo-link apollo-link-http apollo-link-error apollo-cache-inmemory graphql-tag react react-dom prop-types
+* yarn add --dev vue-loader vue-template-compiler vue-router react-loader babel-preset-es2017 babel-preset-react testcafe sass-loader node-sass bootstrap@4.0.0-beta.2
 * yarn install 
 
 Then some php controllers has been created on following routes :
@@ -41,13 +41,20 @@ Then some php controllers has been created on following routes :
  * /demo/form : [Work in progress] authentification with javascript, and a full web application with vuejs and api-platform(rest/graphql)
  * /api : access ApiPlatform api doc (you need to be authentified from /demo/form if you want to play with it)
  * /api/graphql : access ApiPlatform GraphQL implementation (beta release)
+ * /api-platform-admin-react : the react admin provided by api platform package (more info here [https://api-platform.com/docs/admin/getting-started](https://api-platform.com/docs/admin/getting-started))
  * /admin : use the easy admin bundle to allow a comparison between fullstack PHP and PHP/VueJS
 
+And then we followed the [documentation here from api platform](https://api-platform.com/docs/admin/getting-started) to create the Admin React tool. We just proceed to some adjustments:
+
+ * we kept only src folder and moved its content at the root of /assets/js/api-platform-admin-react
+ * we added the authClient like they did on the [documentation](https://api-platform.com/docs/admin/authentication-support)
+ * on main component componentWillMount() we just do a first fecth on /token to retreive a valid csrf_token for next api calls
+ 
 But, Vuejs, ReactJS and Angular together ? with Symfony4, WTF ???
 Yes it can seems completely stupid to use all this technologies together, but don't forget one thing : this is a POC !
 The aim is not to help you to mix all those techs, but just to help you to use some of them finely.
 The biggest problem in my case is the dependancy management : all those JS libraries may need the same deps but in different
-version... For instance it seems to be ok, but i think that in future it could be a real breain-teaser.
+version... For instance it seems to be ok, but i think that in future it could be a real brain-teaser.
 
 ## configuration
 
@@ -66,7 +73,6 @@ You can also change the web server port and the asset server port in the same co
 
 The test_browser section represent all the browsers you want to use with the testcafe testing tool.
 
- 
 ## components
 
 * flex: new symfony system to make web dev life easier ; it works with recipes
@@ -76,6 +82,7 @@ The test_browser section represent all the browsers you want to use with the tes
 * annotations: use annotations everywhere in your PHP code
 * twig: symfony template solution, useless if you don't want to render template with symfony, but usefull to be able to use assets twig helper with webpack encore
 * api: api-platform to build REST api(instead of fosrestbundle)
+* react: js framework used here by api-platform for their react admin component, it's built on top of [https://marmelab.com/admin-on-rest](https://marmelab.com/admin-on-rest)
 * http: a cool library to do http call from http (you could switch it with Guzzle)
 * doctrine-migrations: based on Doctrine ORM, it make it easy to change your db during a project life
 * doctrine-fixture: also based on Doctrine to help you to add fixtures in your DB (for your tests or for project init)
