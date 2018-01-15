@@ -26,7 +26,7 @@ class Review
      * @ApiProperty(
      *     iri="http://schema.org/reviewRating"
      * )
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer", nullable=false)
      */
     private $rating;
 
@@ -168,5 +168,15 @@ class Review
         $this->book = $book;
 
         return $this;
+    }
+
+    /**
+     * Mandatory for EasyAdminBundle to build the select box
+     *
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->getRating() . ' ' . ($this->getUsername() ? ' by ' . $this->getUsername() : '');
     }
 }
