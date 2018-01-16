@@ -22,7 +22,7 @@ Here is how it has been created:
 
 * composer create-project symfony/skeleton sf-flex-encore-vuejs
 * cd sf-flex-encore-vuejs
-* composer req encore annotations twig api http profiler log doctrine-migrations admin webonyx/graphql-php
+* composer req encore annotations twig api http profiler log doctrine-migrations admin webonyx/graphql-php sec-checker
 * composer require --dev doctrine/doctrine-fixtures-bundle
 * yarn add vue vue-router quasar-framework quasar-extras vuelidate vue-apollo@next graphql apollo-client apollo-link apollo-link-http apollo-link-error apollo-cache-inmemory graphql-tag react react-dom prop-types
 * yarn add --dev vue-loader vue-template-compiler vue-router react-loader babel-preset-es2017 babel-preset-react testcafe sass-loader node-sass bootstrap@4.0.0-beta.2
@@ -76,6 +76,7 @@ The test_browser section represent all the browsers you want to use with the tes
 ## components
 
 * flex: new symfony system to make web dev life easier ; it works with recipes
+* sec-checker: a symfony component that will check security vulnerabilities from your PHP dependencies.
 * vuejs: top js framework to build SPA, or just widget on classic page
 * quasar: UX component library based on VueJS
 * encore: symfony solution to wrap webpack config and, once again, make your life simpler
