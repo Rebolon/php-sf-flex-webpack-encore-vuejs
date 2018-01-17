@@ -19,12 +19,13 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         vuejs:
-            pattern: ^/(demo/(vuejs|form|login/(json|json/isloggedin|json/logout))|api)
+            pattern: ^/(demo/(vuejs|form|login/json(|/isloggedin|/logout||issue/*))|api)
             anonymous: ~
             json_login:
                 check_path: /demo/login/json
                 # this doesn't work, see in the security.yaml:12 for more explanation
                 #check_path: demo_login_json_check
+                failure_handler: App\Security\AccessDeniedHandler
             logout:
                 path:   demo_login_json_logout
                 target: index

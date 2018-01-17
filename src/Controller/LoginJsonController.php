@@ -57,7 +57,7 @@ class LoginJsonController extends Controller
      * @todo: should we let it as is, or always return a 200 and in the Json content set the isLoggedIn to 0 or 1 ?
      * For instance i stay on my first choice
      *
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')", statusCode=403)
      * @Route(
      *     "/demo/login/json/isloggedin",
      *     name="demo_secured_page_is_logged_in",
