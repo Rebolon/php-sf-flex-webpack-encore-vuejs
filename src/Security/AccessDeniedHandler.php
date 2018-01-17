@@ -25,13 +25,21 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerI
 //class AccessDeniedHandler implements AccessDeniedHandlerInterface
 class AccessDeniedHandler implements AuthenticationFailureHandlerInterface, AccessDeniedHandlerInterface
 {
+    protected function return403($message) {
+        return new JsonResponse($message, 403);
+    }
+
     public function handle(Request $request, AccessDeniedException $accessDeniedException)
     {
-        return new JsonResponse($accessDeniedException->getMessage(), 403);
+        $message = $accessDeniedException->getMessage();
+
+        return $this->return403('handle from AccessDeniedHandler' . $message);
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        return new JsonResponse($exception->getMessage(), 403);
+        $message = $exception->getMessage();
+
+        return $this->return403('onAuthenticationFailure from AccessDeniedHandler' . $message);
     }
 }

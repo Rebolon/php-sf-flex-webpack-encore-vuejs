@@ -18,6 +18,7 @@ class _FIX_ISSUE_SF_25806_Controller extends Controller
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @Route(
      *     "/demo/login/json/issue/sf-25806",
+     *     defaults={"_format": "json"},
      *     )
      * @Method({"GET"})
      */
