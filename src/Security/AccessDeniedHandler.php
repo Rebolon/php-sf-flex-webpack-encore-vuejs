@@ -31,6 +31,7 @@ class AccessDeniedHandler implements AuthenticationFailureHandlerInterface, Acce
         return new JsonResponse($message, 403);
     }
 
+    // This is used only for check_path when the authentification fail
     public function handle(Request $request, AccessDeniedException $accessDeniedException)
     {
         $message = $accessDeniedException->getMessage();

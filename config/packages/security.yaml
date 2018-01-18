@@ -19,18 +19,24 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         vuejs:
-            pattern: ^/(demo/(vuejs|form|login/json(|/isloggedin|/logout|/issue/.*))|api)
+            # commented until i found the solution for json_login handlers
+            #pattern: ^/(demo/(vuejs|form|login/json(|/isloggedin|/logout|/issue/.*))|api)
+            pattern: ^/demo/(vuejs|form|login/json(|/isloggedin|/logout|/issue/.*))
             anonymous: ~
             json_login:
                 check_path: /demo/login/json
                 # this doesn't work, see in the security.yaml:12 for more explanation
                 #check_path: demo_login_json_check
-                failure_handler: App\Security\AccessDeniedHandler
+                # failure handler is for check_path fail (wrong user/pwd) not to catch AccessDeniedException
+                #failure_handler: App\Security\AccessDeniedHandler
+            # the handler for access_denied but with anonymous without remember_me it doesn't get the hand to do anything
             access_denied_handler: App\Security\AccessDeniedHandler
             logout:
                 path:   demo_login_json_logout
                 target: index
                 invalidate_session: true
+
+# commented until i found the solution for json_login handlers
 #        main:
 #            pattern: ^/demo/login/(secured|standard|authenticate|logout)
 #            anonymous: ~

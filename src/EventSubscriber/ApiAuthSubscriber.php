@@ -20,7 +20,8 @@ use Symfony\Component\Security\Core\Exception\InsufficientAuthenticationExceptio
  *
  * @package App\EventSubscriber
  */
-final class ApiAuthSubscriber implements EventSubscriberInterface
+// interface commented to prevent it to handle my Exception, i prefer to manage it natively by the framework, and will use this system only if it's not possible
+final class ApiAuthSubscriber /* implements EventSubscriberInterface */
 {
     public static function getSubscribedEvents()
     {
