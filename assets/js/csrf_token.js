@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 export default function getToken(loaderToActivate) {
     let meta = document.querySelector('head meta[name=csrf_token]')
 
@@ -7,25 +9,18 @@ export default function getToken(loaderToActivate) {
         }
 
         const uri = '/token'
-        const myHeaders = new Headers()
-        myHeaders.append('Accept', 'application/json')
-        myHeaders.append('Content-Type', 'application/json')
-        const myInit = {
-            method: 'GET',
-            headers: myHeaders,
-            credentials: 'same-origin',
-            mode: 'cors',
-            cache: 'no-cache',
-        }
-        fetch(uri, myInit)
-            // @todo manage http error
-            .then(res => res.json())
+        axios.get(uri)
             .then(res => {
-                changeMeta(meta, res)
+                changeMeta(meta, res.data)
+                resolve(res.data)
+            })
+            .catch(err => {
+                reject(err)
+            })
+            .finally(() => {
                 if (loaderToActivate) {
                     loaderToActivate.isLoading = false
                 }
-                resolve(res)
             })
     })
 }

@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 import {
     QToolbar,
     QToolbarTitle,
@@ -53,10 +54,14 @@ export default {
     },
     created() {
         const uri = 'https://ghibliapi.herokuapp.com/films'
-        fetch(uri)
-            .then(res => res.json())
+        axios.get(uri)
             .then(res => {
-                this.movies = res
+                this.movies = res.data
+            })
+            .catch((err) => {
+                console.warn('error during http call', err)
+            })
+            .finally(() => {
                 this.isLoading = false
             })
     },

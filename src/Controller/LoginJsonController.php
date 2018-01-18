@@ -45,7 +45,11 @@ class LoginJsonController extends Controller
 
             return new JsonResponse();
         } catch (\Exception $e) {
-            return new JsonResponse(['error' => ['code' => 400, 'message' => $e->getMessage(), 'exception' => $e, ], ]);
+            // @todo INVALIDATE USER (LOGOUT) OR CSRF PROTECTION IS USELESS
+
+            $code = in_array($e->getMessage(), ['Token mandatory', 'Invalid token', ]) ? 420 : 400;
+
+            return new JsonResponse(['error' => $e->getMessage(), 'exception' => $e, ], $code);
         }
     }
 

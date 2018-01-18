@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
     name: 'Movie',
     props: ['id'],
@@ -33,10 +34,14 @@ export default {
         }
 
         const uri = `https://ghibliapi.herokuapp.com/films/${this.id}`
-        fetch(uri)
-            .then(res => res.json())
+        axios.get(uri)
             .then(res => {
-                this.movie = res
+                this.movie = res.data
+            })
+            .catch((err) => {
+                console.warn('error during http call', err)
+            })
+            .finally(() => {
                 this.isLoading = false
             })
     },

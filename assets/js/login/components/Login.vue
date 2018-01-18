@@ -31,7 +31,7 @@
                         inset="icon"
                 >
                     <q-input
-                            type="text"
+                            type="password"
                             placeholder="Password"
                             name="password"
                             v-model="form.password"
@@ -53,6 +53,7 @@ import { QField, QIcon, QInput, QBtn, QSpinnerCircles, Toast } from 'quasar-fram
 import { required } from 'vuelidate/lib/validators'
 import getToken from '../../csrf_token'
 import isLoggedIn from '../../login'
+import axios from '../../axios_middlewares'
 
 export default {
     name: 'Login',
@@ -77,15 +78,17 @@ export default {
         }
     },
     created() {
-        isLoggedIn().then(isTrue => {
-            Toast.create.info('You are logged in')
+        isLoggedIn()
+            .then(isTrue => {
+                Toast.create.info('You are logged in')
 
-            if (this.redirect) {
-                this.$router.push(this.redirect)
-            }
-        })
+                if (this.redirect) {
+                    this.$router.push(this.redirect)
+                }
+            })
 
-        getToken(this).then(csrf_token => (this.form.csrf = csrf_token))
+        getToken(this)
+            .then(csrf_token => (this.form.csrf = csrf_token))
     },
     validations: {
         form: {
@@ -103,6 +106,7 @@ export default {
             this.$v.form.$touch()
             if (this.$v.form.$error) {
                 Toast.create.warning('Please review fields again.')
+
                 return
             }
             const body = {
@@ -110,41 +114,49 @@ export default {
                 password: this.form.password,
                 csrf: this.form.csrf,
             }
-            const myHeaders = new Headers()
-            myHeaders.append('Accept', 'application/json')
-            myHeaders.append('Content-Type', 'application/json')
-            const myInit = {
+            const config = {
                 method: 'POST',
-                headers: myHeaders,
-                credentials: 'same-origin',
-                mode: 'cors',
-                cache: 'default',
-                body: JSON.stringify(body),
+                data: body,
             }
             this.isLoading = true
-            fetch('/demo/login/json', myInit)
+            axios.request('/demo/login/json', config)
                 .then(response => {
-                    return response.json()
+                    console.info('Login.Vue', response)
                 })
-                .then(response => {
+                .catch(err => {
+                    // @todo find a way fot the action controller to return the same kind of exception than standard one
+                    // to prevent those kind of code
+                    // i can receive an HTTP 401 from the framework, or from the loginController :
+                    let errMsg = err.statusText
+                    if (err.response.data && err.response.data.error) {
+                        errMsg = err.response.data.error
+                    }
+
+                /**
+                 * 401 Unauthorized: Invalid credentials
+                 * 420 : Token mandatory
+                 *
+                 */
+                switch(err.response.status) {
+                        case 401:
+                            let message = ['Token mandatory', 'Invalid token', ].find(msg => msg.toLowerCase() === errMsg.toLowerCase()) ?
+                                errMsg : 'Wrong credentials, please try again'
+                            Toast.create.warning(message)
+                            break;
+                        case 420:
+                            if (['Token mandatory', 'Invalid token', ].find(msg => msg.toLowerCase() === errMsg.toLowerCase())) {
+                                getToken().then(res => Toast.create.warning(`${errMsg}, please try again`))
+                            } else {
+                                Toast.create.negative(`Invalid user name or password (${errMsg})`)
+                            }
+                            break;
+                        default:
+                            console.warn(err.response)
+                            Toast.create.warning(`Unknown error ${err.response.status} ${errMsg}`)
+                    }
+                })
+                .finally(() => {
                     this.isLoading = false
-                    if (!response.error) {
-                        localStorage.setItem('isLoggedIn', true)
-                        if (this.redirect) {
-                            this.$router.push(this.redirect)
-                        }
-
-                        return
-                    }
-
-                    localStorage.removeItem('isLoggedIn')
-
-                    const msg = response.error.message ? response.error.message : response.error
-                    if ('invalid token' === msg.toLowerCase()) {
-                        getToken().then(res => Toast.create.warning(`${msg}, please try again`))
-                    } else {
-                        Toast.create.negative(`Invalid user name or password (${msg})`)
-                    }
                 })
         },
     },
