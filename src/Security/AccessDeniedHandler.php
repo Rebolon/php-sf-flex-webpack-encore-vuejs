@@ -25,6 +25,8 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerI
 //class AccessDeniedHandler implements AccessDeniedHandlerInterface
 class AccessDeniedHandler implements AuthenticationFailureHandlerInterface, AccessDeniedHandlerInterface
 {
+    protected $options = [];
+
     protected function return403($message) {
         return new JsonResponse($message, 403);
     }
@@ -41,5 +43,13 @@ class AccessDeniedHandler implements AuthenticationFailureHandlerInterface, Acce
         $message = $exception->getMessage();
 
         return $this->return403('onAuthenticationFailure from AccessDeniedHandler' . $message);
+    }
+
+    // why it's specified nowhere that it's mandatory ? except in code Symfony\Component\Security\Http\Authentication\CustomAuthenticationFailureHandler::_construct L31
+    public function setOptions(array $options)
+    {
+        $this->options = $options;
+
+        return $this;
     }
 }
