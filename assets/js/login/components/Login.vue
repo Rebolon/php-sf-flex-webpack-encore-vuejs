@@ -110,9 +110,10 @@ export default {
                 return
             }
             const body = {
-                username: this.form.username,
-                password: this.form.password,
-                csrf: this.form.csrf,
+                // @todo inject those keys from Symfony2 params into js config file
+                login_username: this.form.username,
+                login_password: this.form.password,
+                _csrf_token: this.form.csrf,
             }
             const config = {
                 method: 'POST',
@@ -122,33 +123,41 @@ export default {
             axios.request('/demo/login/json', config)
                 .then(response => {
                     console.info('Login.Vue', response)
+                    localStorage.setItem('isLoggedIn', true)
+                    if (this.redirect) {
+                        this.$router.push(this.redirect)
+                    }
                 })
                 .catch(err => {
                     // @todo find a way fot the action controller to return the same kind of exception than standard one
                     // to prevent those kind of code
                     // i can receive an HTTP 401 from the framework, or from the loginController :
-                    let errMsg = err.statusText
-                    if (err.response.data && err.response.data.error) {
-                        errMsg = err.response.data.error
+                    let errMsg = err.response.statusText
+                    let code = err.response.status
+                    if (err.response.data) {
+                        if (err.response.data.message) {
+                            errMsg = err.response.data.message
+                        }
+
+                        if (err.response.data.code) {
+                            code = err.response.data.code
+                        }
                     }
 
-                /**
-                 * 401 Unauthorized: Invalid credentials
-                 * 420 : Token mandatory
-                 *
-                 */
-                switch(err.response.status) {
-                        case 401:
-                            let message = ['Token mandatory', 'Invalid token', ].find(msg => msg.toLowerCase() === errMsg.toLowerCase()) ?
-                                errMsg : 'Wrong credentials, please try again'
-                            Toast.create.warning(message)
+                    /**
+                     * 401 Unauthorized: Invalid credentials
+                     * 420 : Token mandatory
+                     *
+                     */
+                    switch(code) {
+                        case 403:
+                            Toast.create.warning('Wrong credentials, please try again')
                             break;
                         case 420:
-                            if (['Token mandatory', 'Invalid token', ].find(msg => msg.toLowerCase() === errMsg.toLowerCase())) {
-                                getToken().then(res => Toast.create.warning(`${errMsg}, please try again`))
-                            } else {
-                                Toast.create.negative(`Invalid user name or password (${errMsg})`)
-                            }
+                            Toast.create.negative(`Invalid user name or password (${errMsg})`)
+                            break;
+                        case 423:
+                            getToken().then(res => Toast.create.warning(`Invalid token, please try again`))
                             break;
                         default:
                             console.warn(err.response)

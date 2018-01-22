@@ -4,6 +4,10 @@ parameters:
     locale: 'en'
     csrf_token_parameter: '_csrf_token'
     csrf_token_id: 'thisIsMyTokenID_sdf468xcv*/;7{d5!LMM}'
+    login_username_path: 'login_username'
+    login_password_path: 'login_password'
+    # must be the same value as the firewall key for json_login
+    provider_id: 'vuejs'
 
 services:
     # default configuration for services in *this* file
@@ -15,6 +19,13 @@ services:
         # this means you cannot fetch services directly from the container via $container->get()
         # if you need to do this, you can override this setting on individual services
         public: false
+        # new way of injecting parameters to services
+        bind:
+            $csrfTokenParameter: '%csrf_token_parameter%'
+            $csrfTokenId: '%csrf_token_id%'
+            $loginUsernamePath : '%login_username_path%'
+            $loginPasswordPath : '%login_password_path%'
+            $providerKey : '%provider_id%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
