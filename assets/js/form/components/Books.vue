@@ -43,6 +43,7 @@ import {
 import { logout } from '../../login'
 import Book from './Book.vue'
 import gql from 'graphql-tag'
+import axios from '../../axios_middlewares'
 
 export default {
     name: 'Books',
@@ -98,37 +99,29 @@ export default {
             this.isLoading = true
             const pageInt = Number.parseInt(page)
             const uri = `/api/books?page=${pageInt}`
-            fetch(uri, { credentials: 'same-origin' })
+            axios.get(uri)
                 .then(res => {
-                    if ([500, 403, 401].find(code => code === res.status)) {
-                        logout()
-
-                        return
-                    }
-
-                    return res.json()
-                })
-                .then(res => {
+                    let content = res.data
                     this.isLoading = false
 
                     // prevent response analyse
-                    if (!res) {
+                    if (!res || !content) {
                         return
                     }
 
                     // store data
-                    if (undefined !== res['hydra:member']) {
-                        this.books = res['hydra:member']
+                    if (undefined !== content['hydra:member']) {
+                        this.books = content['hydra:member']
                     }
 
                     // manage pagination
-                    if (undefined !== res['hydra:view']) {
+                    if (undefined !== content['hydra:view']) {
                         ;['first', 'last', 'next', 'previous'].forEach(key => {
-                            if (undefined !== res['hydra:view'][`hydra:${key}`]) {
-                                this.pagination.uris[key] = res['hydra:view'][`hydra:${key}`]
+                            if (undefined !== content['hydra:view'][`hydra:${key}`]) {
+                                this.pagination.uris[key] = content['hydra:view'][`hydra:${key}`]
 
                                 if (key === 'last') {
-                                    const pageParam = res['hydra:view'][`hydra:${key}`].match(/page=\d*/)
+                                    const pageParam = content['hydra:view'][`hydra:${key}`].match(/page=\d*/)
                                     if (pageParam) {
                                         this.pagination.total = Number.parseInt(pageParam[0].replace('page=', ''))
                                     }

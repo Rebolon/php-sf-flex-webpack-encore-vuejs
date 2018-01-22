@@ -5,7 +5,7 @@
         </label>
         <q-toolbar color="primary">
             <q-toolbar-title>
-                Hello user (need a way to retreive info from api : isLoggedIn route to be improved and send personal info)
+                Hello user (need a way to retrieve info from api : isLoggedIn route to be improved and send personal info)
             </q-toolbar-title>
         </q-toolbar>
     </div>
@@ -23,7 +23,6 @@ export default {
     data() {
         return {
             user: {},
-            isLoading: true,
         }
     },
 }

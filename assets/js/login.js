@@ -1,5 +1,9 @@
 import router from './form/router/index'
 import { Toast } from 'quasar-framework'
+import axios from 'axios'
+import { logoutInterceptors } from './axios_middlewares'
+
+axios.interceptors.request.eject(logoutInterceptors);
 
 export default function isLoggedIn(loaderToActivate) {
     return new Promise((resolve, reject) => {
@@ -8,33 +12,24 @@ export default function isLoggedIn(loaderToActivate) {
         }
 
         const uri = '/demo/login/json/isloggedin'
-        const myHeaders = new Headers()
-        myHeaders.append('Accept', 'application/json')
-        myHeaders.append('Content-Type', 'application/json')
-        const myInit = {
-            method: 'GET',
-            headers: myHeaders,
-            credentials: 'same-origin',
-            mode: 'cors',
-            cache: 'no-cache',
-        }
-        fetch(uri, myInit)
+        axios.get(uri)
             .then(res => {
-                if ([500, 403, 401].find(code => code === res.status)) {
+                localStorage.setItem('isLoggedIn', JSON.stringify(res.data))
+                resolve(true)
+            })
+            .catch(err => {
+                // @todo remove 500 when evereything fixed with Sf & json_login
+                if ([500, 420, 403, 401].find(code => code === err.response.status)) {
+                    console.info('login.js', err.response.status, 'will resetLoginInfo')
                     resetLoginInfo()
-                    reject(new Error(res.message))
-
-                    return
                 }
 
-                return res.json()
+                reject(err)
             })
-            .then(res => {
+            .finally(() => {
                 if (loaderToActivate && loaderToActivate.isLoading) {
                     loaderToActivate.isLoading = false
                 }
-
-                resolve(true)
             })
     })
 }
@@ -48,5 +43,8 @@ export const logout = function() {
     Toast.create.info('You have been logged out.')
 
     // @todo check if current route is !== from login then go to login else do nothing
-    router.push('/')
+    console.info('compare the location.href with / if different then push / to router, check that you dont loop infinitly')
+    if (location.hash.replace('#/', '/') !== '/') {
+        router.push('/')
+    }
 }

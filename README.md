@@ -24,7 +24,7 @@ Here is how it has been created:
 * cd sf-flex-encore-vuejs
 * composer req encore annotations twig api http profiler log doctrine-migrations admin webonyx/graphql-php
 * composer require --dev doctrine/doctrine-fixtures-bundle
-* yarn add vue vue-router quasar-framework quasar-extras vuelidate vue-apollo@next graphql apollo-client apollo-link apollo-link-http apollo-link-error apollo-cache-inmemory graphql-tag react react-dom prop-types
+* yarn add vue vue-router quasar-framework quasar-extras vuelidate vue-apollo@next graphql apollo-client apollo-link apollo-link-http apollo-link-error apollo-cache-inmemory graphql-tag react react-dom prop-types axios
 * yarn add --dev vue-loader vue-template-compiler vue-router react-loader babel-preset-es2017 babel-preset-react testcafe sass-loader node-sass bootstrap@4.0.0-beta.2
 * yarn install 
 
@@ -93,6 +93,7 @@ The test_browser section represent all the browsers you want to use with the tes
 * testcafe: a test framework (might be changed with chimp or anything else, gimme better idea)
 * sass: hey, we are not in nineties, we don't write css now
 * bootstrap: the beta 4 version of the first class css framework (not used with quasar)
+* axios: the library to perform http calls
 
 ## run
 

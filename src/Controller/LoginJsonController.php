@@ -23,30 +23,15 @@ class LoginJsonController extends Controller
 
     /**
      * New Json authentification system from Symfony 3.3
-     * it will return a {error: {text|{code: "", "message": "": "exception: []}} or what you want from your own controller
+     * It relies on App\Security\ApiKeyAuthenticator for CSRF checks
      *
      * @Route("/demo/login/json", name="demo_login_json")
-     * @param Request $request
-     * @param CsrfToken $csrfTokenManager
      *
      * @return JsonResponse
      */
-    public function loginJson(Request $request, CsrfToken $csrfTokenManager)
+    public function loginJson()
     {
-        try {
-            $tokenId = $this->getParameter('csrf_token_id');
-            $tokenKey = 'csrf';
-            $content = $request->getContent();
-            $contentJson = json_decode($content, true);
-            if (!is_array($contentJson) || !array_key_exists($tokenKey, $contentJson)) {
-                throw new \InvalidArgumentException('Token mandatory');
-            }
-            $csrfTokenManager->tokenCheck($tokenId, $contentJson[$tokenKey]);
-
-            return new JsonResponse();
-        } catch (\Exception $e) {
-            return new JsonResponse(['error' => ['code' => 400, 'message' => $e->getMessage(), 'exception' => $e, ], ]);
-        }
+        return new JsonResponse();
     }
 
     /**
