@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { logout } from './login'
+import { getTokenFromMeta } from './csrf_token'
 
 // @todo add an interceptors that will always retrieve the csrf token and add it inside the request
 // make sure that api-platform is also compatible with csrf token and implement it
@@ -45,6 +46,29 @@ export const withCredentialsInterceptors = axios.interceptors.request.use(functi
     return Promise.reject(error)
 })
 
+export const csrfInterceptors = axios.interceptors.request.use(function (config) {
+    let meta = getTokenFromMeta()
+
+    switch (config.method.toLowerCase()) {
+        case 'get':
+            if (!config.params) {
+                config.params = {}
+            }
+            config.params._csrf_token = meta
+            break;
+        case 'post':
+        default:
+            config.data._csrf_token = meta
+    }
+
+    console.info('axios intercep request', 'csrf')
+
+    return config
+}, function (error) {
+    // Do something with request error
+    return Promise.reject(error)
+})
+
 export const logoutInterceptors = axios.interceptors.request.use(function (config) {
     config.validateStatus = function (status) {
         // @todo remove 500 when evereything fixed with Sf & json_login
@@ -66,6 +90,26 @@ export const logoutInterceptors = axios.interceptors.request.use(function (confi
     return config
 }, function (error) {
     // Do something with request error
+    return Promise.reject(error)
+})
+
+export const csrfResponseInterceptors = axios.interceptors.response.use(function (response) {
+    console.info('axios intercep response', 'csrf')
+
+    return response
+}, function (error) {
+    console.info('axios intercep response error', 'csrf')
+    // @todo Is it possible to do a retry of the request with a new token ?
+
+    let status = error.response.status
+    if (error.response.data && error.response.data.code) {
+        status = error.response.data.code
+    }
+
+    if (status === 423) {
+        getToken().then(res => Toast.create.warning(`Invalid token, please try again`))
+    }
+
     return Promise.reject(error)
 })
 

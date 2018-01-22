@@ -40,7 +40,7 @@
                     />
                 </q-field>
 
-                <q-btn flat color="primary" @click="submit" :disabled="!form.csrf">LOGIN</q-btn>
+                <q-btn flat color="primary" @click="submit" :disabled="isLoading">LOGIN</q-btn>
             </div>
         </form>
 
@@ -69,15 +69,15 @@ export default {
     data() {
         return {
             msg: 'Login',
-            isLoading: false,
+            isLoading: true,
             form: {
                 username: '',
                 password: '',
-                csrf: '',
             },
         }
     },
     created() {
+        this.isLoading = true
         isLoggedIn()
             .then(isTrue => {
                 Toast.create.info('You are logged in')
@@ -88,7 +88,7 @@ export default {
             })
 
         getToken(this)
-            .then(csrf_token => (this.form.csrf = csrf_token))
+            .finally(() => this.isLoading = false)
     },
     validations: {
         form: {
@@ -113,7 +113,6 @@ export default {
                 // @todo inject those keys from Symfony2 params into js config file
                 login_username: this.form.username,
                 login_password: this.form.password,
-                _csrf_token: this.form.csrf,
             }
             const config = {
                 method: 'POST',

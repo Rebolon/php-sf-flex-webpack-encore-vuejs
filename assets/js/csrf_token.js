@@ -1,7 +1,15 @@
 import axios from 'axios'
 
+const metaKey = '_csrf_token'
+
+export const getTokenFromMeta = function () {
+    let meta = document.querySelector(`head meta[name=${metaKey}]`)
+
+    return meta ? meta.getAttribute('content') : undefined;
+}
+
 export default function getToken(loaderToActivate) {
-    let meta = document.querySelector('head meta[name=csrf_token]')
+    let meta = getTokenFromMeta()
 
     return new Promise((resolve, reject) => {
         if (loaderToActivate) {
@@ -28,7 +36,7 @@ export default function getToken(loaderToActivate) {
 const changeMeta = function(meta, token) {
     if (!meta) {
         meta = document.createElement('meta')
-        meta.setAttribute('name', 'csrf_token')
+        meta.setAttribute('name', metaKey)
         document.querySelector('head').appendChild(meta)
     }
     meta.setAttribute('content', token)
