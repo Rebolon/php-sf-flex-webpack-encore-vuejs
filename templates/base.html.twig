@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8">
         {% if csrf_token is defined %}
-        <meta name="csrf_token" content="{{ csrf_token }}">
+        <meta name="{{ csrfTokenParameter }}" content="{{ csrf_token }}">
         {% endif %}
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('build/vendor.css') }}">
