@@ -18,13 +18,14 @@ class DefaultController extends Controller
     {
         $devServerStringFoundAtPos = strpos($request->server->get('SERVER_SOFTWARE'), 'Development Server');
         $isPhpBuiltInServer = false === $devServerStringFoundAtPos ? false : (bool) $devServerStringFoundAtPos;
+        $hasPemCertificate = ini_get('curl.cainfo') && ini_get('openssl.cafile') ? true : false;
 
         $router = $this->get('router');
 
         $demoRoutes['simple controller'] = $router->generate('simple');
         $demoRoutes['hello controller with twig'] = $router->generate('app_hello_world', ['name' => 'world', ]);
         $demoRoutes['httpplug demo'] = $router->generate('app_httpplug_call');
-
+        
         $demoRoutes['symfony secured page with standard login'] = $router->generate('demo_secured_page');
         $demoRoutes['vuejs secured page with json login'] = $router->generate('app_loginjson_index');
 
@@ -40,6 +41,14 @@ class DefaultController extends Controller
         $demoRoutes['api-platform: admin react'] = $router->generate('app_apiplatformadminreact_index');
         $demoRoutes['easy admin'] = $router->generate('admin');
 
+        if (!$hasPemCertificate) {
+            $demoRoutes['httpplug demo'] = [
+                'uri' => $router->generate('app_httpplug_call'),
+                'note' => 'You need to set php.ini vars: curl.cainfo and openssl.cafile to the path of the pem file.'
+                    . ' if you need one, <a href="https://curl.haxx.se/docs/caextract.html">download the certificate</a>',
+            ];
+        }
+        
         if ($isPhpBuiltInServer) {
             $note = 'You are using PHP Built-in server, api indexes for json/jsonld or html may not work and return a '
             . '404 Not Found';

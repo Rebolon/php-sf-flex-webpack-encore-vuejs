@@ -9,7 +9,7 @@
                 <li class="list-group-item">
                     <a href='{{ route.uri }}'>{{ routeName }}</a>
                     <div class="alert alert-warning" role="alert">
-                        <span class="text-warning">&#9888;</span> {{ route.note }}
+                        <span class="text-warning">&#9888;</span> {{ route.note | raw}}
                     </div>
                 </li>
             {% else %}
