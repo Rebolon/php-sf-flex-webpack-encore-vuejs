@@ -1,6 +1,7 @@
 import { AUTH_LOGIN, AUTH_LOGOUT, AUTH_ERROR, AUTH_CHECK } from 'admin-on-rest'
 import { host } from '../config'
 import { axios } from 'axios'
+import getToken from '../csrf_token'
 
 // Change this to be your own login check route.
 const login_uri = `http://${host}/demo/login/json`
@@ -9,8 +10,8 @@ let csrf_token = ''
 
 // get a csrf token and then do the auth
 export const initToken = () => {
-    axios.get('/token')
-        .then(csrf => csrf_token = csrf)
+    getToken()
+        .then(response => csrf_token = response)
 }
 
 export const authClient = (type, params) => {
