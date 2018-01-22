@@ -42,6 +42,11 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
     protected $providerKey;
 
     /**
+     * @var string
+     */
+    protected $apiPlatformPrefix;
+
+    /**
      * @var CsrfTokenManagerInterface
      */
     protected $csrfTokenManager;
@@ -62,13 +67,14 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      * @param AuthenticationManagerInterface $authenticationManager : don't know how to inject this
      * @param CsrfTokenManagerInterface $csrfTokenManager : don't know how to inject this
      */
-    public function __construct(string $csrfTokenParameter, string $csrfTokenId, string $loginUsernamePath, string $loginPasswordPath, string $providerKey, AuthenticationManagerInterface $authenticationManager, CsrfTokenManagerInterface $csrfTokenManager)
+    public function __construct(string $csrfTokenParameter, string $csrfTokenId, string $loginUsernamePath, string $loginPasswordPath, string $providerKey,  string $apiPlatformPrefix, AuthenticationManagerInterface $authenticationManager, CsrfTokenManagerInterface $csrfTokenManager)
     {
         $this->csrfTokenParameter = $csrfTokenParameter;
         $this->csrfTokenId = $csrfTokenId;
         $this->loginUsernamePath = $loginUsernamePath;
         $this->loginPasswordPath = $loginPasswordPath;
         $this->providerKey = $providerKey;
+        $this->apiPlatformPrefix = $apiPlatformPrefix;
         $this->authenticationManager = $authenticationManager;
         $this->csrfTokenManager = $csrfTokenManager;
     }
@@ -80,6 +86,11 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function supports(Request $request)
     {
+        // do not force this Authenticator for Csrf, for instance (need more work on api-platforms events)
+        if (false !== strpos($request->getPathInfo(), $this->apiPlatformPrefix)) {
+            return false;
+        }
+
         return $this->csrfTokenParameter &&
             !(false === strpos($request->getRequestFormat(), 'json')
             && false === strpos($request->getContentType(), 'json'));
