@@ -1,9 +1,9 @@
 import router from '../form/router/index'
 import { Toast } from 'quasar-framework'
 import axios from 'axios'
-import { logoutInterceptors } from './axiosMiddlewares'
+import { logoutStdInterceptors } from './axiosMiddlewares'
 
-axios.interceptors.request.eject(logoutInterceptors);
+axios.interceptors.request.eject(logoutStdInterceptors);
 
 export default function isLoggedIn(loaderToActivate) {
     return new Promise((resolve, reject) => {

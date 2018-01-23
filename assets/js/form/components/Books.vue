@@ -43,7 +43,8 @@ import {
 import { logout } from '../../lib/login'
 import Book from './Book.vue'
 import gql from 'graphql-tag'
-import axios from '../../lib/axiosMiddlewares'
+import { axiosJsonLd } from '../../lib/axiosMiddlewares'
+import { apiPlatformPrefix } from '../../lib/config'
 
 export default {
     name: 'Books',
@@ -98,8 +99,8 @@ export default {
         getListByRest(page = 1) {
             this.isLoading = true
             const pageInt = Number.parseInt(page)
-            const uri = `/api/books?page=${pageInt}`
-            axios.get(uri)
+            const uri = `${apiPlatformPrefix}/books.jsonld?page=${pageInt}`
+            axiosJsonLd.get(uri)
                 .then(res => {
                     let content = res.data
                     this.isLoading = false
