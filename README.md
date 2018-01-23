@@ -134,7 +134,7 @@ Everything is managed by 'encore' symfony package, so have a look at the webpack
  * npm run watch : does the same thing than npm run dev, but it watches files modification to re-generate the assets
  * npm run dev-server :  build the manifest.json that map your assets qith their url from the asset server and start a web server that will serve those assets
  * npm run dev-server-hot : does the same thing as previously, but with vuejs framework it also does Hot Module Replacement 
- * npm run build : build your assets for production
+ * npm run build : build your assets for **production**
  
 Take care, the asset server listen to port 8080 so don't start your main server on that port, or specify another port for the dev-server using ` --port 9999` for example
 

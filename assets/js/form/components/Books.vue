@@ -13,17 +13,42 @@
 
         <q-spinner-circles v-if="isLoading" size="20px"/>
 
+        Pagination must be removed when DataTable will allow async data ! (v0.15 at least)
         <q-pagination v-if="books.length" v-model="pagination.page" :max="pagination.total"
                       @change="getOtherPage($event)"></q-pagination>
 
-        <q-list highlight>
-            <q-item v-for="book in books" :key="book.id">
-                <Book :book="book" @remove="remove(ev)"/>
-            </q-item>
-        </q-list>
-
-        <q-pagination v-if="books.length" v-model="pagination.page" :max="pagination.total"
-                      @change="getOtherPage($event)"></q-pagination>
+        <q-data-table
+                :data="books"
+                :config="dataTableConfig"
+                :columns="dataTableColumns"
+                @refresh=""
+        >
+            <!-- Custom renderer for "message" column -->
+            <template slot="col-message" slot-scope="cell">
+                <span class="light-paragraph">{{cell.data}}</span>
+            </template>
+            <!-- Custom renderer for "source" column -->
+            <template slot="col-source" slot-scope="cell">
+                <span v-if="cell.data === 'Audit'" class="label text-white bg-primary">
+                  Audit
+                  <q-tooltip>Some data</q-tooltip>
+                </span>
+                <span v-else class="label text-white bg-negative">{{cell.data}}</span>
+            </template>
+            <!-- Custom renderer for "action" column with button for custom action -->
+            <template slot='col-action' slot-scope='cell'>
+                <q-btn color="primary" @click='doSomethingMethod(cell.row.id)'>View</q-btn>
+            </template>
+            <!-- Custom renderer when user selected one or more rows -->
+            <template slot="selection" slot-scope="selection">
+                <q-btn color="primary" @click="changeMessage(selection)">
+                    <i>edit</i>
+                </q-btn>
+                <q-btn color="primary" @click="deleteRow(selection)">
+                    <i>delete</i>
+                </q-btn>
+            </template>
+        </q-data-table>
 
     </div>
 </template>
@@ -32,26 +57,28 @@
 import {
     QToolbar,
     QToolbarTitle,
-    QList,
-    QListHeader,
+    QDataTable,
+    QTooltip,
     QItem,
     QItemMain,
     QItemTile,
     QSpinnerCircles,
     QPagination,
 } from 'quasar-framework'
-import { logout } from '../../lib/login'
+
 import Book from './Book.vue'
 import gql from 'graphql-tag'
 import { axiosJsonLd } from '../../lib/axiosMiddlewares'
 import { apiPlatformPrefix } from '../../lib/config'
+import { BooksTableDefinition } from '../dataTableDefinitions/Books'
 
 export default {
     name: 'Books',
     components: {
         QToolbar,
         QToolbarTitle,
-        QList,
+        QDataTable,
+        QTooltip,
         QItem,
         QItemMain,
         QItemTile,
@@ -64,6 +91,24 @@ export default {
             msg: 'List of books',
             isLoading: true,
             books: [],
+            dataTableConfig: {
+                rowHeight: '50px',
+                noHeader: false,
+                refresh: true,
+                columnPicker: true,
+                leftStickyColumns: 1,
+                rightStickyColumns: 1,
+                bodyStyle: {
+                    maxHeight: '500px'
+                },
+                responsive: true,
+                pagination: {
+                    rowsPerPage: 15,
+                    options: [5, 10, 15, 30, 50, ]
+                },
+                selection: 'multiple',
+            },
+            dataTableColumns: BooksTableDefinition,
             id: undefined,
             pagination: {
                 page: 1,

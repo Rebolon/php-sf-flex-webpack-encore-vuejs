@@ -11,8 +11,7 @@
 
 /.idea/
 /public/build/
-
-/assets/js/config.js
+/assets/js/lib/config.js
 
 ###> friendsofphp/php-cs-fixer ###
 .php_cs
