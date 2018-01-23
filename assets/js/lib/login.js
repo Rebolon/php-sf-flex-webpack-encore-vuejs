@@ -1,4 +1,4 @@
-import router from './form/router/index'
+import router from '../form/router/index'
 import { Toast } from 'quasar-framework'
 import axios from 'axios'
 import { logoutInterceptors } from './axios_middlewares'

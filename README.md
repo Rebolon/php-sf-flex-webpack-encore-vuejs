@@ -170,3 +170,4 @@ have to install [prettier tool](https://prettier.io/docs/en/editors.html).
 * customize easyAdminBundle to add author/editor from Book and display those related infos on Book admin page (same for other author/editor entities and serie/reviews)
 * manage Entity orphanRemoval / CASCADE onDelete
 * find a good way to add a `pre-commit` hook that lint PHP and JS code, and run the PHP / JS tests
+* transform this project into a meta package that will install all requirements for JS app within Symfony (like does laravel)

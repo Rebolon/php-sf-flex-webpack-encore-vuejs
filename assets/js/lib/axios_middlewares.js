@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { logout } from './login'
 import { getTokenFromMeta } from './csrf_token'
+import { csrf_parameter } from './config'
 
 // @todo add an interceptors that will always retrieve the csrf token and add it inside the request
 // make sure that api-platform is also compatible with csrf token and implement it
@@ -54,11 +55,11 @@ export const csrfInterceptors = axios.interceptors.request.use(function (config)
             if (!config.params) {
                 config.params = {}
             }
-            config.params._csrf_token = meta
+            config.params[csrf_parameter] = meta
             break;
-        case 'post':
+        case 'post': // and all other methods throught default
         default:
-            config.data._csrf_token = meta
+            config.data[csrf_parameter] = meta
     }
 
     console.info('axios intercep request', 'csrf')

@@ -67,7 +67,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      * @param AuthenticationManagerInterface $authenticationManager : don't know how to inject this
      * @param CsrfTokenManagerInterface $csrfTokenManager : don't know how to inject this
      */
-    public function __construct(string $csrfTokenParameter, string $csrfTokenId, string $loginUsernamePath, string $loginPasswordPath, string $providerKey,  string $apiPlatformPrefix, AuthenticationManagerInterface $authenticationManager, CsrfTokenManagerInterface $csrfTokenManager)
+    public function __construct(string $csrfTokenParameter, string $csrfTokenId, string $loginUsernamePath, string $loginPasswordPath, string $providerKey, string $apiPlatformPrefix, AuthenticationManagerInterface $authenticationManager, CsrfTokenManagerInterface $csrfTokenManager)
     {
         $this->csrfTokenParameter = $csrfTokenParameter;
         $this->csrfTokenId = $csrfTokenId;

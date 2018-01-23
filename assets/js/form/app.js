@@ -6,7 +6,7 @@ import router from './router'
 import Quasar from 'quasar-framework'
 import Vuelidate from 'vuelidate'
 import VueApollo from 'vue-apollo'
-import { apolloProvider } from '../apollo'
+import { apolloProvider } from '../lib/apollo'
 
 require('../../../node_modules/quasar-framework/dist/quasar.mat.css')
 // not sure that fonts are loaded finely

@@ -40,10 +40,10 @@ import {
     QSpinnerCircles,
     QPagination,
 } from 'quasar-framework'
-import { logout } from '../../login'
+import { logout } from '../../lib/login'
 import Book from './Book.vue'
 import gql from 'graphql-tag'
-import axios from '../../axios_middlewares'
+import axios from '../../lib/axios_middlewares'
 
 export default {
     name: 'Books',
