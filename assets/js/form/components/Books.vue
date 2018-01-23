@@ -64,6 +64,7 @@ import {
     QItemTile,
     QSpinnerCircles,
     QPagination,
+    QBtn,
 } from 'quasar-framework'
 
 import Book from './Book.vue'
@@ -84,6 +85,7 @@ export default {
         QItemTile,
         QSpinnerCircles,
         QPagination,
+        QBtn,
         Book,
     },
     data() {
@@ -133,8 +135,9 @@ export default {
             // for graphQl
             // @todo find a way to identify if we get the data in the store or if we need to ask for new data
             // @todo how to manage 'previous' link ? for instance this code should not work in all case, only if user click on next
-            if (this.getBooks.pageInfo.endCursor) {
-                this.pagination.endCursor = this.getBooks.pageInfo.endCursor
+            if (this.getBooks.pageInfo.hasNextPage) {
+                const [last] = [...this.getBooks.edges].reverse()
+                this.pagination.endCursor = last.cursor
             }
 
             // for Rest
@@ -379,9 +382,11 @@ export default {
                                 id
                                 title
                             }
+                            cursor
                         }
                         pageInfo {
                             endCursor
+                            hasNextPage
                         }
                     }
                 }
