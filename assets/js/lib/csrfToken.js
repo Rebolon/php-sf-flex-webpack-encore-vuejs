@@ -1,7 +1,7 @@
 import axios from 'axios'
-import { csrf_parameter } from './config'
+import { csrfParameter } from './config'
 
-const metaKey = csrf_parameter
+const metaKey = csrfParameter
 
 export const getTokenFromMeta = function () {
     let meta = document.querySelector(`head meta[name=${metaKey}]`)

@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { HydraAdmin, hydraClient, fetchHydra } from '@api-platform/admin'
 import { authClient, initToken } from './authClient'
-import { host, api_platform_prefix } from '../lib/config'
+import { host, apiPlatformPrefix } from '../lib/config'
 
-const entrypoint = `//${host}${api_platform_prefix}`
+const entrypoint = `//${host}${apiPlatformPrefix}`
 
 const fetchWithAuth = (url, options = {}) => {
     if (!options.headers) options.headers = new Headers({ Accept: 'application/ld+json' });

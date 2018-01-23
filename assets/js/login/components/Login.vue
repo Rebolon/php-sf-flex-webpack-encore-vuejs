@@ -51,9 +51,9 @@
 <script>
 import { QField, QIcon, QInput, QBtn, QSpinnerCircles, Toast } from 'quasar-framework'
 import { required } from 'vuelidate/lib/validators'
-import getToken from '../../lib/csrf_token'
+import getToken from '../../lib/csrfToken'
 import isLoggedIn from '../../lib/login'
-import axios from '../../lib/axios_middlewares'
+import axios from '../../lib/axiosMiddlewares'
 
 export default {
     name: 'Login',

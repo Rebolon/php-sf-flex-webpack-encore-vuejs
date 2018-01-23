@@ -1,7 +1,7 @@
 import router from '../form/router/index'
 import { Toast } from 'quasar-framework'
 import axios from 'axios'
-import { logoutInterceptors } from './axios_middlewares'
+import { logoutInterceptors } from './axiosMiddlewares'
 
 axios.interceptors.request.eject(logoutInterceptors);
 

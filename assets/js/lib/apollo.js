@@ -4,7 +4,7 @@ import { onError } from 'apollo-link-error'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import VueApollo from 'vue-apollo'
 import { host } from './config'
-import getToken from './csrf_token'
+import getToken from './csrfToken'
 import { Toast } from 'quasar-framework'
 
 const httpLink = new HttpLink({

@@ -43,7 +43,7 @@ import {
 import { logout } from '../../lib/login'
 import Book from './Book.vue'
 import gql from 'graphql-tag'
-import axios from '../../lib/axios_middlewares'
+import axios from '../../lib/axiosMiddlewares'
 
 export default {
     name: 'Books',
