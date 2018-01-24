@@ -2,14 +2,17 @@
 namespace App\Action;
 
 use App\Entity\Book;
-use Doctrine\Common\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @todo Doesn't seem to be catched by Api-Platform
+ *
+ * Class BookSpecial
+ * @package App\Action
+ */
 class BookSpecial
 {
-    private $myService;
-
     public function __construct()
     {
 

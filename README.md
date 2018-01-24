@@ -171,3 +171,43 @@ have to install [prettier tool](https://prettier.io/docs/en/editors.html).
 * manage Entity orphanRemoval / CASCADE onDelete
 * find a good way to add a `pre-commit` hook that lint PHP and JS code, and run the PHP / JS tests
 * transform this project into a meta package that will install all requirements for JS app within Symfony (like does laravel)
+* Here is a sample of GraphQL query with 2 queries in one call but i don't know how to manage this with Vue-apollo (he can't accept this coz it maps the result to the data[nameOfapolloQuery] whereas i have 2 names...) ? IN FACT the solution is the result hook (see https://github.com/Akryum/vue-apollo/issues/15, and the documentation)
+```
+query getBooksAndSerieQry($firstBook: Int, $afterBook: String, $firstSerie: Int, $afterSerie: String) {
+    getBooksAndSerie: books(first: $firstBook, after: $afterBook) {
+        edges {
+            node {
+                id
+                title
+            }
+            cursor
+        }
+        pageInfo {
+            endCursor
+            hasNextPage
+        }
+    }
+    getBooksAndSerie: series(first:$firstSerie, after: $afterSerie) {
+        edges {
+            node {
+                name
+            }
+            cursor
+        }
+        pageInfo {
+            endCursor
+            hasNextPage
+        }
+    }
+}
+```
+## third party issues that helped me to go on 
+
+ * https://github.com/api-platform/api-platform/issues/488
+ * https://github.com/api-platform/api-platform/issues/501 
+ * https://github.com/api-platform/api-platform/issues/502
+ * https://github.com/api-platform/api-platform/issues/530
+ * https://github.com/api-platform/api-platform/issues/535
+ * https://github.com/javiereguiluz/easy-admin-demo/issues/61
+ * https://github.com/javiereguiluz/easy-admin-demo/issues/60
+ * https://github.com/symfony/symfony/issues/25806
