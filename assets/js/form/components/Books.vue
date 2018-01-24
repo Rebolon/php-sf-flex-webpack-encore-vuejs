@@ -5,15 +5,10 @@
             <h6 class="hint">
                 But it needs to store something somewhere, or it won't be possible to display anything neither do anything in fact</h6>
         </label>
-        <q-toolbar color="primary">
-            <q-toolbar-title>
-                {{ msg }}
-            </q-toolbar-title>
-        </q-toolbar>
+
+        <strong>Pagination must be removed when DataTable will allow async data ! (v0.15 at least)</strong><br/>
 
         <q-spinner-circles v-if="isLoading" size="20px"/>
-
-        Pagination must be removed when DataTable will allow async data ! (v0.15 at least)
         <q-pagination v-if="books.length" v-model="pagination.page" :max="pagination.total"
                       @change="getOtherPage($event)"></q-pagination>
 
@@ -395,6 +390,66 @@ export default {
                 return {
                     first: this.pagination.itemPerPage,
                     after: this.pagination.endCursor,
+                }
+            },
+            // Additional options here
+            fetchPolicy: 'cache-and-network',
+        },
+        // @sample on how to do 2 queries in one call
+        getBooksAndSerie: {
+            // getBooksAndSerie is mandatory on response if we don't want to get a console.error
+            query: gql`
+                query getBooksAndSerieQry($firstBook: Int, $afterBook: String, $firstSerie: Int, $afterSerie: String) {
+                    getBooksAndSerie: books(first: $firstBook, after: $afterBook) {
+                        edges {
+                            node {
+                                id
+                                title
+                            }
+                            cursor
+                        }
+                        pageInfo {
+                            endCursor
+                            hasNextPage
+                        }
+                    }
+                    getSeries: series(first:$firstSerie, after: $afterSerie) {
+                        edges {
+                            node {
+                                name
+                            }
+                            cursor
+                        }
+                        pageInfo {
+                            endCursor
+                            hasNextPage
+                        }
+                    }
+                }
+            `,
+            result({data}) {
+                let result = {
+                    books: {},
+                    series: {}
+                }
+
+                if (data) {
+                    if (data.getBooksAndSerie) {
+                        result.books = data.getBooksAndSerie
+                    }
+
+                    if (data.getSeries) {
+                        result.series = data.getSeries
+                    }
+                }
+
+                this.getBooksAndSerie = result
+            },
+            variables() {
+                return {
+                    firstBook: this.pagination.itemPerPage,
+                    afterBook: this.pagination.endCursor,
+                    firstSerie: this.pagination.itemPerPage,
                 }
             },
             // Additional options here
