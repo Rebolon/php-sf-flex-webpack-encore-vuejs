@@ -1,11 +1,12 @@
 import { Selector } from 'testcafe'
+import { host, port } from '../js/lib/config'
 
 fixture `Test homepage`
-    .page `http://localhost:${process.env.npm_package_config_server_port_web}`
+    .page `http://${host}`
 
 test('List of demos', async t => {
-    const expectedCount = 7
-    const h1 = await Selector('h1')
+    const expectedCount = 14
+    const h1 = await Selector('h2')
     const list = await Selector('ul li')
 
     await t

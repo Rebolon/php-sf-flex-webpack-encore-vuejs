@@ -1,9 +1,10 @@
 import { Selector, ClientFunction } from 'testcafe'
 import { StandardSfAccUser } from './tools/authentification'
-import { phpLoginFormPath, phpLoginSuccessPath } from './tools/uris'
+import { phpLoginFormPath, phpLoginSuccessPath, phpLoginAuthenticatePath } from './tools/uris'
+import { host, csrfParameter } from '../js/lib/config'
 
 fixture `Test symfony login`
-    .page `http://localhost:${process.env.npm_package_config_server_port_web}/${phpLoginFormPath}`
+    .page `http://${host}${phpLoginFormPath}`
 
 /**
  * Test the login page:
@@ -13,14 +14,14 @@ fixture `Test symfony login`
  */
 test('Login page', async t => {
   const getLocation = ClientFunction(() => document.location.href)
-  const form = await Selector('form[action="/demo/login/authenticate"]')
+  const form = await Selector(`form[action="${phpLoginAuthenticatePath}"]`)
   const alert = await Selector('div[role="alert"]')
   await t
-  .navigateTo('/demo/login/secured')
+  .navigateTo(phpLoginSuccessPath)
   .expect(getLocation()).contains(phpLoginFormPath, 'uri does not contain ' + phpLoginFormPath)
   .expect(form.find('#username').count).eql(1, "Should find 1 input for username")
   .expect(form.find('#password').count).eql(1, "Should find 1 input for password")
-  .expect(form.find('input[name="_csrf_token"]').count).eql(1, "Should find 1 input for csrf protection")
+  .expect(form.find(`input[name="${csrfParameter}"]`).count).eql(1, "Should find 1 input for csrf protection")
   .typeText('#username', 'fakeUser')
   .typeText('#password', 'fakeUser11111')
   .click('button[type="submit"]')
@@ -31,6 +32,6 @@ test('Login page', async t => {
   .pressKey('ctrl+a delete')
 
   .useRole(StandardSfAccUser)
-  .navigateTo('/demo/login/secured') // i force navigation on this secured page coz it seems that if the Role works well, the current test does a redirection to current page
+  .navigateTo(phpLoginSuccessPath) // i force navigation on this secured page coz it seems that if the Role works well, the current test does a redirection to current page
   .expect(getLocation()).contains(phpLoginSuccessPath, 'uri does not contain ' + phpLoginSuccessPath)
 })

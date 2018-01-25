@@ -1,5 +1,9 @@
 # Symfony sample
 
+<a href="https://github.com/DevExpress/testcafe">
+    <img alt="Tested with TestCafe" src="https://img.shields.io/badge/tested%20with-TestCafe-2fa4cf.svg">
+</a>
+
 ## requirements
 
 You need PHP (7.x), composer, and npm
@@ -207,6 +211,8 @@ query getBooksAndSerieQry($firstBook: Int, $afterBook: String, $firstSerie: Int,
  * https://github.com/api-platform/api-platform/issues/501 
  * https://github.com/api-platform/api-platform/issues/502
  * https://github.com/api-platform/api-platform/issues/530
+ * https://github.com/api-platform/api-platform/issues/535
+ * https://github.com/api-platform/api-platform/issues/537
  * https://github.com/javiereguiluz/easy-admin-demo/issues/61
  * https://github.com/javiereguiluz/easy-admin-demo/issues/60
  * https://github.com/symfony/symfony/issues/25806

@@ -86,6 +86,9 @@ export default {
                     this.$router.push(this.redirect)
                 }
             })
+            .catch(err => {
+                Toast.create.info('You need to log in to access the app.')
+            })
 
         getToken(this)
             .finally(() => this.isLoading = false)
