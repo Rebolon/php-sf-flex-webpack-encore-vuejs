@@ -12,6 +12,7 @@
 /.idea/
 /public/build/
 /assets/js/lib/config.js
+/testcafe.xunit.xml
 
 ###> friendsofphp/php-cs-fixer ###
 .php_cs

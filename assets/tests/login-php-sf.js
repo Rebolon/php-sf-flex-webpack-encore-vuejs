@@ -1,9 +1,10 @@
 import { Selector, ClientFunction } from 'testcafe'
 import { StandardSfAccUser } from './tools/authentification'
 import { phpLoginFormPath, phpLoginSuccessPath } from './tools/uris'
+import { host } from '../js/lib/config'
 
 fixture `Test symfony login`
-    .page `http://localhost:${process.env.npm_package_config_server_port_web}/${phpLoginFormPath}`
+    .page `http://${host}/${phpLoginFormPath}`
 
 /**
  * Test the login page:
