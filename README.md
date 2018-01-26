@@ -27,9 +27,9 @@ Here is how it has been created:
 * composer create-project symfony/skeleton sf-flex-encore-vuejs
 * cd sf-flex-encore-vuejs
 * composer req encore annotations twig api http profiler log doctrine-migrations admin webonyx/graphql-php
-* composer require --dev doctrine/doctrine-fixtures-bundle
+* composer require --dev doctrine/doctrine-fixtures-bundle phpunit/phpunit symfony/dom-crawler symfony/browser-kit symfony/css-selector
 * yarn add vue vue-router quasar-framework quasar-extras vuelidate vue-apollo@next graphql apollo-client apollo-link apollo-link-http apollo-link-error apollo-cache-inmemory graphql-tag react react-dom prop-types axios rxjs
-* yarn add --dev vue-loader vue-template-compiler vue-router react-loader babel-preset-es2017 babel-preset-react testcafe sass-loader node-sass bootstrap@4.0.0 jasmine karma karma-jasmine karma-spec-reporter karma-webpack karma-chrome-launcher
+* yarn add --dev vue-loader vue-template-compiler vue-router react-loader babel-preset-es2017 babel-preset-react sass-loader node-sass bootstrap@4.0.0 testcafe testcafe-vue-selectors jasmine karma karma-jasmine karma-spec-reporter karma-junit-reporter karma-webpack karma-chrome-launcher
 * yarn install 
 
 Then some php controllers has been created on following routes :
@@ -93,6 +93,7 @@ The test_browser section represent all the browsers you want to use with the tes
 * admin: easy admin component to build quick backend with auto form
 * profiler: for debugging purpose
 * log: a logger for symfony
+* phpunit, crawler, browserkit, css-selector: php/symfony task for testing (@todo ll last 3 should be a recipe)
 * babel-preset-es2017: do you really need explanation ?
 * testcafe: an e2e test framework (might be changed with chimp or anything else, gimme better idea)
 * jasmine & karma: a stack for unit & e2e tests (a more standard stack to replace testcafé)
@@ -150,8 +151,8 @@ Take care, the asset server listen to port 8080 so don't start your main server 
 Also, if you want to use the asset server finely, you have to add the assets configuration in the config/packages/framework.yaml file :
 `json_manifest_path: '%kernel.project_dir%/public/build/manifest.json'`. In fact the npm command will build asset in memory only, and modify the manifest file to map asset to a new url served by the asset server instead of the main web server.
 
-# code quality
-## PHP
+## code quality
+### PHP
 The project uses 2 packages to lint and fix the code style of PHP code :You can install phpcs to check your code
  * squizlabs/PHP_CodeSniffer to lint and follow PSR1/PSR2 rules. 
  * friendsofphp/php-cs-fixer to fix the code
@@ -159,17 +160,29 @@ The project uses 2 packages to lint and fix the code style of PHP code :You can 
 Lint with this command `vendor/bin/phpcs src -n --standard=PSR1,PSR2 --report=summary` to get a summary of errors.
 Fix with this command `vendor/bin/php-cs-fixer fix src --rules=@PSR1,@PSR2`
 
-## Javascript
+### Javascript
 For Javascript the following packages has been used: 
  `npm install prettier`
  
 To lint the code: `node bin-prettier.js assets/js/**`
 To fix it: `node bin-prettier.js assets/js/** --write`
 
-## IDE
+### IDE
 
 For PHP you should configure your IDE to follow PSR1/PSR2 code style (or anything else if you prefer). For JS you will
 have to install [prettier tool](https://prettier.io/docs/en/editors.html).
+
+## Tests
+
+On PHP we use PHPUnit and Symfony web testcase. For Javascript, we decided to work with testcafé.
+We have basic tests on PHP that will try to test that we have HTTP 200 OK on each routes. We should also tests Commands and
+other classes, but we should also test more finely the API content.
+On Javascript we have unit and e2 tests. Units tests are managed by jasmine and karma. It allows to test function, class, component. 
+For e2e tests we use testcaf� from devExpress. It allows to launch browsers and drive them by code to reproduce a human behavior. 
+Here the tests runs on a chrome headless, and firefox but you can configure it in the package.json file in the config.test_browser node.
+
+`npm run test-cafe && npm run test-karma` will run js test and will generate a testcafe.xunit.xml and karma_report.xml files in the following folder `/var/report/`.
+
 
 ## todo
 
