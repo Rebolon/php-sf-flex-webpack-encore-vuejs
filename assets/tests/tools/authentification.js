@@ -11,14 +11,14 @@ const passwordStd = 'test'
  *
  * @type {Role}
  */
-export const StandardSfAccUser = Role(`http://${host}/${phpLoginFormPath}`, async t => {
+export const StandardSfAccUser = Role(`http://${host}${phpLoginFormPath}`, async t => {
   await t
   .typeText('#username', usernameStd)
   .typeText('#password', passwordStd)
   .click('button[type="submit"]')
 })
 
-export const StandardVueJSAccUser = Role(`http://${host}/${jsLoginFormPath}`, async t => {
+export const StandardVueJSAccUser = Role(`http://${host}${jsLoginFormPath}`, async t => {
   await t
   .typeText('input[name="username"]', usernameStd)
   .typeText('input[name="password"]', passwordStd)

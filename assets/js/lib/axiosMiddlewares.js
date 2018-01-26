@@ -63,7 +63,7 @@ const CsrfTokenHeader = function (config) {
             config.data[csrfParameter] = meta
     }
 
-    console.info('axios intercep request', 'csrf')
+    console.info('axios intercep request', 'csrf', meta)
 
     return config
 }

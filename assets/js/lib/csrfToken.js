@@ -40,5 +40,17 @@ const changeMeta = function(meta, token) {
         meta.setAttribute('name', metaKey)
         document.querySelector('head').appendChild(meta)
     }
-    meta.setAttribute('content', token)
+
+    // seems to ge incoherent behavior depending of browser or context: to investigate
+    try {
+        meta.content = token
+        if (meta.setAttribute)
+        if (meta.getAttribute
+            && !meta.getAttribute('content')
+            && meta.setAttribute) {
+            meta.setAttribute('content', token)
+        }
+    } catch(e) {
+        console.warn('Impossible to store token in DOM')
+    }
 }
