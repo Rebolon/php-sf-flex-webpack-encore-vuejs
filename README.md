@@ -168,6 +168,7 @@ have to install [prettier tool](https://prettier.io/docs/en/editors.html).
 
 ## todo
 
+* test: use phpcscbf instead of php_cs_fixer coz it's embeded with phpcs and it uses the phpcs config file
 * improve this tutorial with ~~an API Route built with Api platform (without DB)~~ and install the vue-generator from api-platform for a crud sample :
     * The question for instance is `How to override ApiPlatform routing: i want some route to be overloaded: POST/PUT Book should be able to add also Auhtors and/or Editors`
 * ~~add db fixtures at init ! almost 40 books and some reviews (at least 3 for 5 1st books)~~ all sqlite fixtures is converted into the final db model
