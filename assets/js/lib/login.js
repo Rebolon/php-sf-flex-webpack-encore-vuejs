@@ -2,9 +2,15 @@ import router from '../form/router/index'
 import { Toast } from 'quasar-framework'
 import axios from 'axios'
 import { logoutStdInterceptors } from './axiosMiddlewares'
+import Rx from 'rxjs/Rx'
 
-axios.interceptors.request.eject(logoutStdInterceptors);
+// allow components to be alerted when the user is logged in / off
+const IsLoggedInSubject = new Rx.ReplaySubject(2)
+export const IsLoggedInObservable = IsLoggedInSubject.asObservable().filter(isLoggedIn => Boolean(isLoggedIn.length))
 
+axios.interceptors.request.eject(logoutStdInterceptors)
+
+// @todo move it to RxJs implementation with subscribe + only call the uri on last call of the method during 300ms
 export default function isLoggedIn(loaderToActivate) {
     return new Promise((resolve, reject) => {
         if (loaderToActivate && loaderToActivate.isLoading) {
@@ -14,6 +20,7 @@ export default function isLoggedIn(loaderToActivate) {
         const uri = '/demo/login/json/isloggedin'
         axios.get(uri)
             .then(res => {
+                IsLoggedInSubject.next(res.data)
                 localStorage.setItem('isLoggedIn', JSON.stringify(res.data))
                 resolve(true)
             })
@@ -36,6 +43,7 @@ export default function isLoggedIn(loaderToActivate) {
 
 export const resetLoginInfo = function() {
     localStorage.removeItem('isLoggedIn')
+    IsLoggedInSubject.next(undefined)
 }
 
 export const logout = function() {

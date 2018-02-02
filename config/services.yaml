@@ -43,6 +43,11 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
+    # overloaded controllers for ApiPlatform @issue: https://github.com/api-platform/api-platform/issues/537
+    App\Action\:
+        resource: '../src/Action'
+        tags: ['controller.service_arguments']
+
     App\DataFixtures\ConnectionFixtures:
         public: true
         arguments:

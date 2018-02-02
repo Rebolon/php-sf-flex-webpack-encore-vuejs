@@ -11,7 +11,13 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ApiResource(
  *     iri="http://bib.schema.org/ComicStory",
- *     attributes={"access_control"="is_granted('ROLE_USER')"}
+ *     attributes={"access_control"="is_granted('ROLE_USER')"},
+ *     collectionOperations={"get"={"method"="GET"},"post"={"method"="POST"}},
+ *     itemOperations={
+ *         "get"={"method"="GET"},"put"={"method"="PUT"},"delete"={"method"="delete"},
+ *         "special_1"={"route_name"="book_special_sample1"},
+ *         "special_2"={"route_name"="book_special_sample2"},
+ *     }
  * )
  * @ORM\Entity
  */
