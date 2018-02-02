@@ -1,5 +1,9 @@
 # Symfony sample
 
+<a href="https://github.com/DevExpress/testcafe">
+    <img alt="Tested with TestCafe" src="https://img.shields.io/badge/tested%20with-TestCafe-2fa4cf.svg">
+</a>
+
 ## requirements
 
 You need PHP (7.x), composer, and npm
@@ -165,6 +169,7 @@ have to install [prettier tool](https://prettier.io/docs/en/editors.html).
 
 ## todo
 
+* test: use phpcscbf instead of php_cs_fixer coz it's embeded with phpcs and it uses the phpcs config file
 * improve this tutorial with ~~an API Route built with Api platform (without DB)~~ and install the vue-generator from api-platform for a crud sample :
     * The question for instance is `How to override ApiPlatform routing: i want some route to be overloaded: POST/PUT Book should be able to add also Auhtors and/or Editors`
 * ~~add db fixtures at init ! almost 40 books and some reviews (at least 3 for 5 1st books)~~ all sqlite fixtures is converted into the final db model
@@ -209,6 +214,7 @@ query getBooksAndSerieQry($firstBook: Int, $afterBook: String, $firstSerie: Int,
  * https://github.com/api-platform/api-platform/issues/502
  * https://github.com/api-platform/api-platform/issues/530
  * https://github.com/api-platform/api-platform/issues/535
+ * https://github.com/api-platform/api-platform/issues/537
  * https://github.com/javiereguiluz/easy-admin-demo/issues/61
  * https://github.com/javiereguiluz/easy-admin-demo/issues/60
  * https://github.com/symfony/symfony/issues/25806

@@ -1,6 +1,7 @@
 import { Role } from 'testcafe'
 import { phpLoginFormPath } from './uris'
 import { jsLoginFormPath } from './uris'
+import { host } from '../../js/lib/config'
 
 const usernameStd = 'test'
 const passwordStd = 'test'
@@ -10,14 +11,14 @@ const passwordStd = 'test'
  *
  * @type {Role}
  */
-export const StandardSfAccUser = Role(`http://localhost:${process.env.npm_package_config_server_port_web}/${phpLoginFormPath}`, async t => {
+export const StandardSfAccUser = Role(`http://${host}${phpLoginFormPath}`, async t => {
   await t
   .typeText('#username', usernameStd)
   .typeText('#password', passwordStd)
   .click('button[type="submit"]')
 })
 
-export const StandardVueJSAccUser = Role(`http://localhost:${process.env.npm_package_config_server_port_web}/${jsLoginFormPath}`, async t => {
+export const StandardVueJSAccUser = Role(`http://${host}${jsLoginFormPath}`, async t => {
   await t
   .typeText('input[name="username"]', usernameStd)
   .typeText('input[name="password"]', passwordStd)
