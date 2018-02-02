@@ -1,3 +1,8 @@
 controllers:
     resource: ../../src/Controller/
     type: annotation
+
+# overloaded controllers for ApiPlatform @issue: https://github.com/api-platform/api-platform/issues/537
+actions:
+    resource: ../../src/Action/
+    type: annotation

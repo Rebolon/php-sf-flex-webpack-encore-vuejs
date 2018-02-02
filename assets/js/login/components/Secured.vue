@@ -5,25 +5,47 @@
         </label>
         <q-toolbar color="primary">
             <q-toolbar-title>
-                Hello user (need a way to retrieve info from api : isLoggedIn route to be improved and send personal info)
+                Hello {{ user.username }}
             </q-toolbar-title>
         </q-toolbar>
     </div>
 </template>
 
 <script>
-import { QToolbar, QToolbarTitle } from 'quasar-framework'
-
+import { QToolbar, QToolbarTitle, Toast } from 'quasar-framework'
+import { IsLoggedInObservable } from '../../lib/login'
 export default {
     name: 'Secured',
     components: {
         QToolbar,
         QToolbarTitle,
+        Toast
     },
     data() {
         return {
             user: {},
         }
+    },
+    created() {
+        const defaultUser = {
+            user: {
+                username: 'inconnu'
+            }
+        }
+
+        this.user = defaultUser
+
+        if (typeof localStorage === undefined) {
+            Toast.create.warning(`No localStorage feature available in the browser`)
+        }
+
+        IsLoggedInObservable.subscribe(isLoggedIn => {
+            if (!isLoggedIn) {
+                this.user = defaultUser
+            } else {
+                this.user = isLoggedIn.me
+            }
+        })
     },
 }
 </script>

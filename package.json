@@ -51,6 +51,7 @@
         "quasar-framework": "^0.14.7",
         "react": "^16.2.0",
         "react-dom": "^16.2.0",
+        "rxjs": "^5.5.6",
         "vue": "^2.5.13",
         "vue-apollo": "^3.0.0-alpha.3",
         "vue-router": "^3.0.1",

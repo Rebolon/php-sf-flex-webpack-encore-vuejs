@@ -2,6 +2,7 @@ import axios from 'axios'
 import { logout } from './login'
 import { getTokenFromMeta } from './csrfToken'
 import { csrfParameter } from './config'
+import { Toast } from 'quasar-framework'
 
 // @todo add an interceptors that will always retrieve the csrf token and add it inside the request
 // make sure that api-platform is also compatible with csrf token and implement it
