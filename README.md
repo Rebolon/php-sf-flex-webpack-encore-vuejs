@@ -71,7 +71,7 @@ You can also change the web server port and the asset server port in the same co
         "php": "php",
         "server_port_web": "80",
         "server_port_asset": "8080",
-        "test_browser": "chrome,firefox"
+        "test_browser": "chrome:headless,firefox"
     },
 ```
 
@@ -108,15 +108,18 @@ The test_browser section represent all the browsers you want to use with the tes
   3. nodejs tooling installation: `npm install`
   4. assets generation: `npm run dev`
   5. db init: `php bin/console doctrine:database:create` & `doctrine:schema:create` & `doctrine:fixtures:load`
+     * it creates the physical database from the `config/packages/doctrine.yaml` file
+     * it builds the schema based on `src/Entity/*` files
+     * it load fixtures based on a db sample built with `calibre` software plus a plugin that export data to sqlite format. An alternative to this would have been to use https://github.com/hautelook/AliceBundle and build yaml fixtures, but i already had an sqlite db so i didn't need this :-)  
 * Run your application with php built-in server:
   1. Change to the project directory
   2. Execute the `npm run dev-server-hot` command to start the asset server that will build your assets and your manifest.json and serve the assets with hot module replacment when you do a modification on a vuejs file 
   3. Execute the `npm run sf-dev` command;
   4. Browse to the http://localhost:80/ URL.
 
-    Quit the server with CTRL-C.
-    Run composer require symfony/web-server-bundle for a better web server.
-    And launch `php bin/console server:start 127.0.0.1:80`
+     * Run composer require symfony/web-server-bundle for a better web server.
+     * Quit the server with CTRL-C.
+     * And launch `php bin/console server:start 127.0.0.1:80`
     
   5. Run frontend tests with `npm run test`
 
@@ -212,6 +215,7 @@ query getBooksAndSerieQry($firstBook: Int, $afterBook: String, $firstSerie: Int,
  * https://github.com/api-platform/api-platform/issues/488
  * https://github.com/api-platform/api-platform/issues/501 
  * https://github.com/api-platform/api-platform/issues/502
+ * https://github.com/api-platform/api-platform/issues/519
  * https://github.com/api-platform/api-platform/issues/530
  * https://github.com/api-platform/api-platform/issues/535
  * https://github.com/api-platform/api-platform/issues/537
@@ -219,3 +223,4 @@ query getBooksAndSerieQry($firstBook: Int, $afterBook: String, $firstSerie: Int,
  * https://github.com/javiereguiluz/easy-admin-demo/issues/60
  * https://github.com/symfony/symfony/issues/25806
  * https://github.com/symfony/symfony/issues/8467
+ * https://github.com/symfony/webpack-encore/issues/256
