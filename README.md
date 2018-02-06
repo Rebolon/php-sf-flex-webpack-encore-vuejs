@@ -29,7 +29,7 @@ Here is how it has been created:
 * composer req encore annotations twig api http profiler log doctrine-migrations admin webonyx/graphql-php
 * composer require --dev doctrine/doctrine-fixtures-bundle
 * yarn add vue vue-router quasar-framework quasar-extras vuelidate vue-apollo@next graphql apollo-client apollo-link apollo-link-http apollo-link-error apollo-cache-inmemory graphql-tag react react-dom prop-types axios rxjs
-* yarn add --dev vue-loader vue-template-compiler vue-router react-loader babel-preset-es2017 babel-preset-react testcafe sass-loader node-sass bootstrap@4.0.0-beta.2
+* yarn add --dev vue-loader vue-template-compiler vue-router react-loader babel-preset-es2017 babel-preset-react testcafe sass-loader node-sass bootstrap@4.0.0 jasmine karma karma-jasmine karma-spec-reporter karma-webpack karma-chrome-launcher
 * yarn install 
 
 Then some php controllers has been created on following routes :
@@ -94,7 +94,8 @@ The test_browser section represent all the browsers you want to use with the tes
 * profiler: for debugging purpose
 * log: a logger for symfony
 * babel-preset-es2017: do you really need explanation ?
-* testcafe: a test framework (might be changed with chimp or anything else, gimme better idea)
+* testcafe: an e2e test framework (might be changed with chimp or anything else, gimme better idea)
+* jasmine & karma: a stack for unit & e2e tests (a more standard stack to replace testcafé)
 * sass: hey, we are not in nineties, we don't write css now
 * bootstrap: the beta 4 version of the first class css framework (not used with quasar)
 * axios: the library to perform http calls
