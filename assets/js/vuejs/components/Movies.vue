@@ -5,7 +5,7 @@
         <h2>Movies</h2>
 
         <ul v-if="!isLoading">
-            <li v-for="movie in movies" v-on:click="showMovie($event)">
+            <li v-for="movie in movies">
                 <router-link :to="{name: 'Movie', params: { id: movie.id } }">{{ movie.title }}</router-link>
             </li>
         </ul>
@@ -22,7 +22,6 @@ export default {
             msg: 'List of Ghibli movies',
             isLoading: true,
             movies: [],
-            id: undefined,
         }
     },
     created() {
@@ -37,11 +36,6 @@ export default {
             .finally(() => {
                 this.isLoading = false
             })
-    },
-    methods: {
-        showMovie(ev) {
-            console.log(ev, 'todo route to the movie page')
-        },
     },
 }
 </script>

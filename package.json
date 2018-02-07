@@ -32,9 +32,11 @@
         "dev": "./node_modules/.bin/encore dev",
         "watch": "./node_modules/.bin/encore dev --watch",
         "build": "./node_modules/.bin/encore production",
-        "test": "npm run test:linux",
-        "test:linux": "./node_modules/.bin/testcafe $npm_package_config_test_browser ./assets/tests  --reporter xunit:testcafe.xunit.xml",
-        "test:windows": "./node_modules/.bin/testcafe %npm_package_config_test_browser% ./assets/tests  --reporter  xunit:testcafe.xunit.xml"
+        "test-cafe": "npm run test-cafe:linux",
+        "test-cafe:linux": "./node_modules/.bin/testcafe $npm_package_config_test_browser ./assets/tests  --reporter xunit:testcafe.xunit.xml",
+        "test-cafe:windows": "./node_modules/.bin/testcafe %npm_package_config_test_browser% ./assets/tests  --reporter  xunit:testcafe.xunit.xml",
+        "test-karma": "./node_modules/.bin/karma start assets/tests/units/karma.conf.js --single-run",
+        "test-watch-karma": "./node_modules/.bin/karma start assets/tests/units/karma.conf.js"
     },
     "dependencies": {
         "@api-platform/admin": "^0.2.0",
@@ -62,6 +64,12 @@
         "babel-preset-es2017": "^6.24.1",
         "babel-preset-react": "^6.24.1",
         "bootstrap": "4.0.0",
+        "jasmine": "^2.9.0",
+        "karma": "^2.0.0",
+        "karma-chrome-launcher": "^2.2.0",
+        "karma-jasmine": "^1.1.1",
+        "karma-spec-reporter": "0.0.32",
+        "karma-webpack": "^2.0.9",
         "node-sass": "^4.5.3",
         "prettier": "^1.10.2",
         "sass-loader": "^6.0.6",

@@ -12,12 +12,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/api-platform/core.git",
-                "reference": "24cd88c905b484f587cae9f7d364fca89c766f94"
+                "reference": "9fd528a8b4dfddafe8f3fbaec9c132c1a45c2bd5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/api-platform/core/zipball/24cd88c905b484f587cae9f7d364fca89c766f94",
-                "reference": "24cd88c905b484f587cae9f7d364fca89c766f94",
+                "url": "https://api.github.com/repos/api-platform/core/zipball/9fd528a8b4dfddafe8f3fbaec9c132c1a45c2bd5",
+                "reference": "9fd528a8b4dfddafe8f3fbaec9c132c1a45c2bd5",
                 "shasum": ""
             },
             "require": {
@@ -28,7 +28,7 @@
                 "symfony/http-foundation": "^3.1 || ^4.0",
                 "symfony/http-kernel": "^2.7 || ^3.0 || ^4.0",
                 "symfony/property-access": "^2.7 || ^3.0 || ^4.0",
-                "symfony/property-info": "^3.1 || ^4.0",
+                "symfony/property-info": "^3.3.11 || ^4.0",
                 "symfony/serializer": "^3.1 || ^4.0",
                 "willdurand/negotiation": "^2.0.3"
             },
@@ -121,7 +121,7 @@
                 "rest",
                 "swagger"
             ],
-            "time": "2018-01-23T19:15:25+00:00"
+            "time": "2018-02-07T11:47:08+00:00"
         },
         {
             "name": "clue/stream-filter",

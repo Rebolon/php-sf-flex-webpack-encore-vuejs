@@ -4,9 +4,9 @@ import Vue from 'vue'
 import App from './App.vue'
 import Loader from './components/Loader.vue'
 import router from './router'
+import { isProduction } from '../lib/config'
 
-// @todo make it dynamic using npm scripts and fetching .env file
-Vue.config.productionTip = false
+Vue.config.productionTip = isProduction()
 
 Vue.component('Loader', Loader)
 

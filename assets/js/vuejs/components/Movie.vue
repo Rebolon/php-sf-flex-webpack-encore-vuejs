@@ -1,11 +1,17 @@
 <template>
     <div class="movie">
-        <h1>{{ msg }}</h1>
+        <div v-if="canDisplayMovie()">
+            <h1>{{ msg }}</h1>
 
-        <div v-if="!isLoading">
-            <strong>"{{ movie.title }}"</strong> : {{ movie.description }}<br/>
+            <div v-if="!isLoading">
+                <strong>"{{ movie.title }}"</strong> : {{ movie.description }}<br/>
 
-            <cite>The movie has been released in {{ movie.release_date }}</cite>
+                <cite>The movie has been released in {{ movie.release_date }}</cite>
+            </div>
+        </div>
+
+        <div v-else>
+            No movie to display
         </div>
 
         <Loader v-else="!isLoading"></Loader>
@@ -18,16 +24,40 @@
 import axios from 'axios'
 export default {
     name: 'Movie',
-    props: ['id'],
+    props: {
+        id: String,
+        aMovie: {
+            type: Object,
+            validator: movie => {
+                const toTest = Object.keys(movie)
+
+                if (!toTest.length) {
+                    console.warn('no keys in movie')
+                    return false
+                }
+
+                const validProps = [
+                    'id', 'title', 'description', 'director', 'producer', 'release_date', 'rt_score', 'people',
+                    'species', 'locations', 'vehicles', 'url', ]
+                const mandatoryProps = ['id', 'title', 'description', 'release_date', ]
+
+                const hasAllValidProps = toTest.find(prop => validProps.includes(prop)).length
+                const hasAllMandatoryProps = mandatoryProps.length === toTest.find(prop => mandatoryProps.includes(prop)).length
+
+                return hasAllMandatoryProps
+            }
+        }
+    },
     data() {
         return {
             msg: 'Detail of the movie',
             isLoading: true,
-            movie: {},
+            movie: this.aMovie ? this.aMovie : {}
         }
     },
     created() {
-        if (this.id === undefined) {
+        if (Object.keys(this.movie).length
+            || this.id === undefined) {
             this.isLoading = false
 
             return
@@ -45,6 +75,16 @@ export default {
                 this.isLoading = false
             })
     },
+    methods: {
+        canDisplayMovie() {
+            if (Object.keys(this.movie).length
+                || this.id !== undefined) {
+                return true
+            }
+
+            return false
+        }
+    }
 }
 </script>
 
