@@ -1,11 +1,12 @@
 const Encore = require('@symfony/webpack-encore')
 const ManifestPlugin = require('@symfony/webpack-encore/lib/webpack/webpack-manifest-plugin')
+const webpack = require('webpack');
 
 // Initialize Encore before requiring the .config file
 Encore.configureRuntimeEnvironment('dev-server')
 
 // Retrieve webpack config
-const webpackConfig = require('./webpack.config')
+const webpackConfig = require('../../../webpack.config')
 
 // Set writeToFileEmit option of the ManifestPlugin to false
 for (const plugin of webpackConfig.plugins) {
@@ -13,6 +14,9 @@ for (const plugin of webpackConfig.plugins) {
         plugin.opts.writeToFileEmit = false
     }
 }
+
+// Remove CommonsChunkPlugin: mandatory when we use Encore.createSharedEntry
+webpackConfig.plugins = webpackConfig.plugins.filter(plugin => !(plugin instanceof webpack.optimize.CommonsChunkPlugin));
 
 // Remove entry property (handled by Karma)
 delete webpackConfig.entry
@@ -23,11 +27,11 @@ module.exports = function(config) {
         frameworks: ['jasmine'],
 
         files: [
-            'assets/js/vuejs/tests/index.js'
+            '../../js/vuejs/tests/index.js'
         ],
 
         preprocessors: {
-            'assets/js/vuejs/tests/index.js': ['webpack']
+            '../../js/vuejs/tests/index.js': ['webpack']
         },
 
         browsers: ['Chrome'],
@@ -46,10 +50,12 @@ module.exports = function(config) {
             require('karma-spec-reporter')
         ],
 
-        phantomjsLauncher: {
-            exitOnResourceError: true
+        chromeLauncher: {
+            exitOnResourceError: false
         },
 
-        reporters: ['spec']
+        reporters: ['spec'],
+
+        autoWatch: true,
     });
 }

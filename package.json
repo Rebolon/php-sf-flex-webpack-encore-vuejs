@@ -35,9 +35,8 @@
         "test-cafe": "npm run test-cafe:linux",
         "test-cafe:linux": "./node_modules/.bin/testcafe $npm_package_config_test_browser ./assets/tests  --reporter xunit:testcafe.xunit.xml",
         "test-cafe:windows": "./node_modules/.bin/testcafe %npm_package_config_test_browser% ./assets/tests  --reporter  xunit:testcafe.xunit.xml",
-        "test-karma": "npm run test-karma:linux",
-        "test-karma:linux": "./node_modules/.bin/karma start --single-run",
-        "test-karma:windows": "./node_modules/.bin/karma start --single-run"
+        "test-karma": "./node_modules/.bin/karma start assets/tests/units/karma.conf.js --single-run",
+        "test-watch-karma": "./node_modules/.bin/karma start assets/tests/units/karma.conf.js"
     },
     "dependencies": {
         "@api-platform/admin": "^0.2.0",

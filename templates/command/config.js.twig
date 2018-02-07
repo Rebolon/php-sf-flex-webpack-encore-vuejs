@@ -1,4 +1,7 @@
-export let host = '{{ host }}:{{ port }}'
-export let env = '{{ env }}'
-export let csrfParameter = '{{ csrfTokenParameter }}' // _csrf_token
-export let apiPlatformPrefix = '{{ apiPlatformPrefix | raw }}' // /api
+export const host = '{{ host }}:{{ port }}'
+export const env = '{{ env }}'
+export function isProduction () {
+    return env === 'prod'
+}
+export const csrfParameter = '{{ csrfTokenParameter }}' // _csrf_token
+export const apiPlatformPrefix = '{{ apiPlatformPrefix | raw }}' // /api

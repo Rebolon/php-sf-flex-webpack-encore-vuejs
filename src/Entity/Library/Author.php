@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ApiResource(
  *     iri="http://schema.org/author",
- *     attributes={"access_control"="is_granted('ROLE_USER')"}
+ *     attributes={"access_control"="is_granted('ROLE_USER')", "status_code"=403}
  * )
  * @ORM\Entity
  */
