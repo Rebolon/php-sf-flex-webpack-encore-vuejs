@@ -177,8 +177,11 @@ have to install [prettier tool](https://prettier.io/docs/en/editors.html).
 On PHP we use PHPUnit and Symfony web testcase. For Javascript, we decided to work with testcafÃ©.
 We have basic tests on PHP that will try to test that we have HTTP 200 OK on each routes. We should also tests Commands and
 other classes, but we should also test more finely the API content.
+Take care with Symfony4 to configure the config/packages/test/framework.yaml file to overload the session.storage_id with
+a mock !
+
 On Javascript we have unit and e2 tests. Units tests are managed by jasmine and karma. It allows to test function, class, component. 
-For e2e tests we use testcafé from devExpress. It allows to launch browsers and drive them by code to reproduce a human behavior. 
+For e2e tests we use testcafï¿½ from devExpress. It allows to launch browsers and drive them by code to reproduce a human behavior. 
 Here the tests runs on a chrome headless, and firefox but you can configure it in the package.json file in the config.test_browser node.
 
 `npm run test-cafe && npm run test-karma` will run js test and will generate a testcafe.xunit.xml and karma_report.xml files in the following folder `/var/report/`.

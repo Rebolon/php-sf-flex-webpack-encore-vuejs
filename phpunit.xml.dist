@@ -29,4 +29,15 @@
             <directory>src</directory>
         </whitelist>
     </filter>
+    <logging>
+        <log type="coverage-html" target="var/report" lowUpperBound="35"
+             highLowerBound="70"/>
+        <log type="coverage-clover" target="var/report/coverage.xml"/>
+        <log type="coverage-php" target="var/report/coverage.serialized"/>
+        <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
+        <log type="junit" target="var/report/phpunit_report.xml"/>
+        <log type="testdox-html" target="var/report/testdox.html"/>
+        <log type="testdox-text" target="var/report/testdox.txt"/>
+    </logging>
+
 </phpunit>

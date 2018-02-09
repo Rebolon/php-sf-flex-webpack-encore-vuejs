@@ -131,13 +131,26 @@ abstract class HTTP200Abstract extends WebTestCase
      */
     protected function checkHeader(Crawler $crawler, $errMsg)
     {
-        $filter = $crawler->filter('body header');
-        $this->assertCount(1, $filter, $errMsg);
-        $this->assertEmpty(trim($filter->text()), $errMsg);
-
         $filter = $crawler->filter('body nav h1');
         $this->assertCount(1, $filter, $errMsg);
-        $this->assertEquals($filter->text(), 'Demo of symfony 4 with flex, and webpack/encore, VueJS, ApiPlatform, HttpPlug,...', $errMsg);
+        $this->assertEquals(
+            <<<HTML
+<a href="/"><u>Demo of symfony 4</u></a>
+                <span style="font-size: smaller">with flex,
+                    <span style="font-size: smaller">and webpack/encore,
+                        <span style="font-size: smaller">VueJS,
+                            <span style="font-size: smaller">ApiPlatform,
+                                <span style="font-size: smaller">HttpPlug,...</span>
+                            </span>
+                        </span>
+                    </span>
+                </span>
+            
+HTML
+            ,
+            $filter->html(),
+            $errMsg
+        );
 
         return $crawler;
     }
