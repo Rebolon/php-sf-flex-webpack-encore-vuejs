@@ -189,14 +189,37 @@ Here the tests runs on a chrome headless, and firefox but you can configure it i
 
 ## todo
 
-* test: use phpcscbf instead of php_cs_fixer coz it's embeded with phpcs and it uses the phpcs config file
+- [x] setup Sf4
+- [x] setup symfony/webpack-encore
+- [x] add a model with doctrine entities
+- [x] configure ApiPlatform
+- [x] setup one custom route for ApiPlatform
+- [ ] check security and csrf system with ApiPlatform (really required ?)
+- [ ] check security on ApiPlatform (do we need JWT or just cookies, in that case we are stateful which is not cool for deployment and replication)
+- [x] setup VueJS
+- [x] use Quasar with VueJS
+- [ ] setup React Admin from ApiPlatform (it worked but now fails...)
+- [x] setup CSRF protection with VueJS app
+- [x] setup unit tests for JS (karma/jasmine)
+- [x] setup e2e tests for JS (testcafé)
+- [x] setup phpunit tests for PHP (unit test and webtestcase)
+- [x] write some JS units tests
+- [x] write some JS e2e tests
+- [ ] write some PHP tests
+- [x] setup tests reports
+- [ ] setup security with Symfony (ticket open coz i get 500 instead of 403)
+- [x] setup EasyAdminBundle
+- [ ] improve EasyAdminBundle with custom screen
+- [ ] create another route with VueJS that use GQL instead of REST
+- [ ] code style: use phpcscbf instead of php_cs_fixer coz it's embeded with phpcs and it uses the phpcs config file
+- [ ] transform this project into a meta package that will install all requirements for JS app within Symfony (like does laravel)
+
 * improve this tutorial with ~~an API Route built with Api platform (without DB)~~ and install the vue-generator from api-platform for a crud sample :
     * The question for instance is `How to override ApiPlatform routing: i want some route to be overloaded: POST/PUT Book should be able to add also Auhtors and/or Editors`
 * ~~add db fixtures at init ! almost 40 books and some reviews (at least 3 for 5 1st books)~~ all sqlite fixtures is converted into the final db model
 * customize easyAdminBundle to add author/editor from Book and display those related infos on Book admin page (same for other author/editor entities and serie/reviews)
 * manage Entity orphanRemoval / CASCADE onDelete
 * find a good way to add a `pre-commit` hook that lint PHP and JS code, and run the PHP / JS tests
-* transform this project into a meta package that will install all requirements for JS app within Symfony (like does laravel)
 * Here is a sample of GraphQL query with 2 queries in one call but i don't know how to manage this with Vue-apollo (he can't accept this coz it maps the result to the data[nameOfapolloQuery] whereas i have 2 names...) ? IN FACT the solution is the result hook (see https://github.com/Akryum/vue-apollo/issues/15, and the documentation)
 ```
 query getBooksAndSerieQry($firstBook: Int, $afterBook: String, $firstSerie: Int, $afterSerie: String) {
@@ -227,6 +250,7 @@ query getBooksAndSerieQry($firstBook: Int, $afterBook: String, $firstSerie: Int,
     }
 }
 ```
+
 ## third party issues that helped me to go on 
 
  * https://github.com/api-platform/api-platform/issues/488
