@@ -21,6 +21,7 @@
         "doctrine/doctrine-fixtures-bundle": "^3.0",
         "friendsofphp/php-cs-fixer": "^2.10",
         "phpunit/phpunit": "^6.5",
+        "sensiolabs/security-checker": "^4.1",
         "squizlabs/PHP_CodeSniffer": "^3.2",
         "symfony/browser-kit": "^4.0.0",
         "symfony/css-selector": "^4.0.0",
@@ -56,7 +57,8 @@
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd"
+            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
+            "security-checker security:check": "script"
         },
         "post-install-cmd": [
             "@auto-scripts"
