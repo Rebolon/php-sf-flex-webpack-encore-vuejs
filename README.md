@@ -195,6 +195,10 @@ Here the tests runs on a chrome headless, and firefox but you can configure it i
 - [x] add a model with doctrine entities
 - [x] configure ApiPlatform
 - [x] setup one custom route for ApiPlatform
+- [ ] setup custom route with nested objects on create/update/read (read should be solved ith serializer, create/update might be solved with custom route or DTOS so try 2 ways)
+- [ ] graphQL: multiple queries in one call ?
+- [ ] graphQL: multiple mutations in one call ?
+- [ ] graphQL: how to mutate nested objects in a minimal call ?
 - [ ] check security and csrf system with ApiPlatform (really required ?)
 - [ ] check security on ApiPlatform (do we need JWT or just cookies, in that case we are stateful which is not cool for deployment and replication)
 - [x] setup VueJS
