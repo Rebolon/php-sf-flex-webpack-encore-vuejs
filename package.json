@@ -12,11 +12,11 @@
         "test_browser": "chrome:headless,chrome"
     },
     "scripts": {
-        "init-project": "cp .env.dist .env && composer install && npm install && npm run db-init:linux && npm run dump-js-config:linux",
+        "init-project": "cp .env.dist .env && composer install && npm install && npm run db-init && npm run dump-js-config",
         "init-project:windows": "cp .env.dist .env && composer install && npm install && npm run db-init:windows && npm run dump-js-config:windows",
         "db-init": "$npm_package_config_php bin/console doctrine:database:create && $npm_package_config_php bin/console doctrine:schema:create && $npm_package_config_php bin/console doctrine:fixtures:load",
         "db-init:windows": "%npm_package_config_php% bin/console doctrine:database:create && %npm_package_config_php% bin/console doctrine:schema:create && %npm_package_config_php% bin/console doctrine:fixtures:load",
-        "dump-js-config:linux": "rm assets/js/config.js -f && $npm_package_config_php bin/console app:dump-js-config $npm_package_config_server_host_web $npm_package_config_server_port_web",
+        "dump-js-config": "rm assets/js/config.js -f && $npm_package_config_php bin/console app:dump-js-config $npm_package_config_server_host_web $npm_package_config_server_port_web",
         "dump-js-config:windows": "rm assets/js/config.js -f && %npm_package_config_php% bin/console app:dump-js-config %npm_package_config_server_host_web% %npm_package_config_server_port_web%",
         "sf-dev": "echo 'you should use nginx/apache server, read the README' && $npm_package_config_php -S $npm_package_config_server_host_web:$npm_package_config_server_port_web -t public",
         "sf-dev:windows": "echo 'you should use nginx/apache server, read the README' && %npm_package_config_php% -S %npm_package_config_server_host_web%:%npm_package_config_server_port_web% -t public",
