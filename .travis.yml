@@ -18,14 +18,14 @@ php:
   - 7.1
 
 before_install:
-  - sudo ps aux | grep php-fpm
-  - sudo ls /etc/init.d
   - sudo add-apt-repository -y ppa:ondrej/php
   - sudo add-apt-repository -y ppa:ondrej/nginx-mainline
   - sudo apt-get update
   - sudo apt-get install nginx
-  - sudo apt-get install php7.1-fpm
-  - pwd
+#  - sudo apt-get install php7.1-fpm
+  - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
+  - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf
+  - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - sudo cp var/travis/nginx.conf /etc/nginx/sites-available/$SERVER_HOST_WEB.conf
   - sudo ln -s /etc/nginx/sites-available/$SERVER_HOST_WEB /etc/nginx/sites-enabled/
   - nvm install 8.9.0
@@ -37,7 +37,7 @@ install:
 
 before_script:
 #  - curl -H "Accept: application/json" https://security.sensiolabs.org/check_lock -F lock=@composer.lock
-  - sudo service php7.1-fpm restart
+#  - sudo service php7.1-fpm restart
   - sudo service nginx restart
 
 script:
