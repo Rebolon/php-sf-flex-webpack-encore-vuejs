@@ -5,8 +5,12 @@ namespace App\Tests;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\DomCrawler\Crawler;
 use PHPUnit\Util\Printer;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Input\ArrayInput;
 
 abstract class HTTP200Abstract extends WebTestCase
 {
@@ -30,12 +34,63 @@ abstract class HTTP200Abstract extends WebTestCase
      */
     protected $testPwd;
 
+    static public function setUpBeforeClass()
+    {
+        parent::setUpBeforeClass();
+
+        $kernel = static::bootKernel();
+        $application = new Application($kernel);
+        $application->setAutoExit(false);
+
+        $input = new ArrayInput(array(
+            'command' => 'doctrine:database:drop',
+        ));
+        $output = new NullOutput();
+        $application->run($input, $output);
+
+        $input = new ArrayInput(array(
+            'command' => 'doctrine:database:create',
+        ));
+        $output = new NullOutput();
+        $application->run($input, $output);
+    }
+
     protected function setUp()
     {
         parent::setUp();
 
         $this->testLogin = 'test';
         $this->testPwd = 'test';
+
+        $kernel = static::bootKernel();
+        $application = new Application($kernel);
+        $application->setAutoExit(false);
+        $input = new ArrayInput(array(
+            'command' => 'doctrine:schema:create',
+        ));
+        $output = new NullOutput();
+        $application->run($input, $output);
+
+        // @todo don't understand why db is not filled
+        $input = new ArrayInput(array(
+            'command' => 'doctrine:fixtures:load',
+        ));
+        $application->run($input, $output);
+    }
+
+    public function tearDown()
+    {
+        parent::tearDown();
+
+        $kernel = static::bootKernel();
+        $application = new Application($kernel);
+        $application->setAutoExit(false);
+
+        $input = new ArrayInput(array(
+            'command' => 'doctrine:schema:drop',
+        ));
+        $output = new NullOutput();
+        $application->run($input, $output);
     }
 
     /**
@@ -208,58 +263,49 @@ HTML
      */
     protected function checkPages($router, $client)
     {
-        $demoRoutes['simple controller'] = $router->generate('simple');
-        $demoRoutes['hello controller with twig'] = $router->generate('app_hello_world', ['name' => 'world', ]);
-        $demoRoutes['httpplug demo'] = $router->generate('app_httpplug_call');
+        $demoRoutes['simple controller'] = ['uri'=> $router->generate('simple'), ];
+        $demoRoutes['hello controller with twig'] = ['uri'=> $router->generate('app_hello_world', ['uri'=> 'world', ]), ];
+        $demoRoutes['httpplug demo'] = ['uri'=> $router->generate('app_httpplug_call'), ];
 
-        $demoRoutes['symfony secured page with standard login'] = $router->generate('demo_secured_page');
-        $demoRoutes['vuejs secured page with json login'] = $router->generate('app_loginjson_index');
+        $demoRoutes['symfony secured page with standard login'] = ['uri'=> $router->generate('demo_secured_page'), ];
+        $demoRoutes['vuejs secured page with json login'] = ['uri'=> $router->generate('app_loginjson_index'), ];
 
-        $demoRoutes['vuejs page with vue-router'] = $router->generate('app_vuejs_index');
-        $demoRoutes['vuejs with quasar and vue-router'] = $router->generate('app_quasar_index');
-        $demoRoutes['vuejs with quasar with a more complex app'] = $router->generate('app_form_index');
+        $demoRoutes['vuejs page with vue-router'] = ['uri'=> $router->generate('app_vuejs_index'), ];
+        $demoRoutes['vuejs with quasar and vue-router'] = ['uri'=> $router->generate('app_quasar_index'), ];
+        $demoRoutes['vuejs with quasar with a more complex app'] = ['uri'=> $router->generate('app_form_index'), ];
 
-        $demoRoutes['csrf token generation'] = $router->generate('token');
-        $demoRoutes['user login check for js app'] = $router->generate('demo_secured_page_is_logged_in');
+        $demoRoutes['csrf token generation'] = ['uri'=> $router->generate('token'), ];
+        $demoRoutes['user login check for js app'] = ['uri'=> $router->generate('demo_secured_page_is_logged_in'), 'statusCode' => 401, ];
 
-        $demoRoutes['api-platform: rest'] = $router->generate('api_entrypoint');
-        $demoRoutes['api-platform: graphql'] = $router->generate('api_graphql_entrypoint');
-        $demoRoutes['api-platform: admin react'] = $router->generate('app_apiplatformadminreact_index');
-        $demoRoutes['easy admin'] = $router->generate('admin');
+        $demoRoutes['api-platform: rest'] = ['uri'=> $router->generate('api_entrypoint'), ];
+        $demoRoutes['api-platform: graphql'] = ['uri'=> $router->generate('api_graphql_entrypoint'), ];
+        $demoRoutes['api-platform: admin react'] = ['uri'=> $router->generate('app_apiplatformadminreact_index'), ];
+        $demoRoutes['easy admin'] = ['uri'=> $router->generate('admin'), ];
 
-        $o = new Printer();
-
-        $token = '';
         foreach ($demoRoutes as $routeInfos) {
             $headers = [];
-
-            $routeName = $routeInfos;
-            if (is_array($routeInfos)) {
-                if (array_key_exists('headers', $routeInfos)) {
-                    $headers = array_merge($headers, $routeInfos['headers']);
-                    foreach ($headers as $keys => $value) {
-                        $prefix = 'HTTP_';
-                        if (strpos($keys, $prefix) === 0) {
-                            continue;
-                        }
-
-                        $headers[$prefix . $keys] = $value;
-                        unset($headers[$keys]);
+            
+            if (array_key_exists('headers', $routeInfos)) {
+                $headers = array_merge($headers, $routeInfos['headers']);
+                foreach ($headers as $keys => $value) {
+                    $prefix = 'HTTP_';
+                    if (strpos($keys, $prefix) === 0) {
+                        continue;
                     }
+
+                    $headers[$prefix . $keys] = $value;
+                    unset($headers[$keys]);
                 }
-
-                $routeName = $routeInfos['uri'];
             }
-            $uri = "http:" . $routeName;
 
-            // $o->write(PHP_EOL.$uri.PHP_EOL);
+            $uri = $routeInfos['uri'];
+
             $errMsg = sprintf("route: %s, headers: %s", $uri, json_encode($headers));
 
             $crawler = $client->request('GET', $uri, [], [], $headers);
 
-            $this->assertEquals(200, $client->getResponse()->getStatusCode(), $errMsg);
+            $this->assertEquals(array_key_exists('statusCode', $routeInfos) ? : 200, $client->getResponse()->getStatusCode(), $errMsg);
         }
-        $o->flush();
     }
 
     /**

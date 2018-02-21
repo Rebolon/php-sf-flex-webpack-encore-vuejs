@@ -31,10 +31,6 @@ class HTTP200Test extends HTTP200Abstract
      */
     public function testPages()
     {
-        $this->markTestIncomplete('Should test some all pages');
-
-        $this->displayTestSection();
-
         $client = $this->getClient();
         $router = $this->getRouter();
 
