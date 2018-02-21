@@ -26,6 +26,7 @@ before_install:
   - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.conf
   - sudo cp ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf.default ~/.phpenv/versions/$(phpenv version-name)/etc/php-fpm.d/www.conf
   - echo "cgi.fix_pathinfo = 1" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - ~/.phpenv/versions/$(phpenv version-name)/sbin/php-fpm
   - sudo cp var/travis/nginx.conf /etc/nginx/sites-available/$SERVER_HOST_WEB.conf
   - sudo ln -s /etc/nginx/sites-available/$SERVER_HOST_WEB /etc/nginx/sites-enabled/
   - nvm install 8.9.0
