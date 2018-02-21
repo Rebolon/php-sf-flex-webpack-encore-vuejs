@@ -203,7 +203,6 @@ Here the tests runs on a chrome headless, and firefox but you can configure it i
 - [ ] check security on ApiPlatform (do we need JWT or just cookies, in that case we are stateful which is not cool for deployment and replication)
 - [x] setup VueJS
 - [x] use Quasar with VueJS
-- [ ] setup React Admin from ApiPlatform (it worked but now fails...)
 - [x] setup CSRF protection with VueJS app
 - [x] setup unit tests for JS (karma/jasmine)
 - [x] setup e2e tests for JS (testcafé)
@@ -215,6 +214,8 @@ Here the tests runs on a chrome headless, and firefox but you can configure it i
 - [ ] setup security with Symfony (ticket open coz i get 500 instead of 403)
 - [x] setup EasyAdminBundle
 - [ ] improve EasyAdminBundle with custom screen
+- [ ] setup React Admin from ApiPlatform (it worked but now fails...)
+- [ ] keep EasyAdminBundle or React Admin: make a choice coz both are doing the same, i need to measure differences, and also the ease to do custom screen (change forms, manage rights...)
 - [ ] create another route with VueJS that use GQL instead of REST
 - [ ] code style: use phpcscbf instead of php_cs_fixer coz it's embeded with phpcs and it uses the phpcs config file
 - [ ] transform this project into a meta package that will install all requirements for JS app within Symfony (like does laravel)
