@@ -96,10 +96,10 @@ abstract class HTTP200Abstract extends WebTestCase
     {
         $uri = $this->router->generate('demo_login_standard', [], Router::NETWORK_PATH);
         $crawler = $client->request('GET', $uri);
-        $buttonCrawlerNode = $crawler->selectButton('_submit');
+        $buttonCrawlerNode = $crawler->selectButton('login');
         $form = $buttonCrawlerNode->form(array(
-            'username' => $this->testLogin,
-            'password' => $this->testPwd,
+            'login_username' => $this->testLogin,
+            'login_password' => $this->testPwd,
         ));
         $crawler = $client->submit($form);
 
@@ -179,10 +179,10 @@ HTML
         $this->checkSEO($crawler, $errMsg);
         $this->checkHeader($crawler, $errMsg);
 
-        $buttonCrawlerNode = $crawler->selectButton('submit');
-        $form = $buttonCrawlerNode->form(array(
-            'username' => $this->testLogin,
-            'password' => 'fake',
+        $form = $crawler->selectButton('login')->form();
+        $form->setValues(array(
+            'login_username' => $this->testLogin,
+            'login_password' => 'fake',
         ));
         $crawler = $client->submit($form);
         $bc = $crawler->filter('body div.alert');
@@ -190,7 +190,9 @@ HTML
 
         $crawler = $this->doLogin($client);
         $bc = $crawler->filter('body div.container');
-        $this->assertContains('Hello Test You are in', trim($bc->text()));
+        $text = trim($bc->text());
+        $this->assertContains('Hello Test', $text);
+        $this->assertContains('You are in', $text);
 
         return $crawler;
     }
@@ -317,8 +319,10 @@ HTML
     {
         $routesName = [];
 
+        // @todo list manually routes to test and then generate them with valid parameters
+        // following code is wrong coz it lacks valid params to generate routes
         foreach ($router->getRouteCollection() as $name => $route) {
-            if (false === strpos('api', $name)) {
+            if (0 !== strpos($name,'api')) {
                 continue;
             }
 
