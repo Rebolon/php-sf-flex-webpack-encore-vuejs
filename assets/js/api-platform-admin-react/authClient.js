@@ -12,6 +12,7 @@ let csrf_token = ''
 export const initToken = () => {
     getToken()
         .then(response => csrf_token = response)
+        .catch(err => console.warn('initToken', 'getToken', err))
 }
 
 export const authClient = (type, params) => {

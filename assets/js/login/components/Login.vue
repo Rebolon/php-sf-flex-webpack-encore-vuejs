@@ -91,6 +91,9 @@ export default {
             })
 
         getToken(this)
+            .catch(err => {
+                console.warn('No token retrieved', err)
+            })
             .finally(() => this.isLoading = false)
     },
     validations: {
@@ -159,7 +162,9 @@ export default {
                             Toast.create.negative(`Invalid user name or password (${errMsg})`)
                             break;
                         case 423:
-                            getToken().then(res => Toast.create.warning(`Invalid token, please try again`))
+                            getToken()
+                                .then(res => Toast.create.warning(`Invalid token, please try again`))
+                                .catch(err => console.warn('Login methos submit', 'getToken', err))
                             break;
                         default:
                             console.warn(err.response)

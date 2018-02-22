@@ -13,14 +13,18 @@ const passwordStd = 'test'
  */
 export const StandardSfAccUser = Role(`http://${host}${phpLoginFormPath}`, async t => {
   await t
-  .typeText('#username', usernameStd)
-  .typeText('#password', passwordStd)
-  .click('button[type="submit"]')
+      .typeText('#username', usernameStd)
+      .typeText('#password', passwordStd)
+      .click('button[type="submit"]')
+}, {
+    preserveUrl: true
 })
 
 export const StandardVueJSAccUser = Role(`http://${host}${jsLoginFormPath}`, async t => {
   await t
-  .typeText('input[name="username"]', usernameStd)
-  .typeText('input[name="password"]', passwordStd)
-  .click('button')
+      .typeText('input[name="username"]', usernameStd)
+      .typeText('input[name="password"]', passwordStd)
+      .click('button')
+}, {
+  preserveUrl: true
 })
