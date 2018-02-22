@@ -5,6 +5,7 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
@@ -13,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * )
  * @ORM\Entity
  */
-class Review
+class Review implements LibraryInterface
 {
     /**
      * @ORM\Id
@@ -27,6 +28,7 @@ class Review
      *     iri="http://schema.org/reviewRating"
      * )
      * @ORM\Column(type="integer", nullable=false)
+     * @Assert\Range(min="0", max="5")
      */
     private $rating;
 
@@ -43,6 +45,7 @@ class Review
      *     iri="http://schema.org/givenName"
      * )
      * @ORM\Column(type="string", length=512, nullable=true)
+     * @Assert\Length(max="512")
      */
     private $username;
 
@@ -51,6 +54,7 @@ class Review
      *     iri="http://schema.org/datePublished"
      * )
      * @ORM\Column(type="datetime", nullable=false, options={"default":"now()"})
+     * @Assert\DateTime()
      */
     private $publication_date;
 

@@ -14,3 +14,8 @@ api_platform:
     collection:
         pagination:
             items_per_page: 10
+
+    exception_to_status:
+        # The 2 following handlers are registered by default, keep those lines to prevent unexpected side effects
+        Symfony\Component\Serializer\Exception\ExceptionInterface: 400 # Use a raw status code (recommended)
+        ApiPlatform\Core\Exception\InvalidArgumentException: 'HTTP_BAD_REQUEST' # Or a `Symfony\Component\HttpFoundation\Response`'s constant

@@ -6,7 +6,7 @@
         "ext-curl": "*",
         "ext-pdo_sqlite": "*",
         "doctrine/doctrine-migrations-bundle": "^1.3",
-        "javiereguiluz/easyadmin-bundle": "^1.17",
+        "easycorp/easyadmin-bundle": "^1.17",
         "php-http/httplug-pack": "^1.0",
         "rebolon/api-pack": "^1.0.2",
         "sensio/framework-extra-bundle": "^5.1.0",

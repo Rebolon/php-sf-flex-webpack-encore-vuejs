@@ -4,8 +4,12 @@ namespace App\Action;
 use App\Entity\Library\Book;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @todo Doesn't seem to be catched by Api-Platform
@@ -20,10 +24,27 @@ class BookSpecial
      */
     private $em;
 
-    public function __construct(EntityManagerInterface  $entityManager)
+    /**
+     * @var Router
+     */
+    private $router;
+
+    /**
+     * @var Serializer
+     */
+    private $serializer;
+
+    /**
+     * BookSpecial constructor.
+     * @param EntityManagerInterface $entityManager
+     * @param RouterInterface $router
+     * @param SerializerInterface $serializer
+     */
+    public function __construct(EntityManagerInterface  $entityManager, RouterInterface $router, SerializerInterface $serializer)
     {
-        // for instance i inject the EntityManagerInterface to be able to do specific query and return them throught a JsonResponse
         $this->em = $entityManager;
+        $this->router = $router;
+        $this->serializer = $serializer;
     }
 
     /**
@@ -37,7 +58,7 @@ class BookSpecial
      * @param Book $data
      * @return Book
      */
-    public function get(Book $data) // API Platform retrieves the PHP entity using the data provider then (for POST and
+    public function special1(Book $data) // API Platform retrieves the PHP entity using the data provider then (for POST and
                                     // PUT method) deserializes user data in it. Then passes it to the action. Here $data
                                     // is an instance of Book having the given ID. By convention, the action's parameter
                                     // must be called $data.
@@ -45,7 +66,6 @@ class BookSpecial
         return $data; // API Platform will automatically validate, persist (if you use Doctrine) and serialize an entity
                       // for you. If you prefer to do it yourself, return an instance of Symfony\Component\HttpFoundation\Response
     }
-
 
     /**
      * @Route(
@@ -56,9 +76,9 @@ class BookSpecial
      * @Method("GET")
      *
      * @param Book $data
-     * @return Book
+     * @return JsonResponse
      */
-    public function post(Book $data) // API Platform retrieves the PHP entity using the data provider then (for POST and
+    public function special2(Book $data) // API Platform retrieves the PHP entity using the data provider then (for POST and
         // PUT method) deserializes user data in it. Then passes it to the action. Here $data
         // is an instance of Book having the given ID. By convention, the action's parameter
         // must be called $data.
@@ -86,15 +106,45 @@ class BookSpecial
             ];
         }
 
-
         /**
-        "reviews" => $data->getReviews(),
+        "reviews" => $data->getReviews(), // manage pagination ?
         "serie" => $data->getSerie(),
         "authors" => $data->getAuthors(),
         "editors" => $data->getEditors(),
          */
 
-
         return new JsonResponse($newData);
+    }
+
+    /**
+     * Custom route to do POST operation over Book entity with all nested relations
+     * It uses ParamConverter usage to reduce the responsability of the controller
+     *
+     * @Route(
+     *     name="book_special_sample3",
+     *     path="/api/booksiu/special_3"
+     * )
+     * @ParamConverter(name="book", converter="book")
+     * @Method("POST")
+     *
+     * @param Book $book
+     * @return JsonResponse
+     */
+    public function special3(Book $book)
+    {
+        if ($book) {
+            $this->em->persist($book);
+
+            $this->em->flush();
+
+            $iris = $this->router->generate('api_books_get_item', ['id' => $book->getId(), ]);
+
+            $response = $this->serializer->serialize($book, 'json');
+        } else {
+            return new Response('No Content', 204);
+        }
+
+        // todo return a 201 with iris to book, use the router to build the iris
+        return new JsonResponse($response, 201, [], true);
     }
 }

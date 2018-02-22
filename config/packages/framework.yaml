@@ -12,5 +12,7 @@ framework:
         handler_id: ~
     #esi: ~
     #fragments: ~
+    # To allow Constraints validation using annotations
+    validation: { enable_annotations: true }
     php_errors:
         log: true

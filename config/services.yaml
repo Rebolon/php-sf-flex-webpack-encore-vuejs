@@ -48,7 +48,62 @@ services:
         resource: '../src/Action'
         tags: ['controller.service_arguments']
 
+    # to overload the Swagger API documentation with my own decorator: App\Swagger\SwaggerDecorator.php
+    App\Swagger\SwaggerDecorator:
+        decorates: 'api_platform.swagger.normalizer.documentation'
+        arguments: [ '@App\Swagger\SwaggerDecorator.inner' ]
+        autoconfigure: false
+
     App\DataFixtures\ConnectionFixtures:
         public: true
         arguments:
             - '@doctrine.dbal.fixtures_connection'
+
+    App\Request\ParamConverter\Library\AuthorConverter:
+        public: true
+        arguments:
+            - '@validator'
+        tags:
+            - { name: request.param_converter, priority: -2, converter: author }
+
+    App\Request\ParamConverter\Library\BookConverter:
+        public: true
+        arguments:
+            - '@validator'
+        tags:
+            - { name: request.param_converter, priority: -2, converter: book }
+
+    App\Request\ParamConverter\Library\EditorConverter:
+        public: true
+        arguments:
+            - '@validator'
+        tags:
+            - { name: request.param_converter, priority: -2, converter: editor }
+
+    App\Request\ParamConverter\Library\JobConverter:
+        public: true
+        arguments:
+            - '@validator'
+        tags:
+            - { name: request.param_converter, priority: -2, converter: job }
+
+    App\Request\ParamConverter\Library\ProjectBookCreationConverter:
+        public: true
+        arguments:
+            - '@validator'
+        tags:
+            - { name: request.param_converter, priority: -2, converter: authors }
+
+    App\Request\ParamConverter\Library\ProjectBookEditionConverter:
+        public: true
+        arguments:
+            - '@validator'
+        tags:
+            - { name: request.param_converter, priority: -2, converter: editors }
+
+    App\Request\ParamConverter\Library\SerieConverter:
+        public: true
+        arguments:
+            - '@validator'
+        tags:
+            - { name: request.param_converter, priority: -2, converter: serie }

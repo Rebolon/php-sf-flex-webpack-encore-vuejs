@@ -7,12 +7,17 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
  *     iri="http://bib.schema.org/ComicStory",
  *     attributes={"access_control"="is_granted('ROLE_USER')"},
- *     collectionOperations={"get"={"method"="GET"},"post"={"method"="POST"}},
+ *     collectionOperations={
+ *          "get"={"method"="GET"},
+ *          "post"={"method"="POST"},
+ *          "special_3"={"route_name"="book_special_sample3"},
+ *     },
  *     itemOperations={
  *         "get"={"method"="GET"},"put"={"method"="PUT"},"delete"={"method"="delete"},
  *         "special_1"={"route_name"="book_special_sample1"},
@@ -21,7 +26,7 @@ use Doctrine\ORM\Mapping as ORM;
  * )
  * @ORM\Entity
  */
-class Book
+class Book implements LibraryInterface
 {
     /**
      * @ApiProperty(
@@ -40,6 +45,10 @@ class Book
      * )
      *
      * @ORM\Column(type="string", length=255, nullable=false)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(max="512")
+     *
      */
     private $title;
 
@@ -63,6 +72,7 @@ class Book
      * )
      *
      * @ORM\Column(type="integer", nullable=true)
+     * @Assert\Type(type="integer")
      */
     private $index_in_serie;
 
@@ -97,7 +107,7 @@ class Book
     /**
      * @ApiSubresource(maxDepth=1)
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Library\Serie", inversedBy="books")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Library\Serie", inversedBy="books", cascade={"persist"})
      * @ORM\JoinColumn(name="serie_id", referencedColumnName="id")
      */
     private $serie;

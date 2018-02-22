@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
@@ -14,7 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
  * )
  * @ORM\Entity
  */
-class Author
+class Author implements LibraryInterface
 {
     /**
      * @ORM\Id
@@ -28,6 +29,7 @@ class Author
      *     iri="http://schema.org/givenName"
      * )
      * @ORM\Column(type="string", nullable=false)
+     * @Assert\NotBlank()
      */
     private $firstname;
 
