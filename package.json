@@ -7,13 +7,13 @@
     "config": {
         "php": "php",
         "server_host_web": "localhost",
-        "server_port_web": "85",
+        "server_port_web": "80",
         "server_port_asset": "8080",
         "test_browser": "chrome:headless,firefox"
     },
     "scripts": {
-        "init-project": "cp .env.dist .env && composer install && npm install && npm run db-init && npm run dump-js-config",
-        "init-project:windows": "cp .env.dist .env && composer install && npm install && npm run db-init:windows && npm run dump-js-config:windows",
+        "init-project": "cp .env.dist .env && composer install && npm install && npm run db-init && npm run dump-js-config && npm run dev",
+        "init-project:windows": "cp .env.dist .env && composer install && npm install && npm run db-init:windows && npm run dump-js-config:windows && npm run dev",
         "db-init": "$npm_package_config_php bin/console doctrine:database:create && $npm_package_config_php bin/console doctrine:schema:create && $npm_package_config_php bin/console doctrine:fixtures:load -n",
         "db-init:windows": "%npm_package_config_php% bin/console doctrine:database:create && %npm_package_config_php% bin/console doctrine:schema:create && %npm_package_config_php% bin/console doctrine:fixtures:load -n",
         "dump-js-config": "rm assets/js/config.js -f && $npm_package_config_php bin/console app:dump-js-config $npm_package_config_server_host_web $npm_package_config_server_port_web",
@@ -37,15 +37,15 @@
         "test:windows": "npm run test-php:windows && npm run test-karma && npm run test-cafe:windows"
     },
     "dependencies": {
-        "@api-platform/admin": "^0.2.0",
+        "@api-platform/admin": "^0.3.1",
         "apollo-cache-inmemory": "^1.1.9",
         "apollo-client": "^2.2.5",
-        "apollo-link": "^1.2.0",
-        "apollo-link-error": "^1.0.5",
-        "apollo-link-http": "^1.4.0",
-        "axios": "^0.17.1",
+        "apollo-link": "^1.2.1",
+        "apollo-link-error": "^1.0.7",
+        "apollo-link-http": "^1.5.1",
+        "axios": "^0.18.0",
         "graphql": "^0.13.1",
-        "graphql-tag": "^2.7.3",
+        "graphql-tag": "^2.8.0",
         "prop-types": "^15.6.0",
         "quasar-extras": "^1.0.2",
         "quasar-framework": "^0.14.9",
