@@ -14,14 +14,16 @@ export const initToken = () => {
         .then(response => csrf_token = response)
 }
 
+// @todo mutualize request params coz it's also used in other components in js/login/Login.vue
 export const authClient = (type, params) => {
     switch (type) {
         case AUTH_LOGIN:
             const { username, password } = params
             const request = new Request(`${login_uri}`, {
                 method: 'POST',
-                body: JSON.stringify({ username, password, csrf: csrf_token }),
+                body: JSON.stringify({ login_username: username, login_password: password, _csrf_token: csrf_token }),
                 headers: new Headers({ 'Content-Type': 'application/json' }),
+                credentials: "include"
             })
 
             return fetch(request)
@@ -32,6 +34,9 @@ export const authClient = (type, params) => {
             })
             .then(({ token }) => {
                 localStorage.setItem('token', token) // The JWT token is stored in the browser's local storage
+            })
+            .catch(err => {
+                console.warn('authClient', 'getToken', err)
             })
         case AUTH_LOGOUT:
             localStorage.removeItem('token')

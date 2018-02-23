@@ -270,6 +270,8 @@ query getBooksAndSerieQry($firstBook: Int, $afterBook: String, $firstSerie: Int,
  * https://github.com/api-platform/api-platform/issues/530
  * https://github.com/api-platform/api-platform/issues/535
  * https://github.com/api-platform/api-platform/issues/537
+ * https://github.com/api-platform/api-platform/issues/581
+ * https://github.com/api-platform/api-platform/issues/584
  * https://github.com/javiereguiluz/easy-admin-demo/issues/61
  * https://github.com/javiereguiluz/easy-admin-demo/issues/60
  * https://github.com/symfony/symfony/issues/25806
