@@ -12,6 +12,7 @@ let csrf_token = ''
 export const initToken = () => {
     getToken()
         .then(response => csrf_token = response)
+        .catch(err => console.warn('initToken', 'getToken', err))
 }
 
 // @todo mutualize request params coz it's also used in other components in js/login/Login.vue

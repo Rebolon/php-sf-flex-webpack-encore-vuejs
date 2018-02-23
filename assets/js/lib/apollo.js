@@ -28,7 +28,9 @@ onError(({ networkError }) => {
  */
 onError(({ networkError }) => {
     if (423 === networkError.statusCode) {
-        getToken().then(res => Toast.create.warning(`Invalid token, please try again`))
+        getToken()
+            .then(res => Toast.create.warning(`Invalid token, please try again`))
+            .catch(err => console.warn('apollo onError', 'getToken', err))
     } else {
         console.warn(`Unknown error ${networkError.statusCode}`, networkError)
         Toast.create.warning(`Unknown error ${networkError.statusCode}`)
