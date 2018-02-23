@@ -218,7 +218,9 @@ Here the tests runs on a chrome headless, and firefox but you can configure it i
 - [ ] setup security with Symfony (ticket open coz i get 500 instead of 403)
 - [x] setup EasyAdminBundle
 - [ ] improve EasyAdminBundle with custom screen
-- [ ] setup React Admin from ApiPlatform (it worked but now fails...)
+- [x] setup React Admin from ApiPlatform (this issue is mandatory https://github.com/api-platform/api-platform/issues/584)
+- [ ] fix React Admin Book creation: it allows multiple authors (projectBookCreation) whereas it should not, and try to display the name of the author/editor... instead of their iris which is unundertandable
+- [ ] customize React Admin to display more information on datagrid, and customize form in book edition per example
 - [ ] keep EasyAdminBundle or React Admin: make a choice coz both are doing the same, i need to measure differences, and also the ease to do custom screen (change forms, manage rights...)
 - [ ] create another route with VueJS that use GQL instead of REST
 - [ ] code style: use phpcscbf instead of php_cs_fixer coz it's embeded with phpcs and it uses the phpcs config file

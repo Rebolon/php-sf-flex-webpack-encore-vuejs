@@ -10,6 +10,11 @@ const fetchWithAuth = (url, options = {}) => {
 
     options.credentials = 'same-origin'
 
+    // fix https://github.com/api-platform/api-platform/issues/584
+    if (apiPlatformPrefix) {
+        url = url.replace(`${apiPlatformPrefix}${apiPlatformPrefix}/`, `${apiPlatformPrefix}/`)
+    }
+
     return fetchHydra(url, options);
 };
 
