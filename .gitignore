@@ -26,3 +26,5 @@
 ###> phpunit/phpunit ###
 /phpunit.xml
 ###< phpunit/phpunit ###
+
+/var/data/test.db

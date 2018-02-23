@@ -214,8 +214,9 @@ Here the tests runs on a chrome headless, and firefox but you can configure it i
 - [x] write some JS units tests
 - [x] write some JS e2e tests
 - [ ] write some PHP tests
+- [ ] fix testcafe role where sometimes they are not played: https://testcafe-discuss.devexpress.com/t/role-sometime-it-doesnt-seem-to-be-played/875 
 - [x] setup tests reports
-- [ ] setup security with Symfony (ticket open coz i get 500 instead of 403)
+- [ ] setup security with Symfony (ticket open coz i get 500 instead of 403: https://github.com/symfony/symfony/issues/25806)
 - [x] setup EasyAdminBundle
 - [ ] improve EasyAdminBundle with custom screen
 - [x] setup React Admin from ApiPlatform (this issue is mandatory https://github.com/api-platform/api-platform/issues/584)
@@ -279,3 +280,4 @@ query getBooksAndSerieQry($firstBook: Int, $afterBook: String, $firstSerie: Int,
  * https://github.com/symfony/symfony/issues/25806
  * https://github.com/symfony/symfony/issues/8467
  * https://github.com/symfony/webpack-encore/issues/256
+ * https://testcafe-discuss.devexpress.com/t/role-sometime-it-doesnt-seem-to-be-played/875
