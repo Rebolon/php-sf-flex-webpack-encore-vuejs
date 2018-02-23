@@ -79,7 +79,9 @@ const CsrfTokenRetreiveOnInvalidResponse = function (error) {
     }
 
     if (status === 423) {
-        getToken().then(res => Toast.create.warning(`Invalid token, please try again`))
+        getToken()
+            .then(res => Toast.create.warning(`Invalid token, please try again`))
+            .catch(err => console.warn('axios middleware CsrfTokenRetreiveOnInvalidResponse', 'getToken', err))
     }
 
     return Promise.reject(error)

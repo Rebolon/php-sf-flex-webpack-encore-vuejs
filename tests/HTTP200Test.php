@@ -31,10 +31,6 @@ class HTTP200Test extends HTTP200Abstract
      */
     public function testPages()
     {
-        $this->markTestIncomplete('Should test some all pages');
-
-        $this->displayTestSection();
-
         $client = $this->getClient();
         $router = $this->getRouter();
 
@@ -49,6 +45,8 @@ class HTTP200Test extends HTTP200Abstract
      */
     public function testAPI()
     {
+        $this->markTestIncomplete('checkApi is not ok coz it should test only custom routes');
+
         $client = $this->getClient();
         $router = $this->getRouter();
 
