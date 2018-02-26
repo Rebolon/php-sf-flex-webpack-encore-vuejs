@@ -102,7 +102,12 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function getCredentials(Request $request)
     {
-        $json = new \ArrayObject(json_decode($request->getContent()), \ArrayObject::STD_PROP_LIST);
+        $content = json_decode($request->getContent());
+        if (is_null($content)) {
+            $content = [];
+        }
+
+        $json = new \ArrayObject($content, \ArrayObject::STD_PROP_LIST);
 
         if (!isset($json[$this->csrfTokenParameter])) {
             throw new AuthenticationException($this->csrfTokenParameter . ' mandatory', 420);

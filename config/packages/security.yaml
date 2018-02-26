@@ -21,16 +21,16 @@ security:
         vuejs:
             pattern: ^/(demo/(vuejs|form|login/(json|json/isloggedin|json/logout))|api)
             anonymous: ~
-            #THIS FAILS coz i don't succeed to inject some services (maybe private)
+            # this guard solve this issue: https://github.com/symfony/symfony/issues/25806
             guard:
                 authenticators:
                     - App\Security\TokenAuthenticator
-            #THIS FAILS for almost the same reason, and no way to load user
+            #THIS FAILS coz i don't succeed to inject some services (maybe private) and no way to load user
             #simple_preauth:
             #    authenticator: App\Security\ApiKeyAuthenticator
             json_login:
                 check_path: /demo/login/json
-                # this doesn't work, see in the security.yaml:12 for more explanation
+                # this doesn't work, see in the routes.yaml:12 for more explanation
                 #check_path: demo_login_json_check
                 # for instance i use the same keys for json_login and form_login, but i could change his easily if i update the TokenAuthenticator Guard
                 username_path: "%login_username_path%"

@@ -216,7 +216,7 @@ Here the tests runs on a chrome headless, and firefox but you can configure it i
 - [ ] write some PHP tests
 - [ ] fix testcafe role where sometimes they are not played: https://testcafe-discuss.devexpress.com/t/role-sometime-it-doesnt-seem-to-be-played/875 
 - [x] setup tests reports
-- [ ] setup security with Symfony (ticket open coz i get 500 instead of 403: https://github.com/symfony/symfony/issues/25806)
+- [ ] setup security with Symfony (ticket open coz i get 500 instead of 403: https://github.com/symfony/symfony/issues/25806) and choose between cookie (stateful), JWT (with Lexik bundle) or ApiKey (https://symfony.com/doc/current/security/guard_authentication.html)
 - [x] setup EasyAdminBundle
 - [ ] improve EasyAdminBundle with custom screen
 - [x] setup React Admin from ApiPlatform (this issue is mandatory https://github.com/api-platform/api-platform/issues/584)
