@@ -109,7 +109,7 @@ The test_browser section represent all the browsers you want to use with the tes
 
 ## run
 
-* install the project with `npm run init-project` which will launch :
+* install the project with `npm run init-project` (or init-project:windows for windows system) which will launch :
   1. copy the env file (or set them on your system) : `cp .env.dist .env`
   2. php dependancies installation: `composer install`
   3. nodejs tooling installation: `npm install`
@@ -120,8 +120,8 @@ The test_browser section represent all the browsers you want to use with the tes
      * it load fixtures based on a db sample built with `calibre` software plus a plugin that export data to sqlite format. An alternative to this would have been to use https://github.com/hautelook/AliceBundle and build yaml fixtures, but i already had an sqlite db so i didn't need this :-)  
 * Run your application with php built-in server:
   1. Change to the project directory
-  2. Execute the `npm run dev-server-hot` command to start the asset server that will build your assets and your manifest.json and serve the assets with hot module replacment when you do a modification on a vuejs file 
-  3. Execute the `npm run sf-dev` command;
+  2. Execute the `npm run dev-server-hot` (or dev-server-hot:windows for windows system) command to start the asset server that will build your assets and your manifest.json and serve the assets with hot module replacment when you do a modification on a vuejs file 
+  3. Execute the `npm run sf-dev` (or sf-dev:windows for windows system) command;
   4. Browse to the http://localhost:80/ URL.
 
      * Run composer require symfony/web-server-bundle for a better web server.
@@ -140,7 +140,7 @@ Default ports are 80 and 8080.
 If you update the project:
 
  * Don't forget to run `doctrine:migrations:migrate` to take care of DB modifications.
- * Do the following command `npm run dump-js-config:linux` (or windows) to create the js config file
+ * Do the following command `npm run dump-js-config` (or dump-js-config:windows for windows system) to create the js config file
 
 ## webpack
 
