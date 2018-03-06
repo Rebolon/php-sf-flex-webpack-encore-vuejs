@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="project_book_creation")
  */
-class ProjectBookCreation
+class ProjectBookCreation implements LibraryInterface
 {
     /**
      * @ORM\Id
@@ -24,7 +24,7 @@ class ProjectBookCreation
     /**
      * @ApiSubresource(maxDepth=1)
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Library\Job")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Library\Job", cascade={"persist"})
      * @ORM\JoinColumn(name="job_id", referencedColumnName="id")
      */
     private $role;
@@ -45,7 +45,7 @@ class ProjectBookCreation
      *     targetEntity="App\Entity\Library\Author",
      *     inversedBy="books",
      *     fetch="EAGER",
-     *     cascade={"remove"}
+     *     cascade={"persist", "remove"}
      * )
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
      */

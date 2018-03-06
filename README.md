@@ -186,11 +186,14 @@ Take care with Symfony4 to configure the config/packages/test/framework.yaml fil
 a mock !
 
 On Javascript we have unit and e2 tests. Units tests are managed by jasmine and karma. It allows to test function, class, component. 
-For e2e tests we use testcaf� from devExpress. It allows to launch browsers and drive them by code to reproduce a human behavior. 
+For e2e tests we use testcafe from devExpress. It allows to launch browsers and drive them by code to reproduce a human behavior. 
 Here the tests runs on a chrome headless, and firefox but you can configure it in the package.json file in the config.test_browser node.
 
 `npm run test-cafe && npm run test-karma` will run js test and will generate a testcafe.xunit.xml and karma_report.xml files in the following folder `/var/report/`.
 
+## API
+Take care at the custom listeners that you could write based on [Api-Platform documentation](https://api-platform.com/docs/core/events/). They are used by all controllers, not only those
+from ApiPlatform.
 
 ## todo
 
@@ -200,6 +203,7 @@ Here the tests runs on a chrome headless, and firefox but you can configure it i
 - [x] configure ApiPlatform
 - [x] setup one custom route for ApiPlatform
 - [ ] setup custom route with nested objects on create/update/read (read should be solved ith serializer, create/update might be solved with custom route or DTOS so try 2 ways)
+- [ ] those custom route must referenced by the API documentation on /api route with correct description (for instance it's just book: string ...)
 - [ ] graphQL: multiple queries in one call ?
 - [ ] graphQL: multiple mutations in one call ?
 - [ ] graphQL: how to mutate nested objects in a minimal call ?
@@ -226,6 +230,7 @@ Here the tests runs on a chrome headless, and firefox but you can configure it i
 - [ ] create another route with VueJS that use GQL instead of REST
 - [ ] code style: use phpcscbf instead of php_cs_fixer coz it's embeded with phpcs and it uses the phpcs config file
 - [ ] transform this project into a meta package that will install all requirements for JS app within Symfony (like does laravel)
+- [x] check if i need the JMSSerilizerBundle or if the serilizer component is enough (if autowiring runs well, why not): I prefer to use Symfony serializer, it's enough
 
 * improve this tutorial with ~~an API Route built with Api platform (without DB)~~ and install the vue-generator from api-platform for a crud sample :
     * The question for instance is `How to override ApiPlatform routing: i want some route to be overloaded: POST/PUT Book should be able to add also Auhtors and/or Editors`

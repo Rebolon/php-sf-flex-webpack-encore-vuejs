@@ -4,6 +4,7 @@ namespace App\Entity\Library;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
@@ -12,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
  * )
  * @ORM\Entity
  */
-class Job
+class Job implements LibraryInterface
 {
     /**
      * @ORM\Id
@@ -26,8 +27,11 @@ class Job
      *     iri="http://schema.org/name"
      * )
      * @ORM\Column(type="string", length=256, nullable=false)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(max="256")
      */
-    private $tanslation_key;
+    private $translation_key;
 
     /**
      * id can be null until flush is done
@@ -41,18 +45,18 @@ class Job
     /**
      * @return string
      */
-    public function getTanslationKey(): ?string
+    public function getTranslationKey(): ?string
     {
-        return $this->tanslation_key;
+        return $this->translation_key;
     }
 
     /**
-     * @param mixed $tanslation_key
+     * @param mixed $translationKey
      * @return Job
      */
-    public function setTanslationKey($tanslation_key): Job
+    public function setTranslationKey($translationKey): Job
     {
-        $this->tanslation_key = $tanslation_key;
+        $this->translation_key = $translationKey;
 
         return $this;
     }

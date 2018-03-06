@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity
  * @ORM\Table(name="project_book_edition")
  */
-class ProjectBookEdition
+class ProjectBookEdition implements LibraryInterface
 {
     /**
      * @ORM\Id
@@ -24,11 +24,13 @@ class ProjectBookEdition
 
     /**
      * @ORM\Column(type="date", nullable=true, options={"default":"now()"})
+     * @Assert\DateTime()
      */
     private $publication_date;
 
     /**
      * @ORM\Column(type="string", nullable=true)
+     * @Assert\Type(type="string")
      */
     private $collection;
 
@@ -37,7 +39,7 @@ class ProjectBookEdition
      *     iri="http://schema.org/isbn"
      * )
      * @ORM\Column(nullable=true)
-     * @Assert\Isbn
+     * @Assert\Isbn()
      */
     private $isbn;
 
@@ -46,7 +48,7 @@ class ProjectBookEdition
      *     targetEntity="App\Entity\Library\Editor",
      *     inversedBy="books",
      *     fetch="EAGER",
-     *     cascade={"remove"}
+     *     cascade={"remove", "persist"}
      * )
      * @ORM\JoinColumn(name="editor_id", referencedColumnName="id")
      */
@@ -57,7 +59,7 @@ class ProjectBookEdition
      *     targetEntity="App\Entity\Library\Book",
      *     inversedBy="editors",
      *     fetch="EAGER",
-     *     cascade={"remove"}
+     *     cascade={"remove", "persist"}
      * )
      * @ORM\JoinColumn(name="book_id", referencedColumnName="id")
      */
@@ -87,6 +89,15 @@ class ProjectBookEdition
      */
     public function setPublicationDate($publication_date): ProjectBookEdition
     {
+        if (is_string($publication_date)) {
+            try {
+                $publication_date = new \DateTime($publication_date);
+            } catch (\Exception $e) {
+                $dateTime = new \DateTime();
+                $publication_date = $dateTime->setTimestamp($publication_date);
+            }
+        }
+
         $this->publication_date = $publication_date;
 
         return $this;

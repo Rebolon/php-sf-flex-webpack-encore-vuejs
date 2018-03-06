@@ -1,9 +1,39 @@
 easy_admin:
-    entities:
-        # List the entity class name you want to manage
-        - App\Entity\Library\Book
-        - App\Entity\Library\Author
-        - App\Entity\Library\Editor
-        - App\Entity\Library\Review
-        - App\Entity\Library\Serie
-        - App\Entity\Library\Job
+  site_name: EasyAdmin backend sample to challenge with ReactAdmin from ApiPlatform
+  list:
+    max_results: 20
+  formats:
+    date:     'd/m/Y'
+    time:     'H:i'
+    datetime: 'd/m/Y H:i:s'
+    number:   '%,2f'
+  entities:
+    Book:
+      class: App\Entity\Library\Book
+      label: Books
+      list:
+        title: Most recent books
+    Author:
+      class: App\Entity\Library\Author
+      label: Authors
+      list:
+        title: List of authors
+    Editor:
+      class: App\Entity\Library\Editor
+      label: Editors
+      list:
+        title: List of editors
+    Serie:
+      class: App\Entity\Library\Serie
+      label: Series
+      list:
+        title: List of series
+        max_results: 20
+      show:
+        max_results: 5
+    Review:
+      class: App\Entity\Library\Review
+      label: Reviews
+      list:
+        title: Latest reviews to moderate
+        sort: ['publication_date', 'DESC']

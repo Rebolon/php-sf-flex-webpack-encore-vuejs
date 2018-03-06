@@ -7,6 +7,7 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
@@ -15,7 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
  * )
  * @ORM\Entity
  */
-class Serie
+class Serie implements LibraryInterface
 {
     /**
      * @ORM\Id
@@ -29,6 +30,8 @@ class Serie
      *      iri="http://pending.schema.org/headline"
      * )
      * @ORM\Column(type="string", length=512, nullable=false)
+     * @Assert\NotNull()
+     * @Assert\Length(max="512")
      */
     private $name;
 
