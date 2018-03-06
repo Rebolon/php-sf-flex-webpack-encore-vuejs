@@ -13,6 +13,12 @@ class SerieConverter extends AbstractConverter
 
     /**
      * {@inheritdoc}
+     * for this kind of json:
+     * {
+     *   "serie": {
+     *     "name": "The serie name"
+     *   }
+     * }
      */
     function getEzPropsName(): array
     {

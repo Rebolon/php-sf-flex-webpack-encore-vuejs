@@ -49,6 +49,14 @@ class BookConverter extends AbstractConverter
 
     /**
      * {@inheritdoc}
+     * for this kind of json:
+     * {
+     *   "book": {
+     *     "title": "The green lantern",
+     *     "description": "Whatever you want",
+     *     "index_in_serie": 15
+     *   }
+     * }
      */
     function getEzPropsName(): array
     {

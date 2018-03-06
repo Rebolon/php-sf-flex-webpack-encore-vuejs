@@ -34,11 +34,17 @@ abstract class HTTP200Abstract extends WebTestCase
      */
     protected $testPwd;
 
+    /**
+     * @var Doctrine\DBAL\Connection
+     */
+    protected $dbCon;
+
     static public function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
 
         $kernel = static::bootKernel();
+
         $application = new Application($kernel);
         $application->setAutoExit(false);
 
@@ -63,6 +69,7 @@ abstract class HTTP200Abstract extends WebTestCase
         $this->testPwd = 'test';
 
         $kernel = static::bootKernel();
+        $this->dbCon = $kernel->getContainer()->get('database_connection');
         $application = new Application($kernel);
         $application->setAutoExit(false);
         $input = new ArrayInput(array(

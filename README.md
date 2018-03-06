@@ -202,7 +202,7 @@ from ApiPlatform.
 - [x] add a model with doctrine entities
 - [x] configure ApiPlatform
 - [x] setup one custom route for ApiPlatform
-- [ ] setup custom route with nested objects on create/update/read (read should be solved ith serializer, create/update might be solved with custom route or DTOS so try 2 ways)
+- [x] setup custom route with nested objects on create/update/read (read should be solved ith serializer, create/update might be solved with custom route or DTOS so try 2 ways)
 - [ ] those custom route must referenced by the API documentation on /api route with correct description (for instance it's just book: string ...)
 - [ ] graphQL: multiple queries in one call ?
 - [ ] graphQL: multiple mutations in one call ?
@@ -211,6 +211,7 @@ from ApiPlatform.
 - [ ] check security on ApiPlatform (do we need JWT or just cookies, in that case we are stateful which is not cool for deployment and replication)
 - [x] setup VueJS
 - [x] use Quasar with VueJS
+- [ ] move on Quasar 0.15.x
 - [x] setup CSRF protection with VueJS app
 - [x] setup unit tests for JS (karma/jasmine)
 - [x] setup e2e tests for JS (testcafé)
@@ -231,6 +232,7 @@ from ApiPlatform.
 - [ ] code style: use phpcscbf instead of php_cs_fixer coz it's embeded with phpcs and it uses the phpcs config file
 - [ ] transform this project into a meta package that will install all requirements for JS app within Symfony (like does laravel)
 - [x] check if i need the JMSSerilizerBundle or if the serilizer component is enough (if autowiring runs well, why not): I prefer to use Symfony serializer, it's enough
+- [ ] have a lookAt the HauteLookAliceBundle to help in the creation of real fixtures during tests (instead of generating a new test.db which could be long)
 
 * improve this tutorial with ~~an API Route built with Api platform (without DB)~~ and install the vue-generator from api-platform for a crud sample :
     * The question for instance is `How to override ApiPlatform routing: i want some route to be overloaded: POST/PUT Book should be able to add also Auhtors and/or Editors`

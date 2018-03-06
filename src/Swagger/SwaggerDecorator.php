@@ -53,7 +53,7 @@ DEFINITION
         $docs['paths']['/api/booksiu/special_3']['post']['tags'] = ['Book', 'Editor', 'Author', 'Serie', ];
 
         // Override title
-        $docs['info']['title'] = 'My Api Foo';
+        $docs['info']['title'] = 'My Comic Library (title modified by SwaggerDecorator)';
 
         return $docs;
     }

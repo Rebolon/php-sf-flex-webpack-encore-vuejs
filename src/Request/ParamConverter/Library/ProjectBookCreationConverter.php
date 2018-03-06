@@ -41,6 +41,10 @@ class ProjectBookCreationConverter extends AbstractConverter
 
     /**
      * {@inheritdoc}
+     * for this kind of json:
+     * {
+     *   "authors": { }
+     * }
      */
     function getEzPropsName(): array
     {
@@ -105,7 +109,7 @@ class ProjectBookCreationConverter extends AbstractConverter
                     throw new ValidationException($errors);
                 }
 
-                return $entity;
+                $entities[] = $entity;
             } catch (ValidationException $e) {
                 throw $e;
             } catch (\Exception $e) {

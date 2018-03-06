@@ -15,6 +15,13 @@ class AuthorConverter extends AbstractConverter
 
     /**
      * {@inheritdoc}
+     * for this kind of json:
+     * {
+     *   "author": {
+     *     "firstname": "Paul",
+     *     "lastname": "Smith"
+     *   }
+     * }
      */
     function getEzPropsName(): array
     {

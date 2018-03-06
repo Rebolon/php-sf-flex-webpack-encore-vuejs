@@ -34,6 +34,14 @@ class ProjectBookEditionConverter extends AbstractConverter
 
     /**
      * {@inheritdoc}
+     * for this kind of json:
+     * {
+     *   "editors": {
+     *     "publications_date": "1519664915",
+     *     "collection": "A collection or edition name of the publication",
+     *     "isbn": '2-87764-257-7'
+     *   }
+     * }
      */
     function getEzPropsName(): array
     {
@@ -50,6 +58,12 @@ class ProjectBookEditionConverter extends AbstractConverter
 
     /**
      * {@inheritdoc}
+     * for this kind of json:
+     * {
+     *   "editors": {
+     *     "editor": { ... }
+     *   }
+     * }
      */
     function getOneRelPropsName():array {
         // for instance i don't want to allow the creation of a serie with all embeded books, this is not a usual way of working
@@ -93,7 +107,7 @@ class ProjectBookEditionConverter extends AbstractConverter
                     throw new ValidationException($errors);
                 }
 
-                return $entity;
+                $entities[] = $entity;
             } catch (ValidationException $e) {
                 throw $e;
             } catch (\Exception $e) {

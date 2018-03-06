@@ -13,6 +13,12 @@ class EditorConverter extends AbstractConverter
 
     /**
      * {@inheritdoc}
+     * for this kind of json:
+     * {
+     *   "editor": {
+     *     "name": "Hachette"
+     *   }
+     * }
      */
     function getEzPropsName(): array
     {

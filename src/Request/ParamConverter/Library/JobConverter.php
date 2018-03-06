@@ -15,6 +15,12 @@ class JobConverter extends AbstractConverter
 
     /**
      * {@inheritdoc}
+     * for this kind of json:
+     * {
+     *   "role": {
+     *     "translation_key": 'WRITER'
+     *   }
+     * }
      */
     function getEzPropsName(): array
     {

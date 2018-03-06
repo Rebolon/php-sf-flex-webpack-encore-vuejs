@@ -3,7 +3,6 @@
 namespace App\Request\ParamConverter\Library;
 
 use App\Entity\Library\LibraryInterface;
-use App\Exception\Api\RuntimeException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
