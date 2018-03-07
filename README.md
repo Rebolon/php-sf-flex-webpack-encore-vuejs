@@ -251,9 +251,7 @@ It takes the following JSON string as Body:
             "publication_date": "1519664915", 
             "collection": "from my head", 
             "isbn": "9781783742530", 
-            "editor": {
-                "name": 1
-            }
+            "editor": 1
         }, {
             "publication_date": "1519747464", 
             "collection": "ebooks", 

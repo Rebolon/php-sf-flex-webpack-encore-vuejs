@@ -49,13 +49,14 @@ module.exports = function(config) {
             require('karma-chrome-launcher'),
             require('karma-spec-reporter'),
             require('karma-junit-reporter'),
+            require('karma-jasmine-html-reporter'),
         ],
 
         chromeLauncher: {
             exitOnResourceError: false
         },
 
-        reporters: ['spec', 'junit'],
+        reporters: ['kjhtml', 'spec', 'junit'],
 
         junitReporter: {
             outputDir: '../../../var/report', // results will be saved as $outputDir/$browserName.xml
