@@ -11,6 +11,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\DBAL\Connection;
 use \PDO;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 class AppFixtures extends Fixture
 {
@@ -25,11 +26,18 @@ class AppFixtures extends Fixture
     protected $dbCon;
 
     /**
+     * @var string
+     */
+    protected $env;
+
+    /**
      * AppFixtures constructor.
      * @param ConnectionFixtures $dbCon
+     * @param KernelInterface $kernel
      */
-    public function __construct(ConnectionFixtures $dbCon)
+    public function __construct(ConnectionFixtures $dbCon, KernelInterface $kernel)
     {
+        $this->env = $kernel->getEnvironment();
         $this->dbCon = $dbCon->get();
     }
 
@@ -53,7 +61,14 @@ class AppFixtures extends Fixture
         $dbh = $this->dbCon;
 
         // add books && author && editor
-        $q = $dbh->query('SELECT t.* FROM books t');
+        $qry = 'SELECT t.* FROM books t ';
+
+        // in test env, we only load 20 books, it's enough to get various cases
+        if ($this->env === 'test') {
+            $qry .= ' LIMIT 20';
+        }
+
+        $q = $dbh->query($qry);
         foreach ($q->fetchAll() as $row) {
             try {
                 $book = new Book();
