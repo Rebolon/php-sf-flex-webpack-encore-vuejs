@@ -14,6 +14,9 @@ use Symfony\Bundle\FrameworkBundle\Routing\Router;
  */
 class ApiPlatformCustomRoutesWithParamConverterTest extends HTTP200Abstract
 {
+    /**
+     * @var string allow to test a correct HTTP Post with the ability of the ParamConverter to de-duplicate entity like for editor in this sample
+     */
     public $bodyOk = <<<JSON
 {
     "book": {
@@ -57,6 +60,46 @@ class ApiPlatformCustomRoutesWithParamConverterTest extends HTTP200Abstract
 }
 JSON;
 
+    /**
+     * @var string to test that the ParamConverter are abled to reuse entity from database
+     */
+    public $bodyOkWithExistingEntities = <<<JSON
+{
+    "book": {
+        "title": "test from special 3",
+        "editors": [{
+            "publication_date": "1519664915", 
+            "collection": "Hachette collection bis", 
+            "isbn": "2-87764-257-7", 
+            "editor": 1
+        }, {
+            "publication_date": "1519747464", 
+            "collection": "Ma Tu vue", 
+            "isbn": "2-87764-257-7", 
+            "editor": {
+                "name": "JeanPaul Edition"
+            }
+        }],
+        "authors": [{
+            "role": {
+                "translation_key": "WRITER"
+            }, 
+            "author": 2
+        }, {
+            "role": 3, 
+            "author": {
+                "firstname": "Paul", 
+                "lastname": "Smith"
+            }
+        }],
+        "serie": 4
+    }
+}
+JSON;
+
+    /**
+     * @var string allow to test a failed HTTP Post with expected JSON content
+     */
 public $bodyNoEditor = <<<JSON
 {
     "book": {
@@ -129,9 +172,9 @@ JSON;
     /**
      * @group git-pre-push
      */
-    public function testBookSpecialSample3WithDeduplicationEntityToBeCreated()
+    public function testBookSpecialSample3WithReuseOfEntityFromDoctrine()
     {
-        $this->markTestIncomplete('test with 2 identic editor in different edition');
+        $this->markTestIncomplete('test with id instead of object in editor/author/job/serie section');
 
         return;
     }
@@ -144,32 +187,5 @@ JSON;
         $this->markTestIncomplete('test with BodyFail');
 
         return;
-    }
-
-    /**
-     * @group git-pre-push
-     */
-    public function testPages()
-    {
-        $client = $this->getClient();
-        $router = $this->getRouter();
-
-        $this->checkPages($router, $client);
-    }
-
-    /**
-     * Is it really pertinent to test all api ? most of them are managed by ApiPlatform, so we should test only specific
-     * api
-     *
-     * @group git-pre-push
-     */
-    public function testAPI()
-    {
-        $this->markTestIncomplete('checkApi is not ok coz it should test only custom routes');
-
-        $client = $this->getClient();
-        $router = $this->getRouter();
-
-        $this->checkApi($router, $client);
     }
 }

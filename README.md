@@ -195,6 +195,90 @@ Here the tests runs on a chrome headless, and firefox but you can configure it i
 Take care at the custom listeners that you could write based on [Api-Platform documentation](https://api-platform.com/docs/core/events/). They are used by all controllers, not only those
 from ApiPlatform.
 
+There is a sample of custom route based on Action Demand Responder pattern that will allow to create new Books and it's dependancies in one HTTP call. 
+You won't need to create sub-entity before creating the main one, said the book.
+The endpoint is /api/booksiu/special_3 [POST].
+It takes the following JSON string as Body:
+
+```
+// The most complete sample, with de-duplication of editor (only once will be created)
+{
+    "book": {
+        "title": "Zombies in western culture",
+        "editors": [{
+            "publication_date": "1519664915", 
+            "collection": "printed version", 
+            "isbn": "9781783743230", 
+            "editor": {
+                "name": "Open Book Publishers"
+            }
+        }, {
+            "publication_date": "1519747464", 
+            "collection": "ebooks", 
+            "isbn": "9791036500824", 
+            "editor": {
+                "name": "Open Book Publishers"
+            }
+        }],
+        "authors": [{
+            "role": {
+                "translation_key": "WRITER"
+            }, 
+            "author": {
+                "firstname": "Marc", 
+                "lastname": "O'Brien"
+            }
+        }, {
+            "role": {
+                "translation_key": "WRITER"
+            }, 
+            "author": {
+                "firstname": "Paul", 
+                "lastname": "Kyprianou"
+            }
+        }],
+        "serie": {
+            "name": "Open Reports Series"
+        }
+    }
+}
+
+// This one re-use database information for editor / author / job / serie
+{
+    "book": {
+        "title": "Oh my god, how simple it is !",
+        "editors": [{
+            "publication_date": "1519664915", 
+            "collection": "from my head", 
+            "isbn": "9781783742530", 
+            "editor": {
+                "name": 1
+            }
+        }, {
+            "publication_date": "1519747464", 
+            "collection": "ebooks", 
+            "isbn": "9782821883963", 
+            "editor": {
+                "name": "Open Book Publishers"
+            }
+        }],
+        "authors": [{
+            "role": 2, 
+            "author": 3
+        }, {
+            "role": {
+                "translation_key": "WRITER"
+            }, 
+            "author": {
+                "firstname": "Paul", 
+                "lastname": "Kyprianou"
+            }
+        }],
+        "serie": 4
+    }
+}
+```
+
 ## todo
 
 - [x] setup Sf4
@@ -218,7 +302,7 @@ from ApiPlatform.
 - [x] setup phpunit tests for PHP (unit test and webtestcase)
 - [x] write some JS units tests
 - [x] write some JS e2e tests
-- [ ] write some PHP tests
+- [x] write some PHP tests
 - [ ] fix testcafe role where sometimes they are not played: https://testcafe-discuss.devexpress.com/t/role-sometime-it-doesnt-seem-to-be-played/875 
 - [x] setup tests reports
 - [ ] setup security with Symfony (ticket open coz i get 500 instead of 403: https://github.com/symfony/symfony/issues/25806) and choose between cookie (stateful), JWT (with Lexik bundle) or ApiKey (https://symfony.com/doc/current/security/guard_authentication.html)
