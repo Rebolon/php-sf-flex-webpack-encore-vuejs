@@ -3,6 +3,7 @@
 namespace App\Request\ParamConverter\Library;
 
 use App\Entity\Library\ProjectBookCreation;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException;
@@ -12,6 +13,8 @@ use Symfony\Component\Serializer\SerializerInterface;
 class ProjectBookCreationConverter extends AbstractConverter
 {
     const NAME = 'authors';
+
+    const RELATED_ENTITY = ProjectBookCreation::class;
 
     /**
      * @var JobConverter
@@ -26,14 +29,16 @@ class ProjectBookCreationConverter extends AbstractConverter
     /**
      * ProjectBookCreationConverter constructor.
      * @param ValidatorInterface $validator
+     * @param SerializerInterface $serializer
+     * @param EntityManagerInterface $entityManager
      * @param JobConverter $jobConverter
      * @param AuthorConverter $authorConverter
      */
     public function __construct(
-        ValidatorInterface $validator, SerializerInterface $serializer,
+        ValidatorInterface $validator, SerializerInterface $serializer, EntityManagerInterface $entityManager,
         JobConverter $jobConverter, AuthorConverter $authorConverter
     ) {
-        parent::__construct($validator, $serializer);
+        parent::__construct($validator, $serializer, $entityManager);
 
         $this->jobConverter = $jobConverter;
         $this->authorConverter = $authorConverter;
@@ -72,17 +77,11 @@ class ProjectBookCreationConverter extends AbstractConverter
     }
 
     /**
-     * @todo check if $json is an array or a string with iris like /api/author/15 => retreive the author and set it
-     *
      * @inheritdoc
      */
     public function initFromRequest($jsonOrArray)
     {
         $json = $this->checkJsonOrArray($jsonOrArray);
-
-        // if json is a string then retreive the entity with Doctrine and do nothing else except return the entity
-
-        // else do the build calls:
 
         // the API accept authors as one object or as an array of object, so i need to transform at least in one array
         $authors = $json;
@@ -93,14 +92,14 @@ class ProjectBookCreationConverter extends AbstractConverter
         $entities = [];
         foreach ($authors as $author) {
             try {
-                $entity = new ProjectBookCreation();
+                // ProjectBookCreation is an associative db table, so it can not be reused, that's why we d'ont reuse parent::initFromRequest
+                $className = static::RELATED_ENTITY;
+                $entity = new $className;
 
                 $this->buildWithEzProps($author, $entity);
 
                 $this->buildWithManyRelProps($author, $entity);
 
-                //@todo how to manage the fact that the author is the same between 2 projects ?
-                // i have to find a way to create only one author in that case !
                 $this->buildWithOneRelProps($author, $entity);
 
                 $errors = $this->validator->validate($entity);
