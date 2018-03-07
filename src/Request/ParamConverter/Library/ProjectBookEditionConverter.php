@@ -3,6 +3,7 @@
 namespace App\Request\ParamConverter\Library;
 
 use App\Entity\Library\ProjectBookEdition;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
 use ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException;
@@ -13,6 +14,8 @@ class ProjectBookEditionConverter extends AbstractConverter
 {
     const NAME = 'editors';
 
+    const RELATED_ENTITY = ProjectBookEdition::class;
+
     /**
      * @var EditorConverter
      */
@@ -21,13 +24,15 @@ class ProjectBookEditionConverter extends AbstractConverter
     /**
      * ProjectBookEditionConverter constructor.
      * @param ValidatorInterface $validator
+     * @param SerializerInterface $serializer
+     * @param EntityManagerInterface $entityManager
      * @param EditorConverter $editorConverter
      */
     public function __construct(
-        ValidatorInterface $validator, SerializerInterface $serializer,
+        ValidatorInterface $validator, SerializerInterface $serializer, EntityManagerInterface $entityManager,
         EditorConverter $editorConverter
     ) {
-        parent::__construct($validator, $serializer);
+        parent::__construct($validator, $serializer, $entityManager);
 
         $this->editorConverter = $editorConverter;
     }
@@ -72,17 +77,11 @@ class ProjectBookEditionConverter extends AbstractConverter
     }
 
     /**
-     * @todo check if $json is an array or a string with iris like /api/editor/15 => retreive the editor and set it
-     *
      * @inheritdoc
      */
     public function initFromRequest($jsonOrArray)
     {
         $json = $this->checkJsonOrArray($jsonOrArray);
-
-        // if json is a string then retreive the entity with Doctrine and do nothing else except return the entity
-
-        // else do the build calls:
 
         // the API accept editors as one object or as an array of object, so i need to transform at least in one array
         $editors = $json;
@@ -93,7 +92,9 @@ class ProjectBookEditionConverter extends AbstractConverter
         $entities = [];
         foreach ($editors as $editor) {
             try {
-                $entity = new ProjectBookEdition();
+                // ProjectBookEdition is an associative db table, so it can not be reused, that's why we d'ont reuse parent::initFromRequest
+                $className = static::RELATED_ENTITY;
+                $entity = new $className();
 
                 $this->buildWithEzProps($editor, $entity);
 

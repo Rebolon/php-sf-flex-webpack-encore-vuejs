@@ -3,6 +3,7 @@
 namespace App\Request\ParamConverter\Library;
 
 use App\Entity\Library\LibraryInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -41,13 +42,22 @@ abstract class AbstractConverter implements ConverterInterface
     protected $serializer;
 
     /**
-     * AbstractConverter constructor.
+     * @var EntityManager
      */
-    public function __construct(ValidatorInterface $validator, SerializerInterface $serializer)
+    protected $entityManager;
+
+    /**
+     * AbstractConverter constructor.
+     * @param ValidatorInterface $validator
+     * @param SerializerInterface $serializer
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(ValidatorInterface $validator, SerializerInterface $serializer, EntityManagerInterface $entityManager)
     {
         $this->accessor = PropertyAccess::createPropertyAccessor();
         $this->validator = $validator;
         $this->serializer = $serializer;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -72,6 +82,15 @@ abstract class AbstractConverter implements ConverterInterface
         $raw = json_decode($content, true);
 
         if (json_last_error()) {
+            $violationList = new ConstraintViolationList();
+            $violation = new ConstraintViolation(sprintf('JSON Error %s', json_last_error_msg()), null, [], null, null, null);
+            $violationList->add($violation);
+            throw new ValidationException(
+                $violationList,
+                sprintf('Wrong parameter to create new %s (generic)', static::RELATED_ENTITY),
+                420
+            );
+
             return false;
         }
 
@@ -81,6 +100,50 @@ abstract class AbstractConverter implements ConverterInterface
         }
 
         return true;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function initFromRequest($jsonOrArray)
+    {
+        try {
+            $json = $this->checkJsonOrArray($jsonOrArray);
+
+            if (!is_array($json)) {
+                return $this->getFromDatabase($json);
+            }
+
+            $className = static::RELATED_ENTITY;
+            $entity = new $className();
+
+            $this->buildWithEzProps($json, $entity);
+
+            $this->buildWithManyRelProps($json, $entity);
+
+            $this->buildWithOneRelProps($json, $entity);
+
+            $errors = $this->validator->validate($entity);
+
+            if (count($errors)) {
+                throw new ValidationException($errors);
+            }
+
+            return $entity;
+        } catch (ValidationException $e) {
+            throw $e;
+        } catch (\Exception $e) {
+            $violationList = new ConstraintViolationList();
+            $violation = new ConstraintViolation($e->getMessage(), null, [], null, null, null);
+            $violationList->add($violation);
+            throw new ValidationException(
+                $violationList,
+                sprintf('Wrong parameter to create new %s (generic)', static::RELATED_ENTITY),
+                420,
+                $e
+            );
+        }
     }
 
     /**
@@ -111,6 +174,7 @@ abstract class AbstractConverter implements ConverterInterface
      * @param array $json
      * @param LibraryInterface $entity
      * @return LibraryInterface
+     * @throws RuntimeException
      */
     protected function buildWithManyRelProps(array $json, LibraryInterface $entity): LibraryInterface
     {
@@ -159,7 +223,7 @@ abstract class AbstractConverter implements ConverterInterface
      * @param LibraryInterface $entity
      * @return LibraryInterface
      *
-     * @throws \TypeError
+     * @throws RuntimeException
      */
     protected function buildWithOneRelProps(array $json, LibraryInterface $entity): LibraryInterface
     {
@@ -253,4 +317,30 @@ abstract class AbstractConverter implements ConverterInterface
 
         return $relation;
     }
+
+    /**
+     * @param $id
+     * @param $class
+     * @return null|object
+     * @throws InvalidArgumentException
+     */
+    protected function getFromDatabase($id, $class = null)
+    {
+        if (!$class && static::RELATED_ENTITY) {
+            $class = static::RELATED_ENTITY;
+        } else {
+            throw new \InvalidArgumentException(sprintf('You must define constant RELATED_ENTITY form you ParamConverter %s', static::name));
+        }
+
+        $entityExists = $this->entityManager
+            ->getRepository($class)
+            ->find($id);
+
+        if ($entityExists) {
+            return $entityExists;
+        }
+
+        throw new \InvalidArgumentException(sprintf('Editor %d doesn\'t exists', $id));
+    }
+
 }
