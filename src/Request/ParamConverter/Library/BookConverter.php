@@ -2,6 +2,7 @@
 
 namespace App\Request\ParamConverter\Library;
 
+use App\Request\ParamConverter\AbstractConverter;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Library\Book;
 use Symfony\Component\Validator\Validator\ValidatorInterface;

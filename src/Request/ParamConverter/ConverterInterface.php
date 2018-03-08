@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Request\ParamConverter\Library;
+namespace App\Request\ParamConverter;
 
 use App\Entity\Library\LibraryInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
@@ -24,7 +24,8 @@ interface ConverterInterface extends ParamConverterInterface
 
     /**
      * @param $jsonOrArray
+     * @param $propertyPath
      * @return mixed array|LibraryInterface
      */
-    function initFromRequest($jsonOrArray);
+    function initFromRequest($jsonOrArray, $propertyPath);
 }

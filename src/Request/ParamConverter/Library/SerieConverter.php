@@ -3,6 +3,7 @@
 namespace App\Request\ParamConverter\Library;
 
 use App\Entity\Library\Serie;
+use App\Request\ParamConverter\AbstractConverter;
 
 class SerieConverter extends AbstractConverter
 {

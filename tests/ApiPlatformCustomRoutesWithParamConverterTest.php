@@ -245,10 +245,10 @@ JSON;
 {
   "type": "https:\/\/tools.ietf.org\/html\/rfc2616#section-10",
   "title": "An error occurred",
-  "detail": "jsonOrArray can be string or array",
+  "detail": "book.editors[0].editor: jsonOrArray for editor must be string or array",
   "violations":[{
-    "propertyPath": null,
-    "message": "jsonOrArray can be string or array"
+    "propertyPath": "book.editors[0].editor",
+    "message": "jsonOrArray for editor must be string or array"
   }]
 }
 JSON
@@ -259,19 +259,6 @@ JSON
         $responseData = json_decode($response->getContent());
 
         $this->assertSame(400, $response->getStatusCode());
-
-        // @todo test the json return
-        /**
-         * {
-         *   "type": "https:\/\/tools.ietf.org\/html\/rfc2616#section-10",
-         *   "title": "An error occurred",
-         *   "detail": "jsonOrArray can be string or array",
-         *   "violations":[{
-         *     "propertyPath": null,
-         *     "message": "jsonOrArray can be string or array"
-         *   }]
-         * }
-         */
         $this->assertEquals($expected->type, $responseData->type);
         $this->assertEquals($expected->title, $responseData->title);
         $this->assertEquals($expected->detail, $responseData->detail);

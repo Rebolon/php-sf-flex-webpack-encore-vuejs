@@ -3,6 +3,7 @@
 namespace App\Request\ParamConverter\Library;
 
 use App\Entity\Library\Job;
+use App\Request\ParamConverter\AbstractConverter;
 
 class JobConverter extends AbstractConverter
 {

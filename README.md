@@ -286,7 +286,7 @@ It takes the following JSON string as Body:
 - [x] setup one custom route for ApiPlatform
 - [x] setup custom route with nested objects on create/update/read (read should be solved ith serializer, create/update might be solved with custom route or DTOS so try 2 ways)
 - [ ] those custom route must referenced by the API documentation on /api route with correct description (for instance it's just book: string ...)
-- [ ] improve JSON error from custom route: for instance when editor is misfilled it just return this message (without property path): jsonOrArray can be string or array 
+- [x] improve JSON error from custom route: for instance when editor is misfilled it just return this message (without property path): jsonOrArray can be string or array 
 - [ ] graphQL: multiple queries in one call ?
 - [ ] graphQL: multiple mutations in one call ?
 - [ ] graphQL: how to mutate nested objects in a minimal call ?

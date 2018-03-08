@@ -3,6 +3,7 @@
 namespace App\Request\ParamConverter\Library;
 
 use App\Entity\Library\ProjectBookCreation;
+use App\Request\ParamConverter\AbstractConverter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;
@@ -79,8 +80,10 @@ class ProjectBookCreationConverter extends AbstractConverter
     /**
      * @inheritdoc
      */
-    public function initFromRequest($jsonOrArray)
+    public function initFromRequest($jsonOrArray, $propertyPath)
     {
+        self::$propertyPath[] = $propertyPath;
+
         $json = $this->checkJsonOrArray($jsonOrArray);
 
         // the API accept authors as one object or as an array of object, so i need to transform at least in one array
@@ -90,33 +93,23 @@ class ProjectBookCreationConverter extends AbstractConverter
         }
 
         $entities = [];
-        foreach ($authors as $author) {
-            try {
-                // ProjectBookCreation is an associative db table, so it can not be reused, that's why we d'ont reuse parent::initFromRequest
-                $className = static::RELATED_ENTITY;
-                $entity = new $className;
+        try {
+            foreach ($authors as $author) {
+                self::$propertyPath[count(self::$propertyPath)] = '[' . count($entities) . ']';
 
-                $this->buildWithEzProps($author, $entity);
+                $entities[] = $this->buildEntity($author);
 
-                $this->buildWithManyRelProps($author, $entity);
-
-                $this->buildWithOneRelProps($author, $entity);
-
-                $errors = $this->validator->validate($entity);
-
-                if (count($errors)) {
-                    throw new ValidationException($errors);
-                }
-
-                $entities[] = $entity;
-            } catch (ValidationException $e) {
-                throw $e;
-            } catch (\Exception $e) {
-                $violationList = new ConstraintViolationList();
-                $violation = new ConstraintViolation($e->getMessage(), null, [], null, null, null);
-                $violationList->add($violation);
-                throw new ValidationException($violationList,'Wrong parameter to create new Authors (generic)', 420, $e);
+                array_pop(self::$propertyPath);
             }
+        } catch (ValidationException $e) {
+            throw $e;
+        } catch (\Exception $e) {
+            $violationList = new ConstraintViolationList();
+            $violation = new ConstraintViolation($e->getMessage(), null, [], null, implode('.', self::$propertyPath), null);
+            $violationList->add($violation);
+            throw new ValidationException($violationList,'Wrong parameter to create new Authors (generic)', 420, $e);
+        } finally {
+            array_pop(self::$propertyPath);
         }
 
         return $entities;
