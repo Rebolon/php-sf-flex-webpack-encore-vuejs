@@ -236,6 +236,9 @@
     "rebolon/api-pack": {
         "version": "v1.0.1"
     },
+    "roave/security-advisories": {
+        "version": "dev-master"
+    },
     "sebastian/code-unit-reverse-lookup": {
         "version": "1.0.1"
     },

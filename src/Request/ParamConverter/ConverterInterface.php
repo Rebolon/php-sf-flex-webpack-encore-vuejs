@@ -10,22 +10,22 @@ interface ConverterInterface extends ParamConverterInterface
     /**
      * @return array
      */
-    function getEzPropsName(): array;
+    public function getEzPropsName(): array;
 
     /**
      * @return array
      */
-    function getManyRelPropsName():array;
+    public function getManyRelPropsName():array;
 
     /**
      * @return array
      */
-    function getOneRelPropsName():array;
+    public function getOneRelPropsName():array;
 
     /**
      * @param $jsonOrArray
      * @param $propertyPath
      * @return mixed array|LibraryInterface
      */
-    function initFromRequest($jsonOrArray, $propertyPath);
+    public function initFromRequest($jsonOrArray, $propertyPath);
 }

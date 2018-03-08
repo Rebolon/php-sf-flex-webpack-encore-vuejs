@@ -9,6 +9,7 @@ addons:
      - google-chrome
     packages:
      - google-chrome-stable fluxbox
+  #sourceclear addons, take care it requires fees
   srcclr: true
 #  apt:
 #    packages:

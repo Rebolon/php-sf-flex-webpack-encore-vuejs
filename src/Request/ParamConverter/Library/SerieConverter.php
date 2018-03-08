@@ -20,7 +20,7 @@ class SerieConverter extends AbstractConverter
      *   }
      * }
      */
-    function getEzPropsName(): array
+    public function getEzPropsName(): array
     {
         return ['id', 'name', ];
     }
@@ -28,7 +28,7 @@ class SerieConverter extends AbstractConverter
     /**
      * {@inheritdoc}
      */
-    function getManyRelPropsName():array
+    public function getManyRelPropsName():array
     {
         // for instance i don't want to allow the creation of a serie with all embeded books, this is not a usual way of working
         // that's why i don't add books here
@@ -38,7 +38,8 @@ class SerieConverter extends AbstractConverter
     /**
      * {@inheritdoc}
      */
-    function getOneRelPropsName():array {
+    public function getOneRelPropsName():array
+    {
         return [];
     }
 }

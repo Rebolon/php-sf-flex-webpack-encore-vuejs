@@ -31,7 +31,7 @@ Here is how it has been created:
 * composer create-project symfony/skeleton sf-flex-encore-vuejs
 * cd sf-flex-encore-vuejs
 * composer req encore annotations twig api http profiler log doctrine-migrations admin webonyx/graphql-php
-* composer require --dev doctrine/doctrine-fixtures-bundle phpunit/phpunit symfony/dom-crawler symfony/browser-kit symfony/css-selector security-checker
+* composer require --dev doctrine/doctrine-fixtures-bundle phpunit/phpunit symfony/dom-crawler symfony/browser-kit symfony/css-selector security-checker roave/security-advisories:dev-master
 * yarn add vue vue-router quasar-framework quasar-extras vuelidate vue-apollo@next graphql apollo-client apollo-link apollo-link-http apollo-link-error apollo-cache-inmemory graphql-tag react react-dom prop-types axios rxjs
 * yarn add --dev vue-loader vue-template-compiler vue-router react-loader babel-preset-es2017 babel-preset-react sass-loader node-sass bootstrap@4.0.0 testcafe testcafe-vue-selectors jasmine karma karma-jasmine karma-spec-reporter karma-junit-reporter karma-webpack karma-chrome-launcher
 * yarn install 
@@ -98,6 +98,7 @@ The test_browser section represent all the browsers you want to use with the tes
 * profiler: for debugging purpose
 * log: a logger for symfony
 * security-checker: a tool to check known securities vulnerabilities, to use it, run `php bin/console security:check`
+* roave/security-advisories: a tool that prevent the install of PHP package from composer with known vulnerabilities
 * phpunit, crawler, browserkit, css-selector: php/symfony task for testing (@todo ll last 3 should be a recipe)
 * babel-preset-es2017: do you really need explanation ?
 * testcafe: an e2e test framework (might be changed with chimp or anything else, gimme better idea)
@@ -163,7 +164,8 @@ The project uses 2 packages to lint and fix the code style of PHP code :You can 
  * friendsofphp/php-cs-fixer to fix the code
  
 Lint with this command `vendor/bin/phpcs src -n --standard=PSR1,PSR2 --report=summary` to get a summary of errors.
-Fix with this command `vendor/bin/php-cs-fixer fix src --rules=@PSR1,@PSR2`
+You can fix it with `vendor/in/phpcbf src -n --standard=PSR1,PSR2` which is delivered with phpcs, but it doesn't fix everything
+so i suggest to use php-cs-fixer with this command `vendor/bin/php-cs-fixer fix src --rules=@PSR1,@PSR2`
 
 ### Javascript
 For Javascript the following packages has been used: 
@@ -191,7 +193,20 @@ Here the tests runs on a chrome headless, and firefox but you can configure it i
 
 `npm run test-cafe && npm run test-karma` will run js test and will generate a testcafe.xunit.xml and karma_report.xml files in the following folder `/var/report/`.
 
+If you wonder how to tests your VueJS components, you can hae a look at [this website which describe a lot of tests](https://blog.octo.com/vue-js-en-tdd/). Sadly it's in french !
+
+## Security
+
+On PHP i use those 2 packages to prevent the use of deprecated packages or with vulnerabilities:
+ * security-checker: when you run `php bin/console security:check` it will checks your dependancies vs known vulnerabilites. You should use it on existing project.
+ * roave/security-advisories: it will prevent the composer require and update command on package with known vulnerabilities. But it won't prevent the composer install with an existing composer.lock so you are safe to deliver existing project.
+
+On JS i use snyk services.
+
+@TODO finish on PHP and JS checks + tools to audit the code + software that analyse sql/xss/file injection, csrf, ...
+
 ## API
+
 Take care at the custom listeners that you could write based on [Api-Platform documentation](https://api-platform.com/docs/core/events/). They are used by all controllers, not only those
 from ApiPlatform.
 

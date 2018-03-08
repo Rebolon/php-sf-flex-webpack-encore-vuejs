@@ -21,6 +21,7 @@
         "doctrine/doctrine-fixtures-bundle": "^3.0",
         "friendsofphp/php-cs-fixer": "^2.10",
         "phpunit/phpunit": "^6.5",
+        "roave/security-advisories": "dev-master",
         "sensiolabs/security-checker": "^4.1",
         "squizlabs/PHP_CodeSniffer": "^3.2",
         "symfony/browser-kit": "^4.0.0",

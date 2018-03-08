@@ -23,7 +23,7 @@ class AuthorConverter extends AbstractConverter
      *   }
      * }
      */
-    function getEzPropsName(): array
+    public function getEzPropsName(): array
     {
         return ['id', 'firstname', 'lastname', ];
     }
@@ -31,7 +31,7 @@ class AuthorConverter extends AbstractConverter
     /**
      * {@inheritdoc}
      */
-    function getManyRelPropsName():array
+    public function getManyRelPropsName():array
     {
         return [];
     }
@@ -39,7 +39,8 @@ class AuthorConverter extends AbstractConverter
     /**
      * {@inheritdoc}
      */
-    function getOneRelPropsName():array {
+    public function getOneRelPropsName():array
+    {
         return [];
     }
 

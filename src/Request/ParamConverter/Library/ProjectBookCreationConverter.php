@@ -36,8 +36,11 @@ class ProjectBookCreationConverter extends AbstractConverter
      * @param AuthorConverter $authorConverter
      */
     public function __construct(
-        ValidatorInterface $validator, SerializerInterface $serializer, EntityManagerInterface $entityManager,
-        JobConverter $jobConverter, AuthorConverter $authorConverter
+        ValidatorInterface $validator,
+        SerializerInterface $serializer,
+        EntityManagerInterface $entityManager,
+        JobConverter $jobConverter,
+        AuthorConverter $authorConverter
     ) {
         parent::__construct($validator, $serializer, $entityManager);
 
@@ -52,7 +55,7 @@ class ProjectBookCreationConverter extends AbstractConverter
      *   "authors": { }
      * }
      */
-    function getEzPropsName(): array
+    public function getEzPropsName(): array
     {
         return ['id', ];
     }
@@ -60,7 +63,7 @@ class ProjectBookCreationConverter extends AbstractConverter
     /**
      * {@inheritdoc}
      */
-    function getManyRelPropsName():array
+    public function getManyRelPropsName():array
     {
         return [];
     }
@@ -68,7 +71,8 @@ class ProjectBookCreationConverter extends AbstractConverter
     /**
      * {@inheritdoc}
      */
-    function getOneRelPropsName():array {
+    public function getOneRelPropsName():array
+    {
         // for instance i don't want to allow the creation of a serie with all embeded books, this is not a usual way of working
         // that's why i don't add books here
         return [
@@ -107,7 +111,7 @@ class ProjectBookCreationConverter extends AbstractConverter
             $violationList = new ConstraintViolationList();
             $violation = new ConstraintViolation($e->getMessage(), null, [], null, implode('.', self::$propertyPath), null);
             $violationList->add($violation);
-            throw new ValidationException($violationList,'Wrong parameter to create new Authors (generic)', 420, $e);
+            throw new ValidationException($violationList, 'Wrong parameter to create new Authors (generic)', 420, $e);
         } finally {
             array_pop(self::$propertyPath);
         }

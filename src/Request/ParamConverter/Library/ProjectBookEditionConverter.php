@@ -30,7 +30,9 @@ class ProjectBookEditionConverter extends AbstractConverter
      * @param EditorConverter $editorConverter
      */
     public function __construct(
-        ValidatorInterface $validator, SerializerInterface $serializer, EntityManagerInterface $entityManager,
+        ValidatorInterface $validator,
+        SerializerInterface $serializer,
+        EntityManagerInterface $entityManager,
         EditorConverter $editorConverter
     ) {
         parent::__construct($validator, $serializer, $entityManager);
@@ -49,7 +51,7 @@ class ProjectBookEditionConverter extends AbstractConverter
      *   }
      * }
      */
-    function getEzPropsName(): array
+    public function getEzPropsName(): array
     {
         return ['id', 'publication_date', 'collection', 'isbn', ];
     }
@@ -57,7 +59,7 @@ class ProjectBookEditionConverter extends AbstractConverter
     /**
      * {@inheritdoc}
      */
-    function getManyRelPropsName():array
+    public function getManyRelPropsName():array
     {
         return [];
     }
@@ -71,7 +73,8 @@ class ProjectBookEditionConverter extends AbstractConverter
      *   }
      * }
      */
-    function getOneRelPropsName():array {
+    public function getOneRelPropsName():array
+    {
         // for instance i don't want to allow the creation of a serie with all embeded books, this is not a usual way of working
         // that's why i don't add books here
         return ['editor' => ['converter' => $this->editorConverter, 'registryKey' => 'editor', ], ];
@@ -107,7 +110,7 @@ class ProjectBookEditionConverter extends AbstractConverter
             $violationList = new ConstraintViolationList();
             $violation = new ConstraintViolation($e->getMessage(), null, [], null, implode('.', self::$propertyPath), null);
             $violationList->add($violation);
-            throw new ValidationException($violationList,'Wrong parameter to create new Editors (generic)', 420, $e);
+            throw new ValidationException($violationList, 'Wrong parameter to create new Editors (generic)', 420, $e);
         } finally {
             array_pop(self::$propertyPath);
         }

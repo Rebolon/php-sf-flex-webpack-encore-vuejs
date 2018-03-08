@@ -48,10 +48,9 @@ describe('Movie', () => {
         const Constructor = Vue.extend(Movie)
         const vm = new Constructor({
             router,
-            propsData:
-                {
-                    aMovie: propMovie
-                }
+            propsData: {
+                aMovie: propMovie
+            }
         }).$mount()
         const h1 = vm.$el.querySelector('h1')
         const div = h1.nextElementSibling

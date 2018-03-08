@@ -24,7 +24,7 @@ abstract class AbstractConverter implements ConverterInterface
     /**
      * @var array
      */
-    static protected $registry = [];
+    protected static $registry = [];
 
     /**
      * @var \Symfony\Component\PropertyAccess\PropertyAccessor
@@ -49,7 +49,7 @@ abstract class AbstractConverter implements ConverterInterface
     /**
      * @var array
      */
-    static protected $propertyPath = [];
+    protected static $propertyPath = [];
 
     /**
      * AbstractConverter constructor.
@@ -231,7 +231,6 @@ abstract class AbstractConverter implements ConverterInterface
                         // @todo manage this with a log + a report to user with explanation on what have not been processed
                     }
                 }
-
             }
         }
 
@@ -290,7 +289,12 @@ abstract class AbstractConverter implements ConverterInterface
             $violationList = new ConstraintViolationList();
             $violation = new ConstraintViolation(
                 sprintf('jsonOrArray for %s must be string or array', end(array_values(self::$propertyPath))),
-                null, [], $jsonOrArray, $this->getPropertyPath(), $jsonOrArray);
+                null,
+                [],
+                $jsonOrArray,
+                $this->getPropertyPath(),
+                $jsonOrArray
+            );
             $violationList->add($violation);
             throw new ValidationException($violationList);
         }
@@ -306,11 +310,12 @@ abstract class AbstractConverter implements ConverterInterface
     protected function checkOperationsInfo($operationsInfo, $methodName): void
     {
         if (!array_key_exists('converter', $operationsInfo)) {
-            throw new RuntimeException(sprintf('Library ParamConverter::%s must return an associative array '
+            throw new RuntimeException(sprintf(
+                'Library ParamConverter::%s must return an associative array '
                 . 'with the key as the Entity props name also used in HTTP Request Json node, and the value must contain '
                 . 'an array with converter key, and a setter if you don\'t want to use default propertyAccess',
-                $methodName)
-            );
+                $methodName
+            ));
         }
 
         if (!is_object($operationsInfo['converter'])
