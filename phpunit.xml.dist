@@ -14,6 +14,7 @@
         <env name="APP_DEBUG" value="1" />
         <env name="APP_SECRET" value="s$cretf0rt3st" />
         <env name="SHELL_VERBOSITY" value="-1" />
+        <env name="FIXTURES_DATABASE_URL" value="sqlite:///%kernel.project_dir%/var/data/fixtures.db" />
         <env name="DATABASE_URL" value="sqlite:///%kernel.project_dir%/var/data/test.db" />
         <!-- define your env variables for the test env here -->
     </php>
@@ -30,14 +31,14 @@
         </whitelist>
     </filter>
     <logging>
-        <log type="coverage-html" target="var/report" lowUpperBound="35"
+        <log type="coverage-html" target="var/report/phpunit" lowUpperBound="35"
              highLowerBound="70"/>
-        <log type="coverage-clover" target="var/report/coverage.xml"/>
-        <log type="coverage-php" target="var/report/coverage.serialized"/>
+        <log type="coverage-clover" target="var/report/phpunit/coverage.xml"/>
+        <log type="coverage-php" target="var/report/phpunit/coverage.serialized"/>
         <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
-        <log type="junit" target="var/report/phpunit_report.xml"/>
-        <log type="testdox-html" target="var/report/testdox.html"/>
-        <log type="testdox-text" target="var/report/testdox.txt"/>
+        <log type="junit" target="var/report/phpunit.xml"/>
+        <log type="testdox-html" target="var/report/phpunit/testdox.html"/>
+        <log type="testdox-text" target="var/report/phpunit/testdox.txt"/>
     </logging>
 
 </phpunit>

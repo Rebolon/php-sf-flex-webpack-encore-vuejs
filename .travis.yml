@@ -57,8 +57,8 @@ before_script:
 script:
 # until this issue is open i disable npm test and use test-php and test-karma in place (issue:https://github.com/DevExpress/testcafe/issues/2195, original post: https://testcafe-discuss.devexpress.com/t/role-sometime-it-doesnt-seem-to-be-played/875/9)
 #  - npm test
-  - npm test-php
-  - npm test-karma
+  - npm run test-php
+  - npm run test-karma
 
 notifications:
   email: false

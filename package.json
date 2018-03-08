@@ -12,7 +12,7 @@
         "test_browser": "chrome:headless,firefox"
     },
     "scripts": {
-        "init-project": "cp .env.dist .env && composer install && npm install && npm run db-init && npm run dump-js-config && npm run dev",
+        "init-project": "cp .env.dist .env && cp phpunit.xml.dist phpunit.xml && composer install && npm install && npm run db-init && npm run dump-js-config && npm run dev",
         "init-project:windows": "cp .env.dist .env && composer install && npm install && npm run db-init:windows && npm run dump-js-config:windows && npm run dev",
         "db-init": "$npm_package_config_php bin/console doctrine:database:create && $npm_package_config_php bin/console doctrine:schema:create && $npm_package_config_php bin/console doctrine:fixtures:load -n",
         "db-init:windows": "%npm_package_config_php% bin/console doctrine:database:create && %npm_package_config_php% bin/console doctrine:schema:create && %npm_package_config_php% bin/console doctrine:fixtures:load -n",
