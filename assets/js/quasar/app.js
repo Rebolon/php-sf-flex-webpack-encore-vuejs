@@ -3,27 +3,21 @@
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-import Quasar from 'quasar-framework'
+import { isProduction } from '../lib/config'
 
-require('../../../node_modules/quasar-framework/dist/quasar.mat.css')
-// not sure that fonts are loaded finely
+import Quasar from 'quasar-framework/dist/quasar.mat.esm'
+import 'quasar-framework/dist/umd/quasar.mat.css'
 import 'quasar-extras/roboto-font'
 import 'quasar-extras/material-icons'
 import 'quasar-extras/fontawesome'
-// import 'quasar-extras/ionicons'
-// import 'quasar-extras/animate'
 
-// @todo make it dynamic using npm scripts and fetching .env file
-Vue.config.productionTip = false
+Vue.config.productionTip = isProduction()
 
 Vue.use(Quasar)
 
-Quasar.start(() => {
-    /* eslint-disable no-new */
-    new Vue({
-        el: '#app',
-        router,
-        template: '<App/>',
-        components: { App },
-    })
+/* eslint-disable no-new */
+new Vue({
+    el: '#app',
+    router,
+    render: h => h(App),
 })

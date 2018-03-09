@@ -7,6 +7,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Validation;
 
 class DumpJsConfig extends ContainerAwareCommand
 {
@@ -41,7 +43,8 @@ class DumpJsConfig extends ContainerAwareCommand
             ->setDescription('Create the config.js file.')
             ->setHelp('Dump symfony configuration into a config.js file available from assets/js/*')
             ->addArgument('host', InputArgument::OPTIONAL, 'The full hostname of the web-server.', 'localhost')
-            ->addArgument('port', InputArgument::OPTIONAL, 'The port for the we-server.', '80');
+            ->addArgument('port', InputArgument::OPTIONAL, 'The port for the web-server.', '80')
+            ->addArgument('quasarStyle', InputArgument::OPTIONAL, 'The style for quasar framework: mat or ios.', 'mat');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -49,12 +52,36 @@ class DumpJsConfig extends ContainerAwareCommand
         $env = $this->getEnv();
         $host = $input->getArgument('host');
         $port = $input->getArgument('port');
+        $quasarStyle = $input->getArgument('quasarStyle');
+
+        $validator = Validation::createValidator();
+        $violations['port'] = $validator->validate($port, [
+            new Assert\Type(['type' => 'numeric', ]),
+        ]);
+
+        $violations['quasarStyle'] = $validator->validate($quasarStyle, [
+            new Assert\Choice(['choices' => ['mat', 'ios'], ]),
+        ]);
+
+        if (0 !== count($violations['port']) && 0 !== count($violations['quasarstyle'])) {
+            $output->writeln([
+                'Params errors',
+                '=======================', ]);
+            foreach ($violations as $paramName => $violation) {
+                foreach($violation as $v) {
+                    $output->writeln(ucfirst($paramName) . ': ' . $v->getMessage());
+                }
+            }
+
+            return;
+        }
 
         $output->writeln([
             'Js config file creation',
             '=======================',
             'arguments:',
             'host:port = ' . $host . ':' . $port,
+            'quasarStyle = ' . $quasarStyle,
         ]);
 
         $content = $this->twig->render('command/config.js.twig', [
@@ -63,6 +90,7 @@ class DumpJsConfig extends ContainerAwareCommand
             'port' => trim($port),
             'csrfTokenParameter' => $this->csrfTokenParameter,
             'apiPlatformPrefix' => $this->apiPlatformPrefix,
+            'quasarStyle' => $quasarStyle,
         ]);
 
         $output->writeln([

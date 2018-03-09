@@ -16,7 +16,7 @@ class LoginJsonController extends Controller
      */
     public function index()
     {
-        return $this->render('spa.html.twig', ['appName' => 'login', 'useParent' => true, ]);
+        return $this->render('spa-quasar.html.twig', ['appName' => 'login', 'useParent' => true, ]);
     }
 
     /**

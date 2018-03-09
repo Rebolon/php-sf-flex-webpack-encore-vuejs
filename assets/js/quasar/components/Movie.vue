@@ -38,7 +38,7 @@ import {
     QCardActions,
     QBtn,
     QSpinnerCircles,
-} from 'quasar-framework'
+} from 'quasar-framework/dist/quasar.mat.esm'
 
 export default {
     name: 'Movie',
@@ -74,9 +74,7 @@ export default {
             .catch((err) => {
                 console.warn('error during http call', err)
             })
-            .finally(() => {
-                this.isLoading = false
-            })
+            .finally(() => this.isLoading = false)
     },
 }
 </script>

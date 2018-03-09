@@ -5,7 +5,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import VueApollo from 'vue-apollo'
 import { host } from './config'
 import getToken from './csrfToken'
-import { Toast } from 'quasar-framework'
+import { Notify } from 'quasar-framework/dist/quasar.mat.esm'
 
 const httpLink = new HttpLink({
     // Take care : if you change the api endpoint in config/packages/api_platform.yaml you need to change it here
@@ -33,7 +33,10 @@ onError(({ networkError }) => {
             .catch(err => console.warn('apollo onError', 'getToken', err))
     } else {
         console.warn(`Unknown error ${networkError.statusCode}`, networkError)
-        Toast.create.warning(`Unknown error ${networkError.statusCode}`)
+        Notify.create({
+            message: `Unknown error ${networkError.statusCode}`,
+            type: 'warning'
+        })
     }
 })
 

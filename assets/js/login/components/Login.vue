@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { QField, QIcon, QInput, QBtn, QSpinnerCircles, Toast } from 'quasar-framework'
+import { QField, QIcon, QInput, QBtn, QSpinnerCircles, Notify } from 'quasar-framework/dist/quasar.mat.esm'
 import { required } from 'vuelidate/lib/validators'
 import getToken from '../../lib/csrfToken'
 import isLoggedIn from '../../lib/login'
@@ -63,7 +63,7 @@ export default {
         QInput,
         QBtn,
         QSpinnerCircles,
-        Toast,
+        Notify,
     },
     props: ['redirect'],
     data() {
@@ -79,15 +79,21 @@ export default {
     created() {
         this.isLoading = true
         isLoggedIn()
-            .then(isTrue => {
-                Toast.create.info('You are logged in')
+            .then(() => {
+                Notify.create({
+                    message: 'You are logged in.',
+                    type: 'info'
+                })
 
                 if (this.redirect) {
                     this.$router.push(this.redirect)
                 }
             })
             .catch(err => {
-                Toast.create.info('You need to log in to access the app.')
+                Notify.create({
+                    message: 'You need to log in to access the app.',
+                    type: 'info'
+                })
             })
 
         getToken(this)
@@ -111,7 +117,10 @@ export default {
             ev.stopPropagation()
             this.$v.form.$touch()
             if (this.$v.form.$error) {
-                Toast.create.warning('Please review fields again.')
+                Notify.create({
+                    message: 'Please review fields again.',
+                    type: 'warning'
+                })
 
                 return
             }
@@ -156,19 +165,33 @@ export default {
                      */
                     switch(code) {
                         case 403:
-                            Toast.create.warning('Wrong credentials, please try again')
+                            Notify.create({
+                                message: 'Wrong credentials, please try again',
+                                type: 'warning'
+                            })
                             break;
                         case 420:
-                            Toast.create.negative(`Invalid user name or password (${errMsg})`)
+                            Notify.create({
+                                message: `Invalid user name or password (${errMsg})`,
+                                type: 'negative'
+                            })
                             break;
                         case 423:
                             getToken()
-                                .then(res => Toast.create.warning(`Invalid token, please try again`))
+                                .then(res => {
+                                    Notify.create({
+                                        message: `Invalid token, please try again`,
+                                        type: 'warning'
+                                    })
+                                })
                                 .catch(err => console.warn('Login methos submit', 'getToken', err))
                             break;
                         default:
                             console.warn(err.response)
-                            Toast.create.warning(`Unknown error ${err.response.status} ${errMsg}`)
+                            Notify.create({
+                                message: `Unknown error ${err.response.status} ${errMsg}`,
+                                type: 'warning'
+                            })
                     }
                 })
                 .finally(() => {

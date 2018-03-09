@@ -1,0 +1,21 @@
+/* need to reset quasar styles for main windows elements */
+/* it's not the same results as on other pages, but in fact, it's expected because we don't use the same css framework */
+body nav h1 {
+  font-size: 2.5rem;;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: inherit;
+  margin: 0px;
+}
+
+body nav h1 a:visited {
+  color: #000000;
+}
+
+body nav.navbar {
+  padding: 8px 16px;
+}
+
+body nav.bg-light {
+  background:#f8f9fa !important
+}

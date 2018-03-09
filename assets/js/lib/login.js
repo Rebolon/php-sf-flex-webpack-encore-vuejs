@@ -1,5 +1,5 @@
 import router from '../form/router/index'
-import { Toast } from 'quasar-framework'
+import { Notify } from 'quasar-framework/dist/quasar.mat.esm'
 import axios from 'axios'
 import { logoutStdInterceptors } from './axiosMiddlewares'
 import Rx from 'rxjs/Rx'
@@ -48,7 +48,10 @@ export const resetLoginInfo = function() {
 
 export const logout = function() {
     resetLoginInfo()
-    Toast.create.info('You have been logged out.')
+    Notify.create({
+        message: 'You have been logged out.',
+        type: 'info'
+    })
 
     // @todo check if current route is !== from login then go to login else do nothing
     console.info('compare the location.href with / if different then push / to router, check that you dont loop infinitly')

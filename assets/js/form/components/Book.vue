@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { QItemMain, QItemTile } from 'quasar-framework'
+import { QItemMain, QItemTile } from 'quasar-framework/dist/quasar.mat.esm'
 
 export default {
     name: 'Book',

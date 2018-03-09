@@ -47,7 +47,7 @@ Encore
     .addEntry('js/api-platform-admin-react', './assets/js/api-platform-admin-react/index.js')
 
     // for specific page css (not managed by vue file per example
-    // .addStyleEntry('css/app', './assets/css/app.scss')
+    .addStyleEntry('css/quasar-bootstrap', './assets/css/quasar-bootstrap.scss')
 
     // this creates a 'vendor.js' file with common js code
     // these modules will *not* be included in js/vuejs.js or js/quasar.js anymore

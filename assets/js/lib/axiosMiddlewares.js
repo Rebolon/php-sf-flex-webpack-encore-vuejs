@@ -2,7 +2,7 @@ import axios from 'axios'
 import { logout } from './login'
 import { getTokenFromMeta } from './csrfToken'
 import { csrfParameter } from './config'
-import { Toast } from 'quasar-framework'
+import { Notify } from 'quasar-framework/dist/quasar.mat.esm'
 
 // @todo add an interceptors that will always retrieve the csrf token and add it inside the request
 // make sure that api-platform is also compatible with csrf token and implement it
@@ -80,7 +80,12 @@ const CsrfTokenRetreiveOnInvalidResponse = function (error) {
 
     if (status === 423) {
         getToken()
-            .then(res => Toast.create.warning(`Invalid token, please try again`))
+            .then(res => {
+                Notify.create({
+                    message: `Invalid token, please try again`,
+                    type: 'warning'
+                })
+            })
             .catch(err => console.warn('axios middleware CsrfTokenRetreiveOnInvalidResponse', 'getToken', err))
     }
 

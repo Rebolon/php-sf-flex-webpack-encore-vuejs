@@ -12,14 +12,14 @@
 </template>
 
 <script>
-import { QToolbar, QToolbarTitle, Toast } from 'quasar-framework'
+import { QToolbar, QToolbarTitle, Notify } from 'quasar-framework/dist/quasar.mat.esm'
 import { IsLoggedInObservable } from '../../lib/login'
 export default {
     name: 'Secured',
     components: {
         QToolbar,
         QToolbarTitle,
-        Toast
+        Notify
     },
     data() {
         return {
@@ -35,12 +35,16 @@ export default {
 
         this.user = defaultUser
 
-        if (typeof localStorage === undefined) {
-            Toast.create.warning(`No localStorage feature available in the browser`)
+        if (typeof localStorage == 'undefined') {
+            Notify.create({
+                message: `No localStorage feature available in the browser`,
+                type: 'warning'
+            })
         }
 
         IsLoggedInObservable.subscribe(isLoggedIn => {
-            if (!isLoggedIn) {
+            if (!isLoggedIn
+                || !isLoggedIn.me) {
                 this.user = defaultUser
             } else {
                 this.user = isLoggedIn.me

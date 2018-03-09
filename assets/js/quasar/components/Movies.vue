@@ -26,12 +26,11 @@ import {
     QToolbar,
     QToolbarTitle,
     QList,
-    QListHeader,
     QItem,
     QItemMain,
     QItemTile,
     QSpinnerCircles,
-} from 'quasar-framework'
+} from 'quasar-framework/dist/quasar.mat.esm'
 
 export default {
     name: 'Movies',
@@ -61,9 +60,7 @@ export default {
             .catch((err) => {
                 console.warn('error during http call', err)
             })
-            .finally(() => {
-                this.isLoading = false
-            })
+            .finally(() => this.isLoading = false)
     },
     methods: {
         showMovie(ev) {

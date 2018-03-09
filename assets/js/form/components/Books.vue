@@ -2,20 +2,14 @@
     <div class="books">
         <label class="title">
             <h5 class="title">List of books</h5>
-            <h6 class="hint">
-                But it needs to store something somewhere, or it won't be possible to display anything neither do anything in fact</h6>
         </label>
 
-        <strong>Pagination must be removed when DataTable will allow async data ! (v0.15 at least)</strong><br/>
-
-        <q-spinner-circles v-if="isLoading" size="20px"/>
-        <q-pagination v-if="books.length" v-model="pagination.page" :max="pagination.total"
-                      @change="getOtherPage($event)"></q-pagination>
-
-        <q-data-table
+        <q-table
                 :data="books"
-                :config="dataTableConfig"
                 :columns="dataTableColumns"
+                :pagination.sync="pagination"
+                :loading="isLoading"
+                @request="getOtherPage($event)"
                 @refresh=""
         >
             <!-- Custom renderer for "message" column -->
@@ -43,7 +37,7 @@
                     <i>delete</i>
                 </q-btn>
             </template>
-        </q-data-table>
+        </q-table>
 
     </div>
 </template>
@@ -52,15 +46,13 @@
 import {
     QToolbar,
     QToolbarTitle,
-    QDataTable,
+    QTable,
     QTooltip,
     QItem,
     QItemMain,
     QItemTile,
-    QSpinnerCircles,
-    QPagination,
     QBtn,
-} from 'quasar-framework'
+} from 'quasar-framework/dist/quasar.mat.esm'
 
 import Book from './Book.vue'
 import gql from 'graphql-tag'
@@ -73,13 +65,11 @@ export default {
     components: {
         QToolbar,
         QToolbarTitle,
-        QDataTable,
+        QTable,
         QTooltip,
         QItem,
         QItemMain,
         QItemTile,
-        QSpinnerCircles,
-        QPagination,
         QBtn,
         Book,
     },
@@ -88,32 +78,18 @@ export default {
             msg: 'List of books',
             isLoading: true,
             books: [],
-            dataTableConfig: {
-                rowHeight: '50px',
-                noHeader: false,
-                refresh: true,
-                columnPicker: true,
-                leftStickyColumns: 1,
-                rightStickyColumns: 1,
-                bodyStyle: {
-                    maxHeight: '500px'
-                },
-                responsive: true,
-                pagination: {
-                    rowsPerPage: 15,
-                    options: [5, 10, 15, 30, 50, ]
-                },
-                selection: 'multiple',
-            },
             dataTableColumns: BooksTableDefinition,
             id: undefined,
             pagination: {
-                page: 1,
-                total: 1,
-                uris: {},
-                itemPerPage: 10,
                 endCursor: '',
                 nexEndCursor: '',
+                
+                // for quasar
+                sortBy: null, // String, column "name" property value
+                descending: false,
+                page: 1,
+                rowsPerPage: 10, // current rows per page being displayed
+                rowsNumber: 0 // mandatory for server-side pagination
             },
 
             // dataStore for GraphQL Queries: vue-apollo will inject data in vue components based on the name of the query
@@ -126,7 +102,7 @@ export default {
         this.getListByRest()
     },
     methods: {
-        getOtherPage(page) {
+        getOtherPage({ pagination, filter }) {
             // for graphQl
             // @todo find a way to identify if we get the data in the store or if we need to ask for new data
             // @todo how to manage 'previous' link ? for instance this code should not work in all case, only if user click on next
@@ -136,10 +112,11 @@ export default {
             }
 
             // for Rest
-            this.getListByRest(page)
+            this.getListByRest(pagination.page)
         },
 
         getListByRest(page = 1) {
+            debugger
             this.isLoading = true
             const pageInt = Number.parseInt(page)
             const uri = `${apiPlatformPrefix}/books.jsonld?page=${pageInt}`
@@ -159,16 +136,18 @@ export default {
                     }
 
                     // manage pagination
-                    if (undefined !== content['hydra:view']) {
-                        ;['first', 'last', 'next', 'previous'].forEach(key => {
-                            if (undefined !== content['hydra:view'][`hydra:${key}`]) {
-                                this.pagination.uris[key] = content['hydra:view'][`hydra:${key}`]
+                    if (undefined !== content['hydra:totalItems']) {
+                        this.pagination.rowsNumber = content['hydra:totalItems']
+                    }
 
-                                if (key === 'last') {
-                                    const pageParam = content['hydra:view'][`hydra:${key}`].match(/page=\d*/)
-                                    if (pageParam) {
-                                        this.pagination.total = Number.parseInt(pageParam[0].replace('page=', ''))
-                                    }
+                    if (undefined !== content['hydra:view']) {
+                        ['first', 'last', 'next', 'previous'].forEach(key => {
+                            if (undefined !== content['hydra:view'][`hydra:${key}`]) {
+                                const pageParam = content['hydra:view'][`hydra:${key}`].match(/page=\d*/)
+                                const pageValue = Number.parseInt(pageParam[0].replace('page=', ''))
+                                if (key === 'next'
+                                    && pageValue !== this.pagination.page) {
+                                    this.pagination.page += 1
                                 }
                             }
                         })
@@ -388,7 +367,7 @@ export default {
             `,
             variables() {
                 return {
-                    first: this.pagination.itemPerPage,
+                    first: this.pagination.rowsPerPage,
                     after: this.pagination.endCursor,
                 }
             },
@@ -447,9 +426,9 @@ export default {
             },
             variables() {
                 return {
-                    firstBook: this.pagination.itemPerPage,
+                    firstBook: this.pagination.rowsPerPage,
                     afterBook: this.pagination.endCursor,
-                    firstSerie: this.pagination.itemPerPage,
+                    firstSerie: this.pagination.rowsPerPage,
                 }
             },
             // Additional options here
