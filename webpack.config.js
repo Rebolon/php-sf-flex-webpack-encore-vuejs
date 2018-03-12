@@ -48,6 +48,7 @@ Encore
     .addEntry('js/login', './assets/js/login/app.js')
     .addEntry('js/form', './assets/js/form/app.js')
     .addEntry('js/api-platform-admin-react', './assets/js/api-platform-admin-react/index.js')
+    .addEntry('js/devxpress-react', './assets/js/devxpress-react/index.js')
 
     // for specific page css (not managed by vue file per example
     .addStyleEntry('css/quasar-bootstrap', './assets/css/quasar-bootstrap.scss')

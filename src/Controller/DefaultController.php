@@ -33,6 +33,8 @@ class DefaultController extends Controller
         $demoRoutes['vuejs with quasar and vue-router'] = $router->generate('app_quasar_index');
         $demoRoutes['vuejs with quasar with a more complex app'] = $router->generate('app_form_index');
 
+        $demoRoutes['DevXpress with react library'] = $router->generate('app_devxpressreact_index');
+
         $demoRoutes['csrf token generation'] = $router->generate('token');
         $demoRoutes['user login check for js app'] = $router->generate('demo_secured_page_is_logged_in');
 
@@ -52,6 +54,11 @@ class DefaultController extends Controller
         if ($isPhpBuiltInServer) {
             $note = 'You are using PHP Built-in server, api indexes for json/jsonld or html may not work and return a '
             . '404 Not Found';
+            $demoRoutes['DevXpress with react library'] = [
+                'uri' => $demoRoutes['DevXpress with react library'],
+                'note' => $note,
+                ];
+
             $demoRoutes['api-platform: rest'] = [
                 'uri' => $demoRoutes['api-platform: rest'],
                 'note' => $note,

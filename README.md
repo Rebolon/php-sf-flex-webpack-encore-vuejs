@@ -32,7 +32,8 @@ Here is how it has been created:
 * cd sf-flex-encore-vuejs
 * composer req encore annotations twig api http profiler log doctrine-migrations admin webonyx/graphql-php
 * composer require --dev doctrine/doctrine-fixtures-bundle phpunit/phpunit symfony/dom-crawler symfony/browser-kit symfony/css-selector security-checker roave/security-advisories:dev-master
-* yarn add vue vue-router quasar-framework quasar-extras vuelidate vue-apollo@next graphql apollo-client apollo-link apollo-link-http apollo-link-error apollo-cache-inmemory graphql-tag react react-dom prop-types axios rxjs @devexpress/dx-react-core @devexpress/dx-react-grid
+* yarn add vue vue-router quasar-framework quasar-extras vuelidate vue-apollo@next graphql apollo-client apollo-link apollo-link-http apollo-link-error apollo-cache-inmemory graphql-tag react react-dom prop-types axios rxjs
+* yarn add @devexpress/dx-react-core @devexpress/dx-react-grid @devexpress/dx-react-grid-bootstrap4 reactstrap
 * yarn add --dev vue-loader vue-template-compiler vue-router react-loader babel-preset-es2017 babel-preset-react sass-loader node-sass bootstrap@4.0.0 testcafe testcafe-vue-selectors jasmine karma karma-jasmine karma-spec-reporter karma-junit-reporter karma-webpack karma-chrome-launcher offline-plugin
 * yarn install 
 
@@ -92,7 +93,7 @@ The test_browser section represent all the browsers you want to use with the tes
 * [twig](https://twig.symfony.com/): symfony template solution, useless if you don't want to render template with symfony, but usefull to be able to use assets twig helper with webpack encore
 * [api](api-platform.com): api-platform to build REST api(instead of fosrestbundle)
 * [react](https://reactjs.org/): js framework used here by api-platform for their react admin component, it's built on top of [https://marmelab.com/admin-on-rest](https://marmelab.com/admin-on-rest)
-* [@devexpress/dx-react-core @devexpress/dx-react-grid](https://devexpress.github.io/devextreme-reactive/react/grid/docs/guides/getting-started/): UX components library based on React
+* [@devexpress/dx-react-core @devexpress/dx-react-grid](https://devexpress.github.io/devextreme-reactive/react/grid/docs/guides/getting-started/): UX components library based on React ; we decided to use the bootstrap4 version with open-iconic (as recommanded)
 * http: a cool library to do http call from http (you could switch it with Guzzle)
 * doctrine-migrations: based on Doctrine ORM, it make it easy to change your db during a project life
 * doctrine-fixture: also based on Doctrine to help you to add fixtures in your DB (for your tests or for project init)
