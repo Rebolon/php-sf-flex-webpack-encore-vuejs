@@ -32,8 +32,8 @@ Here is how it has been created:
 * cd sf-flex-encore-vuejs
 * composer req encore annotations twig api http profiler log doctrine-migrations admin webonyx/graphql-php
 * composer require --dev doctrine/doctrine-fixtures-bundle phpunit/phpunit symfony/dom-crawler symfony/browser-kit symfony/css-selector security-checker roave/security-advisories:dev-master
-* yarn add vue vue-router quasar-framework quasar-extras vuelidate vue-apollo@next graphql apollo-client apollo-link apollo-link-http apollo-link-error apollo-cache-inmemory graphql-tag react react-dom prop-types axios rxjs
-* yarn add --dev vue-loader vue-template-compiler vue-router react-loader babel-preset-es2017 babel-preset-react sass-loader node-sass bootstrap@4.0.0 testcafe testcafe-vue-selectors jasmine karma karma-jasmine karma-spec-reporter karma-junit-reporter karma-webpack karma-chrome-launcher
+* yarn add vue vue-router quasar-framework quasar-extras vuelidate vue-apollo@next graphql apollo-client apollo-link apollo-link-http apollo-link-error apollo-cache-inmemory graphql-tag react react-dom prop-types axios rxjs @devexpress/dx-react-core @devexpress/dx-react-grid
+* yarn add --dev vue-loader vue-template-compiler vue-router react-loader babel-preset-es2017 babel-preset-react sass-loader node-sass bootstrap@4.0.0 testcafe testcafe-vue-selectors jasmine karma karma-jasmine karma-spec-reporter karma-junit-reporter karma-webpack karma-chrome-launcher offline-plugin
 * yarn install 
 
 Then some php controllers has been created on following routes :
@@ -83,14 +83,16 @@ The test_browser section represent all the browsers you want to use with the tes
 
 ## components
 
-* flex: new symfony system to make web dev life easier ; it works with recipes
-* vuejs: top js framework to build SPA, or just widget on classic page
-* quasar: UX component library based on VueJS
+* flex: new symfony system to make web dev life easier ; it works with [recipes](https://symfony.sh/)
+* [vuejs](https://vuejs.org/): top js framework to build SPA, or just widget on classic page
+* [quasar](http://quasar-framework.org/): UX component library based on VueJS
 * encore: symfony solution to wrap webpack config and, once again, make your life simpler
+* offline-plugin: webpack plugin to manage offline assets
 * annotations: use annotations everywhere in your PHP code
-* twig: symfony template solution, useless if you don't want to render template with symfony, but usefull to be able to use assets twig helper with webpack encore
-* api: api-platform to build REST api(instead of fosrestbundle)
-* react: js framework used here by api-platform for their react admin component, it's built on top of [https://marmelab.com/admin-on-rest](https://marmelab.com/admin-on-rest)
+* [twig](https://twig.symfony.com/): symfony template solution, useless if you don't want to render template with symfony, but usefull to be able to use assets twig helper with webpack encore
+* [api](api-platform.com): api-platform to build REST api(instead of fosrestbundle)
+* [react](https://reactjs.org/): js framework used here by api-platform for their react admin component, it's built on top of [https://marmelab.com/admin-on-rest](https://marmelab.com/admin-on-rest)
+* [@devexpress/dx-react-core @devexpress/dx-react-grid](https://devexpress.github.io/devextreme-reactive/react/grid/docs/guides/getting-started/): UX components library based on React
 * http: a cool library to do http call from http (you could switch it with Guzzle)
 * doctrine-migrations: based on Doctrine ORM, it make it easy to change your db during a project life
 * doctrine-fixture: also based on Doctrine to help you to add fixtures in your DB (for your tests or for project init)
@@ -99,14 +101,18 @@ The test_browser section represent all the browsers you want to use with the tes
 * log: a logger for symfony
 * security-checker: a tool to check known securities vulnerabilities, to use it, run `php bin/console security:check`
 * roave/security-advisories: a tool that prevent the install of PHP package from composer with known vulnerabilities
-* phpunit, crawler, browserkit, css-selector: php/symfony task for testing (@todo ll last 3 should be a recipe)
+* [phpunit](https://phpunit.de/), crawler, browserkit, css-selector: php/symfony task for testing (@todo ll last 3 should be a recipe)
 * babel-preset-es2017: do you really need explanation ?
 * testcafe: an e2e test framework (might be changed with chimp or anything else, gimme better idea)
-* jasmine & karma: a stack for unit & e2e tests (a more standard stack to replace testcafé)
+* [jasmine](https://jasmine.github.io/) & [karma](https://karma-runner.github.io/2.0/index.html): a stack for unit & e2e tests (a more standard stack to replace testcafé)
 * sass: hey, we are not in nineties, we don't write css now
-* bootstrap: the beta 4 version of the first class css framework (not used with quasar)
+* [bootstrap](https://getbootstrap.com/): the 4th version of the first class css framework (not used with quasar)
 * axios: the library to perform http calls
-* rxjs: THE library to replace the usage of Promise !
+* [rxjs](http://reactivex.io/rxjs/): THE library to replace the usage of Promise !
+
+Here are some uninstalled components that may help you:
+
+* rekit: an IDE for React devlopment, you should install it glabally
 
 ## run
 
@@ -156,6 +162,10 @@ Take care, the asset server listen to port 8080 so don't start your main server 
 
 Also, if you want to use the asset server finely, you have to add the assets configuration in the config/packages/framework.yaml file :
 `json_manifest_path: '%kernel.project_dir%/public/build/manifest.json'`. In fact the npm command will build asset in memory only, and modify the manifest file to map asset to a new url served by the asset server instead of the main web server.
+
+In the main layout, we load 3 common files: manifest.js, vendor.js and sw.js. Vendor is where you wan put all common libraries used on almost all pages.
+The source file for this bundle is assets/js/app.js. SW is for the service workers. It's default behavior is to manage the Cache file. You can have a look 
+at [offline-plugin for webpack](https://github.com/NekR/offline-plugin).
 
 ## code quality
 ### PHP
@@ -309,7 +319,7 @@ It takes the following JSON string as Body:
 - [ ] check security on ApiPlatform (do we need JWT or just cookies, in that case we are stateful which is not cool for deployment and replication)
 - [x] setup VueJS
 - [x] use Quasar with VueJS
-- [ ] move on Quasar 0.15.x
+- [x] move on Quasar 0.15.x
 - [x] setup CSRF protection with VueJS app
 - [x] setup unit tests for JS (karma/jasmine)
 - [x] setup e2e tests for JS (testcafé)

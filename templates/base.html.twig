@@ -6,7 +6,12 @@
         <meta name="{{ csrfTokenParameter }}" content="{{ csrf_token }}">
         {% endif %}
         {% block stylesheets %}
-            <link rel="stylesheet" href="{{ asset('build/vendor.css') }}">
+            <link rel="stylesheet" href="{{ asset('dist/vendor.css') }}">
+
+            <!-- preload JS -->
+            <link rel="preload" href="{{ asset('dist/manifest.js') }}" as="script"/>
+            <link rel="preload" href="{{ asset("dist/vendor.js") }}" as="script"/>
+            <link rel="preload" href="{{ asset("dist/sw.js") }}" as="script"/>
         {% endblock %}
         <title>{% block title %}Demo sf-flex-encore-vuejs{% endblock %}</title>
     </head>
@@ -26,8 +31,9 @@
         </nav>
         {% block body %}{% endblock %}
 
-        <script src="{{ asset('build/manifest.js') }}"></script>
-        <script src="{{ asset('build/vendor.js') }}"></script>
+        <script src="{{ asset('dist/manifest.js') }}"></script>
+        <script src="{{ asset('dist/vendor.js') }}"></script>
+        <script src="{{ asset('dist/sw.js') }}"></script>
         {% block javascripts %}{% endblock %}
     </body>
 </html>

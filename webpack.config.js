@@ -1,10 +1,11 @@
 var Encore = require('@symfony/webpack-encore')
+var OfflinePlugin = require('offline-plugin')
 
 Encore
     // the project directory where compiled assets will be stored
-    .setOutputPath('public/build/')
+    .setOutputPath('public/dist/')
     // the public path used by the web server to access the previous directory
-    .setPublicPath('/build')
+    .setPublicPath('/dist')
     .cleanupOutputBeforeBuild()
     .enableSourceMaps(!Encore.isProduction())
     // uncomment to create hashed filenames (e.g. app.abc123.css)
@@ -40,6 +41,8 @@ Encore
     })
 
     // uncomment to define the assets of the project
+    .addEntry('sw', './assets/js/lib/sw.js')
+
     .addEntry('js/vuejs', './assets/js/vuejs/app.js')
     .addEntry('js/quasar', './assets/js/quasar/app.js')
     .addEntry('js/login', './assets/js/login/app.js')
@@ -76,5 +79,31 @@ Encore
 
 // customize webpack configuration
 let config = Encore.getWebpackConfig();
+
+config.plugins.push(new OfflinePlugin({
+    "strategy": "changed",
+    "responseStrategy": "cache-first",
+    "publicPath": "/dist/",
+    "caches": {
+        // offline plugin doesn't know about build folder
+        // if I added build in it , it will show something like : OfflinePlugin: Cache pattern [build/images/*] did not match any assets
+        "main": [
+            '*.json',
+            '*.css',
+            '*.js',
+            'img/*'
+        ]
+    },
+    "ServiceWorker": {
+        "events": !Encore.isProduction(),
+        "entry": "./assets/js/lib/sw.js",
+        "cacheName": "SymfonyVue",
+        "navigateFallbackURL": '/',
+        "minify": !Encore.isProduction(),
+        "output": "./../sw.js",
+        "scope": "/"
+    },
+    "AppCache": null
+}));
 
 module.exports = config

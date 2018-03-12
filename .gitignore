@@ -28,3 +28,6 @@
 ###< phpunit/phpunit ###
 
 /var/data/test.db
+
+/public/dist/
+/public/sw.js

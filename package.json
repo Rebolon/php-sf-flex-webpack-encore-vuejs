@@ -39,6 +39,8 @@
     },
     "dependencies": {
         "@api-platform/admin": "^0.3.1",
+        "@devexpress/dx-react-core": "^1.0.3",
+        "@devexpress/dx-react-grid": "^1.0.3",
         "apollo-cache-inmemory": "^1.1.10",
         "apollo-client": "^2.2.6",
         "apollo-link": "^1.2.1",
@@ -72,6 +74,7 @@
         "karma-spec-reporter": "0.0.32",
         "karma-webpack": "^2.0.13",
         "node-sass": "^4.7.2",
+        "offline-plugin": "^4.9.0",
         "prettier": "^1.11.1",
         "sass-loader": "^6.0.7",
         "testcafe": "^0.18.6",
