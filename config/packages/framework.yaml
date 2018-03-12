@@ -2,7 +2,7 @@ framework:
     secret: '%env(APP_SECRET)%'
     assets:
         # feature is supported in Symfony 3.3 and higher : used by encore for example with npm run dev-server command
-        json_manifest_path: '%kernel.project_dir%/public/build/manifest.json'
+        json_manifest_path: '%kernel.project_dir%/public/dist/manifest.json'
     #default_locale: en
     csrf_protection: ~
     #http_method_override: true

@@ -6,13 +6,13 @@
     {% endif %}
 
     {% if appName %}
-<link rel="stylesheet" href="{{ asset('build/js/' ~ appName ~ '.css') }}">
+<link rel="stylesheet" href="{{ asset('dist/js/' ~ appName ~ '.css') }}">
     {% endif %}
 {% endblock %}
 
 {% block javascripts %}
     {% if appName %}
-<script src="{{ asset('build/js/' ~ appName ~ '.js') }}"></script>
+<script src="{{ asset('dist/js/' ~ appName ~ '.js') }}"></script>
     {% endif %}
 {% endblock %}
 
