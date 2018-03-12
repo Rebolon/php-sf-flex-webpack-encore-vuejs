@@ -114,12 +114,19 @@ Here are some uninstalled components that may help you:
 
 * rekit: an IDE for React devlopment, you should install it glabally
 
+For Angular5, i decided to do quite different way:
+* i initialized a project with angular-cli (first install it globally `yarn add -g @angular/cli`) like this: cd assets/js && ng new devxpress-angular && cd devxpress-angular && yarn install
+* then i customize the .angular-cli.json to set output path to my root public/dist-ng folder
+* i set this dist-ng folder because `encore` will remove dist folder when we run some command so with different dist folders i don't have any problem
+* i customize my npm watch scripts and set a new watch:windows which allows to run the 2 watcher (one for encore, and one for angularCli) at the same time with only one npm scripts
+* i decided to not use `npm run serve` but `npm run build` with watch options because this last one is the only way to generate files in dist-ng folder. ng serve does everything in memory only
+
 ## run
 
 * install the project with `npm run init-project` (or init-project:windows for windows system) which will launch :
   1. copy the env file (or set them on your system) : `cp .env.dist .env`
   2. php dependancies installation: `composer install`
-  3. nodejs tooling installation: `npm install`
+  3. nodejs tooling installation (and angular deps): `npm install && cd assets/js/devxpress-angular && npm install`
   4. assets generation: `npm run dev`
   5. db init: `php bin/console doctrine:database:create` & `doctrine:schema:create` & `doctrine:fixtures:load`
      * it creates the physical database from the `config/packages/doctrine.yaml` file
@@ -219,6 +226,20 @@ On JS i use snyk services.
 
 Take care at the custom listeners that you could write based on [Api-Platform documentation](https://api-platform.com/docs/core/events/). They are used by all controllers, not only those
 from ApiPlatform.
+
+### Sort
+
+If you want to allow sorting based on columns, you will have to add Filter annotations on Entity. Look at the [Book entity and its ApiFilter](https://github.com/Rebolon/php-sf-flex-webpack-encore-vuejs/blob/38d98658b5e9c2848fe6ad0187c24650225be508/src/Entity/Library/Book.php#L27) which allow to sort on id and title.
+Then you will be able to call the api loke this: http://localhost/api/books?order[id]=DESC
+
+### Filter
+
+Sometime you will want to filter on some fields: i want Reviews published after xxx.
+For things like this you have to add new ApiFilter (like we did with sort). There is a sample in the [Review entity](https://github.com/Rebolon/php-sf-flex-webpack-encore-vuejs/blob/38d98658b5e9c2848fe6ad0187c24650225be508/src/Entity/Library/Review.php#L19)
+
+You can also filter on relation, but in that case you will have to use the id (or the iris) of the relation as the value of the filter. More information in [documentation of ApiPlatform](https://api-platform.com/docs/core/filters#search-filter). 
+
+### Custom Route
 
 There is a sample of custom route based on Action Demand Responder pattern that will allow to create new Books and it's dependancies in one HTTP call. 
 You won't need to create sub-entity before creating the main one, said the book.

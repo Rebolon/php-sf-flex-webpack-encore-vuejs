@@ -7,12 +7,12 @@
         {% endif %}
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('dist/vendor.css') }}">
-
-            <!-- preload JS -->
-            <link rel="preload" href="{{ asset('dist/manifest.js') }}" as="script"/>
-            <link rel="preload" href="{{ asset("dist/vendor.js") }}" as="script"/>
-            <link rel="preload" href="{{ asset("dist/sw.js") }}" as="script"/>
         {% endblock %}
+
+        <!-- preload JS -->
+        <link rel="preload" href="{{ asset('dist/manifest.js') }}" as="script"/>
+        <link rel="preload" href="{{ asset("dist/vendor.js") }}" as="script"/>
+        <link rel="preload" href="{{ asset("dist/sw.js") }}" as="script"/>
         <title>{% block title %}Demo sf-flex-encore-vuejs{% endblock %}</title>
     </head>
     <body class="mat">

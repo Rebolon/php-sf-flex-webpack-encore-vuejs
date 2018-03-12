@@ -1,7 +1,6 @@
 <?php
 namespace App\Command;
 
-use App\Kernel;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -9,6 +8,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validation;
+use Symfony\Component\Yaml\Yaml;
 
 class DumpJsConfig extends ContainerAwareCommand
 {
@@ -27,13 +27,18 @@ class DumpJsConfig extends ContainerAwareCommand
      */
     protected $apiPlatformPrefix;
 
+    /**
+     * @var string
+     */
+    protected $rootDir;
+
     public function __construct(string $csrfTokenParameter, string $apiPlatformPrefix, \Twig_Environment $twig)
     {
+        parent::__construct();
+
         $this->twig = $twig;
         $this->csrfTokenParameter = $csrfTokenParameter;
         $this->apiPlatformPrefix = $apiPlatformPrefix;
-
-        parent::__construct();
     }
 
     protected function configure()
@@ -76,12 +81,22 @@ class DumpJsConfig extends ContainerAwareCommand
             return;
         }
 
+        $apiPlatform = $this->loadApiPlatformConfig($output);
+        $apiPlatformOutput = function () use ($apiPlatform) {
+            $output = [];
+            foreach ($apiPlatform as $key => $value) {
+                $output[] = $key . ': ' . $value;
+            }
+
+            return join(', ', $output);
+        };
         $output->writeln([
             'Js config file creation',
             '=======================',
             'arguments:',
             'host:port = ' . $host . ':' . $port,
             'quasarStyle = ' . $quasarStyle,
+            'apiPlatform = ' . $apiPlatformOutput(),
         ]);
 
         $content = $this->twig->render('command/config.js.twig', [
@@ -91,6 +106,7 @@ class DumpJsConfig extends ContainerAwareCommand
             'csrfTokenParameter' => $this->csrfTokenParameter,
             'apiPlatformPrefix' => $this->apiPlatformPrefix,
             'quasarStyle' => $quasarStyle,
+            'apiPlatform' => $apiPlatform,
         ]);
 
         $output->writeln([
@@ -129,6 +145,40 @@ class DumpJsConfig extends ContainerAwareCommand
                 'File created at ' . $configFilepath,
             ]);
         }
+    }
+
+    /**
+     * @return array
+     */
+    protected function loadApiPlatformConfig(OutputInterface $output): array
+    {
+        try {
+            $missingKeys = [];
+            $mandatoryKeys = ['items_per_page', 'client_items_per_page', 'items_per_page_parameter_name', 'maximum_items_per_page', ];
+            $configDir = $this->getContainer()->get('kernel')->getRootDir() . '/../config/';
+            $values = Yaml::parseFile($configDir . 'packages/api_platform.yaml');
+            $config = $values['api_platform'];
+
+            if ($config['collection'] && $config['collection']['pagination']) {
+                foreach ($mandatoryKeys as $key) {
+                    if (!array_key_exists($key, $config['collection']['pagination'])) {
+                        $missingKeys[] = $key;
+                    }
+                }
+
+                if (count($missingKeys)) {
+                    throw new \Exception(sprintf('those keys are mandatory for the frontend configuration: %s', join(', ', $missingKeys)));
+                }
+
+                return $config['collection']['pagination'];
+            }
+
+            throw new \Exception('Missing pagination section in api_platform.yaml');
+        } catch (\Exception $e) {
+            $output->writeln(sprintf('api_platform.yaml error: "%s"', $e->getMessage()));
+        }
+
+        return [];
     }
 
     protected function getEnv(): string

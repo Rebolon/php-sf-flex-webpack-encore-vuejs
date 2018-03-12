@@ -1,8 +1,11 @@
 <?php
 namespace App\Entity\Library;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -10,6 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     attributes={"access_control"="is_granted('ROLE_USER')"}
  * )
+ * @ApiFilter(OrderFilter::class, properties={"id", "book", "editor", "publication_date", "isbn", "collection"}, arguments={"orderParameterName"="order"})
+ * @ApiFilter(DateFilter::class, properties={"publication_date"})
  * @ORM\Entity
  * @ORM\Table(name="project_book_edition")
  */

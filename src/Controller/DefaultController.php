@@ -22,27 +22,29 @@ class DefaultController extends Controller
 
         $router = $this->get('router');
 
-        $demoRoutes['simple controller'] = $router->generate('simple');
-        $demoRoutes['hello controller with twig'] = $router->generate('app_hello_world', ['name' => 'world', ]);
-        $demoRoutes['httpplug demo'] = $router->generate('app_httpplug_call');
+        $demoRoutes['Simple controller'] = $router->generate('simple');
+        $demoRoutes['Hello controller with twig'] = $router->generate('app_hello_world', ['name' => 'world', ]);
+        $demoRoutes['HttpPlug demo'] = $router->generate('app_httpplug_call');
         
-        $demoRoutes['symfony secured page with standard login'] = $router->generate('demo_secured_page');
-        $demoRoutes['vuejs secured page with json login'] = $router->generate('app_loginjson_index');
+        $demoRoutes['Symfony secured page with standard login'] = $router->generate('demo_secured_page');
+        $demoRoutes['Vuejs secured page with json login'] = $router->generate('app_loginjson_index');
 
-        $demoRoutes['vuejs page with vue-router'] = $router->generate('app_vuejs_index');
-        $demoRoutes['vuejs with quasar and vue-router'] = $router->generate('app_quasar_index');
-        $demoRoutes['vuejs with quasar with a more complex app'] = $router->generate('app_form_index');
+        $demoRoutes['Vuejs page with vue-router'] = $router->generate('app_vuejs_index');
+        $demoRoutes['Vuejs with quasar and vue-router'] = $router->generate('app_quasar_index');
+        $demoRoutes['Vuejs with quasar with a more complex app'] = $router->generate('app_form_index');
 
-        $demoRoutes['csrf token generation'] = $router->generate('token');
-        $demoRoutes['user login check for js app'] = $router->generate('demo_secured_page_is_logged_in');
+        $demoRoutes['DevXpress with Angular5'] = $router->generate('app_devxpressangular_index');
 
-        $demoRoutes['api-platform: rest'] = $router->generate('api_entrypoint');
-        $demoRoutes['api-platform: graphql'] = $router->generate('api_graphql_entrypoint');
-        $demoRoutes['api-platform: admin react'] = $router->generate('app_apiplatformadminreact_index');
-        $demoRoutes['easy admin'] = $router->generate('admin');
+        $demoRoutes['Csrf token generation'] = $router->generate('token');
+        $demoRoutes['User login check for js app'] = $router->generate('demo_secured_page_is_logged_in');
+
+        $demoRoutes['Api-platform: rest'] = $router->generate('api_entrypoint');
+        $demoRoutes['Api-platform: graphql'] = $router->generate('api_graphql_entrypoint');
+        $demoRoutes['Api-platform: admin react'] = $router->generate('app_apiplatformadminreact_index');
+        $demoRoutes['Easy admin'] = $router->generate('admin');
 
         if (!$hasPemCertificate) {
-            $demoRoutes['httpplug demo'] = [
+            $demoRoutes['Httpplug demo'] = [
                 'uri' => $router->generate('app_httpplug_call'),
                 'note' => 'You need to set php.ini vars: curl.cainfo and openssl.cafile to the path of the pem file.'
                     . ' if you need one, <a href="https://curl.haxx.se/docs/caextract.html">download the certificate</a>',
@@ -52,12 +54,12 @@ class DefaultController extends Controller
         if ($isPhpBuiltInServer) {
             $note = 'You are using PHP Built-in server, api indexes for json/jsonld or html may not work and return a '
             . '404 Not Found';
-            $demoRoutes['api-platform: rest'] = [
+            $demoRoutes['Api-platform: rest'] = [
                 'uri' => $demoRoutes['api-platform: rest'],
                 'note' => $note,
                 ];
 
-            $demoRoutes['api-platform: admin react'] = [
+            $demoRoutes['Api-platform: admin react'] = [
                 'uri' => $router->generate('app_apiplatformadminreact_index'),
                 'note' => $note,
             ];
