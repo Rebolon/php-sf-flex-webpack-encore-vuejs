@@ -163,6 +163,10 @@ Take care, the asset server listen to port 8080 so don't start your main server 
 Also, if you want to use the asset server finely, you have to add the assets configuration in the config/packages/framework.yaml file :
 `json_manifest_path: '%kernel.project_dir%/public/build/manifest.json'`. In fact the npm command will build asset in memory only, and modify the manifest file to map asset to a new url served by the asset server instead of the main web server.
 
+In the main layout, we load 3 common files: manifest.js, vendor.js and sw.js. Vendor is where you wan put all common libraries used on almost all pages.
+The source file for this bundle is assets/js/app.js. SW is for the service workers. It's default behavior is to manage the Cache file. You can have a look 
+at [offline-plugin for webpack](https://github.com/NekR/offline-plugin).
+
 ## code quality
 ### PHP
 The project uses 2 packages to lint and fix the code style of PHP code :You can install phpcs to check your code
