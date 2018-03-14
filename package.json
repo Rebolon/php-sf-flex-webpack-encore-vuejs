@@ -25,9 +25,10 @@
         "dev-server:windows": "./node_modules/.bin/encore dev-server --port %npm_package_config_server_port_asset%",
         "dev-server-hot": "./node_modules/.bin/encore dev-server --hot --port $npm_package_config_server_port_asset",
         "dev-server-hot:windows": "./node_modules/.bin/encore dev-server --hot --port %npm_package_config_server_port_asset%",
-        "dev": "./node_modules/.bin/encore dev",
-        "watch": "./node_modules/.bin/encore dev --watch",
-        "build": "./node_modules/.bin/encore production",
+        "dev": "./node_modules/.bin/encore dev && cd assets/js/devxpress-angular/ && ng build --dev --extract-css",
+        "watch": "./node_modules/.bin/encore dev --watch && cd assets/js/devxpress-angular/ && ng build --dev --watch --extract-css",
+        "watch:windows": "START /B .\\node_modules\\.bin\\encore dev --watch && cd assets/js/devxpress-angular/ && ng build --dev --watch --extract-css",
+        "build": "./node_modules/.bin/encore production && cd assets/js/devxpress-angular/ && ng build --prod -aot --watch --extract-css",
         "test-cafe": "./node_modules/.bin/testcafe $npm_package_config_test_browser ./assets/tests  --reporter spec,xunit:var/report/testcafe.xml",
         "test-cafe:windows": "./node_modules/.bin/testcafe %npm_package_config_test_browser% ./assets/tests  --reporter  spec,xunit:var/report/testcafe.xml",
         "test-karma": "./node_modules/.bin/karma start assets/tests/units/karma.conf.js --single-run",
@@ -35,12 +36,10 @@
         "test-php": "./vendor/bin/phpunit",
         "test-php:windows": ".\\vendor\\bin\\phpunit.bat",
         "test": "npm run test-php && npm run test-karma && npm run test-cafe",
-        "test:windows": "npm run test-php:windows && npm run test-karma && npm run test-cafe:windows"
+        "test:windows": "npm run test-php:windows && npm run test-karma && npm run test-cafe:windows && cd assets/js/devxpress-angular/ && ng test && ng e2e"
     },
     "dependencies": {
         "@api-platform/admin": "^0.3.1",
-        "@devexpress/dx-react-core": "^1.0.3",
-        "@devexpress/dx-react-grid": "^1.0.3",
         "apollo-cache-inmemory": "^1.1.10",
         "apollo-client": "^2.2.6",
         "apollo-link": "^1.2.1",

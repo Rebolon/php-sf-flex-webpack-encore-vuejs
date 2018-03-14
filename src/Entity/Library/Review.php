@@ -1,9 +1,12 @@
 <?php
 namespace App\Entity\Library;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -12,6 +15,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     iri="http://schema.org/Review",
  *     attributes={"access_control"="is_granted('ROLE_USER')"}
  * )
+ * @ApiFilter(OrderFilter::class, properties={"id", "rating", "username", "publication_date", "book"}, arguments={"orderParameterName"="order"})
+ * @ApiFilter(DateFilter::class, properties={"publication_date"})
  * @ORM\Entity
  */
 class Review implements LibraryInterface

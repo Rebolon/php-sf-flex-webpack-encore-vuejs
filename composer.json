@@ -28,7 +28,7 @@
         "symfony/css-selector": "^4.0.0",
         "symfony/dom-crawler": "^4.0.0",
         "symfony/dotenv": "^4.0.0",
-        "symfony/flex": "^1.0",
+        "symfony/flex": "1.0.70",
         "symfony/webpack-encore-pack": "^1.0"
     },
     "minimum-stability": "dev",

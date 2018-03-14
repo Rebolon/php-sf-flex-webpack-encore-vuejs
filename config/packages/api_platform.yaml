@@ -14,6 +14,9 @@ api_platform:
     collection:
         pagination:
             items_per_page: 10
+            client_items_per_page: true
+            items_per_page_parameter_name: itemsPerPage
+            maximum_items_per_page: 50
 
     exception_to_status:
         # The 2 following handlers are registered by default, keep those lines to prevent unexpected side effects

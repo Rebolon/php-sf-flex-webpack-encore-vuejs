@@ -13,6 +13,8 @@ security:
                     admin:
                         password:           admin
                         roles:              [ROLE_USER, ROLE_ADMIN]
+#        api_key_user_provider:
+#            id: App\Security\ApiKeyUserProvider
 
     firewalls:
         dev:

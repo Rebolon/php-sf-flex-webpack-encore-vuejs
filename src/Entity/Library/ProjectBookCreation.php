@@ -1,14 +1,17 @@
 <?php
 namespace App\Entity\Library;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource(
  *     attributes={"access_control"="is_granted('ROLE_USER')"}
  * )
+ * @ApiFilter(OrderFilter::class, properties={"id", "book", "author"}, arguments={"orderParameterName"="order"})
  * @ORM\Entity
  * @ORM\Table(name="project_book_creation")
  */

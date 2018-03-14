@@ -6,3 +6,23 @@ export function isProduction () {
 export const csrfParameter = '{{ csrfTokenParameter }}' // _csrf_token
 export const apiPlatformPrefix = '{{ apiPlatformPrefix | raw }}' // /api
 export const quasarStyle = '{{ quasarStyle }}' // can be mat or ios
+
+{% if apiPlatform | length %}
+export const api = {
+    itemsPerPage: {{ apiPlatform.items_per_page }},
+    clientItemsPerPage: {{ apiPlatform.client_items_per_page }},
+    itemsPerPageParameterName: '{{ apiPlatform.items_per_page_parameter_name }}',
+    maximumItemsPerPage: {{ apiPlatform.maximum_items_per_page }},
+}
+{% else %}
+/**
+ * it misses config/packages/api_platform.yaml:collection.pagination information:
+ *
+ *    items_per_page: 10
+ *    client_items_per_page: true
+ *    items_per_page_parameter_name: itemsPerPage
+ *    maximum_items_per_page: 50
+ *
+ * edit the file and run again: php bin/console app:dump-js-config
+ */
+{% endif %}

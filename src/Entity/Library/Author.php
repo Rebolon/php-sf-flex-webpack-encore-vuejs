@@ -1,18 +1,23 @@
 <?php
 namespace App\Entity\Library;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @todo sort based on the couple firstname + lastname instead of just each fields independently
+ *
  * @ApiResource(
  *     iri="http://schema.org/author",
  *     attributes={"access_control"="is_granted('ROLE_USER')", "status_code"=403}
  * )
+ * @ApiFilter(OrderFilter::class, properties={"id", "lastname", "firstname"}, arguments={"orderParameterName"="order"})
  * @ORM\Entity
  */
 class Author implements LibraryInterface

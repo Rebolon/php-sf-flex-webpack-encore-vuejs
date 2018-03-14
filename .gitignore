@@ -30,4 +30,7 @@
 /var/data/test.db
 
 /public/dist/
+/public/dist-ng/
 /public/sw.js
+
+/assets/js/angular/devxpress-angular/node_modules/

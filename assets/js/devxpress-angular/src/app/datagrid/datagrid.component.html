@@ -1,0 +1,25 @@
+<dx-data-grid
+        id="gridContainer"
+        [dataSource]="dataSource">
+    <dxi-column dataField="id" caption="Id" [width]="50"></dxi-column>
+    <dxi-column dataField="title" caption="Titre" [width]="300"></dxi-column>
+    <dxi-column dataField="indexInSerie" caption="Index" [width]="50" [allowSorting]=false></dxi-column>
+    <dxi-column dataField="authors" caption="Auteurs" [width]="50" [allowSorting]=false cellTemplate="countTemplate"></dxi-column>
+    <dxi-column dataField="editors" caption="Editions" [width]="50" [allowSorting]=false cellTemplate="countTemplate"></dxi-column>
+    <dxo-remote-operations
+            [sorting]="true"
+            [paging]="true">
+    </dxo-remote-operations>
+    <dxo-sorting mode="multiple"></dxo-sorting>
+    <dxo-export [enabled]="true" fileName="Books" [allowExportSelectedData]="true"></dxo-export>
+    <dxo-selection mode="multiple"></dxo-selection>
+    <dxo-paging [pageSize]=apiConfig.itemsPerPage></dxo-paging>
+    <dxo-pager
+            [showPageSizeSelector]="apiConfig.clientItemsPerPage"
+            [allowedPageSizes]="[apiConfig.itemsPerPage, 25, apiConfig.maximumItemsPerPage]"
+    ></dxo-pager>
+
+    <div *dxTemplate="let data of 'countTemplate'">
+        {{ data.value.length }}
+    </div>
+</dx-data-grid>
