@@ -57,7 +57,7 @@ import {
 import Book from './Book.vue'
 import gql from 'graphql-tag'
 import { axiosJsonLd } from '../../lib/axiosMiddlewares'
-import { apiPlatformPrefix } from '../../lib/config'
+import { apiPlatformPrefix, api } from '../../lib/config'
 import { BooksTableDefinition } from '../dataTableDefinitions/Books'
 
 export default {
@@ -88,7 +88,7 @@ export default {
                 sortBy: null, // String, column "name" property value
                 descending: false,
                 page: 1,
-                rowsPerPage: 10, // current rows per page being displayed
+                rowsPerPage: api.itemsPerPage, // current rows per page being displayed
                 rowsNumber: 0 // mandatory for server-side pagination
             },
 
@@ -116,7 +116,6 @@ export default {
         },
 
         getListByRest(page = 1) {
-            debugger
             this.isLoading = true
             const pageInt = Number.parseInt(page)
             const uri = `${apiPlatformPrefix}/books.jsonld?page=${pageInt}`
