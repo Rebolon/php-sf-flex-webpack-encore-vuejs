@@ -15,7 +15,7 @@ export class ApiService {
         withCredentials: true,
         responseType: 'json',
         body: null,
-        headers: []
+        headers: {}
     }
 
     constructor(protected http: HttpClient) { }
@@ -74,8 +74,10 @@ export class ApiService {
         const rememberMe = window.localStorage.getItem('rememberMe')
 
         if (!rememberMe) {
-            // @ts-ignore
-            this.options.headers = (({Authorization, ...tails}) => (tails))(this.options.headers)
+            // look at the typings for the Authorization it allows to prevent following error: error TS2459: Type '{}' has no property 'Authorization' and no string index signature.
+            this.options.headers = (({Authorization, ...tails}: {
+                Authorization?: string
+            }) => (tails))(this.options.headers)
 
             return this
         }
