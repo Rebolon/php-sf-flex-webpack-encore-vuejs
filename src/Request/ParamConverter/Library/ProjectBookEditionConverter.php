@@ -3,7 +3,7 @@
 namespace App\Request\ParamConverter\Library;
 
 use App\Entity\Library\ProjectBookEdition;
-use App\Request\ParamConverter\AbstractConverter;
+use Rebolon\Request\ParamConverter\AbstractConverter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Component\Validator\ConstraintViolationList;

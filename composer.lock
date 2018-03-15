@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "5cacc45fda91036c572be64fa7c4d918",
+    "content-hash": "54c4ceecce5675d455958a064190c9e9",
     "packages": [
         {
             "name": "api-platform/core",
@@ -2665,6 +2665,64 @@
                 "simple-cache"
             ],
             "time": "2017-10-23T01:57:42+00:00"
+        },
+        {
+            "name": "rebolon/api-json-param-converter",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Rebolon/ApiJsonParamConverterComponent.git",
+                "reference": "58db049574a56b91bde48f31b92ed2d8c781b485"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Rebolon/ApiJsonParamConverterComponent/zipball/58db049574a56b91bde48f31b92ed2d8c781b485",
+                "reference": "58db049574a56b91bde48f31b92ed2d8c781b485",
+                "shasum": ""
+            },
+            "require": {
+                "api-platform/core": "^2.2.4",
+                "doctrine/orm": "^2.6.1",
+                "php": "^7.1",
+                "sensio/framework-extra-bundle": "^5.1.6",
+                "symfony/http-foundation": "^4.0.6",
+                "symfony/property-access": "^4.0.6",
+                "symfony/serializer": "^4.0.6",
+                "symfony/validator": "^4.0.6"
+            },
+            "require-dev": {
+                "doctrine/common": "^2.8.1",
+                "friendsofphp/php-cs-fixer": "^2.10",
+                "phpunit/phpunit": "^6.5",
+                "roave/security-advisories": "dev-master",
+                "sensiolabs/security-checker": "^4.1",
+                "squizlabs/php_codesniffer": "^3.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Rebolon\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Rebolon\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "A component to use with your project using ApiPlatform to allow easy custom routes creation.",
+            "keywords": [
+                "API",
+                "JSON",
+                "REST"
+            ],
+            "support": {
+                "source": "https://github.com/Rebolon/ApiJsonParamConverterComponent/tree/master",
+                "issues": "https://github.com/Rebolon/ApiJsonParamConverterComponent/issues"
+            },
+            "time": "2018-03-15T16:44:54+00:00"
         },
         {
             "name": "rebolon/api-pack",
@@ -7969,6 +8027,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "rebolon/api-json-param-converter": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": true,

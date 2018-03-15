@@ -13,8 +13,8 @@
         "quasar_style": "mat"
     },
     "scripts": {
-        "init-project": "cp .env.dist .env && cp phpunit.xml.dist phpunit.xml && composer install && npm install && npm run db-init && npm run dump-js-config && npm run dev",
-        "init-project:windows": "cp .env.dist .env && composer install && npm install && npm run db-init:windows && npm run dump-js-config:windows && npm run dev",
+        "init-project": "cp .env.dist .env && cp phpunit.xml.dist phpunit.xml && composer install && npm install && npm run db-init && npm run dump-js-config && cd assets/js/devxpress-angular/ && npm install && cd ../../../ && npm run dev",
+        "init-project:windows": "cp .env.dist .env && composer install && npm install && npm run db-init:windows && npm run dump-js-config:windows&& cd assets/js/devxpress-angular/ && npm install && cd ../../../ && npm run dev",
         "db-init": "$npm_package_config_php bin/console doctrine:database:create && $npm_package_config_php bin/console doctrine:schema:create && $npm_package_config_php bin/console doctrine:fixtures:load -n",
         "db-init:windows": "%npm_package_config_php% bin/console doctrine:database:create && %npm_package_config_php% bin/console doctrine:schema:create && %npm_package_config_php% bin/console doctrine:fixtures:load -n",
         "dump-js-config": "rm assets/js/config.js -f && $npm_package_config_php bin/console app:dump-js-config $npm_package_config_server_host_web $npm_package_config_server_port_web $npm_package_config_quasar_style",
@@ -25,18 +25,20 @@
         "dev-server:windows": "./node_modules/.bin/encore dev-server --port %npm_package_config_server_port_asset%",
         "dev-server-hot": "./node_modules/.bin/encore dev-server --hot --port $npm_package_config_server_port_asset",
         "dev-server-hot:windows": "./node_modules/.bin/encore dev-server --hot --port %npm_package_config_server_port_asset%",
-        "dev": "./node_modules/.bin/encore dev && cd assets/js/devxpress-angular/ && ./node_modules/.bin/ng build --dev --extract-css",
-        "watch": "./node_modules/.bin/encore dev --watch && cd assets/js/devxpress-angular/ && ./node_modules/.bin/ng build --dev --watch --extract-css",
-        "watch:windows": "START /B .\\node_modules\\.bin\\encore dev --watch && cd assets/js/devxpress-angular/ && ./node_modules/.bin/ng build --dev --watch --extract-css",
-        "build": "./node_modules/.bin/encore production && cd assets/js/devxpress-angular/ && ./node_modules/.bin/ng build --prod -aot --watch --extract-css",
+        "dev": "./node_modules/.bin/encore dev && cd assets/js/devxpress-angular/ && node_modules/.bin/ng build --dev --extract-css",
+        "dev:windows": "./node_modules/.bin/encore dev && cd assets/js/devxpress-angular/ && node_modules\\.bin\\ng build --dev --extract-css",
+        "watch": "./node_modules/.bin/encore dev --watch && cd assets/js/devxpress-angular/ && node_modules/.bin/ng build --dev --watch --extract-css",
+        "watch:windows": "START /B .\\node_modules\\.bin\\encore dev --watch && cd assets/js/devxpress-angular/ && node_modules\\.bin\\ng build --dev --watch --extract-css",
+        "build": "./node_modules/.bin/encore production && cd assets/js/devxpress-angular/ && node_modules/.bin/ng build --prod -aot --watch --extract-css",
+        "build:windows": "./node_modules/.bin/encore production && cd assets/js/devxpress-angular/ && node_modules\\.bin\\ng build --prod -aot --watch --extract-css",
         "test-cafe": "./node_modules/.bin/testcafe $npm_package_config_test_browser ./assets/tests  --reporter spec,xunit:var/report/testcafe.xml",
         "test-cafe:windows": "./node_modules/.bin/testcafe %npm_package_config_test_browser% ./assets/tests  --reporter  spec,xunit:var/report/testcafe.xml",
         "test-karma": "./node_modules/.bin/karma start assets/tests/units/karma.conf.js --single-run",
         "test-karma-watch": "./node_modules/.bin/karma start assets/tests/units/karma.conf.js",
         "test-php": "./vendor/bin/phpunit",
         "test-php:windows": ".\\vendor\\bin\\phpunit.bat",
-        "test": "npm run test-php && npm run test-karma && npm run test-cafe",
-        "test:windows": "npm run test-php:windows && npm run test-karma && npm run test-cafe:windows && cd assets/js/devxpress-angular/ && ./node_modules/.bin/ng test && ./node_modules/.bin/ng e2e"
+        "test": "npm run test-php && npm run test-karma && npm run test-cafe && cd assets/js/devxpress-angular/ && node_modules/.bin/ng test && node_modules/.bin/ng e2e",
+        "test:windows": "npm run test-php:windows && npm run test-karma && npm run test-cafe:windows && cd assets/js/devxpress-angular/ && node_modules\\.bin\\ng test && node_modules\\.bin\\ng e2e"
     },
     "dependencies": {
         "@api-platform/admin": "^0.3.1",

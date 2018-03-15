@@ -3,7 +3,7 @@
 namespace App\Request\ParamConverter\Library;
 
 use App\Entity\Library\Author;
-use App\Request\ParamConverter\AbstractConverter;
+use Rebolon\Request\ParamConverter\AbstractConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 
