@@ -43,14 +43,4 @@ class AuthorConverter extends AbstractConverter
     {
         return [];
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function apply(Request $request, ParamConverter $configuration)
-    {
-        $request->attributes->set($configuration->getName(), $this->initFromRequest($request->getContent()));
-
-        return true;
-    }
 }

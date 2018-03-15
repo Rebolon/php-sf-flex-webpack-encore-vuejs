@@ -25,10 +25,10 @@
         "dev-server:windows": "./node_modules/.bin/encore dev-server --port %npm_package_config_server_port_asset%",
         "dev-server-hot": "./node_modules/.bin/encore dev-server --hot --port $npm_package_config_server_port_asset",
         "dev-server-hot:windows": "./node_modules/.bin/encore dev-server --hot --port %npm_package_config_server_port_asset%",
-        "dev": "./node_modules/.bin/encore dev && cd assets/js/devxpress-angular/ && ng build --dev --extract-css",
-        "watch": "./node_modules/.bin/encore dev --watch && cd assets/js/devxpress-angular/ && ng build --dev --watch --extract-css",
-        "watch:windows": "START /B .\\node_modules\\.bin\\encore dev --watch && cd assets/js/devxpress-angular/ && ng build --dev --watch --extract-css",
-        "build": "./node_modules/.bin/encore production && cd assets/js/devxpress-angular/ && ng build --prod -aot --watch --extract-css",
+        "dev": "./node_modules/.bin/encore dev && cd assets/js/devxpress-angular/ && ./node_modules/.bin/ng build --dev --extract-css",
+        "watch": "./node_modules/.bin/encore dev --watch && cd assets/js/devxpress-angular/ && ./node_modules/.bin/ng build --dev --watch --extract-css",
+        "watch:windows": "START /B .\\node_modules\\.bin\\encore dev --watch && cd assets/js/devxpress-angular/ && ./node_modules/.bin/ng build --dev --watch --extract-css",
+        "build": "./node_modules/.bin/encore production && cd assets/js/devxpress-angular/ && ./node_modules/.bin/ng build --prod -aot --watch --extract-css",
         "test-cafe": "./node_modules/.bin/testcafe $npm_package_config_test_browser ./assets/tests  --reporter spec,xunit:var/report/testcafe.xml",
         "test-cafe:windows": "./node_modules/.bin/testcafe %npm_package_config_test_browser% ./assets/tests  --reporter  spec,xunit:var/report/testcafe.xml",
         "test-karma": "./node_modules/.bin/karma start assets/tests/units/karma.conf.js --single-run",
@@ -36,7 +36,7 @@
         "test-php": "./vendor/bin/phpunit",
         "test-php:windows": ".\\vendor\\bin\\phpunit.bat",
         "test": "npm run test-php && npm run test-karma && npm run test-cafe",
-        "test:windows": "npm run test-php:windows && npm run test-karma && npm run test-cafe:windows && cd assets/js/devxpress-angular/ && ng test && ng e2e"
+        "test:windows": "npm run test-php:windows && npm run test-karma && npm run test-cafe:windows && cd assets/js/devxpress-angular/ && ./node_modules/.bin/ng test && ./node_modules/.bin/ng e2e"
     },
     "dependencies": {
         "@api-platform/admin": "^0.3.1",
@@ -61,6 +61,7 @@
         "vuelidate": "^0.6.2"
     },
     "devDependencies": {
+        "@angular/cli": "~1.7.3",
         "@symfony/webpack-encore": "^0.19.0",
         "babel-preset-es2017": "^6.24.1",
         "babel-preset-react": "^6.24.1",
