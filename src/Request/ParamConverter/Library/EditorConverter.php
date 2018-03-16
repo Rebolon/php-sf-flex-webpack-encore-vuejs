@@ -3,7 +3,7 @@
 namespace App\Request\ParamConverter\Library;
 
 use App\Entity\Library\Editor;
-use App\Request\ParamConverter\AbstractConverter;
+use Rebolon\Request\ParamConverter\AbstractConverter;
 
 class EditorConverter extends AbstractConverter
 {

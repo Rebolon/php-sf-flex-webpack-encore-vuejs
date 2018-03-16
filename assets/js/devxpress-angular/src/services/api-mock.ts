@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core'
-import { RequestMethod } from '@angular/http'
 import { Observable } from 'rxjs/Observable'
 
 import { ApiService } from './api'
