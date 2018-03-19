@@ -62,6 +62,28 @@ export class DatagridComponent implements OnInit {
                       console.log(error)
                       throw 'Data Loading Error'
                   })
+          },
+          update: (key: any, values: any) => {
+              return this.api.put(`/books/${key.id}`, values)
+                  .toPromise()
+                  .then(() => {
+                      console.info('Update Ok')
+                  })
+                  .catch(e => {
+                      console.warn(e)
+                      throw 'Data Update Error'
+                  })
+          },
+          remove: (key: any) => {
+              return this.api.delete(`/books/${key.id}`)
+                  .toPromise()
+                  .then(() => {
+                      console.info('Delete Ok')
+                  })
+                  .catch(e => {
+                      console.warn(e)
+                      throw 'Data Delete Error'
+                  })
           }
       })
   }

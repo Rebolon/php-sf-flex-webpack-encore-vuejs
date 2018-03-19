@@ -56,6 +56,22 @@ export class ApiService {
      * @param body
      * @returns {Observable<R>}
      */
+    put(path: string, body: any, options: Object = {}): Observable<any> {
+        const init = Object.assign(options, this.options)
+        init.body = body
+        const uri = this.buildUri(path)
+
+        return this.addJwtTokenIfExists()
+            .http
+            .request('PUT', uri, init)
+    }
+
+    /**
+     *
+     * @param path
+     * @param body
+     * @returns {Observable<R>}
+     */
     delete(path: string, options: Object = {}): Observable<any> {
         const httpOptions = Object.assign(options, this.options)
         httpOptions.body = null
