@@ -9,11 +9,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class DevXpressAngularController extends Controller
 {
     /**
-     * @Route("/demo/devxpress-angular")
+     * @Route("/demo/devxpress-angular/{ngRouteName}", requirements={"ngRouteName"=".*"}, defaults={"ngRouteName"="home"})
      * @Method({"GET"})
      */
     public function index()
     {
-        return $this->render('devxpress-angular/app.html.twig', ['appName' => 'devxpress-angular', ]);
+        return $this->render('devxpress-angular/app.html.twig', ['appName' => 'devxpress-angular', 'title' => 'DevxpressAngular', ]);
     }
 }

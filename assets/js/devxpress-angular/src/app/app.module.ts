@@ -5,15 +5,22 @@ import { DevExtremeModule  } from 'devextreme-angular';
 import { AppComponent } from './app.component';
 import {DatagridComponent} from "./datagrid/datagrid.component";
 import {ApiService} from "../services/api";
-import {HttpClient, HttpHandler, HttpClientModule} from "@angular/common/http";
-import {HttpModule} from "@angular/http";
+import {HttpClientModule} from "@angular/common/http";
+import {RouterModule} from "@angular/router";
+import {appRoutes} from "./app.routes";
+import {HomeComponent} from "./home/home.component";
 
 @NgModule({
   declarations: [
     AppComponent,
-    DatagridComponent
+    DatagridComponent,
+    HomeComponent,
   ],
   imports: [
+    RouterModule.forRoot(
+        appRoutes,
+        { enableTracing: true }// debugging purposes only
+    ),
     BrowserModule,
     HttpClientModule,
     // bad coz it require all the component from the module so the file will be bigger than really required
