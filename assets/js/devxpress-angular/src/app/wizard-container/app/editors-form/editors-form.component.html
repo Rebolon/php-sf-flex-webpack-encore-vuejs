@@ -1,0 +1,95 @@
+<form (submit)="addEditor($event, editorsForm, editorForm)">
+    <div class="d-flex flex-lg-row">
+        <h3>Create Editions</h3>
+    </div>
+    <div class="d-flex flex-lg-row">
+        <dx-form  #editorsForm
+                  id="form-editors"
+                  [(formData)]="editors"
+                  [readOnly]="options.readonly"
+                  [showColonAfterLabel]="options.showcolon"
+                  [labelLocation]="options.labelLocation"
+                  [minColWidth]="options.minColWidth"
+                  [colCount]="options.colCount"
+                  [width]="options.width"
+                  validationGroup="editionGroup">
+
+            <dxi-item dataField="publicationDate"
+                      editorType="dxDateBox">
+                <dxi-validation-rule
+                        type="required"
+                        message="publication date is required">
+                </dxi-validation-rule>
+            </dxi-item>
+
+            <dxi-item dataField="isbn">
+            </dxi-item>
+
+            <dxi-item dataField="collection">
+            </dxi-item>
+        </dx-form>
+
+    </div>
+    <div class="d-flex flex-lg-row">
+      <dx-form>
+        <dxi-item
+          itemType="group"
+          caption="Add an existing editor">
+          <dxi-item dataField="editor">
+            <dx-lookup
+              #fieldAutoComplete
+              name="Editor"
+              placeholder="Select existing editor"
+              [dataSource]="dataSource"
+              [grouped]="false"
+              [closeOnOutsideClick]="true"
+              [showPopupTitle]="true"
+              displayExpr="name"
+              (onValueChanged)="resetNameEditor($event, editorForm)">
+            </dx-lookup>
+          </dxi-item>
+        </dxi-item>
+      </dx-form>
+    </div>
+    <div class="d-flex flex-lg-row">
+        <dx-form  #editorForm
+                  id="form-editor"
+                  [(formData)]="editor"
+                  [readOnly]="options.readonly"
+                  [showColonAfterLabel]="options.showcolon"
+                  [labelLocation]="options.labelLocation"
+                  [minColWidth]="options.minColWidth"
+                  [colCount]="options.colCount"
+                  [width]="options.width"
+                  validationGroup="editorGroup">
+          <dxi-item
+            itemType="group"
+            caption="Or create a new one">
+            <dxi-item dataField="name">
+                <dxi-validation-rule
+                        type="custom"
+                        reevaluate="true"
+                        [validationCallback]="validateAddOrSelectEditor">
+                </dxi-validation-rule>
+            </dxi-item>
+          </dxi-item>
+        </dx-form>
+
+    </div>
+    <div class="d-flex flex-lg-row">
+        <dx-button
+                text="add new edition"
+                type="success"
+                icon="add"
+                [useSubmitBehavior]="true"
+                validationGroup="editionGroup">
+        </dx-button>
+    </div>
+    <div class="d-flex flex-lg-row">
+        <button (click)="goBack($event)" class="btn btn-secondary col-6">back</button>
+        <button (click)="goNext($event)" class="btn btn-info col-6">next</button>
+    </div>
+</form>
+
+<my-wizard-list-editors *ngIf="editors; else noEditions" [editors]="editors" [removeEnabled]="true" (removeEditors)="removeEditor($event)"></my-wizard-list-editors>
+<ng-template #noEditions>No editions created</ng-template>

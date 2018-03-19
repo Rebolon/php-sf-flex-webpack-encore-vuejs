@@ -1,26 +1,26 @@
-import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core'
+import { Component, OnInit } from '@angular/core'
 import { ApiService } from "../../services/api"
-import { DxDataGridModule } from 'devextreme-angular'
 import CustomStore from 'devextreme/data/custom_store';
 import {BookModel} from "../../models/book.model";
 import 'rxjs/add/operator/toPromise';
-import { api as apiconfig } from '../../../../lib/config'
+import { apiConfig } from '../../../../lib/config'
 
 @Component({
   selector: 'my-datagrid',
   templateUrl: './datagrid.component.html',
-  styleUrls: ['./datagrid.component.css']
+  styleUrls: ['./datagrid.component.scss']
 })
 export class DatagridComponent implements OnInit {
   protected books: BookModel
   protected booksTotal: number
-  protected apiConfig
 
+  protected apiConfig
   protected dataSource: any = {}
 
   constructor(private api: ApiService) {
-      this.apiConfig = apiconfig
+      this.apiConfig = apiConfig
 
+      // @todo: the store should be moved into services folder and injected here instead of the ApiService
       this.dataSource.store = new CustomStore({
           load: (loadOptions: any) => {
               let itemPerPage = this.apiConfig.itemsPerPage

@@ -24,6 +24,7 @@
     "core-js": "^2.4.1",
     "devextreme": "^17.2.6",
     "devextreme-angular": "^17.2.6",
+    "immutable": "^3.8.2",
     "rxjs": "^5.5.6",
     "zone.js": "^0.8.19"
   },

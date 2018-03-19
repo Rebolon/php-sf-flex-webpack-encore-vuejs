@@ -9,6 +9,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {RouterModule} from "@angular/router";
 import {appRoutes} from "./app.routes";
 import {HomeComponent} from "./home/home.component";
+import {WizardModule} from "./wizard-container/wizard.module";
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import {HomeComponent} from "./home/home.component";
     BrowserModule,
     HttpClientModule,
     // bad coz it require all the component from the module so the file will be bigger than really required
-    DevExtremeModule
+    DevExtremeModule,
+    WizardModule
   ],
   providers: [
       ApiService

@@ -2668,16 +2668,16 @@
         },
         {
             "name": "rebolon/api-json-param-converter",
-            "version": "v1.0.0",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Rebolon/ApiJsonParamConverterComponent.git",
-                "reference": "58db049574a56b91bde48f31b92ed2d8c781b485"
+                "reference": "2e2589613d02c64f0df208167f7cc5256b961704"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Rebolon/ApiJsonParamConverterComponent/zipball/58db049574a56b91bde48f31b92ed2d8c781b485",
-                "reference": "58db049574a56b91bde48f31b92ed2d8c781b485",
+                "url": "https://api.github.com/repos/Rebolon/ApiJsonParamConverterComponent/zipball/2e2589613d02c64f0df208167f7cc5256b961704",
+                "reference": "2e2589613d02c64f0df208167f7cc5256b961704",
                 "shasum": ""
             },
             "require": {
@@ -2714,7 +2714,7 @@
                 "json",
                 "rest"
             ],
-            "time": "2018-03-15T16:44:54+00:00"
+            "time": "2018-03-26T09:02:27+00:00"
         },
         {
             "name": "rebolon/api-pack",
