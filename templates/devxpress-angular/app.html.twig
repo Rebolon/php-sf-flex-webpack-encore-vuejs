@@ -1,7 +1,30 @@
 {% extends 'spa.html.twig' %}
 
-{% block stylesheets %}
+{% block head %}
+    <meta charset="utf-8">
+    <base href="/demo/devxpress-angular">
 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="/dist-ng/devxpress/dx.common.css" />
+    <link rel="stylesheet" type="text/css" href="/dist-ng/devxpress/dx.spa.css" />
+
+    <link rel="dx-theme" data-theme="android5.light" href="/dist-ng/devxpress/dx.android5.light.css" />
+    <link rel="dx-theme" data-theme="ios7.default" href="/dist-ng/devxpress/dx.ios7.default.css" />
+    <link rel="dx-theme" data-theme="win10.black" href="/dist-ng/devxpress/dx.win10.black.css" data-active="true" />
+    <link rel="dx-theme" data-theme="win10.white" href="/dist-ng/devxpress/dx.win10.white.css" data-active="false" />
+    <link rel="dx-theme" data-theme="generic.light" href="/dist-ng/devxpress/dx.light.css" data-active="true" />
+    <link rel="dx-theme" data-theme="generic.dark" href="/dist-ng/devxpress/dx.dark.css" data-active="false" />
+    <link rel="dx-theme" data-theme="generic.light.compact" href="/dist-ng/devxpress/dx.light.compact.css" data-active="false" />
+    <link rel="dx-theme" data-theme="generic.dark.compact" href="/dist-ng/devxpress/dx.dark.compact.css" data-active="false" />
+    <link rel="dx-theme" data-theme="generic.contrast" href="/dist-ng/devxpress/dx.contrast.css" data-active="false" />
+    <link rel="dx-theme" data-theme="generic.contrast.compact" href="/dist-ng/devxpress/dx.contrast.compact.css" data-active="false" />
+
+    {{ parent() }}
+{% endblock %}
+
+{% block stylesheets %}
 <link rel="stylesheet" href="{{ asset('dist-ng/devxpress/styles.bundle.css') }}">
 
 <link rel="stylesheet" type="text/css" href="{{ asset('dist-ng/devxpress/dx.common.css') }}" />
@@ -26,6 +49,65 @@
 <link rel="preload" href="{{ asset('dist/manifest.js') }}" as="script"/>
 <link rel="preload" href="{{ asset("dist/vendor.js") }}" as="script"/>
 <link rel="preload" href="{{ asset("dist/sw.js") }}" as="script"/>
+
+<!-- CSS For the Common Header, i used CSSSteal Chrome extension to grab CSS -->
+<style>
+    article, aside, dialog, figcaption, figure, footer, header, hgroup, main, nav, section {
+        display: block;
+    }
+    .navbar {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 0.5rem;
+        padding-right: 1rem;
+        padding-bottom: 0.5rem;
+        padding-left: 1rem;
+    }
+    .bg-light {
+        background-color: rgb(248, 249, 250);
+    }
+    h1, h2, h3, h4, h5, h6 {
+        margin-top: 0px;
+        margin-bottom: 0.5rem;
+    }
+    h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+        margin-bottom: 0.5rem;
+        font-family: inherit;
+        font-weight: 500;
+        line-height: 1.2;
+        color: inherit;
+    }
+    h1, .h1 {
+        font-size: 2.5rem;
+    }
+    a {
+        color: rgb(0, 0, 0);
+        text-decoration-line: none;
+        text-decoration-style: initial;
+        text-decoration-color: initial;
+        background-color: transparent;
+    }
+    a:hover {
+        color: black;
+        text-decoration-line: underline;
+        text-decoration-style: initial;
+        text-decoration-color: initial;
+    }
+    a:not([href]):not([tabindex]) {
+        color: inherit;
+        text-decoration-line: none;
+        text-decoration-style: initial;
+        text-decoration-color: initial;
+    }
+    a:not([href]):not([tabindex]):focus {
+        outline-color: initial;
+        outline-style: initial;
+        outline-width: 0px;
+    }
+</style>
 {% endblock %}
 
 {% block body %}

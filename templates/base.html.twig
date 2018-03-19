@@ -2,6 +2,10 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        {% block head %}
+            <title>{% block title %}Demo sf-flex-encore-vuejs{% endblock %}</title>
+        {% endblock %}
+
         {% if csrf_token is defined %}
         <meta name="{{ csrfTokenParameter }}" content="{{ csrf_token }}">
         {% endif %}
@@ -13,7 +17,6 @@
         <link rel="preload" href="{{ asset('dist/manifest.js') }}" as="script"/>
         <link rel="preload" href="{{ asset("dist/vendor.js") }}" as="script"/>
         <link rel="preload" href="{{ asset("dist/sw.js") }}" as="script"/>
-        <title>{% block title %}Demo sf-flex-encore-vuejs{% endblock %}</title>
     </head>
     <body class="mat">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
