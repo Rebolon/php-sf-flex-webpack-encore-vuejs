@@ -25,7 +25,7 @@ class DefaultController extends Controller
         $demoRoutes['Simple controller'] = $router->generate('simple');
         $demoRoutes['Hello controller with twig'] = $router->generate('app_hello_world', ['name' => 'world', ]);
         $demoRoutes['HttpPlug demo'] = $router->generate('app_httpplug_call');
-        
+
         $demoRoutes['Symfony secured page with standard login'] = $router->generate('demo_secured_page');
         $demoRoutes['Vuejs secured page with json login'] = $router->generate('app_loginjson_index');
 
@@ -50,12 +50,12 @@ class DefaultController extends Controller
                     . ' if you need one, <a href="https://curl.haxx.se/docs/caextract.html">download the certificate</a>',
             ];
         }
-        
+
         if ($isPhpBuiltInServer) {
             $note = 'You are using PHP Built-in server, api indexes for json/jsonld or html may not work and return a '
             . '404 Not Found';
             $demoRoutes['Api-platform: rest'] = [
-                'uri' => $demoRoutes['api-platform: rest'],
+                'uri' => $demoRoutes['Api-platform: rest'],
                 'note' => $note,
                 ];
 
