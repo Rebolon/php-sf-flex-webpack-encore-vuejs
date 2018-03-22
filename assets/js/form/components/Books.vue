@@ -57,7 +57,7 @@ import {
 import Book from './Book.vue'
 import gql from 'graphql-tag'
 import { axiosJsonLd } from '../../lib/axiosMiddlewares'
-import { apiPlatformPrefix, api } from '../../lib/config'
+import { apiPlatformPrefix, apiConfig } from '../../lib/config'
 import { BooksTableDefinition } from '../dataTableDefinitions/Books'
 
 export default {
@@ -88,7 +88,7 @@ export default {
                 sortBy: null, // String, column "name" property value
                 descending: false,
                 page: 1,
-                rowsPerPage: api.itemsPerPage, // current rows per page being displayed
+                rowsPerPage: apiConfig.itemsPerPage, // current rows per page being displayed
                 rowsNumber: 0 // mandatory for server-side pagination
             },
 
@@ -111,6 +111,11 @@ export default {
                 this.pagination.endCursor = last.cursor
             }
 
+            // change # of rows returned by the grid
+            if (pagination.rowsPerPage) {
+                this.pagination.rowsPerPage = pagination.rowsPerPage
+            }
+
             // for Rest
             this.getListByRest(pagination.page)
         },
@@ -118,7 +123,12 @@ export default {
         getListByRest(page = 1) {
             this.isLoading = true
             const pageInt = Number.parseInt(page)
-            const uri = `${apiPlatformPrefix}/books.jsonld?page=${pageInt}`
+            let uri = `${apiPlatformPrefix}/books.jsonld?page=${pageInt}`
+
+            if (this.pagination.rowsPerPage !== apiConfig.rowsPerPage) {
+                uri += `&${apiConfig.itemsPerPageParameterName}=${this.pagination.rowsPerPage}`
+            }
+
             axiosJsonLd.get(uri)
                 .then(res => {
                     let content = res.data

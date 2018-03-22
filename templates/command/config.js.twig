@@ -8,7 +8,7 @@ export const apiPlatformPrefix = '{{ apiPlatformPrefix | raw }}' // /api
 export const quasarStyle = '{{ quasarStyle }}' // can be mat or ios
 
 {% if apiPlatform | length %}
-export const api = {
+export const apiConfig = {
     itemsPerPage: {{ apiPlatform.items_per_page }},
     clientItemsPerPage: {{ apiPlatform.client_items_per_page }},
     itemsPerPageParameterName: '{{ apiPlatform.items_per_page_parameter_name }}',
