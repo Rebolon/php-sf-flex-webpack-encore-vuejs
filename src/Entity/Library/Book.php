@@ -75,10 +75,10 @@ class Book implements LibraryInterface
      *     }
      * )
      *
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(type="integer", nullable=true, name="index_in_serie")
      * @Assert\Type(type="integer")
      */
-    private $index_in_serie;
+    private $indexInSerie;
 
     /**
      * @ApiProperty(
@@ -179,7 +179,7 @@ class Book implements LibraryInterface
      */
     public function getIndexInSerie(): ?int
     {
-        return $this->index_in_serie;
+        return $this->indexInSerie;
     }
 
     /**
@@ -188,7 +188,7 @@ class Book implements LibraryInterface
      */
     public function setIndexInSerie($indexInSerie): Book
     {
-        $this->index_in_serie = $indexInSerie;
+        $this->indexInSerie = $indexInSerie;
 
         return $this;
     }

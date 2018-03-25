@@ -23,34 +23,34 @@ class ApiPlatformCustomRoutesWithParamConverterTest extends ApiAbstract
     "book": {
         "title": "Zombies in western culture",
         "editors": [{
-            "publication_date": "1519664915", 
-            "collection": "printed version", 
-            "isbn": "9781783743230", 
+            "publicationDate": "1519664915",
+            "collection": "printed version",
+            "isbn": "9781783743230",
             "editor": {
                 "name": "Open Book Publishers"
             }
         }, {
-            "publication_date": "1519747464", 
-            "collection": "ebooks", 
-            "isbn": "9791036500824", 
+            "publicationDate": "1519747464",
+            "collection": "ebooks",
+            "isbn": "9791036500824",
             "editor": {
                 "name": "Open Book Publishers"
             }
         }],
         "authors": [{
             "role": {
-                "translation_key": "WRITER"
-            }, 
+                "translationKey": "WRITER"
+            },
             "author": {
-                "firstname": "Marc", 
+                "firstname": "Marc",
                 "lastname": "O'Brien"
             }
         }, {
             "role": {
-                "translation_key": "WRITER"
-            }, 
+                "translationKey": "WRITER"
+            },
             "author": {
-                "firstname": "Paul", 
+                "firstname": "Paul",
                 "lastname": "Kyprianou"
             }
         }],
@@ -69,27 +69,27 @@ JSON;
     "book": {
         "title": "Oh my god, how simple it is !",
         "editors": [{
-            "publication_date": "1519664915", 
-            "collection": "from my head", 
-            "isbn": "9781783742530", 
+            "publicationDate": "1519664915",
+            "collection": "from my head",
+            "isbn": "9781783742530",
             "editor": 1
         }, {
-            "publication_date": "1519747464", 
-            "collection": "ebooks", 
-            "isbn": "9782821883963", 
+            "publicationDate": "1519747464",
+            "collection": "ebooks",
+            "isbn": "9782821883963",
             "editor": {
                 "name": "Open Book Publishers"
             }
         }],
         "authors": [{
-            "role": 2, 
+            "role": 2,
             "author": 3
         }, {
             "role": {
-                "translation_key": "WRITER"
-            }, 
+                "translationKey": "WRITER"
+            },
             "author": {
-                "firstname": "Paul", 
+                "firstname": "Paul",
                 "lastname": "Kyprianou"
             }
         }],
@@ -106,9 +106,9 @@ public $bodyNoEditor = <<<JSON
     "book": {
         "title": "Oh my god, how simple it is !",
         "editors": [{
-            "publication_date": "1519664915", 
-            "collection": "from my head", 
-            "isbn": "9781783742530", 
+            "publicationDate": "1519664915",
+            "collection": "from my head",
+            "isbn": "9781783742530",
             "editor": { }
         }],
         "serie": 4

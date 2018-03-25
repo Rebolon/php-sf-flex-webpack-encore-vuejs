@@ -36,4 +36,4 @@ easy_admin:
       label: Reviews
       list:
         title: Latest reviews to moderate
-        sort: ['publication_date', 'DESC']
+        sort: ['publicationDate', 'DESC']

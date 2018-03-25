@@ -13,8 +13,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     attributes={"access_control"="is_granted('ROLE_USER')"}
  * )
- * @ApiFilter(OrderFilter::class, properties={"id", "book", "editor", "publication_date", "isbn", "collection"}, arguments={"orderParameterName"="order"})
- * @ApiFilter(DateFilter::class, properties={"publication_date"})
+ * @ApiFilter(OrderFilter::class, properties={"id", "book", "editor", "publicationDate", "isbn", "collection"}, arguments={"orderParameterName"="order"})
+ * @ApiFilter(DateFilter::class, properties={"publicationDate"})
  * @ORM\Entity
  * @ORM\Table(name="project_book_edition")
  */
@@ -28,10 +28,10 @@ class ProjectBookEdition implements LibraryInterface
     private $id;
 
     /**
-     * @ORM\Column(type="date", nullable=true, options={"default":"now()"})
+     * @ORM\Column(type="date", nullable=true, options={"default":"now()"}, name="publication_date")
      * @Assert\DateTime()
      */
-    private $publication_date;
+    private $publicationDate;
 
     /**
      * @ORM\Column(type="string", nullable=true)
@@ -85,25 +85,25 @@ class ProjectBookEdition implements LibraryInterface
      */
     public function getPublicationDate(): \DateTime
     {
-        return $this->publication_date;
+        return $this->publicationDate;
     }
 
     /**
      * @param mixed $publication_date
      * @return ProjectBookEdition
      */
-    public function setPublicationDate($publication_date): ProjectBookEdition
+    public function setPublicationDate($publicationDate): ProjectBookEdition
     {
-        if (is_string($publication_date)) {
+        if (is_string($publicationDate)) {
             try {
-                $publication_date = new \DateTime($publication_date);
+                $publicationDate = new \DateTime($publicationDate);
             } catch (\Exception $e) {
                 $dateTime = new \DateTime();
-                $publication_date = $dateTime->setTimestamp($publication_date);
+                $publicationDate = $dateTime->setTimestamp($publicationDate);
             }
         }
 
-        $this->publication_date = $publication_date;
+        $this->publicationDate = $publicationDate;
 
         return $this;
     }

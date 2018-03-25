@@ -45,7 +45,7 @@ class ProjectBookEditionConverter extends AbstractConverter
      * for this kind of json:
      * {
      *   "editors": {
-     *     "publications_date": "1519664915",
+     *     "publicationsDate": "1519664915",
      *     "collection": "A collection or edition name of the publication",
      *     "isbn": '2-87764-257-7'
      *   }
@@ -53,7 +53,7 @@ class ProjectBookEditionConverter extends AbstractConverter
      */
     public function getEzPropsName(): array
     {
-        return ['id', 'publication_date', 'collection', 'isbn', ];
+        return ['id', 'publicationDate', 'collection', 'isbn', ];
     }
 
     /**

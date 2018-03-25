@@ -16,13 +16,13 @@ class JobConverter extends AbstractConverter
      * for this kind of json:
      * {
      *   "role": {
-     *     "translation_key": 'WRITER'
+     *     "translationKey": 'WRITER'
      *   }
      * }
      */
     public function getEzPropsName(): array
     {
-        return ['id', 'translation_key', ];
+        return ['id', 'translationKey', ];
     }
 
     /**
