@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     iri="http://schema.org/Review",
  *     attributes={"access_control"="is_granted('ROLE_USER')"}
  * )
- * @ApiFilter(OrderFilter::class, properties={"id", "rating", "username", "publication_date", "book"}, arguments={"orderParameterName"="order"})
+ * @ApiFilter(OrderFilter::class, properties={"id", "rating", "username", "publicationDate", "book"}, arguments={"orderParameterName"="order"})
  * @ApiFilter(DateFilter::class, properties={"publication_date"})
  * @ORM\Entity
  */
@@ -58,10 +58,10 @@ class Review implements LibraryInterface
      * @ApiProperty(
      *     iri="http://schema.org/datePublished"
      * )
-     * @ORM\Column(type="datetime", nullable=false, options={"default":"now()"})
+     * @ORM\Column(type="datetime", nullable=false, options={"default":"now()"}, name="publication_date")
      * @Assert\DateTime()
      */
-    private $publication_date;
+    private $publicationDate;
 
     /**
      * @ApiProperty(
@@ -144,16 +144,16 @@ class Review implements LibraryInterface
      */
     public function getPublicationDate(): ?\DateTime
     {
-        return $this->publication_date;
+        return $this->publicationDate;
     }
 
     /**
-     * @param mixed $publication_date
+     * @param mixed $publicationDate
      * @return Review
      */
-    public function setPublicationDate($publication_date): Review
+    public function setPublicationDate($publicationDate): Review
     {
-        $this->publication_date = $publication_date;
+        $this->publicationDate = $publicationDate;
 
         return $this;
     }

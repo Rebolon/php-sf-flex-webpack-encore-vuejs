@@ -26,12 +26,12 @@ class Job implements LibraryInterface
      * @ApiProperty(
      *     iri="http://schema.org/name"
      * )
-     * @ORM\Column(type="string", length=256, nullable=false)
+     * @ORM\Column(type="string", length=256, nullable=false, name="translation_key")
      *
      * @Assert\NotBlank()
      * @Assert\Length(max="256")
      */
-    private $translation_key;
+    private $translationKey;
 
     /**
      * id can be null until flush is done
@@ -47,7 +47,7 @@ class Job implements LibraryInterface
      */
     public function getTranslationKey(): ?string
     {
-        return $this->translation_key;
+        return $this->translationKey;
     }
 
     /**
@@ -56,7 +56,7 @@ class Job implements LibraryInterface
      */
     public function setTranslationKey($translationKey): Job
     {
-        $this->translation_key = $translationKey;
+        $this->translationKey = $translationKey;
 
         return $this;
     }
