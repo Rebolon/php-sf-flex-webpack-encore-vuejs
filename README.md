@@ -47,6 +47,7 @@ Then some php controllers has been created on following routes :
  * /demo/login : LoginController for standard login by Symfony
  * /demo/vuejs/login : LoginJsonController for json login with JS applications
  * /demo/form : [Work in progress] authentification with javascript, and a full web application with vuejs and api-platform(rest/graphql)
+ * /demo/devxpress-angular : Angular5 demo with DevXpress UI components (Datagrid and a Wizard sample with local storage and a sumup zone)
  * /api : access ApiPlatform api doc (you need to be authentified from /demo/form if you want to play with it: all entities are configured to be accessed with ROLE_USER)
  * /api/graphql : access ApiPlatform GraphQL implementation (beta release)
  * /api-platform-admin-react : the react admin provided by api platform package (more info here [https://api-platform.com/docs/admin/getting-started](https://api-platform.com/docs/admin/getting-started))

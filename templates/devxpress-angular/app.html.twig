@@ -25,8 +25,6 @@
 {% endblock %}
 
 {% block stylesheets %}
-<link rel="stylesheet" href="{{ asset('dist-ng/devxpress/styles.bundle.css') }}">
-
 <link rel="stylesheet" type="text/css" href="{{ asset('dist-ng/devxpress/dx.common.css') }}" />
 <link rel="stylesheet" type="text/css" href="{{ asset('dist-ng/devxpress/dx.spa.css') }}" />
 
@@ -41,6 +39,8 @@
 <link rel="dx-theme" data-theme="generic.contrast" href="{{ asset('dist-ng/devxpress/dx.contrast.css') }}" data-active="false" />
 <link rel="dx-theme" data-theme="generic.contrast.compact" href="{{ asset('dist-ng/devxpress/dx.contrast.compact.css') }}" data-active="false" />
 
+<link rel="stylesheet" href="{{ asset('dist-ng/devxpress/styles.bundle.css') }}">
+
 <!-- preload JS -->
 <link rel="preload" href="{{ asset('dist-ng/devxpress/inline.bundle.js') }}" as="script"/>
 <link rel="preload" href="{{ asset("dist-ng/devxpress/polyfills.bundle.js") }}" as="script"/>
@@ -49,65 +49,6 @@
 <link rel="preload" href="{{ asset('dist/manifest.js') }}" as="script"/>
 <link rel="preload" href="{{ asset("dist/vendor.js") }}" as="script"/>
 <link rel="preload" href="{{ asset("dist/sw.js") }}" as="script"/>
-
-<!-- CSS For the Common Header, i used CSSSteal Chrome extension to grab CSS -->
-<style>
-    article, aside, dialog, figcaption, figure, footer, header, hgroup, main, nav, section {
-        display: block;
-    }
-    .navbar {
-        position: relative;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        justify-content: space-between;
-        padding-top: 0.5rem;
-        padding-right: 1rem;
-        padding-bottom: 0.5rem;
-        padding-left: 1rem;
-    }
-    .bg-light {
-        background-color: rgb(248, 249, 250);
-    }
-    h1, h2, h3, h4, h5, h6 {
-        margin-top: 0px;
-        margin-bottom: 0.5rem;
-    }
-    h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-        margin-bottom: 0.5rem;
-        font-family: inherit;
-        font-weight: 500;
-        line-height: 1.2;
-        color: inherit;
-    }
-    h1, .h1 {
-        font-size: 2.5rem;
-    }
-    a {
-        color: rgb(0, 0, 0);
-        text-decoration-line: none;
-        text-decoration-style: initial;
-        text-decoration-color: initial;
-        background-color: transparent;
-    }
-    a:hover {
-        color: black;
-        text-decoration-line: underline;
-        text-decoration-style: initial;
-        text-decoration-color: initial;
-    }
-    a:not([href]):not([tabindex]) {
-        color: inherit;
-        text-decoration-line: none;
-        text-decoration-style: initial;
-        text-decoration-color: initial;
-    }
-    a:not([href]):not([tabindex]):focus {
-        outline-color: initial;
-        outline-style: initial;
-        outline-width: 0px;
-    }
-</style>
 {% endblock %}
 
 {% block body %}
