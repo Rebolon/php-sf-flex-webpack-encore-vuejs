@@ -128,6 +128,6 @@ class ProjectBookCreation implements LibraryInterface
      */
     public function __toString(): string
     {
-        return $this->getBook()->getTitle() . ' ' . $this->getAuthor()->getName() . ' ' . $this->getRole()->getTanslationKey();
+        return $this->getBook()->getTitle() . ' ' . $this->getAuthor()->getName() . ' ' . $this->getRole()->getTranslationKey();
     }
 }
