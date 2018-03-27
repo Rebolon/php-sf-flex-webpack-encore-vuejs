@@ -28,6 +28,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     }
  * )
  * @ApiFilter(OrderFilter::class, properties={"id", "title"}, arguments={"orderParameterName"="order"})
+ *
  * @ORM\Entity
  */
 class Book implements LibraryInterface
@@ -51,7 +52,7 @@ class Book implements LibraryInterface
      * @ORM\Column(type="string", length=255, nullable=false)
      *
      * @Assert\NotBlank()
-     * @Assert\Length(max="512")
+     * @Assert\Length(max="255")
      *
      */
     private $title;
@@ -76,6 +77,7 @@ class Book implements LibraryInterface
      * )
      *
      * @ORM\Column(type="integer", nullable=true, name="index_in_serie")
+     *
      * @Assert\Type(type="integer")
      */
     private $indexInSerie;
@@ -84,6 +86,7 @@ class Book implements LibraryInterface
      * @ApiProperty(
      *     iri="http://schema.org/reviews"
      * )
+     *
      * @ApiSubresource(maxDepth=1)
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\Review", mappedBy="book", orphanRemoval=true)

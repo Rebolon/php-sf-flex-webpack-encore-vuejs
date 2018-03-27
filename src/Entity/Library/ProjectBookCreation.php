@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
  *     attributes={"access_control"="is_granted('ROLE_USER')"}
  * )
  * @ApiFilter(OrderFilter::class, properties={"id", "book", "author"}, arguments={"orderParameterName"="order"})
+ *
  * @ORM\Entity
  * @ORM\Table(name="project_book_creation")
  */

@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  * @ApiFilter(OrderFilter::class, properties={"id", "rating", "username", "publicationDate", "book"}, arguments={"orderParameterName"="order"})
  * @ApiFilter(DateFilter::class, properties={"publication_date"})
+ *
  * @ORM\Entity
  */
 class Review implements LibraryInterface
@@ -32,7 +33,10 @@ class Review implements LibraryInterface
      * @ApiProperty(
      *     iri="http://schema.org/reviewRating"
      * )
+     *
      * @ORM\Column(type="integer", nullable=false)
+     *
+     * @Assert\NotBlank()
      * @Assert\Range(min="0", max="5")
      */
     private $rating;
@@ -41,6 +45,7 @@ class Review implements LibraryInterface
      * @ApiProperty(
      *     iri="http://schema.org/reviewBody"
      * )
+     *
      * @ORM\Column(type="text", nullable=true)
      */
     private $body;
@@ -49,7 +54,9 @@ class Review implements LibraryInterface
      * @ApiProperty(
      *     iri="http://schema.org/givenName"
      * )
+     *
      * @ORM\Column(type="string", length=512, nullable=true)
+     *
      * @Assert\Length(max="512")
      */
     private $username;
@@ -58,7 +65,10 @@ class Review implements LibraryInterface
      * @ApiProperty(
      *     iri="http://schema.org/datePublished"
      * )
+     *
      * @ORM\Column(type="datetime", nullable=false, options={"default":"now()"}, name="publication_date")
+     *
+     * @Assert\NotBlank()
      * @Assert\DateTime()
      */
     private $publicationDate;
@@ -68,6 +78,7 @@ class Review implements LibraryInterface
      *     iri="http://bib.schema.org/ComicStory"
      * )
      * @ApiSubresource(maxDepth=1)
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Library\Book", inversedBy="reviews")
      * @ORM\JoinColumn(name="book_id", referencedColumnName="id", onDelete="CASCADE")
      */

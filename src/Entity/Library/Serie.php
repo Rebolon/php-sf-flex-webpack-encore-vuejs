@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     attributes={"access_control"="is_granted('ROLE_USER')"}
  * )
  * @ApiFilter(OrderFilter::class, properties={"id", "name"}, arguments={"orderParameterName"="order"})
+ *
  * @ORM\Entity
  */
 class Serie implements LibraryInterface
@@ -32,8 +33,10 @@ class Serie implements LibraryInterface
      * @ApiProperty(
      *      iri="http://pending.schema.org/headline"
      * )
+     *
      * @ORM\Column(type="string", length=512, nullable=false)
-     * @Assert\NotNull()
+     *
+     * @Assert\NotBlank()
      * @Assert\Length(max="512")
      */
     private $name;
@@ -43,6 +46,7 @@ class Serie implements LibraryInterface
      *      iri="http://pending.schema.org/ComicStory"
      * )
      * @ApiSubresource(maxDepth=1)
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\Book", mappedBy="serie", orphanRemoval=true)
      */
     private $books;

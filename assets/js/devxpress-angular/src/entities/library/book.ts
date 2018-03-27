@@ -2,8 +2,9 @@ import {Editors} from "./editors";
 import {Authors} from "./authors";
 import {Serie} from "./serie";
 import {EntityAbstract} from "../abstract";
+import {EntityInterface} from "../../tools/reviver/library/entityInterface";
 
-export class Book extends EntityAbstract {
+export class Book extends EntityAbstract implements EntityInterface {
     id: number
     title: string = ''
     description?: string = ''
@@ -25,10 +26,22 @@ export class Book extends EntityAbstract {
         this.editors.push(edition)
     }
 
+    setEdition(edition: Editors) {
+        this.editors = []
+
+        this.editors.push(edition)
+    }
+
     addAuthor(author: Authors) {
         if (typeof this.authors == 'undefined') {
             this.authors = []
         }
+
+        this.authors.push(author)
+    }
+
+    setAuthors(author: Authors) {
+        this.authors = []
 
         this.authors.push(author)
     }

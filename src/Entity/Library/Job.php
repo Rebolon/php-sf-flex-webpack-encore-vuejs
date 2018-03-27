@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     iri="http://schema.org/Role",
  *     attributes={"access_control"="is_granted('ROLE_USER')"}
  * )
+ *
  * @ORM\Entity
  */
 class Job implements LibraryInterface
@@ -26,6 +27,7 @@ class Job implements LibraryInterface
      * @ApiProperty(
      *     iri="http://schema.org/name"
      * )
+     *
      * @ORM\Column(type="string", length=256, nullable=false, name="translation_key")
      *
      * @Assert\NotBlank()
