@@ -1,6 +1,6 @@
-import {Editors} from "../../../entities/library/editors"
+import {Editors} from "../../entities/library/editors"
 import {EditorReviver} from './editorReviver'
-import {ListAbstractReviver} from "../listAbstractReviver"
+import {ListAbstractReviver} from "@rebolon/json-reviver/src"
 
 export class EditorsReviver extends ListAbstractReviver
 {
@@ -71,7 +71,7 @@ export class EditorsReviver extends ListAbstractReviver
     {
         return {
             'editor': {
-                'converter': this.editorReviver,
+                'reviver': this.editorReviver,
                 'registryKey': 'editor'
             }
         }

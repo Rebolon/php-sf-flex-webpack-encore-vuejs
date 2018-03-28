@@ -1,5 +1,5 @@
-import {Editor} from "../../../entities/library/editor"
-import {ItemAbstractReviver} from "../itemAbstractReviver";
+import {Editor} from "../../entities/library/editor"
+import {ItemAbstractReviver} from "@rebolon/json-reviver/src";
 
 export class EditorReviver extends ItemAbstractReviver
 {

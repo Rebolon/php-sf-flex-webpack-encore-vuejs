@@ -1,14 +1,14 @@
-import {Serie} from "../../../entities/library/serie"
-import {ItemAbstractReviver} from '../itemAbstractReviver'
+import {Author} from "../../entities/library/author"
+import {ItemAbstractReviver} from "@rebolon/json-reviver/src";
 
-export class SerieReviver extends ItemAbstractReviver
+export class AuthorReviver extends ItemAbstractReviver
 {
     /**
      *
      * @returns {string}
      */
     getNodeName(): string {
-        return 'serie'
+        return 'author'
     }
 
     /**
@@ -16,21 +16,22 @@ export class SerieReviver extends ItemAbstractReviver
      * @returns {Object}
      */
     getNewEntity(): Object {
-        return new Serie()
+        return new Author()
     }
 
     /**
      * {@inheritdoc}
      * for this kind of json:
      * {
-     *   "serie": {
-     *     "name": "The serie name"
+     *   "author": {
+     *     "firstname": "Paul",
+     *     "lastname": "Smith"
      *   }
      * }
      */
     public getEzPropsName()
     {
-        return ['id', 'name', ]
+        return ['id', 'firstname', 'lastname', ]
     }
 
     /**
@@ -38,8 +39,6 @@ export class SerieReviver extends ItemAbstractReviver
      */
     public getManyRelPropsName(): Object
     {
-        // for instance i don't want to allow the creation of a serie with all embeded books, this is not a usual way of working
-        // that's why i don't add books here
         return {}
     }
 

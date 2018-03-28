@@ -1,7 +1,7 @@
-import {Authors} from "../../../entities/library/authors"
+import {Authors} from "../../entities/library/authors"
 import {JobReviver} from "./jobReviver";
 import {AuthorReviver} from "./authorReviver";
-import {ListAbstractReviver} from "../listAbstractReviver";
+import {ListAbstractReviver} from "@rebolon/json-reviver/src";
 
 export class AuthorsReviver extends ListAbstractReviver
 {
@@ -76,11 +76,11 @@ export class AuthorsReviver extends ListAbstractReviver
     {
         return {
             'role': {
-                'converter': this.jobReviver,
+                'reviver': this.jobReviver,
                 'registryKey': 'role'
             },
             'author': {
-                'converter': this.authorReviver,
+                'reviver': this.authorReviver,
                 'registryKey': 'author'
             }
         }

@@ -2,7 +2,7 @@ import {Editors} from "./editors";
 import {Authors} from "./authors";
 import {Serie} from "./serie";
 import {EntityAbstract} from "../abstract";
-import {EntityInterface} from "../../tools/reviver/library/entityInterface";
+import {EntityInterface} from "@rebolon/json-reviver/src";
 
 export class Book extends EntityAbstract implements EntityInterface {
     id: number

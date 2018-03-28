@@ -1,5 +1,5 @@
-import {Job} from "../../../entities/library/job"
-import {ItemAbstractReviver} from "../itemAbstractReviver"
+import {Job} from "../../entities/library/job"
+import {ItemAbstractReviver} from "@rebolon/json-reviver/src"
 
 export class JobReviver extends ItemAbstractReviver
 {
