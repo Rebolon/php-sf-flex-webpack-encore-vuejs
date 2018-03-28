@@ -2,7 +2,7 @@
 
 namespace App\Request\ParamConverter\Library;
 
-use Rebolon\Request\ParamConverter\AbstractConverter;
+use Rebolon\Request\ParamConverter\ItemAbstractConverter;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Library\Book;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -17,7 +17,7 @@ use Symfony\Component\Serializer\SerializerInterface;
  *
  * @package App\Request\ParamConverter\Library
  */
-class BookConverter extends AbstractConverter
+class BookConverter extends ItemAbstractConverter
 {
     const NAME = 'book';
 

@@ -3,9 +3,9 @@
 namespace App\Request\ParamConverter\Library;
 
 use App\Entity\Library\Job;
-use Rebolon\Request\ParamConverter\AbstractConverter;
+use Rebolon\Request\ParamConverter\ItemAbstractConverter;
 
-class JobConverter extends AbstractConverter
+class JobConverter extends ItemAbstractConverter
 {
     const NAME = 'job';
 

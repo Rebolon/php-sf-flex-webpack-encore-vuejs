@@ -3,11 +3,11 @@
 namespace App\Request\ParamConverter\Library;
 
 use App\Entity\Library\Author;
-use Rebolon\Request\ParamConverter\AbstractConverter;
+use Rebolon\Request\ParamConverter\ItemAbstractConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 
-class AuthorConverter extends AbstractConverter
+class AuthorConverter extends ItemAbstractConverter
 {
     const NAME = 'author';
 
