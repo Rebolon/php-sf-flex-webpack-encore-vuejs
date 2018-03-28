@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  * @ApiFilter(OrderFilter::class, properties={"id", "name"}, arguments={"orderParameterName"="order"})
  * @ApiFilter(SearchFilter::class, properties={"id": "exact", "name": "istart"})
+ *
  * @ORM\Entity
  */
 class Editor implements LibraryInterface
@@ -33,7 +34,9 @@ class Editor implements LibraryInterface
      * @ApiProperty(
      *     iri="http://schema.org/legalName"
      * )
+     *
      * @ORM\Column(type="string", length=512, nullable=false)
+     *
      * @Assert\NotBlank()
      * @Assert\Length(max="512")
      */

@@ -15,6 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  * @ApiFilter(OrderFilter::class, properties={"id", "book", "editor", "publicationDate", "isbn", "collection"}, arguments={"orderParameterName"="order"})
  * @ApiFilter(DateFilter::class, properties={"publicationDate"})
+ *
  * @ORM\Entity
  * @ORM\Table(name="project_book_edition")
  */
@@ -29,12 +30,14 @@ class ProjectBookEdition implements LibraryInterface
 
     /**
      * @ORM\Column(type="date", nullable=true, options={"default":"now()"}, name="publication_date")
+     *
      * @Assert\DateTime()
      */
     private $publicationDate;
 
     /**
      * @ORM\Column(type="string", nullable=true)
+     *
      * @Assert\Type(type="string")
      */
     private $collection;
@@ -43,7 +46,9 @@ class ProjectBookEdition implements LibraryInterface
      * @ApiProperty(
      *     iri="http://schema.org/isbn"
      * )
+     *
      * @ORM\Column(nullable=true)
+     *
      * @Assert\Isbn()
      */
     private $isbn;

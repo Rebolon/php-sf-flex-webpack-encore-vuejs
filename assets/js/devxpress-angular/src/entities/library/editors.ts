@@ -7,8 +7,4 @@ export class Editors extends EntityAbstract {
     publicationDate: Date = new Date()
     collection?: string = ''
     isbn?: string = ''
-
-    getOwnProps() {
-        return ['publicationDate', 'collection', 'isbn', ]
-    }
 }

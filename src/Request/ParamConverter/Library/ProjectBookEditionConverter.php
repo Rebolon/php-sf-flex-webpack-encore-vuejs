@@ -47,7 +47,10 @@ class ProjectBookEditionConverter extends AbstractConverter
      *   "editors": {
      *     "publicationsDate": "1519664915",
      *     "collection": "A collection or edition name of the publication",
-     *     "isbn": '2-87764-257-7'
+     *     "isbn": '2-87764-257-7',
+     *     "editor": {
+     *       ...
+     *     }
      *   }
      * }
      */

@@ -52,7 +52,10 @@ class ProjectBookCreationConverter extends AbstractConverter
      * {@inheritdoc}
      * for this kind of json:
      * {
-     *   "authors": { }
+     *   "authors": {
+     *     "job": { ... },
+     *     "author": { ... },
+     *   }
      * }
      */
     public function getEzPropsName(): array

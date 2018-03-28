@@ -4,6 +4,7 @@ import CustomStore from 'devextreme/data/custom_store';
 import {BookModel} from "../../models/book.model";
 import 'rxjs/add/operator/toPromise';
 import { apiConfig } from '../../../../lib/config'
+import {ListAbstractReviver} from '@rebolon/json-reviver/src'
 
 @Component({
   selector: 'my-datagrid',
