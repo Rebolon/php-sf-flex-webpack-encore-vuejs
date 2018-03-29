@@ -41,10 +41,10 @@ export default {
                     'species', 'locations', 'vehicles', 'url', ]
                 const mandatoryProps = ['id', 'title', 'description', 'release_date', ]
 
-                const hasAllValidProps = toTest.find(prop => validProps.includes(prop)).length
-                const hasAllMandatoryProps = mandatoryProps.length === toTest.find(prop => mandatoryProps.includes(prop)).length
+                const hasInvalidProps = toTest.filter(prop => !validProps.includes(prop)).length
+                const hasAllMandatoryProps = mandatoryProps.length === toTest.filter(prop => mandatoryProps.includes(prop)).length
 
-                return hasAllMandatoryProps
+                return !hasInvalidProps && hasAllMandatoryProps
             }
         }
     },
