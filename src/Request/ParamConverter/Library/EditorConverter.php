@@ -3,9 +3,9 @@
 namespace App\Request\ParamConverter\Library;
 
 use App\Entity\Library\Editor;
-use Rebolon\Request\ParamConverter\AbstractConverter;
+use Rebolon\Request\ParamConverter\ItemAbstractConverter;
 
-class EditorConverter extends AbstractConverter
+class EditorConverter extends ItemAbstractConverter
 {
     const NAME = 'editor';
 

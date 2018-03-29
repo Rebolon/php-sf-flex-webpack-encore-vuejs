@@ -3,9 +3,9 @@
 namespace App\Request\ParamConverter\Library;
 
 use App\Entity\Library\Serie;
-use Rebolon\Request\ParamConverter\AbstractConverter;
+use Rebolon\Request\ParamConverter\ItemAbstractConverter;
 
-class SerieConverter extends AbstractConverter
+class SerieConverter extends ItemAbstractConverter
 {
     const NAME = 'serie';
 
