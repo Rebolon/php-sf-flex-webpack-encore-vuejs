@@ -8,7 +8,7 @@ import Vuelidate from 'vuelidate'
 import VueApollo from 'vue-apollo'
 import { apolloProvider } from '../lib/apollo'
 
-import Quasar from 'quasar-framework/dist/quasar.mat.esm'
+import Quasar, {Notify} from 'quasar-framework/dist/quasar.mat.esm'
 import 'quasar-framework/dist/umd/quasar.mat.css'
 import 'quasar-extras/roboto-font'
 import 'quasar-extras/material-icons'
@@ -16,7 +16,9 @@ import 'quasar-extras/fontawesome'
 
 Vue.config.productionTip = isProduction()
 
-Vue.use(Quasar)
+Vue.use(Quasar, {
+    plugins: [Notify]
+})
 Vue.use(Vuelidate)
 Vue.use(VueApollo)
 

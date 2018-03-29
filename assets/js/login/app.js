@@ -6,7 +6,7 @@ import router from './router'
 import { isProduction } from '../lib/config'
 import Vuelidate from 'vuelidate'
 
-import Quasar from 'quasar-framework/dist/quasar.mat.esm'
+import Quasar, { Notify } from 'quasar-framework/dist/quasar.mat.esm'
 import 'quasar-framework/dist/umd/quasar.mat.css'
 import 'quasar-extras/roboto-font'
 import 'quasar-extras/material-icons'
@@ -14,7 +14,9 @@ import 'quasar-extras/fontawesome'
 
 Vue.config.productionTip = isProduction()
 
-Vue.use(Quasar)
+Vue.use(Quasar, {
+    plugins: [Notify]
+})
 Vue.use(Vuelidate)
 
 /* eslint-disable no-new */
