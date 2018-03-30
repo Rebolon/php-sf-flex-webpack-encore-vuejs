@@ -2762,16 +2762,16 @@
         },
         {
             "name": "rebolon/api-json-param-converter",
-            "version": "v1.2.0",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Rebolon/ApiJsonParamConverterComponent.git",
-                "reference": "8ea59c546595f0d356fe3709d7cc8ea0c344f33c"
+                "reference": "d290cd7e68c875a940731439cfdce5ecd0bf78bd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Rebolon/ApiJsonParamConverterComponent/zipball/8ea59c546595f0d356fe3709d7cc8ea0c344f33c",
-                "reference": "8ea59c546595f0d356fe3709d7cc8ea0c344f33c",
+                "url": "https://api.github.com/repos/Rebolon/ApiJsonParamConverterComponent/zipball/d290cd7e68c875a940731439cfdce5ecd0bf78bd",
+                "reference": "d290cd7e68c875a940731439cfdce5ecd0bf78bd",
                 "shasum": ""
             },
             "require": {
@@ -2808,7 +2808,7 @@
                 "json",
                 "rest"
             ],
-            "time": "2018-03-28T15:50:59+00:00"
+            "time": "2018-03-30T14:54:22+00:00"
         },
         {
             "name": "sensio/framework-extra-bundle",
