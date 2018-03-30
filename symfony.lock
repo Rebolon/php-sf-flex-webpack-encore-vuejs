@@ -1,4 +1,7 @@
 {
+    "api-platform/api-pack": {
+        "version": "1.1.0"
+    },
     "api-platform/core": {
         "version": "2.1",
         "recipe": {
@@ -115,6 +118,15 @@
     },
     "myclabs/deep-copy": {
         "version": "1.7.0"
+    },
+    "nelmio/cors-bundle": {
+        "version": "1.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.5",
+            "ref": "7b6cbc842f8cd3d550815247d12294f6f304a8c4"
+        }
     },
     "ocramius/package-versions": {
         "version": "1.2.0"
@@ -236,9 +248,6 @@
     "rebolon/api-json-param-converter": {
         "version": "dev-master"
     },
-    "rebolon/api-pack": {
-        "version": "v1.0.1"
-    },
     "roave/security-advisories": {
         "version": "dev-master"
     },
@@ -339,7 +348,7 @@
         "version": "v3.3.13"
     },
     "symfony/expression-language": {
-        "version": "v4.0.1"
+        "version": "v4.0.6"
     },
     "symfony/filesystem": {
         "version": "v3.3.13"

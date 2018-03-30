@@ -69,6 +69,17 @@ class Serie implements LibraryInterface
     }
 
     /**
+     * @param mixed $id
+     * @return Serie
+     */
+    public function setId($id): Serie
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getName(): string

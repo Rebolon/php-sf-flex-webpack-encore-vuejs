@@ -65,6 +65,17 @@ class Editor implements LibraryInterface
     }
 
     /**
+     * @param mixed $id
+     * @return Editor
+     */
+    public function setId($id): Editor
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getName(): ?string

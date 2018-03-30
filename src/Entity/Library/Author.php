@@ -75,6 +75,17 @@ class Author implements LibraryInterface
     }
 
     /**
+     * @param mixed $id
+     * @return Author
+     */
+    public function setId($id): Author
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getFirstname(): ?string

@@ -45,6 +45,17 @@ class Job implements LibraryInterface
     }
 
     /**
+     * @param mixed $id
+     * @return Job
+     */
+    public function setId($id): Job
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     public function getTranslationKey(): ?string

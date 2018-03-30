@@ -94,6 +94,17 @@ class Review implements LibraryInterface
     }
 
     /**
+     * @param mixed $id
+     * @return Review
+     */
+    public function setId($id): Review
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
      * @return int
      */
     public function getRating(): ?int

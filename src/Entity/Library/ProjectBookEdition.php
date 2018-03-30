@@ -86,6 +86,17 @@ class ProjectBookEdition implements LibraryInterface
     }
 
     /**
+     * @param mixed $id
+     * @return ProjectBookEdition
+     */
+    public function setId($id): ProjectBookEdition
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
      * @return \DateTime
      */
     public function getPublicationDate(): \DateTime

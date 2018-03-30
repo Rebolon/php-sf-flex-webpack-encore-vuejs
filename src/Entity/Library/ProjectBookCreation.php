@@ -66,6 +66,17 @@ class ProjectBookCreation implements LibraryInterface
     }
 
     /**
+     * @param mixed $id
+     * @return ProjectBookCreation
+     */
+    public function setId($id): ProjectBookCreation
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
      * @return Job
      */
     public function getRole(): Job

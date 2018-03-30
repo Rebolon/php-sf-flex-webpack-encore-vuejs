@@ -231,7 +231,7 @@ from ApiPlatform.
 ### Sort
 
 If you want to allow sorting based on columns, you will have to add Filter annotations on Entity. Look at the [Book entity and its ApiFilter](https://github.com/Rebolon/php-sf-flex-webpack-encore-vuejs/blob/38d98658b5e9c2848fe6ad0187c24650225be508/src/Entity/Library/Book.php#L27) which allow to sort on id and title.
-Then you will be able to call the api loke this: http://localhost/api/books?order[id]=DESC
+Then you will be able to call the api like this: http://localhost/api/books?order[id]=DESC
 
 ### Filter
 
@@ -329,6 +329,7 @@ It takes the following JSON string as Body:
 - [x] setup Sf4
 - [x] setup symfony/webpack-encore
 - [x] add a model with doctrine entities
+- [x] add db fixtures at init! and fixtures for test only: done with the DoctrineFixturesBundle, it will generate fixtures based on var/data/fixtures.db, and when called from test env it will build a small scope of fixtures
 - [x] configure ApiPlatform
 - [x] setup one custom route for ApiPlatform
 - [x] setup custom route with nested objects on create/update/read (read should be solved ith serializer, create/update might be solved with custom route or DTOS so try 2 ways)
@@ -337,8 +338,7 @@ It takes the following JSON string as Body:
 - [ ] graphQL: multiple queries in one call ?
 - [ ] graphQL: multiple mutations in one call ?
 - [ ] graphQL: how to mutate nested objects in a minimal call ?
-- [ ] check security and csrf system with ApiPlatform (really required ?)
-- [ ] check security on ApiPlatform (do we need JWT or just cookies, in that case we are stateful which is not cool for deployment and replication)
+- [ ] check best security system to setup with ApiPlatform (JWT / ApiKey / cookie & csrf system but in that case we are stateful which is not cool for deployment and replication ?)
 - [x] setup VueJS
 - [x] use Quasar with VueJS
 - [x] move on Quasar 0.15.x
@@ -354,20 +354,18 @@ It takes the following JSON string as Body:
 - [ ] setup security with Symfony (ticket open coz i get 500 instead of 403: https://github.com/symfony/symfony/issues/25806) and choose between cookie (stateful), JWT (with Lexik bundle) or ApiKey (https://symfony.com/doc/current/security/guard_authentication.html)
 - [x] setup EasyAdminBundle
 - [ ] improve EasyAdminBundle with custom screen
-- [x] setup React Admin from ApiPlatform (this issue is mandatory https://github.com/api-platform/api-platform/issues/584)
+- [x] setup React Admin from ApiPlatform (take care at this issue is mandatory https://github.com/api-platform/api-platform/issues/584)
 - [ ] fix React Admin Book creation: it allows multiple authors (projectBookCreation) whereas it should not, and try to display the name of the author/editor... instead of their iris which is unundertandable
 - [ ] customize React Admin to display more information on datagrid, and customize form in book edition per example
 - [ ] keep EasyAdminBundle or React Admin: make a choice coz both are doing the same, i need to measure differences, and also the ease to do custom screen (change forms, manage rights...)
 - [ ] create another route with VueJS that use GQL instead of REST
-- [ ] code style: use phpcscbf instead of php_cs_fixer coz it's embeded with phpcs and it uses the phpcs config file
+- [x] code style: use phpcscbf instead of php_cs_fixer coz it's embeded with phpcs and it uses the phpcs config file: **I decided to keep php_cs_fixer because it's more complete!**
 - [ ] transform this project into a meta package that will install all requirements for JS app within Symfony (like does laravel)
-- [x] check if i need the JMSSerilizerBundle or if the serilizer component is enough (if autowiring runs well, why not): I prefer to use Symfony serializer, it's enough
+- [x] check if i need the JMSSerializerBundle or if the serilizer component is enough (if autowiring runs well, why not): **I prefer to use Symfony serializer, it's enough**
 - [ ] have a lookAt the HauteLookAliceBundle to help in the creation of real fixtures during tests (instead of generating a new test.db which could be long)
+- [ ] try https://github.com/overblog/GraphQLBundle instead of ApiPlatform to try nested query/mutations (resolver are not auto-generated)
 
-* improve this tutorial with ~~an API Route built with Api platform (without DB)~~ and install the vue-generator from api-platform for a crud sample :
-    * The question for instance is `How to override ApiPlatform routing: i want some route to be overloaded: POST/PUT Book should be able to add also Auhtors and/or Editors`
-* ~~add db fixtures at init ! almost 40 books and some reviews (at least 3 for 5 1st books)~~ all sqlite fixtures is converted into the final db model
-* customize easyAdminBundle to add author/editor from Book and display those related infos on Book admin page (same for other author/editor entities and serie/reviews)
+* improve this tutorial with ~~an API Route built with Api platform (without DB)~~ and install the vue-generator from api-platform for a crud sample
 * manage Entity orphanRemoval / CASCADE onDelete
 * find a good way to add a `pre-commit` hook that lint PHP and JS code, and run the PHP / JS tests
 * Here is a sample of GraphQL query with 2 queries in one call but i don't know how to manage this with Vue-apollo (he can't accept this coz it maps the result to the data[nameOfapolloQuery] whereas i have 2 names...) ? IN FACT the solution is the result hook (see https://github.com/Akryum/vue-apollo/issues/15, and the documentation)

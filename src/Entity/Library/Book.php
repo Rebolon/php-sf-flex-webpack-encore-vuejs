@@ -140,6 +140,17 @@ class Book implements LibraryInterface
     }
 
     /**
+     * @param mixed $id
+     * @return Book
+     */
+    public function setId($id): Book
+    {
+        $this->id = $id;
+
+        return $this;
+    }
+
+    /**
      * @return mixed
      */
     public function getTitle(): ?string
