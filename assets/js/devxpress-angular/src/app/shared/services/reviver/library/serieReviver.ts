@@ -1,6 +1,8 @@
-import {Serie} from "../../entities/library/serie"
-import {ItemAbstractReviver} from '@rebolon/json-reviver/src'
+import {Serie} from "../../../../../entities/library/serie"
+import {ItemAbstractReviver} from "@rebolon/json-reviver";
+import {Injectable} from "@angular/core";
 
+@Injectable()
 export class SerieReviver extends ItemAbstractReviver
 {
     /**

@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core'
+import {Component, OnInit, ViewChild} from '@angular/core'
 import { ApiService } from "../../services/api"
 import CustomStore from 'devextreme/data/custom_store';
 import {BookModel} from "../../models/book.model";
 import 'rxjs/add/operator/toPromise';
 import { apiConfig } from '../../../../lib/config'
-import {ListAbstractReviver} from '@rebolon/json-reviver/src'
+import {DxDataGridComponent} from "devextreme-angular";
+import notify from 'devextreme/ui/notify';
+import {BroadcastChannelApi} from "../shared/services/broadcast-channel-api";
 
 @Component({
   selector: 'my-datagrid',
@@ -12,14 +14,27 @@ import {ListAbstractReviver} from '@rebolon/json-reviver/src'
   styleUrls: ['./datagrid.component.scss']
 })
 export class DatagridComponent implements OnInit {
+  @ViewChild(DxDataGridComponent) dataGrid: DxDataGridComponent;
+
   protected books: BookModel
   protected booksTotal: number
 
-  protected apiConfig
-  protected dataSource: any = {}
+  protected secondScreen: {
+      window: any,
+      url: string
+  } = {
+      window: undefined,
+      url: ''
+  }
+  public apiConfig
+  public dataSource: any = {}
 
-  constructor(private api: ApiService) {
+  constructor(private api: ApiService, private broadcastChannel: BroadcastChannelApi) {
       this.apiConfig = apiConfig
+
+      this.broadcastChannel.message.subscribe(message => {
+          notify("data received from second screen", "info", 10000);
+      })
 
       // @todo: the store should be moved into services folder and injected here instead of the ApiService
       this.dataSource.store = new CustomStore({
@@ -99,5 +114,54 @@ export class DatagridComponent implements OnInit {
 
   debug(data: any): void {
       console.log(data)
+  }
+
+  getSelectedRow () {
+      const rows = this.dataGrid.instance.getSelectedRowKeys()
+      const url = `/demo/devxpress-angular/book/${rows[0].id}`
+      const options = {
+          menubar: 'false',
+          toolbar: 'false',
+          location: 'false',
+          directories: 'false',
+          personalbar : 'false',
+          status: 'false',
+
+          resizable: 'yes',
+          scrollbars: 'yes',
+          dependent: 'yes',
+          modal: 'false',
+          dialog: 'false',
+          minimizable: 'false', // only if dialog=yes
+
+          // require privilege UniversalBrowserWrite
+          chrome: 'yes',
+          titlebar: 'second-screen',
+          alwaysRaised: 'yes',
+          alwaysLowered: 'false',
+          close: 'false',
+
+
+          left: window.screen.width,
+          top: '0',
+          width: window.screen.width,
+      }
+
+      let winOptions = ""
+      for (let key in options) {
+          if (winOptions) {
+              winOptions += ','
+          }
+          winOptions += `${key}=${options[key]}`
+      }
+
+      if (!this.secondScreen.window
+          || this.secondScreen.url != url) {
+          this.secondScreen.window = window['open'](url, 'second-screen', winOptions)
+      }
+
+      if (this.secondScreen.window.focus) {
+          this.secondScreen.window.focus()
+      }
   }
 }

@@ -1,17 +1,15 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core'
-import {WizardRouting} from "../../services/wizard-routing";
-import {options} from "../../tools/form-options";
+import {WizardRouting} from "../../../shared/services/wizard-routing";
+import {options} from "../../../shared/tools/form-options";
 import {Authors} from "../../../../entities/library/authors";
 import {apiConfig} from "../../../../../../lib/config";
 import {ApiService} from "../../../../services/api";
 import CustomStore from "devextreme/data/custom_store";
 import DataSource from "devextreme/data/data_source";
-import {WizardBook} from "../../services/wizard-book";
+import {WizardBook} from "../../../shared/services/wizard-book";
 import {CacheKey} from "../../enums/cache-key";
 import {Subscription} from "rxjs/Subscription";
 import {DxAutocompleteComponent, DxFormComponent, DxLookupComponent, DxSelectBoxComponent} from "devextreme-angular";
-import {Editor} from '../../../../entities/library/editor';
-import {Editors} from '../../../../entities/library/editors';
 import notify from 'devextreme/ui/notify';
 import {Author} from '../../../../entities/library/author';
 import {Job} from '../../../../entities/library/job';
@@ -29,8 +27,8 @@ export class AuthorsFormComponent implements OnInit, OnDestroy {
     options = options
 
     protected apiConfig
-    protected authorsDatasource: any = {}
-    protected jobDatasource: any = {}
+    public authorsDatasource: any = {}
+    public jobDatasource: any = {}
 
     // pattern to unsubscribe everything
     protected subscriptions: Array<Subscription> = []

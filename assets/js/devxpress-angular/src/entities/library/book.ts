@@ -1,10 +1,9 @@
 import {Editors} from "./editors";
 import {Authors} from "./authors";
 import {Serie} from "./serie";
-import {EntityAbstract} from "../abstract";
-import {EntityInterface} from "@rebolon/json-reviver/src";
+import {EntityInterface} from "@rebolon/json-reviver";
 
-export class Book extends EntityAbstract implements EntityInterface {
+export class Book implements EntityInterface {
     id: number
     title: string = ''
     description?: string = ''
@@ -13,10 +12,6 @@ export class Book extends EntityAbstract implements EntityInterface {
     editors: Array<Editors>
     authors: Array<Authors>
     serie?: Serie
-
-    getOwnProps() {
-        return ['title', 'description', 'indexInSerie', ]
-    }
 
     addEdition(edition: Editors) {
         if (typeof this.editors == 'undefined') {

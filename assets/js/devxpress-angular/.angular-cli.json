@@ -10,11 +10,13 @@
       "assets": [
         "assets",
         "favicon.ico",
+        "tools/shared-worker.js",
         {
           "glob": "**/*",
           "input": "../node_modules/devextreme/dist/css/"
         }
       ],
+      "deployUrl": "/",
       "index": "index.html",
       "main": "main.ts",
       "polyfills": "polyfills.ts",
@@ -30,7 +32,8 @@
       "environments": {
         "dev": "environments/environment.ts",
         "prod": "environments/environment.prod.ts"
-      }
+      },
+      "serviceWorker": false
     }
   ],
   "e2e": {

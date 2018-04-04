@@ -1,5 +1,5 @@
 import {Editor} from "../../entities/library/editor"
-import {ItemAbstractReviver} from "@rebolon/json-reviver/src";
+import {ItemAbstractReviver} from "@rebolon/json-reviver";
 
 export class EditorReviver extends ItemAbstractReviver
 {
@@ -7,7 +7,7 @@ export class EditorReviver extends ItemAbstractReviver
      *
      * @returns {string}
      */
-    getNodeName(): string {
+    getNodeName() {
         return 'editor'
     }
 
@@ -15,7 +15,7 @@ export class EditorReviver extends ItemAbstractReviver
      *
      * @returns {Object}
      */
-    getNewEntity(): Object {
+    getNewEntity() {
         return new Editor()
     }
 
@@ -36,7 +36,7 @@ export class EditorReviver extends ItemAbstractReviver
     /**
      * {@inheritdoc}
      */
-    public getManyRelPropsName(): Object
+    public getManyRelPropsName()
     {
         return {}
     }
@@ -44,7 +44,7 @@ export class EditorReviver extends ItemAbstractReviver
     /**
      * {@inheritdoc}
      */
-    public getOneRelPropsName(): Object
+    public getOneRelPropsName()
     {
         return {}
     }

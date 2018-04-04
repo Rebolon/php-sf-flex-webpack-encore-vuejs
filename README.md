@@ -88,7 +88,7 @@ The test_browser section represent all the browsers you want to use with the tes
 * [vuejs](https://vuejs.org/): top js framework to build SPA, or just widget on classic page
 * [quasar](http://quasar-framework.org/): UX component library based on VueJS
 * encore: symfony solution to wrap webpack config and, once again, make your life simpler
-* offline-plugin: webpack plugin to manage offline assets
+* [offline-plugin](https://github.com/NekR/offline-plugin): webpack plugin to manage offline assets
 * annotations: use annotations everywhere in your PHP code
 * [twig](https://twig.symfony.com/): symfony template solution, useless if you don't want to render template with symfony, but usefull to be able to use assets twig helper with webpack encore
 * [api](api-platform.com): api-platform to build REST api(instead of fosrestbundle)
@@ -101,10 +101,10 @@ The test_browser section represent all the browsers you want to use with the tes
 * profiler: for debugging purpose
 * log: a logger for symfony
 * security-checker: a tool to check known securities vulnerabilities, to use it, run `php bin/console security:check`
-* roave/security-advisories: a tool that prevent the install of PHP package from composer with known vulnerabilities
+* [roave/security-advisories](https://www.websec.io/2018/03/10/Package-Protection-Roave-SecurityAdvisories.html): a tool that prevent the install of PHP package from composer with known vulnerabilities
 * [phpunit](https://phpunit.de/), crawler, browserkit, css-selector: php/symfony task for testing (@todo ll last 3 should be a recipe)
 * babel-preset-es2017: do you really need explanation ?
-* testcafe: an e2e test framework (might be changed with chimp or anything else, gimme better idea)
+* [testcafe](https://testcafe.devexpress.com/): an e2e test framework (might be changed with chimp or anything else, gimme better idea)
 * [jasmine](https://jasmine.github.io/) & [karma](https://karma-runner.github.io/2.0/index.html): a stack for unit & e2e tests (a more standard stack to replace testcafé)
 * sass: hey, we are not in nineties, we don't write css now
 * [bootstrap](https://getbootstrap.com/): the 4th version of the first class css framework (not used with quasar)
@@ -113,9 +113,9 @@ The test_browser section represent all the browsers you want to use with the tes
 
 Here are some uninstalled components that may help you:
 
-* rekit: an IDE for React devlopment, you should install it glabally
+* [rekit](http://rekit.js.org/): an IDE for React devlopment, you should install it globally
 
-For Angular5, i decided to do quite different way:
+For [Angular](https://angular.io/) (v5), i decided to do quite different way:
 * i initialized a project with angular-cli (first install it globally `yarn add -g @angular/cli`) like this: cd assets/js && ng new devxpress-angular && cd devxpress-angular && yarn install
 * then i customize the .angular-cli.json to set output path to my root public/dist-ng folder
 * i set this dist-ng folder because `encore` will remove dist folder when we run some command so with different dist folders i don't have any problem
@@ -171,7 +171,7 @@ Take care, the asset server listen to port 8080 so don't start your main server 
 Also, if you want to use the asset server finely, you have to add the assets configuration in the config/packages/framework.yaml file :
 `json_manifest_path: '%kernel.project_dir%/public/build/manifest.json'`. In fact the npm command will build asset in memory only, and modify the manifest file to map asset to a new url served by the asset server instead of the main web server.
 
-In the main layout, we load 3 common files: manifest.js, vendor.js and sw.js. Vendor is where you wan put all common libraries used on almost all pages.
+In the main layout, we load 3 common files: manifest.js, vendor.js and service-worker.js. Vendor is where you wan put all common libraries used on almost all pages.
 The source file for this bundle is assets/js/app.js. SW is for the service workers. It's default behavior is to manage the Cache file. You can have a look
 at [offline-plugin for webpack](https://github.com/NekR/offline-plugin).
 

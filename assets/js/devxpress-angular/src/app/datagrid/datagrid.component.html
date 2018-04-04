@@ -5,7 +5,8 @@
         [showRowLines]="true"
         [showBorders]="true"
         [rowAlternationEnabled]="true"
-        [allowColumnReordering]="true">
+        [allowColumnReordering]="true"
+        (onSelectionChanged)="getSelectedRow()">
     <dxi-column dataField="id" caption="Id" [width]="50"></dxi-column>
     <dxi-column dataField="title" caption="Titre"></dxi-column>
     <dxi-column dataField="indexInSerie" caption="Index" [width]="50" [allowSorting]=false></dxi-column>
@@ -18,7 +19,7 @@
     <dxo-state-storing [enabled]="true" type="localStorage" storageKey="storage"></dxo-state-storing>
     <dxo-sorting mode="multiple"></dxo-sorting>
     <dxo-export [enabled]="true" fileName="Books" [allowExportSelectedData]="true"></dxo-export>
-    <dxo-selection mode="multiple"></dxo-selection>
+    <dxo-selection mode="single"></dxo-selection>
     <dxo-editing
             mode="row"
             [allowUpdating]="true"

@@ -1,27 +1,11 @@
 import {Book} from "../../entities/library/book"
-import {ItemAbstractReviver} from "@rebolon/json-reviver/src";
+import {ItemAbstractReviver, Accessor} from "@rebolon/json-reviver";
 import {AuthorsReviver} from "./authorsReviver";
 import {SerieReviver} from "./serieReviver";
 import {EditorsReviver} from "./editorsReviver";
-import {Accessor} from "@rebolon/json-reviver/src/accessor";
 
 export class BookReviver extends ItemAbstractReviver
 {
-    /**
-     * @var AuthorsReviver
-     */
-    protected authorsReviver
-
-    /**
-     * @var EditorReviver
-     */
-    protected editorsReviver
-
-    /**
-     * @var SerieReviver
-     */
-    protected serieReviver
-
     /**
      *
      * @param {AuthorsReviver} authorsReviver
@@ -29,9 +13,9 @@ export class BookReviver extends ItemAbstractReviver
      * @param {SerieReviver} serieReviver
      */
     constructor (
-        authorsReviver: AuthorsReviver,
-        editorsReviver: EditorsReviver,
-        serieReviver: SerieReviver
+        authorsReviver,
+        editorsReviver,
+        serieReviver
     ) {
         super()
 
@@ -44,7 +28,7 @@ export class BookReviver extends ItemAbstractReviver
      *
      * @returns {string}
      */
-    getNodeName(): string {
+    getNodeName() {
         return 'book'
     }
 
@@ -52,7 +36,7 @@ export class BookReviver extends ItemAbstractReviver
      *
      * @returns {Object}
      */
-    getNewEntity(): Object {
+    getNewEntity() {
         return new Book()
     }
 
@@ -75,7 +59,7 @@ export class BookReviver extends ItemAbstractReviver
     /**
      * {@inheritdoc}
      */
-    public getManyRelPropsName(): Object
+    public getManyRelPropsName()
     {
         // for instance i don't want to allow the creation of reviews with all embeded reviews, this is not a usual way of working
         // that's why i don't add reviews here
@@ -102,7 +86,7 @@ export class BookReviver extends ItemAbstractReviver
      *
      * registryKey could be used if we create an endpoint that allow batch POST/PUT of book with embedded serie
      */
-    public getOneRelPropsName(): Object
+    public getOneRelPropsName()
     {
         return {
             'serie': {

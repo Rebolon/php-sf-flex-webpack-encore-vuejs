@@ -1,11 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core'
-import {WizardRouting} from "../services/wizard-routing";
+import {WizardRouting} from "../../shared/services/wizard-routing";
 import {ActivatedRoute, Router, Routes, UrlSegment} from "@angular/router";
 import {wizardRoutes} from "../wizard.routes";
-import {WizardBook} from "../services/wizard-book";
+import {WizardBook} from "../../shared/services/wizard-book";
 import {CacheKey} from "../enums/cache-key";
 import {Book} from "../../../entities/library/book";
 import {Subscription} from "rxjs/Subscription";
+import {BookReviver} from "../../shared/services/reviver/library/bookReviver";
 
 @Component({
     selector: 'my-wizard',
@@ -23,7 +24,7 @@ export class WizardContainerComponent implements OnInit, OnDestroy {
     // pattern to unsubscribe everything, if you don't you risk memory leak !
     protected subscriptions: Array<Subscription> = []
 
-    constructor(private bookService: WizardBook, private routingService: WizardRouting, private router: Router, private route: ActivatedRoute) {
+    constructor(private bookService: WizardBook, private routingService: WizardRouting, private router: Router, private route: ActivatedRoute, private bookReviver: BookReviver) {
         this.steps = wizardRoutes.filter(route => route.path !== '**')
     }
 
@@ -115,9 +116,13 @@ export class WizardContainerComponent implements OnInit, OnDestroy {
 
     // Manage cache state restore
     private restoreCache() {
-        const book = Book.initialize(Book, CacheKey.BOOK)
+        let objToRestore = new Book()
+        const cache = localStorage.getItem(CacheKey.BOOK)
+        if (cache) {
+            objToRestore = this.bookReviver.main(cache)
+        }
 
-        this.bookService.createBook(book)
+        this.bookService.createBook(objToRestore)
     }
 
     private manageCache() {

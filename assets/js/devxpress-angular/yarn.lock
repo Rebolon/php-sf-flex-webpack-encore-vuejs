@@ -180,6 +180,10 @@
     tree-kill "^1.0.0"
     webpack-sources "^1.1.0"
 
+"@rebolon/json-reviver@0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@rebolon/json-reviver/-/json-reviver-0.0.7.tgz#d8114b01186a6ce8ca00883055202a861326702f"
+
 "@schematics/angular@0.3.2":
   version "0.3.2"
   resolved "https://registry.yarnpkg.com/@schematics/angular/-/angular-0.3.2.tgz#be209a032a3e4577992d94fbaa14bd4bfde485e2"
@@ -215,6 +219,10 @@
 "@types/selenium-webdriver@^2.53.35", "@types/selenium-webdriver@~2.53.39":
   version "2.53.43"
   resolved "https://registry.yarnpkg.com/@types/selenium-webdriver/-/selenium-webdriver-2.53.43.tgz#2de3d718819bc20165754c4a59afb7e9833f6707"
+
+"@types/sharedworker@0.0.27":
+  version "0.0.27"
+  resolved "https://registry.yarnpkg.com/@types/sharedworker/-/sharedworker-0.0.27.tgz#ff6499046da5316a2a6e38a1c86acfcb4ddf52ca"
 
 "@types/strip-bom@^3.0.0":
   version "3.0.0"
