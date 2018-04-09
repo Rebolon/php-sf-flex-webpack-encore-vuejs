@@ -16,7 +16,7 @@
         <!-- preload JS -->
         <link rel="preload" href="{{ asset('dist/manifest.js') }}" as="script"/>
         <link rel="preload" href="{{ asset("dist/vendor.js") }}" as="script"/>
-        <link rel="preload" href="{{ asset("dist/sw.js") }}" as="script"/>
+        <link rel="preload" href="{{ asset("dist/service-worker.js") }}" as="script"/>
     </head>
     <body class="mat">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -36,7 +36,7 @@
 
         <script src="{{ asset('dist/manifest.js') }}"></script>
         <script src="{{ asset('dist/vendor.js') }}"></script>
-        <script src="{{ asset('dist/sw.js') }}"></script>
+        <script src="{{ asset('dist/service-worker.js') }}"></script>
         {% block javascripts %}{% endblock %}
     </body>
 </html>

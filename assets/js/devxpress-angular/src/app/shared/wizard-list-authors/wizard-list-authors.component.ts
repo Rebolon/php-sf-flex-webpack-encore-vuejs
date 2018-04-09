@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core'
-import {Authors} from "../../../../entities/library/authors";
+import {Authors} from "../../../entities/library/authors";
 
 @Component({
     selector: 'my-wizard-list-authors',

@@ -8,7 +8,7 @@
                 [useSubmitBehavior]="false"
                 (click)="removeAuthors.emit(authorInfo)">
             </dx-button>
-            {{authorInfo.author?.firstname}} {{authorInfo.author?.lastname}} ({{authorInfo.role.translationKey}})
+            {{authorInfo.author?.firstname}} {{authorInfo.author?.lastname}} ({{authorInfo.role?.translationKey}})
         </li>
     </ul>
 </div>

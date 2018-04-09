@@ -1,5 +1,5 @@
 import {Job} from "../../entities/library/job"
-import {ItemAbstractReviver} from "@rebolon/json-reviver/src"
+import {ItemAbstractReviver} from "@rebolon/json-reviver";
 
 export class JobReviver extends ItemAbstractReviver
 {
@@ -7,7 +7,7 @@ export class JobReviver extends ItemAbstractReviver
      *
      * @returns {string}
      */
-    getNodeName(): string {
+    getNodeName() {
         return 'job'
     }
 
@@ -15,7 +15,7 @@ export class JobReviver extends ItemAbstractReviver
      *
      * @returns {Object}
      */
-    getNewEntity(): Object {
+    getNewEntity() {
         return new Job()
     }
 
@@ -36,7 +36,7 @@ export class JobReviver extends ItemAbstractReviver
     /**
      * {@inheritdoc}
      */
-    public getManyRelPropsName(): Object
+    public getManyRelPropsName()
     {
         return {}
     }
@@ -44,7 +44,7 @@ export class JobReviver extends ItemAbstractReviver
     /**
      * {@inheritdoc}
      */
-    public getOneRelPropsName(): Object
+    public getOneRelPropsName()
     {
         return {}
     }

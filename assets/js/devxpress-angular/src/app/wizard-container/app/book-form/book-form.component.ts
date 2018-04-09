@@ -1,8 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core'
-import {WizardRouting} from "../../services/wizard-routing";
+import {WizardRouting} from "../../../shared/services/wizard-routing";
 import {Book} from "../../../../entities/library/book";
-import {options} from "../../tools/form-options";
-import {WizardBook} from "../../services/wizard-book";
+import {options} from "../../../shared/tools/form-options";
+import {WizardBook} from "../../../shared/services/wizard-book";
 import {CacheKey} from "../../enums/cache-key";
 import notify from "devextreme/ui/notify";
 import {Subscription} from "rxjs/Subscription";

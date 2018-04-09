@@ -1,14 +1,16 @@
-import {Author} from "../../entities/library/author"
-import {ItemAbstractReviver} from "@rebolon/json-reviver/src";
+import {Job} from "../../../../../entities/library/job"
+import {ItemAbstractReviver} from "@rebolon/json-reviver";
+import {Injectable} from "@angular/core";
 
-export class AuthorReviver extends ItemAbstractReviver
+@Injectable()
+export class JobReviver extends ItemAbstractReviver
 {
     /**
      *
      * @returns {string}
      */
     getNodeName(): string {
-        return 'author'
+        return 'job'
     }
 
     /**
@@ -16,22 +18,21 @@ export class AuthorReviver extends ItemAbstractReviver
      * @returns {Object}
      */
     getNewEntity(): Object {
-        return new Author()
+        return new Job()
     }
 
     /**
      * {@inheritdoc}
      * for this kind of json:
      * {
-     *   "author": {
-     *     "firstname": "Paul",
-     *     "lastname": "Smith"
+     *   "role": {
+     *     "translationKey": 'WRITER'
      *   }
      * }
      */
     public getEzPropsName()
     {
-        return ['id', 'firstname', 'lastname', ]
+        return ['id', 'translationKey', ]
     }
 
     /**

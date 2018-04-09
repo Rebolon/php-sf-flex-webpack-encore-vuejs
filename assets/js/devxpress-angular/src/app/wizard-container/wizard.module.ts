@@ -7,20 +7,12 @@ import {EditorsFormComponent} from "./app/editors-form/editors-form.component";
 import {AuthorsFormComponent} from "./app/authors-form/authors-form.component";
 import {BrowserModule} from "@angular/platform-browser";
 import {HttpClientModule} from "@angular/common/http";
-import {WizardRouting} from "./services/wizard-routing";
-import {DevExtremeModule} from "devextreme-angular";
-import {WizardSumupComponent} from "./app/wizard-sumup/wizard-sumup.component";
-import {WizardBook} from "./services/wizard-book";
-import {WizardListEditorsComponent} from "./app/wizard-list-editors/wizard-list-editors.component";
-import {WizardListAuthorsComponent} from "./app/wizard-list-authors/wizard-list-authors.component";
+import {SharedModule} from "../shared/shared.module";
 
 @NgModule({
     declarations: [
         WizardContainerComponent,
         WizardStepComponent,
-        WizardSumupComponent,
-        WizardListEditorsComponent,
-        WizardListAuthorsComponent,
         BookFormComponent,
         EditorsFormComponent,
         AuthorsFormComponent
@@ -29,11 +21,9 @@ import {WizardListAuthorsComponent} from "./app/wizard-list-authors/wizard-list-
         RouterModule,
         BrowserModule,
         HttpClientModule,
-        DevExtremeModule,
+        SharedModule,
     ],
     providers: [
-        WizardRouting,
-        WizardBook
     ],
     bootstrap: [WizardContainerComponent]
 })

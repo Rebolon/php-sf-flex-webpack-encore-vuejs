@@ -41,7 +41,9 @@ Encore
     })
 
     // uncomment to define the assets of the project
-    .addEntry('sw', './assets/js/lib/sw.js')
+
+    // this one was used for this npm package: offline-plugin to manage cache (angular has already its own worker since ng-5.2 & cli-1.6)
+    .addEntry('service-worker', './assets/js/lib/service-worker.js')
 
     .addEntry('js/vuejs', './assets/js/vuejs/app.js')
     .addEntry('js/quasar', './assets/js/quasar/app.js')
@@ -80,6 +82,7 @@ Encore
 // customize webpack configuration
 let config = Encore.getWebpackConfig();
 
+// https://github.com/NekR/offline-plugin
 config.plugins.push(new OfflinePlugin({
     "strategy": "changed",
     "responseStrategy": "cache-first",
@@ -96,11 +99,11 @@ config.plugins.push(new OfflinePlugin({
     },
     "ServiceWorker": {
         "events": !Encore.isProduction(),
-        "entry": "./assets/js/lib/sw.js",
+        "entry": "./assets/js/lib/service-worker.js",
         "cacheName": "SymfonyVue",
         "navigateFallbackURL": '/',
         "minify": !Encore.isProduction(),
-        "output": "./../sw.js",
+        "output": "./../service-worker.js",
         "scope": "/"
     },
     "AppCache": null

@@ -1,28 +1,18 @@
 import {Authors} from "../../entities/library/authors"
 import {JobReviver} from "./jobReviver";
 import {AuthorReviver} from "./authorReviver";
-import {ListAbstractReviver} from "@rebolon/json-reviver/src";
+import {ListAbstractReviver} from "@rebolon/json-reviver";
 
 export class AuthorsReviver extends ListAbstractReviver
 {
-    /**
-     * @var JobReviver
-     */
-    protected jobReviver: JobReviver
-
-    /**
-     * @var AuthorReviver
-     */
-    protected authorReviver: AuthorReviver
-
     /**
      *
      * @param {JobReviver} jobReviver
      * @param {AuthorReviver} authorReviver
      */
     constructor (
-        jobReviver: JobReviver,
-        authorReviver: AuthorReviver
+        jobReviver,
+        authorReviver
     ) {
         super()
 
@@ -34,7 +24,7 @@ export class AuthorsReviver extends ListAbstractReviver
      *
      * @returns {string}
      */
-    getNodeName(): string {
+    getNodeName() {
         return 'authors'
     }
 
@@ -42,7 +32,7 @@ export class AuthorsReviver extends ListAbstractReviver
      *
      * @returns {Object}
      */
-    getNewEntity(): Object {
+    getNewEntity() {
         return new Authors()
     }
 
@@ -64,7 +54,7 @@ export class AuthorsReviver extends ListAbstractReviver
     /**
      * {@inheritdoc}
      */
-    public getManyRelPropsName(): Object
+    public getManyRelPropsName()
     {
         return {}
     }
@@ -72,7 +62,7 @@ export class AuthorsReviver extends ListAbstractReviver
     /**
      * {@inheritdoc}
      */
-    public getOneRelPropsName(): Object
+    public getOneRelPropsName()
     {
         return {
             'role': {

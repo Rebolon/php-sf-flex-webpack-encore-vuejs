@@ -1,13 +1,13 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core'
-import {WizardRouting} from "../../services/wizard-routing";
-import {options} from "../../tools/form-options";
+import {WizardRouting} from "../../../shared/services/wizard-routing";
+import {options} from "../../../shared/tools/form-options";
 import {Editors} from "../../../../entities/library/editors";
 import {Editor} from "../../../../entities/library/editor";
 import CustomStore from "devextreme/data/custom_store";
 import {ApiService} from "../../../../services/api";
 import {apiConfig} from "../../../../../../lib/config";
 import {DxFormComponent, DxLookupComponent} from "devextreme-angular";
-import {WizardBook} from "../../services/wizard-book";
+import {WizardBook} from "../../../shared/services/wizard-book";
 import {CacheKey} from "../../enums/cache-key";
 import notify from "devextreme/ui/notify";
 import {Subscription} from "rxjs/Subscription";
@@ -24,7 +24,7 @@ export class EditorsFormComponent implements OnInit, OnDestroy {
     options = options
 
     protected apiConfig
-    protected dataSource: any = {}
+    public dataSource: any = {}
 
     // pattern to unsubscribe everything
     protected subscriptions: Array<Subscription> = []

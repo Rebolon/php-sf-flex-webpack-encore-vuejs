@@ -31,6 +31,8 @@
 
 /public/dist/
 /public/dist-ng/
-/public/sw.js
+/public/service-worker.js
 
 /assets/js/angular/devxpress-angular/node_modules/
+
+/public/dist-ng-prod-with-service-worker
