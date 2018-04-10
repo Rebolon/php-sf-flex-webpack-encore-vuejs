@@ -1,3 +1,14 @@
-<button (click)="sendMessage()">send event to other window</button>
+<div class="row">
+    <my-wizard-sumup></my-wizard-sumup>
+</div>
 
-<my-wizard-sumup></my-wizard-sumup>
+<div class="form-group">
+    <div class="form-row">
+        <label for="titleChange">Change the title:</label>
+        <input #newTitle [value]=book?.title class="input-sm form-control" type="text" id="titleChange">
+    </div>
+    <div class="form-row">
+        <button (click)="sendBookToParent(newTitle.value)" class="btn btn-primary btn-lg btn-block">send Book with new title</button>
+        <button (click)="sendMessage()" class="btn btn-info btn-lg btn-block">send event to other window</button>
+    </div>
+</div>

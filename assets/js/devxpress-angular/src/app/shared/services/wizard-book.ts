@@ -1,6 +1,8 @@
 import { Injectable} from '@angular/core'
 import {Observable} from "rxjs/Observable";
 import 'rxjs/add/operator/filter'
+import 'rxjs/add/operator/mergeMap'
+import { forkJoin } from 'rxjs/observable/forkJoin';
 import {Subject} from "rxjs/Subject";
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {Book} from "../../../entities/library/book";
@@ -82,7 +84,7 @@ export class WizardBook {
         // end of useless code (normally)
 
         const body = {
-        book: book
+            book: book
         }
         if (book.id) {
         this.api
@@ -127,9 +129,108 @@ export class WizardBook {
     get(id: number) {
         const res = new Subject()
 
+        /**
+         * The chosen pattern is the following:
+         *  * the first api call will retreive a Book and will expose only own properties
+         *  * for each relationship properties (authors, editors, ...) it will do further api call
+         *  * some api call needs more to be complete (authors needs author AND role)
+         *  * on each response of the su calls it will add extra info into main book
+         *
+         * This is one pattern from many existing ones ;-)
+         *
+         */
         this.api
             .get(`/books/${id}`)
             .subscribe((book) => {
+                // revive a lite book
+                const bookToRevive = (({id, title, description, indexInSerie}) => ({id, title, description, indexInSerie}))(book)
+                const revivedBook = this.bookReviver.main(bookToRevive)
+
+                this._book.next(revivedBook)
+                res.next(revivedBook)
+
+                if (book.editors.length) {
+                    for (let edition of book.editors) {
+                        this.getEdition(id)
+                            .subscribe((book: Book) => {
+                                this._book.next(book)
+                                res.next(book)
+                            })
+                    }
+                }
+
+                if (book.authors.length) {
+                    for (let author of book.authors) {
+                        this.getAuthors(id)
+                            .subscribe((book: Book) => {
+                                this._book.next(book)
+                                res.next(book)
+                            })
+                    }
+                }
+            }, err => {
+                res.error(err)
+            })
+
+        return res
+    }
+
+    getEdition(id: number) {
+        const res = new Subject()
+
+        this.api
+            .get(`/project_book_editions/${id}`)
+            .mergeMap(edition => {
+                return this.api
+                    .get(edition.editor)
+                    .map(editor => {
+                        edition.editor = editor
+
+                        return edition
+                    })
+            })
+            .subscribe((edition) => {
+                const book = this._book.getValue()
+                const revivedEdition = this.editorsReviver.main(edition).pop()
+                book.addEdition(revivedEdition)
+
+                this._book.next(book)
+                res.next(book)
+            }, err => {
+                res.error(err)
+            })
+
+        return res
+    }
+
+    getAuthors(id: number) {
+        const res = new Subject()
+
+        this.api
+            .get(`/project_book_creations/${id}`)
+            .mergeMap(authors => {
+                return forkJoin(
+                    this.api
+                        .get(authors.author)
+                        .map(author => {
+                            authors.author = author
+
+                            return authors
+                        }),
+                    this.api
+                        .get(authors.role)
+                        .map(role => {
+                            authors.role = role
+
+                            return authors
+                        })
+                )
+            })
+            .subscribe((authors) => {
+                const book = this._book.getValue()
+                const revivedAuthors = this.authorsReviver.main(authors).pop()
+                book.addAuthor(revivedAuthors)
+
                 this._book.next(book)
                 res.next(book)
             }, err => {

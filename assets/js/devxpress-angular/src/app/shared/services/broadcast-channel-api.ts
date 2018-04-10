@@ -3,6 +3,8 @@ import {Observable} from "rxjs/Observable";
 import 'rxjs/add/operator/filter'
 import {BehaviorSubject} from "rxjs/BehaviorSubject";
 import {Subject} from "rxjs/Subject";
+import {BookModel} from "../../../models/book.model";
+import {Book} from "../../../entities/library/book";
 
 @Injectable()
 export class BroadcastChannelApi {
@@ -55,6 +57,11 @@ export class BroadcastChannelApi {
 
     sayHello() {
         const message = {cmd: "hello", message: "whatever"}
+        this.channel.postMessage(message)
+    }
+
+    sendBook(book: Book) {
+        const message = {cmd: "book", message: "new Book", book: book}
         this.channel.postMessage(message)
     }
 }
