@@ -16,7 +16,7 @@ import {BroadcastChannelApi} from "../shared/services/broadcast-channel-api";
 export class DatagridComponent implements OnInit {
   @ViewChild(DxDataGridComponent) dataGrid: DxDataGridComponent;
 
-  protected books: BookModel
+  protected books: Array<BookModel>
   protected booksTotal: number
 
   protected secondScreen: {
@@ -33,11 +33,42 @@ export class DatagridComponent implements OnInit {
       this.apiConfig = apiConfig
 
       this.broadcastChannel.message.subscribe(message => {
-          notify("data received from second screen", "info", 10000);
+          switch(message.cmd) {
+              case 'book':
+                  const book = this.books.find(book => book.id === message.book.id)
+                  if (!book) {
+                      notify(`no book found in store with id ${message.book.id}`, "warn", 5000)
+                      return
+                  }
+
+                  for (let prop in message.book) {
+                      book[prop] = message.book[prop]
+                  }
+
+                  // Take care, until you click on the parent window, data won't be refreshed in datagrid. don't know if it's because of browser behavior or DevXpress.datagrid
+                  notify(`new Book received with id ${book.id}, focus the window to see the changes in datagrid. 
+                  Data is not saved until you edit it`, "info", 5000)
+                  break
+              case 'hello':
+              case 'ping':
+              default:
+                  notify("data received from second screen", "info", 5000)
+                  break
+          }
       })
 
       // @todo: the store should be moved into services folder and injected here instead of the ApiService
       this.dataSource.store = new CustomStore({
+          // I use byKey method to modify the store from BroadcastChannel API
+          // when i receive a new Book, then i alter the this.books (which is not the store used by the datagrid)
+          // because the datagrid can spy its data using byKey, then it will be alerted of the modification
+          // But don't forget to focus the window or even if the this.books is altered, the datagrid won't refresh the
+          // displayed data
+          byKey: (key: any | string | number) => {
+              const book = this.books.find(book => key === book.id)
+
+              return book
+          },
           load: (loadOptions: any) => {
               let itemPerPage = this.apiConfig.itemsPerPage
 

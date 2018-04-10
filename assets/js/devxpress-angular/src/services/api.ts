@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs/Observable'
 import { environment } from '../environments/environment'
-
+import {apiPlatformPrefix} from '../../../lib/config'
 import 'rxjs/add/operator/do'
 import 'rxjs/add/operator/map'
 
@@ -120,6 +120,10 @@ export class ApiService {
      */
     buildUri(path: string) {
         let uri = this.baseUrl
+
+        if (path.startsWith(apiPlatformPrefix)) {
+            path = path.slice(apiPlatformPrefix.length)
+        }
 
         if (path.startsWith('/')) {
             path = path.slice(1)

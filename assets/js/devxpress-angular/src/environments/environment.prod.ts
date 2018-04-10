@@ -1,8 +1,8 @@
-import { host } from '../../../lib/config'
+import { host, apiPlatformPrefix } from '../../../lib/config'
 
 export const environment = {
   production: true,
   rest: {
-      baseUrl: `http://${host}/api/`
+      baseUrl: `http://${host}${apiPlatformPrefix}/`
   },
 };
