@@ -10,7 +10,7 @@
 
 ## requirements
 
-You need PHP (7.x), composer, npm or yarn and @angular/cli package installed globally
+You need PHP (7.1+), composer, node (8+ because of quasar-cli 0.15+) npm or yarn and @angular/cli package installed globally
 You also need to configure your php with curl and openssl
 You have to setup the certificates [download pem file](https://curl.haxx.se/docs/caextract.html), put it somewhere on your system and set your php.ini with those values:
 
@@ -222,6 +222,8 @@ On PHP i use those 2 packages to prevent the use of deprecated packages or with 
 On JS i use snyk services.
 
 @TODO finish on PHP and JS checks + tools to audit the code + software that analyse sql/xss/file injection, csrf, ...
+
+@TODO help to setup security system: stateful app = take care at csrf ; stateless app = should i use jwt, api key, OAuth, anything else ? 
 
 ## API
 
