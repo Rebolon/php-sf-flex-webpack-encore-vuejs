@@ -111,7 +111,7 @@ The test_browser section represent all the browsers you want to use with the tes
 * axios: the library to perform http calls
 * [rxjs](http://reactivex.io/rxjs/): THE library to replace the usage of Promise !
 
-Here are some uninstalled components that may help you:
+Here are some non installed components that may help you:
 
 * [rekit](http://rekit.js.org/): an IDE for React devlopment, you should install it globally
 
@@ -401,6 +401,13 @@ query getBooksAndSerieQry($firstBook: Int, $afterBook: String, $firstSerie: Int,
 }
 ```
 
+## extras info
+
+I wrote some articles on medium to explain some practices setup in this project:
+ * [Symfony is not dead, thanks to VueJS](https://medium.com/@rebolon/symfony-is-not-dead-thanks-to-vuejs-99cdf75f57b): mainly for webpack encore purpose
+ * [How to bind your favorite JS framework with Symfony 4 ?](https://medium.com/@rebolon/how-to-bind-your-favorite-js-framework-with-symfony-4-8c9ba86e2b8d): some explanation about usage of ApiPlatform with a JS Framework, and my usage of Symfony ParamConverter for nested object used in POST route 
+ * [JSON Reviver pattern, how to restore Object from JSON into real entity](https://medium.com/@rebolon/json-reviver-pattern-how-to-restore-object-from-json-into-real-entity-737b1a220450): yet another pattern i used to revive Json objects retrieved from LocalStorage, Http calls or anything else
+ 
 ## third party issues that helped me to go on
 
  * https://github.com/api-platform/api-platform/issues/488
