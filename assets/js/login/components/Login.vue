@@ -4,7 +4,7 @@
             <label class="title">
                 <h5 class="welcome">Welcome to</h5>
                 the demo of Symfony 3.3+ / Webpack encore / Vuejs / Quasar
-                <h6 class="hint">You can login with test_user/test_pwd</h6>
+                <h6 class="hint">You can login with test/test</h6>
             </label>
             <div class="login-group">
                 <q-field
