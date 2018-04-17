@@ -6,7 +6,7 @@
   [![Build Status](https://travis-ci.org/Rebolon/php-sf-flex-webpack-encore-vuejs.png?branch=master)](https://travis-ci.org/Rebolon/php-sf-flex-webpack-encore-vuejs)
   [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Rebolon/php-sf-flex-webpack-encore-vuejs/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Rebolon/php-sf-flex-webpack-encore-vuejs/badges/quality-score.png?b=master)
   [![Known Vulnerabilities](https://snyk.io/test/github/rebolon/php-sf-flex-webpack-encore-vuejs/badge.svg?targetFile=package.json)](https://snyk.io/test/github/rebolon/php-sf-flex-webpack-encore-vuejs?targetFile=package.json)
-
+  [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FRebolon%2Fphp-sf-flex-webpack-encore-vuejs.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FRebolon%2Fphp-sf-flex-webpack-encore-vuejs?ref=badge_shield)
 </p>
 
 ## requirements
