@@ -243,6 +243,108 @@ For things like this you have to add new ApiFilter (like we did with sort). Ther
 
 You can also filter on relation, but in that case you will have to use the id (or the iris) of the relation as the value of the filter. More information in [documentation of ApiPlatform](https://api-platform.com/docs/core/filters#search-filter).
 
+### Normalizer, or how to return data from nested entities
+
+At the beginning when you query a Books route, each nested entities like Editors, Series, Authors will be represented only by IRI like : "/api/serie/1"
+This is cool when you don't need all nested information, you will prevent the user to download too many data. But very often, your application will require
+those informations, and in that case you seem condamned to do further HTTP call to retrieve all sub entities.
+
+You are on the wrong way, and i was too !
+
+Test the route `/api/books` and you will retreive that kind of response:
+```
+[
+  {
+    "id": 1,
+    "title": "20th Century Boys (Deluxe), Tome 1 test",
+    "description": null,
+    "indexInSerie": 1,
+    "authors": [
+      {
+        "id": 1,
+        "role": {
+          "id": 1,
+          "translationKey": "JOB_WRITER"
+        },
+        "author": {
+          "id": 1,
+          "firstname": "Urasawa"
+        }
+      }
+    ],
+    "editors": [
+      {
+        "id": 1,
+        "publicationDate": "0101-01-01T00:00:00+00:09",
+        "collection": null,
+        "isbn": "",
+        "editor": {
+          "id": 1,
+          "name": "Panini Comics"
+        }
+      }
+    ],
+    "serie": {
+      "id": 1,
+      "name": "20th Century boys (Deluxe)"
+    }
+  },
+  ...
+]
+```
+
+You can tell your API to return those nested entities. Look at Book and Serie entities. You will find extra annotation with @Groups and attributes.
+In Book, look at the main annotation, and at related property (i only show title property but more are aimed by @Groups, look at original code here: https://github.com/Rebolon/php-sf-flex-webpack-encore-vuejs/blob/master/src/Entity/Library/Book.php):
+
+```php
+/**
+ * @ApiResource(
+ *     ...
+ *     attributes={
+ *          "normalization_context"={
+ *              "groups"={"book_detail"}
+ *          }
+ *     }
+ * )
+ * 
+ * @ORM\Entity
+ */
+class Book implements LibraryInterface {
+...
+    /**
+     * @Groups("book_detail")
+     *
+     * @ORM\Column(type="string", length=255, nullable=false)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(max="255")
+     *
+     */
+    private $title;
+...
+```
+
+And now the Serie entity, wher you only need to add @Groups on the properties you want to be returned:
+```php
+...
+    /**
+     * @Groups("book_detail")
+     *
+     * @ORM\Column(type="string", length=512, nullable=false)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(max="512")
+     */
+    private $name;
+...
+```
+
+Have a look at Kevin Dunglas slides because it gimme some clue for this feature: https://speakerdeck.com/dunglas/rest-vs-graphql-illustrated-examples-with-the-api-platform-framework
+His talk may be online in future but i don't kno when ;-) so here is the page that may link to the video, on day: https://github.com/SymfonyLive/paris-2018-talks
+
+I still need to work on this feature because it would be cool to be able to build different route that may return IRIS or Normalized data. I don't know if it's possible
+and maybe i should go to GraphQL API because that's its job to do that kind of thing with its "Query".
+
 ### Custom Route
 
 There is a sample of custom route based on Action Demand Responder pattern that will allow to create new Books and it's dependancies in one HTTP call.
@@ -331,42 +433,43 @@ It takes the following JSON string as Body:
 
 - [x] setup Sf4
 - [x] setup symfony/webpack-encore
-- [x] add a model with doctrine entities
-- [x] add db fixtures at init! and fixtures for test only: done with the DoctrineFixturesBundle, it will generate fixtures based on var/data/fixtures.db, and when called from test env it will build a small scope of fixtures
-- [x] configure ApiPlatform
-- [x] setup one custom route for ApiPlatform
-- [x] setup custom route with nested objects on create/update/read (read should be solved ith serializer, create/update might be solved with custom route or DTOS so try 2 ways)
-- [ ] those custom route must referenced by the API documentation on /api route with correct description (for instance it's just book: string ...)
-- [x] improve JSON error from custom route: for instance when editor is misfilled it just return this message (without property path): jsonOrArray can be string or array
-- [ ] graphQL: multiple queries in one call ?
-- [ ] graphQL: multiple mutations in one call ?
-- [ ] graphQL: how to mutate nested objects in a minimal call ?
-- [ ] check best security system to setup with ApiPlatform (JWT / ApiKey / cookie & csrf system but in that case we are stateful which is not cool for deployment and replication ?)
-- [x] setup VueJS
-- [x] use Quasar with VueJS
-- [x] move on Quasar 0.15.x
-- [x] setup CSRF protection with VueJS app
-- [x] setup unit tests for JS (karma/jasmine)
-- [x] setup e2e tests for JS (testcafé)
-- [x] setup phpunit tests for PHP (unit test and webtestcase)
-- [x] write some JS units tests
-- [x] write some JS e2e tests
-- [x] write some PHP tests
-- [ ] fix testcafe role where sometimes they are not played: https://testcafe-discuss.devexpress.com/t/role-sometime-it-doesnt-seem-to-be-played/875
-- [x] setup tests reports
-- [ ] setup security with Symfony (ticket open coz i get 500 instead of 403: https://github.com/symfony/symfony/issues/25806) and choose between cookie (stateful), JWT (with Lexik bundle) or ApiKey (https://symfony.com/doc/current/security/guard_authentication.html)
-- [x] setup EasyAdminBundle
-- [ ] improve EasyAdminBundle with custom screen
-- [x] setup React Admin from ApiPlatform (take care at this issue is mandatory https://github.com/api-platform/api-platform/issues/584)
-- [ ] fix React Admin Book creation: it allows multiple authors (projectBookCreation) whereas it should not, and try to display the name of the author/editor... instead of their iris which is unundertandable
-- [ ] customize React Admin to display more information on datagrid, and customize form in book edition per example
-- [ ] keep EasyAdminBundle or React Admin: make a choice coz both are doing the same, i need to measure differences, and also the ease to do custom screen (change forms, manage rights...)
-- [ ] create another route with VueJS that use GQL instead of REST
-- [x] code style: use phpcscbf instead of php_cs_fixer coz it's embeded with phpcs and it uses the phpcs config file: **I decided to keep php_cs_fixer because it's more complete!**
-- [ ] transform this project into a meta package that will install all requirements for JS app within Symfony (like does laravel)
-- [x] check if i need the JMSSerializerBundle or if the serilizer component is enough (if autowiring runs well, why not): **I prefer to use Symfony serializer, it's enough**
-- [ ] have a lookAt the HauteLookAliceBundle to help in the creation of real fixtures during tests (instead of generating a new test.db which could be long)
-- [ ] try https://github.com/overblog/GraphQLBundle instead of ApiPlatform to try nested query/mutations (resolver are not auto-generated)
+- [x] db: add a model with doctrine entities
+- [x] db: add db fixtures at init! and fixtures for test only: done with the DoctrineFixturesBundle, it will generate fixtures based on var/data/fixtures.db, and when called from test env it will build a small scope of fixtures
+- [x] api: configure ApiPlatform
+- [x] api: setup one custom route for ApiPlatform
+- [x] api: replace IRIs for nested entities by real data (normalizer usage)
+- [x] api: setup custom route with nested objects on create/update/read (read should be solved ith serializer, create/update might be solved with custom route or DTOS so try 2 ways)
+- [ ] api: those custom route must referenced by the API documentation on /api route with correct description (for instance it's just book: string ...)
+- [x] api: improve JSON error from custom route: for instance when editor is misfilled it just return this message (without property path): jsonOrArray can be string or array
+- [ ] api: graphQL: multiple queries in one call ?
+- [ ] api: graphQL: multiple mutations in one call ?
+- [ ] api: graphQL: how to mutate nested objects in a minimal call ?
+- [ ] api: check best security system to setup with ApiPlatform (JWT / ApiKey / cookie & csrf system but in that case we are stateful which is not cool for deployment and replication ?)
+- [x] front: setup VueJS
+- [x] front: use Quasar with VueJS
+- [x] front: move on Quasar 0.15.x
+- [x] front: setup CSRF protection with VueJS app
+- [x] quality: setup unit tests for JS (karma/jasmine)
+- [x] quality: setup e2e tests for JS (testcafé)
+- [x] quality: setup phpunit tests for PHP (unit test and webtestcase)
+- [x] quality: write some JS units tests
+- [x] quality: write some JS e2e tests
+- [x] quality: write some PHP tests
+- [ ] quality: fix testcafe role where sometimes they are not played: https://testcafe-discuss.devexpress.com/t/role-sometime-it-doesnt-seem-to-be-played/875
+- [x] quality: setup tests reports
+- [ ] security: setup security with Symfony (ticket open coz i get 500 instead of 403: https://github.com/symfony/symfony/issues/25806) and choose between cookie (stateful), JWT (with Lexik bundle) or ApiKey (https://symfony.com/doc/current/security/guard_authentication.html)
+- [x] back: setup EasyAdminBundle
+- [ ] back: improve EasyAdminBundle with custom screen
+- [x] back: setup React Admin from ApiPlatform (take care at this issue is mandatory https://github.com/api-platform/api-platform/issues/584)
+- [ ] back: fix React Admin Book creation: it allows multiple authors (projectBookCreation) whereas it should not, and try to display the name of the author/editor... instead of their iris which is unundertandable
+- [ ] back: customize React Admin to display more information on datagrid, and customize form in book edition per example
+- [ ] back: keep EasyAdminBundle or React Admin: make a choice coz both are doing the same, i need to measure differences, and also the ease to do custom screen (change forms, manage rights...)
+- [ ] front: create another route with VueJS that use GQL instead of REST
+- [x] quality: code style: use phpcscbf instead of php_cs_fixer coz it's embeded with phpcs and it uses the phpcs config file: **I decided to keep php_cs_fixer because it's more complete!**
+- [ ] quality: transform this project into a meta package that will install all requirements for JS app within Symfony (like does laravel)
+- [x] security: check if i need the JMSSerializerBundle or if the serializer component is enough (if autowiring runs well, why not): **I prefer to use Symfony serializer, it's enough**
+- [ ] db: have a lookAt the HauteLookAliceBundle to help in the creation of real fixtures during tests (instead of generating a new test.db which could be long)
+- [ ] api: try https://github.com/overblog/GraphQLBundle instead of ApiPlatform to try nested query/mutations (resolver are not auto-generated)
 
 * improve this tutorial with ~~an API Route built with Api platform (without DB)~~ and install the vue-generator from api-platform for a crud sample
 * manage Entity orphanRemoval / CASCADE onDelete

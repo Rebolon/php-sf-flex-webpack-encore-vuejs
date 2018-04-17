@@ -9,6 +9,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -25,6 +26,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *         "delete"={"method"="delete", "access_control"="is_granted('ROLE_USER')", "access_control_message"="Only authenticated users can delete books."},
  *         "special_1"={"route_name"="book_special_sample1"},
  *         "special_2"={"route_name"="book_special_sample2"},
+ *     },
+ *     attributes={
+ *          "normalization_context"={
+ *              "groups"={"book_detail"}
+ *          }
  *     }
  * )
  * @ApiFilter(OrderFilter::class, properties={"id", "title"}, arguments={"orderParameterName"="order"})
@@ -37,6 +43,7 @@ class Book implements LibraryInterface
      * @ApiProperty(
      *     iri="http://schema.org/identifier"
      * )
+     * @Groups("book_detail")
      *
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -48,6 +55,7 @@ class Book implements LibraryInterface
      * @ApiProperty(
      *     iri="http://schema.org/headline"
      * )
+     * @Groups("book_detail")
      *
      * @ORM\Column(type="string", length=255, nullable=false)
      *
@@ -61,6 +69,7 @@ class Book implements LibraryInterface
      * @ApiProperty(
      *     iri="http://schema.org/description"
      * )
+     * @Groups("book_detail")
      *
      * @ORM\Column(type="text", nullable=true)
      */
@@ -75,6 +84,7 @@ class Book implements LibraryInterface
      *         }
      *     }
      * )
+     * @Groups("book_detail")
      *
      * @ORM\Column(type="integer", nullable=true, name="index_in_serie")
      *
@@ -97,6 +107,7 @@ class Book implements LibraryInterface
      * @var ProjectBookCreation
      *
      * @ApiSubresource(maxDepth=1)
+     * @Groups("book_detail")
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookCreation", mappedBy="book", cascade={"persist", "remove"})
      */
@@ -106,6 +117,7 @@ class Book implements LibraryInterface
      * @var ProjectBookEdition
      *
      * @ApiSubresource(maxDepth=1)
+     * @Groups("book_detail")
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookEdition", mappedBy="book", cascade={"persist", "remove"})
      */
@@ -113,6 +125,7 @@ class Book implements LibraryInterface
 
     /**
      * @ApiSubresource(maxDepth=1)
+     * @Groups("book_detail")
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Library\Serie", inversedBy="books", cascade={"persist"})
      * @ORM\JoinColumn(name="serie_id", referencedColumnName="id")

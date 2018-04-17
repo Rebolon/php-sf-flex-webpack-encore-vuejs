@@ -7,6 +7,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -22,6 +23,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ProjectBookEdition implements LibraryInterface
 {
     /**
+     * @Groups("book_detail")
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -29,6 +32,8 @@ class ProjectBookEdition implements LibraryInterface
     private $id;
 
     /**
+     * @Groups("book_detail")
+     *
      * @ORM\Column(type="date", nullable=true, options={"default":"now()"}, name="publication_date")
      *
      * @Assert\DateTime()
@@ -36,6 +41,8 @@ class ProjectBookEdition implements LibraryInterface
     private $publicationDate;
 
     /**
+     * @Groups("book_detail")
+     *
      * @ORM\Column(type="string", nullable=true)
      *
      * @Assert\Type(type="string")
@@ -46,6 +53,7 @@ class ProjectBookEdition implements LibraryInterface
      * @ApiProperty(
      *     iri="http://schema.org/isbn"
      * )
+     * @Groups("book_detail")
      *
      * @ORM\Column(nullable=true)
      *
@@ -54,6 +62,8 @@ class ProjectBookEdition implements LibraryInterface
     private $isbn;
 
     /**
+     * @Groups("book_detail")
+     *
      * @ORM\ManyToOne(
      *     targetEntity="App\Entity\Library\Editor",
      *     inversedBy="books",
@@ -105,7 +115,7 @@ class ProjectBookEdition implements LibraryInterface
     }
 
     /**
-     * @param mixed $publication_date
+     * @param mixed $publicationDate
      * @return ProjectBookEdition
      */
     public function setPublicationDate($publicationDate): ProjectBookEdition
