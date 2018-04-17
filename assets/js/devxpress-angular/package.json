@@ -3,12 +3,12 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build --prod",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "ng": "node_modules/.bin/ng",
+    "start": "node_modules/.bin/ng serve",
+    "build": "node_modules/.bin/ng build --prod",
+    "test": "node_modules/.bin/ng test",
+    "lint": "node_modules/.bin/ng lint",
+    "e2e": "node_modules/.bin/ng e2e"
   },
   "private": true,
   "dependencies": {
@@ -21,13 +21,17 @@
     "@angular/platform-browser": "^5.2.0",
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
+    "@api-platform/admin": "^0.4.1",
     "@rebolon/json-reviver": "0.0.7",
     "@types/sharedworker": "0.0.27",
+    "angular-archwizard": "^3.0.0",
+    "bootstrap": "^4.1.0",
     "core-js": "^2.4.1",
     "devextreme": "^17.2.6",
     "devextreme-angular": "^17.2.6",
     "immutable": "^3.8.2",
-    "rxjs": "^5.5.6",
+    "prettier": "^1.12.0",
+    "rxjs": "^5.5.9",
     "zone.js": "^0.8.19"
   },
   "devDependencies": {

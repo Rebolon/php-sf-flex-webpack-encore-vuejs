@@ -31,14 +31,16 @@
         "watch:windows": "START /B .\\node_modules\\.bin\\encore dev --watch && cd assets/js/devxpress-angular/ && node_modules\\.bin\\ng build --dev --watch --extract-css",
         "build": "./node_modules/.bin/encore production && cd assets/js/devxpress-angular/ && node_modules/.bin/ng build --prod -aot --watch --extract-css",
         "build:windows": ".\\node_modules\\.bin\\encore production && cd assets/js/devxpress-angular/ && node_modules\\.bin\\ng build --prod -aot --watch --extract-css",
+        "build-for-test": "./node_modules/.bin/encore dev",
+        "build-for-test:windows": ".\\node_modules\\.bin\\encore dev",
         "test-cafe": "./node_modules/.bin/testcafe $npm_package_config_test_browser ./assets/tests  --reporter spec,xunit:var/report/testcafe.xml",
         "test-cafe:windows": ".\\node_modules\\.bin\\testcafe %npm_package_config_test_browser% ./assets/tests  --reporter  spec,xunit:var/report/testcafe.xml",
         "test-karma": "./node_modules/.bin/karma start assets/tests/units/karma.conf.js --single-run",
         "test-karma-watch": "./node_modules/.bin/karma start assets/tests/units/karma.conf.js",
-        "test-php": "./vendor/bin/phpunit",
-        "test-php:windows": ".\\vendor\\bin\\phpunit.bat",
-        "test": "npm run test-php && npm run test-karma && npm run test-cafe && cd assets/js/devxpress-angular/ && node_modules/.bin/ng test && node_modules/.bin/ng e2e",
-        "test:windows": "npm run test-php:windows && npm run test-karma && npm run test-cafe:windows && cd assets/js/devxpress-angular/ && node_modules\\.bin\\ng test && node_modules\\.bin\\ng e2e"
+        "test-php": "npm run build-for-test && ./vendor/bin/phpunit",
+        "test-php:windows": "npm run build-for-test:windows && .\\vendor\\bin\\phpunit.bat",
+        "test": "npm run dev && npm run test-php && npm run test-karma && npm run test-cafe && cd assets/js/devxpress-angular/ && node_modules/.bin/ng test && node_modules/.bin/ng e2e",
+        "test:windows": "npm run dev:windows && npm run test-php:windows && npm run test-karma && npm run test-cafe:windows && cd assets/js/devxpress-angular/ && node_modules\\.bin\\ng test && node_modules\\.bin\\ng e2e"
     },
     "dependencies": {
         "@api-platform/admin": "^0.4.0",
@@ -81,7 +83,7 @@
         "node-sass": "^4.8.3",
         "prettier": "^1.11.1",
         "sass-loader": "^6.0.7",
-        "testcafe": "^0.19.1",
+        "testcafe": "^0.19.2",
         "testcafe-vue-selectors": "^3.0.0",
         "vue-loader": "^14.2.2",
         "vue-template-compiler": "^2.5.16"
