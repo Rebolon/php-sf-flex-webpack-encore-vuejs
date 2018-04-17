@@ -48,6 +48,8 @@ export class DatagridComponent implements OnInit {
                   // Take care, until you click on the parent window, data won't be refreshed in datagrid. don't know if it's because of browser behavior or DevXpress.datagrid
                   notify(`new Book received with id ${book.id}, focus the window to see the changes in datagrid. 
                   Data is not saved until you edit it`, "info", 5000)
+                  this.dataGrid.instance.clearSelection()
+
                   break
               case 'hello':
               case 'ping':

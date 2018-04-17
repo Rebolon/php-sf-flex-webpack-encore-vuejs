@@ -1,0 +1,55 @@
+build:
+    environment:
+        redis: false
+        postgresql: false
+        php:
+            version: '7.1'
+        node:
+            version: '8.10.0'
+    nodes:
+#        angular:
+#            project_setup:
+#                after:
+#                    - cd ../../../
+#                    - npm run init-project
+#                    - cd assets/js/devxpress-angular
+#            # Assumes that the API project is in a sub-path 'frontend' in your repository root
+#            root_path: './assets/js/devxpress-angular'
+#            tests:
+#                override:
+#                    - npm run test
+#                    - npm run e2e
+        karma:
+            project_setup:
+                after:
+                    - npm run init-project
+            root_path: './'
+            tests:
+                override:
+                    - npm run test-karma
+                    - php-scrutinizer-run
+                    -
+                        command: phpcs-run
+                        use_website_config: true
+                    # build asset required by php
+                    - npm run build-for-test
+                    -
+                        command: 'vendor/bin/phpunit --coverage-clover=var/report/clover.xml'
+                        coverage:
+                            file: 'var/report/clover.xml'
+                            format: 'clover'
+
+filter:
+    excluded_paths:
+        - 'tests/*'
+        - 'bin/*'
+        - 'var/*'
+        - 'public/*'
+checks:
+    php: true
+    javascript: true
+coding_style:
+    php:
+        spaces:
+            around_operators:
+                concatenation: true

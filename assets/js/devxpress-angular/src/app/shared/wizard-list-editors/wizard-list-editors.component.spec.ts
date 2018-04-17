@@ -1,11 +1,14 @@
 import { TestBed, async } from '@angular/core/testing';
 import { WizardListEditorsComponent } from './wizard-list-editors.component';
+import {SharedModule} from "../shared.module";
 describe('WizardListEditorsComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [
-          WizardListEditorsComponent
-      ],
+        declarations: [
+        ],
+        imports: [
+            SharedModule,
+        ]
     }).compileComponents();
   }));
   it('should create the component', async(() => {

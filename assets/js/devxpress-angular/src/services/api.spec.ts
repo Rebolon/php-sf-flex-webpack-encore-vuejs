@@ -1,4 +1,4 @@
-import { async, TestBed } from '@angular/core/testing'
+import {async, fakeAsync, TestBed, tick} from '@angular/core/testing'
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing'
 
 import { environment } from '../environments/environment'
@@ -27,25 +27,25 @@ describe('Http Service', () => {
             .toBe(`${baseUrl}`, 'Your service should have a field `baseUrl` correctly initialized')
     })
 
-    it('should do a GET request', async(() => {
+    it('should do a GET request', fakeAsync(() => {
         const hardcodedBooks = [{ name: 'Batman vs Superman' }, { name: 'Spirou & Fantasio' }, { name: 'Harry Potter' }]
 
-        httpService.get('/books').subscribe((res) => {
+        httpService.get('/api/books').subscribe((res) => {
             expect(res).toBe(hardcodedBooks)
         })
 
-        http.expectOne('/books')
+        http.expectOne('/api/books')
             .flush(hardcodedBooks)
     }))
 
-    it('should do a POST request', async(() => {
+    it('should do a POST request', fakeAsync(() => {
         const hardcodedBooks = [{ name: 'Batman vs Superman' }, { name: 'Spirou & Fantasio' }, { name: 'Harry Potter' }]
 
-        httpService.post('/books', hardcodedBooks).subscribe((res) => {
+        httpService.post('/api/books', hardcodedBooks).subscribe((res) => {
             expect(res).toBe(hardcodedBooks)
         })
-
-        http.expectOne('/books')
+        debugger
+        http.expectOne('/api/books')
             .flush(hardcodedBooks)
     }))
 
@@ -79,7 +79,7 @@ describe('Http Service', () => {
             .and.returnValue(JSON.stringify({ token: 'secret' }))
 
         const hardcodedBooks = [{ name: 'Batman vs Superman' }, { name: 'Spirou & Fantasio' }, { name: 'Harry Potter' }]
-        httpService.get('/books').subscribe((res) => {
+        httpService.get('/api/books').subscribe((res) => {
             expect(res).toBe(hardcodedBooks)
         })
     }))
@@ -89,11 +89,11 @@ describe('Http Service', () => {
             .and.returnValue(JSON.stringify({ token: 'secret' }))
 
         const hardcodedBooks = [{ name: 'Batman vs Superman' }, { name: 'Spirou & Fantasio' }, { name: 'Harry Potter' }]
-        httpService.get('/books').subscribe((res) => {
+        httpService.get('/api/books').subscribe((res) => {
             expect(res).toBe(hardcodedBooks)
         })
 
-        httpService.delete('/books/1').subscribe((res) => {
+        httpService.delete('/api/books/1').subscribe((res) => {
             expect(res.status).toBe(204, 'The delete method should return the response (and not extract the JSON).')
         })
     }))

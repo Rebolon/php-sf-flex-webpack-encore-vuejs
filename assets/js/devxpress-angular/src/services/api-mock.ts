@@ -8,6 +8,7 @@ import 'rxjs/add/operator/map'
 import 'rxjs/add/observable/of'
 
 import { books } from '../mocks/books'
+import { jobs } from '../mocks/jobs'
 import { ApiMockError } from './api-mock.exception'
 
 @Injectable()
@@ -24,6 +25,10 @@ export class ApiServiceMock extends ApiService {
             return Observable.of(books).delay(0)
         }
 
+        if (new URL(uri).pathname.match(/^\/api\/jobs/)) {
+            return Observable.of(jobs).delay(0)
+        }
+
         throw new ApiMockError(`Unknown route ${uri} from ApiServiceMock::get`)
     }
 
@@ -38,6 +43,10 @@ export class ApiServiceMock extends ApiService {
 
         if (new URL(uri).pathname.match(/^\/api\/books/)) {
             return Observable.of(books).delay(0)
+        }
+
+        if (new URL(uri).pathname.match(/^\/api\/jobs/)) {
+            return Observable.of(jobs).delay(0)
         }
 
         throw new ApiMockError(`Unknown route ${uri} from ApiServiceMock::post`)
