@@ -5,7 +5,6 @@
 namespace App\Tests;
 
 use App\Tests\Common\ApiAbstract;
-use App\Tests\Common\JsonBook;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 
 /**
@@ -17,6 +16,107 @@ use Symfony\Bundle\FrameworkBundle\Routing\Router;
 class ApiPlatformCustomRoutesWithParamConverterTest extends ApiAbstract
 {
     /**
+     * @var string allow to test a correct HTTP Post with the ability of the ParamConverter to de-duplicate entity like for editor in this sample
+     */
+    public $bodyOk = <<<JSON
+{
+    "book": {
+        "title": "Zombies in western culture",
+        "editors": [{
+            "publicationDate": "1519664915",
+            "collection": "printed version",
+            "isbn": "9781783743230",
+            "editor": {
+                "name": "Open Book Publishers"
+            }
+        }, {
+            "publicationDate": "1519747464",
+            "collection": "ebooks",
+            "isbn": "9791036500824",
+            "editor": {
+                "name": "Open Book Publishers"
+            }
+        }],
+        "authors": [{
+            "role": {
+                "translationKey": "WRITER"
+            },
+            "author": {
+                "firstname": "Marc",
+                "lastname": "O'Brien"
+            }
+        }, {
+            "role": {
+                "translationKey": "WRITER"
+            },
+            "author": {
+                "firstname": "Paul",
+                "lastname": "Kyprianou"
+            }
+        }],
+        "serie": {
+            "name": "Open Reports Series"
+        }
+    }
+}
+JSON;
+
+    /**
+     * @var string to test that the ParamConverter are abled to reuse entity from database
+     */
+    public $bodyOkWithExistingEntities = <<<JSON
+{
+    "book": {
+        "title": "Oh my god, how simple it is !",
+        "editors": [{
+            "publicationDate": "1519664915",
+            "collection": "from my head",
+            "isbn": "9781783742530",
+            "editor": 1
+        }, {
+            "publicationDate": "1519747464",
+            "collection": "ebooks",
+            "isbn": "9782821883963",
+            "editor": {
+                "name": "Open Book Publishers"
+            }
+        }],
+        "authors": [{
+            "role": 2,
+            "author": 3
+        }, {
+            "role": {
+                "translationKey": "WRITER"
+            },
+            "author": {
+                "firstname": "Paul",
+                "lastname": "Kyprianou"
+            }
+        }],
+        "serie": 4
+    }
+}
+JSON;
+
+    /**
+     * @var string allow to test a failed HTTP Post with expected JSON content
+     */
+public $bodyNoEditor = <<<JSON
+{
+    "book": {
+        "title": "Oh my god, how simple it is !",
+        "editors": [{
+            "publicationDate": "1519664915",
+            "collection": "from my head",
+            "isbn": "9781783742530",
+            "editor": { }
+        }],
+        "serie": 4
+    }
+}
+JSON;
+
+    /**
      * @group git-pre-push
      */
     public function testBookSpecialSample3WithAllEntitiesToBeCreated()
@@ -26,7 +126,7 @@ class ApiPlatformCustomRoutesWithParamConverterTest extends ApiAbstract
         // $uri = $router->generate('book_special_sample3', []);
         // router fails to generate the route so for instance don't loose time and force uri
         $uri = '/api/booksiu/special_3';
-        $content = JsonBook::$bodyOk;;
+        $content = $this->bodyOk;
         $expected = json_decode($content);
 
         $client->request('POST', $uri, [], [], [], $content);
@@ -87,7 +187,7 @@ class ApiPlatformCustomRoutesWithParamConverterTest extends ApiAbstract
         // $uri = $router->generate('book_special_sample3', []);
         // router fails to generate the route so for instance don't loose time and force uri
         $uri = '/api/booksiu/special_3';
-        $content = JsonBook::$bodyOkWithExistingEntities;
+        $content = $this->bodyOkWithExistingEntities;
         $expected = json_decode($content);
 
         $client->request('POST', $uri, [], [], [], $content);
@@ -140,7 +240,7 @@ class ApiPlatformCustomRoutesWithParamConverterTest extends ApiAbstract
         // $uri = $router->generate('book_special_sample3', []);
         // router fails to generate the route so for instance don't loose time and force uri
         $uri = '/api/booksiu/special_3';
-        $content = JsonBook::$bodyNoEditor;
+        $content = $this->bodyNoEditor;
         $expected = json_decode(<<<JSON
 {
   "type": "https:\/\/tools.ietf.org\/html\/rfc2616#section-10",
