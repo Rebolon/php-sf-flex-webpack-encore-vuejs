@@ -9,6 +9,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -26,6 +27,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Author implements LibraryInterface
 {
     /**
+     * @Groups("book_detail")
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -36,6 +39,7 @@ class Author implements LibraryInterface
      * @ApiProperty (
      *     iri="http://schema.org/givenName"
      * )
+     * @Groups("book_detail")
      *
      * @ORM\Column(type="string", nullable=false)
      *

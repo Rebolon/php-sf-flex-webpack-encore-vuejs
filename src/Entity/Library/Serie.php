@@ -9,6 +9,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -23,6 +24,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Serie implements LibraryInterface
 {
     /**
+     * @Groups("book_detail")
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -33,6 +36,7 @@ class Serie implements LibraryInterface
      * @ApiProperty(
      *      iri="http://pending.schema.org/headline"
      * )
+     * @Groups("book_detail")
      *
      * @ORM\Column(type="string", length=512, nullable=false)
      *

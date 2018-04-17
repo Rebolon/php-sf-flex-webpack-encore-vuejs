@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource(
@@ -19,6 +20,8 @@ use Doctrine\ORM\Mapping as ORM;
 class ProjectBookCreation implements LibraryInterface
 {
     /**
+     * @Groups("book_detail")
+     *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -27,6 +30,7 @@ class ProjectBookCreation implements LibraryInterface
 
     /**
      * @ApiSubresource(maxDepth=1)
+     * @Groups("book_detail")
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Library\Job", cascade={"persist"})
      * @ORM\JoinColumn(name="job_id", referencedColumnName="id")
@@ -45,6 +49,9 @@ class ProjectBookCreation implements LibraryInterface
     private $book;
 
     /**
+     * @ApiSubresource(maxDepth=1)
+     * @Groups("book_detail")
+     *
      * @ORM\ManyToOne(
      *     targetEntity="App\Entity\Library\Author",
      *     inversedBy="books",
