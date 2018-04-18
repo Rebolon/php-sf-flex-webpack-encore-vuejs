@@ -3,11 +3,11 @@
 <p align="center">
 
   [![Tested with TestCafe](https://img.shields.io/badge/tested%20with-TestCafe-2fa4cf.svg)](https://github.com/DevExpress/testcafe)
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FRebolon%2Fphp-sf-flex-webpack-encore-vuejs.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FRebolon%2Fphp-sf-flex-webpack-encore-vuejs?ref=badge_shield)
   [![Build Status](https://travis-ci.org/Rebolon/php-sf-flex-webpack-encore-vuejs.png?branch=master)](https://travis-ci.org/Rebolon/php-sf-flex-webpack-encore-vuejs)
   [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Rebolon/php-sf-flex-webpack-encore-vuejs/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Rebolon/php-sf-flex-webpack-encore-vuejs/badges/quality-score.png?b=master)
   [![Known Vulnerabilities](https://snyk.io/test/github/rebolon/php-sf-flex-webpack-encore-vuejs/badge.svg?targetFile=package.json)](https://snyk.io/test/github/rebolon/php-sf-flex-webpack-encore-vuejs?targetFile=package.json)
   [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FRebolon%2Fphp-sf-flex-webpack-encore-vuejs.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FRebolon%2Fphp-sf-flex-webpack-encore-vuejs?ref=badge_shield)
+
 </p>
 
 ## requirements
@@ -225,7 +225,9 @@ On JS i use snyk services.
 
 @TODO finish on PHP and JS checks + tools to audit the code + software that analyse sql/xss/file injection, csrf, ...
 
-@TODO help to setup security system: stateful app = take care at csrf ; stateless app = should i use jwt, api key, OAuth, anything else ? 
+@TODO help to setup security system: stateful app = take care at csrf ; stateless app = should i use jwt, api key, OAuth, anything else ?
+
+@TODO explain the usage of tools like OWASP ZED, sqlmap, php avenger...
 
 ## API
 
