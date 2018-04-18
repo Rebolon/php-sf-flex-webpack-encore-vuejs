@@ -20,7 +20,7 @@ class ApiPlatformDenormalizerTest extends ApiAbstract
     {
         $this->markTestIncomplete();
     }
-    
+
     /**
      * @group git-pre-push
      */

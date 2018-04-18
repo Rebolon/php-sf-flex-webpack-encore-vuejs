@@ -30,6 +30,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     attributes={
  *          "normalization_context"={
  *              "groups"={"book_detail"}
+ *          },
+ *          "denormalization_context"={
+ *              "groups"={"book_detail"}
  *          }
  *     }
  * )
