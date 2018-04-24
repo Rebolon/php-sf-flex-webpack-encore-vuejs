@@ -36,3 +36,7 @@
 /assets/js/angular/devxpress-angular/node_modules/
 
 /public/dist-ng-prod-with-service-worker
+
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###

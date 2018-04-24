@@ -25,7 +25,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Editor implements LibraryInterface
 {
     /**
-     * @Groups("book_detail")
+     * @Groups("book_detail_read")
      *
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -37,7 +37,7 @@ class Editor implements LibraryInterface
      * @ApiProperty(
      *     iri="http://schema.org/legalName"
      * )
-     * @Groups("book_detail")
+     * @Groups({"book_detail_read", "book_detail_write"})
      *
      * @ORM\Column(type="string", length=512, nullable=false)
      *

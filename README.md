@@ -32,7 +32,7 @@ Here is how it has been created:
 
 * composer create-project symfony/skeleton sf-flex-encore-vuejs
 * cd sf-flex-encore-vuejs
-* composer req encore annotations twig api http profiler log doctrine-migrations admin webonyx/graphql-php
+* composer req encore annotations twig api jwt-auth http profiler log doctrine-migrations admin webonyx/graphql-php
 * composer require --dev doctrine/doctrine-fixtures-bundle phpunit/phpunit symfony/dom-crawler symfony/browser-kit symfony/css-selector security-checker roave/security-advisories:dev-master
 * yarn add vue vue-router quasar-framework quasar-extras vuelidate vue-apollo@next graphql apollo-client apollo-link apollo-link-http apollo-link-error apollo-cache-inmemory graphql-tag react react-dom prop-types axios rxjs @devexpress/dx-react-core @devexpress/dx-react-grid
 * yarn add --dev vue-loader vue-template-compiler vue-router react-loader babel-preset-es2017 babel-preset-react sass-loader node-sass bootstrap@4.0.0 testcafe testcafe-vue-selectors jasmine karma karma-jasmine karma-spec-reporter karma-junit-reporter karma-webpack karma-chrome-launcher offline-plugin
@@ -135,6 +135,9 @@ For [Angular](https://angular.io/) (v5), i decided to do quite different way:
      * it creates the physical database from the `config/packages/doctrine.yaml` file
      * it builds the schema based on `src/Entity/*` files
      * it load fixtures based on a db sample built with `calibre` software plus a plugin that export data to sqlite format. An alternative to this would have been to use https://github.com/hautelook/AliceBundle and build yaml fixtures, but i already had an sqlite db so i didn't need this :-)
+* generate certificate for JWT authentification:
+  1. Change the value of the key JWT_PASSPHRASE from the file .env
+  2. Run `npm run jwt-init` and use the passphrase you setup for JWT_PASSPHRASE
 * Run your application with php built-in server:
   1. Change to the project directory
   2. Execute the `npm run dev-server-hot` (or dev-server-hot:windows for windows system) command to start the asset server that will build your assets and your manifest.json and serve the assets with hot module replacment when you do a modification on a vuejs file
@@ -207,6 +210,8 @@ other classes, but we should also test more finely the API content.
 Take care with Symfony4 to configure the config/packages/test/framework.yaml file to overload the session.storage_id with
 a mock !
 
+**JWT Certificates** in test mode, we don't use pem files from your dev/prod env. In fact we use pem files generated specifically for tests and copied from var/travis/config to var/cache/config
+
 On Javascript we have unit and e2 tests. Units tests are managed by jasmine and karma. It allows to test function, class, component.
 For e2e tests we use testcafe from devExpress. It allows to launch browsers and drive them by code to reproduce a human behavior.
 Here the tests runs on a chrome headless, and firefox but you can configure it in the package.json file in the config.test_browser node.
@@ -224,10 +229,28 @@ On PHP i use those 2 packages to prevent the use of deprecated packages or with 
 On JS i use snyk services.
 
 @TODO finish on PHP and JS checks + tools to audit the code + software that analyse sql/xss/file injection, csrf, ...
-
+@TODO explain the usage of tools like OWASP ZED, sqlmap, php avenger...
 @TODO help to setup security system: stateful app = take care at csrf ; stateless app = should i use jwt, api key, OAuth, anything else ?
 
-@TODO explain the usage of tools like OWASP ZED, sqlmap, php avenger...
+### Symfony security
+In Symfony i configured different firewalls:
+ * *security_js* and *security_php* share the same context so when you are logged on one, you are also logged on the other. I did this because a firewall cannot use both form_login and json_login (or i didn't found the way), and i wnated you to understand the concept of context.
+ * *security_jwt* is for stateless app. You can read the following tutorial to understand [https://knpuniversity.com/screencast/symfony-rest4](https://knpuniversity.com/screencast/symfony-rest4)
+
+If you doesn't need JWT, you can use ApiKey pattern. For this you have to implement the required Authenticator: https://symfony.com/doc/current/security/api_key_authentication.html
+If you need more tuning with huge APIs, you may require OAuth with JWT. OAuth will help you so have a look at this website: https://oauth.net/
+
+### Cookies
+In statefull app you will have HTTP Cookies. Even if you don't really manipulate them, and that they are used only to transport the sessionId between the server and the client.
+But if you use them to store other informations, you should be aware that they can be misused and that they can open XSS or CSRF web fail.
+Your cookies must have some specific attributes:
+ * secure
+ * httponly
+ * date (to prevent them to be infinite)
+ * samesite (strict or lax...)
+ 
+You have to pay attention at them. And you can play with them on those sites: http://cookies.rocks and http://example-bar.com (source here: https://github.com/hsablonniere/cookies.rocks and related talk here: https://github.com/hsablonniere/talk-back-to-basics-cookies)
+
 
 ## API
 
@@ -443,11 +466,15 @@ It takes the following JSON string as Body:
 - [x] api: replace IRIs for nested entities by real data (normalizer usage)
 - [x] api: setup custom route with nested objects on create/update/read (read should be solved ith serializer, create/update might be solved with custom route or DTOS so try 2 ways)
 - [ ] api: those custom route must referenced by the API documentation on /api route with correct description (for instance it's just book: string ...)
+- [x] api: use normalizer to get nested entities
+- [ ] api: use denormalizer to post/put nested entities (and use custom route when we want deduplication for example)
+- [ ] api: use properties in queryString to select only wished props from REST: api/books/1?properties[]=title&properties[]=serie
 - [x] api: improve JSON error from custom route: for instance when editor is misfilled it just return this message (without property path): jsonOrArray can be string or array
 - [ ] api: graphQL: multiple queries in one call ?
 - [ ] api: graphQL: multiple mutations in one call ?
 - [ ] api: graphQL: how to mutate nested objects in a minimal call ?
-- [ ] api: check best security system to setup with ApiPlatform (JWT / ApiKey / cookie & csrf system but in that case we are stateful which is not cool for deployment and replication ?)
+- [X] api: check best security system to setup with ApiPlatform (JWT / ApiKey / cookie & csrf system but in that case we are stateful which is not cool for deployment and replication ?). Finally we use JWT which is the best thing to do and compliant with statefull or stateless.
+- [ ] api: JWT setup the pattern for the refresh-token or anything else more info here https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/
 - [x] front: setup VueJS
 - [x] front: use Quasar with VueJS
 - [x] front: move on Quasar 0.15.x
@@ -468,6 +495,7 @@ It takes the following JSON string as Body:
 - [ ] back: customize React Admin to display more information on datagrid, and customize form in book edition per example
 - [ ] back: keep EasyAdminBundle or React Admin: make a choice coz both are doing the same, i need to measure differences, and also the ease to do custom screen (change forms, manage rights...)
 - [ ] front: create another route with VueJS that use GQL instead of REST
+- [ ] front: add storyBook package for VueJS and Angular and use it to manage and test our components
 - [x] quality: code style: use phpcscbf instead of php_cs_fixer coz it's embeded with phpcs and it uses the phpcs config file: **I decided to keep php_cs_fixer because it's more complete!**
 - [ ] quality: transform this project into a meta package that will install all requirements for JS app within Symfony (like does laravel)
 - [x] security: check if i need the JMSSerializerBundle or if the serializer component is enough (if autowiring runs well, why not): **I prefer to use Symfony serializer, it's enough**

@@ -7,8 +7,9 @@ parameters:
     login_username_path: 'login_username'
     login_password_path: 'login_password'
     # must be the same value as the firewall key for json_login
-    provider_id: 'vuejs'
+    provider_id: 'security_json'
     api_platform_prefix: '/api'
+    token_jwt_ttl: 3
 
 services:
     # default configuration for services in *this* file
@@ -107,3 +108,7 @@ services:
             - '@validator'
         tags:
             - { name: request.param_converter, priority: -2, converter: serie }
+
+    # needs to alias the current security.user.provider.concrete.in_memory to the class (seems not done in sf or security bundle)
+    Symfony\Component\Security\Core\User\InMemoryUserProvider:
+        alias: security.user.provider.concrete.in_memory

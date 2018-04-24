@@ -113,11 +113,23 @@
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
+    "lexik/jwt-authentication-bundle": {
+        "version": "2.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "2.3",
+            "ref": "a66e8a7b75a1825cf2414d5dd53c7ed38c8654d1"
+        }
+    },
     "monolog/monolog": {
         "version": "1.23.0"
     },
     "myclabs/deep-copy": {
         "version": "1.7.0"
+    },
+    "namshi/jose": {
+        "version": "7.2.3"
     },
     "nelmio/cors-bundle": {
         "version": "1.5",
@@ -410,11 +422,17 @@
     "symfony/polyfill-mbstring": {
         "version": "v1.6.0"
     },
+    "symfony/polyfill-php56": {
+        "version": "v1.7.0"
+    },
     "symfony/polyfill-php70": {
         "version": "v1.6.0"
     },
     "symfony/polyfill-php72": {
         "version": "v1.6.0"
+    },
+    "symfony/polyfill-util": {
+        "version": "v1.7.0"
     },
     "symfony/process": {
         "version": "v4.0.3"

@@ -20,7 +20,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class ProjectBookCreation implements LibraryInterface
 {
     /**
-     * @Groups("book_detail")
+     * @Groups("book_detail_read")
      *
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -29,8 +29,8 @@ class ProjectBookCreation implements LibraryInterface
     private $id;
 
     /**
-     * @ApiSubresource(maxDepth=1)
-     * @Groups("book_detail")
+     * @ApiSubresource()
+     * @Groups({"book_detail_read", "book_detail_write"})
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Library\Job", cascade={"persist"})
      * @ORM\JoinColumn(name="job_id", referencedColumnName="id")
@@ -50,7 +50,7 @@ class ProjectBookCreation implements LibraryInterface
 
     /**
      * @ApiSubresource(maxDepth=1)
-     * @Groups("book_detail")
+     * @Groups({"book_detail_read", "book_detail_write"})
      *
      * @ORM\ManyToOne(
      *     targetEntity="App\Entity\Library\Author",

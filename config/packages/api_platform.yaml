@@ -22,3 +22,10 @@ api_platform:
         # The 2 following handlers are registered by default, keep those lines to prevent unexpected side effects
         Symfony\Component\Serializer\Exception\ExceptionInterface: 400 # Use a raw status code (recommended)
         ApiPlatform\Core\Exception\InvalidArgumentException: 'HTTP_BAD_REQUEST' # Or a `Symfony\Component\HttpFoundation\Response`'s constant
+
+    # JWT extra info
+    swagger:
+         api_keys:
+             apiKey:
+                name: Authorization
+                type: header

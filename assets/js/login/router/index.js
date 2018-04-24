@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '../components/Login.vue'
 import Secured from '../components/Secured.vue'
+import { loginInfos } from '../../lib/config'
 
 Vue.use(Router)
 
@@ -33,6 +34,7 @@ export default new Router({
             props: {
                 default: true,
                 redirect: '/secured',
+                loginUri: loginInfos.uriJson
             },
         },
         {

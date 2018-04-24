@@ -12,12 +12,12 @@ simple:
 # firewall JSON: do not uncomment ! if you do and replace the path in the security.yaml by the name of the route, it will fail !
 # @todo: open an issue on Symfony to see if the behaviour is 'expected'
 #demo_login_json_check:
-#    path: /demo/login/json
+#    path: /demo/security/login/json
 demo_login_json_logout:
-    path: /demo/login/json/logout
+    path: /demo/security/login/json/logout
 # firewall MAIN
 demo_login_standard_check:
     # take care : the route must be behind your firewall : in main section we have to add this route to the pattern node
-    path: /demo/login/authenticate
+    path: /demo/security/login/standard/authenticate
 demo_login_standard_logout:
-    path: /demo/login/logout
+    path: /demo/security/login/standard/logout

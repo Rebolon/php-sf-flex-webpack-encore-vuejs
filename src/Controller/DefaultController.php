@@ -22,21 +22,21 @@ class DefaultController extends Controller
 
         $router = $this->get('router');
 
-        $demoRoutes['Simple controller'] = $router->generate('simple');
-        $demoRoutes['Hello controller with twig'] = $router->generate('app_hello_world', ['name' => 'world', ]);
-        $demoRoutes['HttpPlug demo'] = $router->generate('app_httpplug_call');
+        $demoRoutes['Basic: Simple controller'] = $router->generate('simple');
+        $demoRoutes['Basic: Hello controller with twig'] = $router->generate('app_hello_world', ['name' => 'world', ]);
+        $demoRoutes['Basic: HttpPlug demo'] = $router->generate('app_httpplug_call');
 
-        $demoRoutes['Symfony secured page with standard login'] = $router->generate('demo_secured_page');
-        $demoRoutes['Vuejs secured page with json login'] = $router->generate('app_loginjson_index');
+        $demoRoutes['Login: Symfony secured page with form_login'] = $router->generate('demo_secured_page_standard');
+        $demoRoutes['Login: Vuejs secured page with json_login'] = $router->generate('demo_secured_page_json');
 
-        $demoRoutes['Vuejs page with vue-router'] = $router->generate('app_vuejs_index');
-        $demoRoutes['Vuejs with quasar and vue-router'] = $router->generate('app_quasar_index');
-        $demoRoutes['Vuejs with quasar with a more complex app'] = $router->generate('app_form_index');
+        $demoRoutes['JS app: Csrf token generation for statefull app'] = $router->generate('token');
+        $demoRoutes['JS app: User login check (security_json firewall)'] = $router->generate('demo_secured_page_json_is_logged_in');
 
-        $demoRoutes['DevXpress with Angular5'] = $router->generate('app_devxpressangular_index');
+        $demoRoutes['Vuejs: page with vue-router'] = $router->generate('app_vuejs_index');
+        $demoRoutes['Vuejs: with quasar and vue-router'] = $router->generate('app_quasar_index');
 
-        $demoRoutes['Csrf token generation'] = $router->generate('token');
-        $demoRoutes['User login check for js app'] = $router->generate('demo_secured_page_is_logged_in');
+        $demoRoutes['Form & grid: Quasar with Vuejs'] = $router->generate('app_formquasarvuejs_index');
+        $demoRoutes['Form & grid: DevXpress with Angular5'] = $router->generate('app_formdevxpressangular_index');
 
         $demoRoutes['Api-platform: rest'] = $router->generate('api_entrypoint');
         $demoRoutes['Api-platform: graphql'] = $router->generate('api_graphql_entrypoint');

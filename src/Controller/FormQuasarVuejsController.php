@@ -6,12 +6,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\Routing\Annotation\Route;
 
-class FormController extends Controller
+class FormQuasarVuejsController extends Controller
 {
     /**
      * Try to access todos (will change the route when login is fine)
      *
-     * @Route("/demo/form")
+     * @Route("/demo/form/quasar-vuejs")
      * @Method({"GET"})
      */
     public function index()

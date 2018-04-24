@@ -3,21 +3,21 @@ import { Notify } from 'quasar-framework/dist/quasar.mat.esm'
 import axios from 'axios'
 import { logoutStdInterceptors } from './axiosMiddlewares'
 import Rx from 'rxjs/Rx'
+import { loginInfos } from './config'
 
 // allow components to be alerted when the user is logged in / off
 const IsLoggedInSubject = new Rx.ReplaySubject(2)
-export const IsLoggedInObservable = IsLoggedInSubject.asObservable().filter(isLoggedIn => Boolean(isLoggedIn.length))
+export const IsLoggedInObservable = IsLoggedInSubject.asObservable().filter(isLoggedIn => Boolean(isLoggedIn && isLoggedIn.length))
 
 axios.interceptors.request.eject(logoutStdInterceptors)
 
 // @todo move it to RxJs implementation with subscribe + only call the uri on last call of the method during 300ms
-export default function isLoggedIn(loaderToActivate) {
+export default function isLoggedIn(loaderToActivate, uri = loginInfos.uriIsLoggedIn) {
     return new Promise((resolve, reject) => {
         if (loaderToActivate && loaderToActivate.isLoading) {
             loaderToActivate.isLoading = true
         }
 
-        const uri = '/demo/login/json/isloggedin'
         axios.get(uri)
             .then(res => {
                 IsLoggedInSubject.next(res.data)
