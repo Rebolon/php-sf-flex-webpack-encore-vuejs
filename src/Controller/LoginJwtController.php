@@ -57,7 +57,7 @@ class LoginJwtController extends Controller
         } catch (\Exception $e) {
             $logger->alert(sprintf('Exception: \Exception: %s', $e->getMessage()));
         } finally {
-            if (isset($user)) {
+            if (!isset($user)) {
                 throw $this->createNotFoundException();
             }
         }
