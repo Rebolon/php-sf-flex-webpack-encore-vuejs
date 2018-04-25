@@ -68,7 +68,7 @@ abstract class ToolsAbstract extends WebTestCase
     {
         parent::setUp();
 
-        $this->testLogin = 'test';
+        $this->testLogin = 'test_js';
         $this->testPwd = 'test';
 
         $kernel = static::bootKernel();

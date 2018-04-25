@@ -7,7 +7,10 @@ security:
         in_memory:
             memory:
                 users:
-                    test:
+                    test_php:
+                        password:           test
+                        roles:              ROLE_USER
+                    test_js:
                         password:           test
                         roles:              ROLE_USER
                     admin:
@@ -20,9 +23,25 @@ security:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
-        vuejs:
-            pattern: ^/(demo/(vuejs|form|login/(json|json/isloggedin|json/logout))|api)
+
+        # for application with a lot of JS and that are stateless
+        security_jwt:
+            pattern: ^/(demo/security/login/jwt|demo/form|api)
             anonymous: ~
+            stateless:  true
+
+            guard:
+                authenticators:
+                    - App\Security\JwtTokenAuthenticator
+
+        # like security_jwt but statefull
+        security_json:
+            pattern: ^/(demo/security/login/json|token)
+            anonymous: ~
+
+            #share context with other firewalls (but needs to be statefull so don't use it with sull SPA)
+            context: statefull_security
+
             # this guard solve this issue: https://github.com/symfony/symfony/issues/25806
             guard:
                 authenticators:
@@ -31,7 +50,7 @@ security:
             #simple_preauth:
             #    authenticator: App\Security\ApiKeyAuthenticator
             json_login:
-                check_path: /demo/login/json
+                check_path: /demo/security/login/json
                 # this doesn't work, see in the routes.yaml:12 for more explanation
                 #check_path: demo_login_json_check
                 # for instance i use the same keys for json_login and form_login, but i could change his easily if i update the TokenAuthenticator Guard
@@ -41,9 +60,13 @@ security:
                 path:   demo_login_json_logout
                 target: index
                 invalidate_session: true
-        main:
-            pattern: ^/demo/login/(secured|standard|authenticate|logout)
+        # for application built almost fully by PHP SF
+        security_main:
+            pattern: ^/demo/security/login/standard
             anonymous: ~
+
+            #share context with other firewalls (but needs to be statefull so don't use it with sull SPA)
+            context: statefull_security
 
             # activate different ways to authenticate
 
@@ -54,7 +77,7 @@ security:
             # https://symfony.com/doc/current/cookbook/security/form_login_setup.html
 
             form_login:
-                default_target_path: demo_secured_page
+                default_target_path: demo_secured_page_standard
                 login_path: demo_login_standard
                 check_path: demo_login_standard_check
                 # field names for the username and password fields
@@ -70,3 +93,6 @@ security:
                 path:   demo_login_standard_logout
                 target: index
                 invalidate_session: true
+
+        main:
+            anonymous: ~

@@ -5,3 +5,14 @@ This is the home page of the proof of concept !<br />
     <li>Or the <a [routerLink]="['/wizard']">Wizard Component !</a></li>
     <li>Or the <a [routerLink]="['/book/1']">Book detail Component !</a></li>
 </ul>
+
+<div style="font-weight: bold">
+    <span *ngIf="checkToken(); else noToken">
+        <span style="color: darkgreen">You have a token, but it might be expired,</span>
+    </span>
+        so you will have to <a href="/demo/form/quasar-vuejs">login again here</a>
+</div>
+
+<ng-template #noToken>
+    <span style="color: darkred">You need a valid Token to interact with the API,</span>
+</ng-template>

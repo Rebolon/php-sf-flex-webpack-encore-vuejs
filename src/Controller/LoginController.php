@@ -16,7 +16,7 @@ class LoginController extends Controller
      * Try to test this security when the one on the bottom works Security("is_granted('IS_AUTHENTICATED_FULLY')")
      *
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     * @Route("/demo/login/secured", name="demo_secured_page")
+     * @Route("/demo/security/login/standard/secured", name="demo_secured_page_standard")
      * @Method({"GET"})
      */
     public function index()
@@ -29,7 +29,7 @@ class LoginController extends Controller
     /**
      * Standard Symfony authentification system for a fronted in PHP
      *
-     * @Route("/demo/login/standard", name="demo_login_standard")
+     * @Route("/demo/security/login/standard", name="demo_login_standard")
      *
      * @param AuthenticationUtils $authUtils
      * @param CsrfTokenManagerInterface $tokenManager

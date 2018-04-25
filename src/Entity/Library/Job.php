@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Job implements LibraryInterface
 {
     /**
-     * @Groups("book_detail")
+     * @Groups("book_detail_read")
      *
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -30,7 +30,7 @@ class Job implements LibraryInterface
      * @ApiProperty(
      *     iri="http://schema.org/name"
      * )
-     * @Groups("book_detail")
+     * @Groups({"book_detail_read", "book_detail_write"})
      *
      * @ORM\Column(type="string", length=256, nullable=false, name="translation_key")
      *

@@ -6,15 +6,31 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class LoginJsonController extends Controller
 {
     /**
-     * @Route("/demo/vuejs/login")
+     * Try to test this security when the one on the bottom works Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     *
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Route("/demo/security/login/json/secured", name="demo_secured_page_json")
      * @Method({"GET"})
      */
     public function index()
+    {
+        $user = $this->getUser();
+
+        return $this->render('login/index.html.twig', ['user' => $user, ]);
+    }
+
+    /**
+     * The route that displays the JS form
+     * @Route("/demo/security/login/json/frontend")
+     * @Method({"GET"})
+     */
+    public function form()
     {
         return $this->render('spa-quasar.html.twig', ['appName' => 'login', 'useParent' => true, ]);
     }
@@ -23,7 +39,7 @@ class LoginJsonController extends Controller
      * New Json authentification system from Symfony 3.3
      * It relies on App\Security\ApiKeyAuthenticator for CSRF checks
      *
-     * @Route("/demo/login/json", name="demo_login_json")
+     * @Route("/demo/security/login/json", name="demo_login_json")
      *
      * @return JsonResponse
      */
@@ -42,8 +58,8 @@ class LoginJsonController extends Controller
      *
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @Route(
-     *     "/demo/login/json/isloggedin",
-     *     name="demo_secured_page_is_logged_in",
+     *     "/demo/security/login/json/isloggedin",
+     *     name="demo_secured_page_json_is_logged_in",
      *     )
      * @Method({"GET"})
      */

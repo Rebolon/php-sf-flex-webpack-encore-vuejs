@@ -24,7 +24,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Serie implements LibraryInterface
 {
     /**
-     * @Groups("book_detail")
+     * @Groups("book_detail_read")
      *
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -36,7 +36,7 @@ class Serie implements LibraryInterface
      * @ApiProperty(
      *      iri="http://pending.schema.org/headline"
      * )
-     * @Groups("book_detail")
+     * @Groups({"book_detail_read", "book_detail_write"})
      *
      * @ORM\Column(type="string", length=512, nullable=false)
      *

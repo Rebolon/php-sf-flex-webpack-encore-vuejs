@@ -49,6 +49,22 @@ const WithCredentialsHeader = function (config) {
     return config
 }
 
+const JwtTokenHeader = function (config) {
+    const rememberMe = localStorage.getItem('rememberMe')
+    if (rememberMe) {
+        const jsonInfos = JSON.parse(rememberMe)
+        const headers = {
+            'Authorization': `Bearer ${jsonInfos.token}`,
+        }
+
+        config.headers = Object.assign(config.headers ? config.headers : {}, headers)
+    }
+
+    console.info('axios intercep request', 'JwtToken')
+
+    return config
+}
+
 const CsrfTokenHeader = function (config) {
     let meta = getTokenFromMeta()
 
@@ -120,6 +136,10 @@ export const noCacheJsonLdInterceptors = axiosJsonLd.interceptors.request.use(No
 export const withCredentialsStdInterceptors = axios.interceptors.request.use(WithCredentialsHeader, RejectDoNothing)
 export const withCredentialsJsonInterceptors = axiosJson.interceptors.request.use(WithCredentialsHeader, RejectDoNothing)
 export const withCredentialsJsonLdInterceptors = axiosJsonLd.interceptors.request.use(WithCredentialsHeader, RejectDoNothing)
+
+export const JwtTokenStdInterceptors = axios.interceptors.request.use(JwtTokenHeader, RejectDoNothing)
+export const JwtTokenJsonInterceptors = axiosJson.interceptors.request.use(JwtTokenHeader, RejectDoNothing)
+export const JwtTokenInterceptors = axiosJsonLd.interceptors.request.use(JwtTokenHeader, RejectDoNothing)
 
 export const csrfStdInterceptors = axios.interceptors.request.use(CsrfTokenHeader, RejectDoNothing)
 export const csrfJsonInterceptors = axiosJson.interceptors.request.use(CsrfTokenHeader, RejectDoNothing)

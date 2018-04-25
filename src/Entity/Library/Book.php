@@ -29,7 +29,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     },
  *     attributes={
  *          "normalization_context"={
- *              "groups"={"book_detail"}
+ *              "groups"={"book_detail_read"}
+ *          },
+ *          "denormalization_context"={
+ *              "groups"={"book_detail_write"}
  *          }
  *     }
  * )
@@ -43,7 +46,7 @@ class Book implements LibraryInterface
      * @ApiProperty(
      *     iri="http://schema.org/identifier"
      * )
-     * @Groups("book_detail")
+     * @Groups({"book_detail_read"})
      *
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -55,7 +58,7 @@ class Book implements LibraryInterface
      * @ApiProperty(
      *     iri="http://schema.org/headline"
      * )
-     * @Groups("book_detail")
+     * @Groups({"book_detail_read", "book_detail_write"})
      *
      * @ORM\Column(type="string", length=255, nullable=false)
      *
@@ -69,7 +72,7 @@ class Book implements LibraryInterface
      * @ApiProperty(
      *     iri="http://schema.org/description"
      * )
-     * @Groups("book_detail")
+     * @Groups({"book_detail_read", "book_detail_write"})
      *
      * @ORM\Column(type="text", nullable=true)
      */
@@ -84,7 +87,7 @@ class Book implements LibraryInterface
      *         }
      *     }
      * )
-     * @Groups("book_detail")
+     * @Groups({"book_detail_read", "book_detail_write"})
      *
      * @ORM\Column(type="integer", nullable=true, name="index_in_serie")
      *
@@ -107,7 +110,7 @@ class Book implements LibraryInterface
      * @var ProjectBookCreation
      *
      * @ApiSubresource(maxDepth=1)
-     * @Groups("book_detail")
+     * @Groups({"book_detail_read", "book_detail_write"})
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookCreation", mappedBy="book", cascade={"persist", "remove"})
      */
@@ -117,7 +120,7 @@ class Book implements LibraryInterface
      * @var ProjectBookEdition
      *
      * @ApiSubresource(maxDepth=1)
-     * @Groups("book_detail")
+     * @Groups({"book_detail_read", "book_detail_write"})
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookEdition", mappedBy="book", cascade={"persist", "remove"})
      */
@@ -125,7 +128,7 @@ class Book implements LibraryInterface
 
     /**
      * @ApiSubresource(maxDepth=1)
-     * @Groups("book_detail")
+     * @Groups({"book_detail_read", "book_detail_write"})
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Library\Serie", inversedBy="books", cascade={"persist"})
      * @ORM\JoinColumn(name="serie_id", referencedColumnName="id")

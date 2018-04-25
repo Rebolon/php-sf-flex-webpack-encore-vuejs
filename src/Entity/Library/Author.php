@@ -27,7 +27,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Author implements LibraryInterface
 {
     /**
-     * @Groups("book_detail")
+     * @Groups("book_detail_read")
      *
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -39,7 +39,7 @@ class Author implements LibraryInterface
      * @ApiProperty (
      *     iri="http://schema.org/givenName"
      * )
-     * @Groups("book_detail")
+     * @Groups({"book_detail_read", "book_detail_write"})
      *
      * @ORM\Column(type="string", nullable=false)
      *
@@ -51,6 +51,7 @@ class Author implements LibraryInterface
      * @ApiProperty (
      *     iri="http://schema.org/familyName"
      * )
+     * @Groups({"book_detail_read", "book_detail_write"})
      *
      * @ORM\Column(type="string", nullable=true)
      */

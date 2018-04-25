@@ -43,7 +43,7 @@ before_install:
 
 install:
   - npm run init-project
-  - npm run dev
+  - npm run jwt-generation-test
 
 before_script:
 #  - curl -H "Accept: application/json" https://security.sensiolabs.org/check_lock -F lock=@composer.lock

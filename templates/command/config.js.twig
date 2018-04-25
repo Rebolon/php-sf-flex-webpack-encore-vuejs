@@ -6,6 +6,16 @@ export function isProduction () {
 export const csrfParameter = '{{ csrfTokenParameter }}' // _csrf_token
 export const apiPlatformPrefix = '{{ apiPlatformPrefix | raw }}' // /api
 export const quasarStyle = '{{ quasarStyle }}' // can be mat or ios
+export const loginInfos = {
+    uriJson: '{{ uriLoginJson | raw }}',
+    uriLoginJwt: '{{ uriLoginJwt | raw }}',
+    uriIsLoggedIn: {
+        json: '{{ uriIsLoggedInJson | raw }}',
+        jwt: '{{ uriIsLoggedInJwt | raw }}',
+    },
+    loginUsernamePath: '{{ loginUsernamePath }}',
+    loginPasswordPath: '{{ loginPasswordPath }}'
+}
 
 {% if apiPlatform | length %}
 export const apiConfig = {

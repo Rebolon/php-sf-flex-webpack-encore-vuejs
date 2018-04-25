@@ -23,6 +23,7 @@ build:
             project_setup:
                 after:
                     - npm run init-project
+                    - npm run jwt-generation-test
             root_path: './'
             tests:
                 override:

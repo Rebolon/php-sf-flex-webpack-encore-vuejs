@@ -4,7 +4,7 @@
             <label class="title">
                 <h5 class="welcome">Welcome to</h5>
                 the demo of Symfony 3.3+ / Webpack encore / Vuejs / Quasar
-                <h6 class="hint">You can login with test/test</h6>
+                <h6 class="hint">You can login with test_js/test</h6>
             </label>
             <div class="login-group">
                 <q-field
@@ -53,6 +53,7 @@ import { QField, QIcon, QInput, QBtn, QSpinnerCircles, Notify } from 'quasar-fra
 import { required } from 'vuelidate/lib/validators'
 import getToken from '../../lib/csrfToken'
 import isLoggedIn from '../../lib/login'
+import {loginInfos } from '../../lib/config'
 import axios from '../../lib/axiosMiddlewares'
 
 export default {
@@ -65,7 +66,7 @@ export default {
         QSpinnerCircles,
         Notify,
     },
-    props: ['redirect'],
+    props: ['redirect', 'loginUri'],
     data() {
         return {
             msg: 'Login',
@@ -124,20 +125,30 @@ export default {
 
                 return
             }
-            const body = {
-                // @todo inject those keys from Symfony2 params into js config file
-                login_username: this.form.username,
-                login_password: this.form.password,
-            }
+            const body = {}
+            body[loginInfos.loginUsernamePath] = this.form.username
+            body[loginInfos.loginPasswordPath] = this.form.password
+
             const config = {
                 method: 'POST',
                 data: body,
             }
             this.isLoading = true
-            axios.request('/demo/login/json', config)
+            //axios.request(this.loginUri, config)
+            axios.request(loginInfos.uriLoginJwt, config)
                 .then(response => {
                     console.info('Login.Vue', response)
+
+                    // pattern used for login json (not jwt)
                     localStorage.setItem('isLoggedIn', true)
+
+                    // save JWT Token
+                    if (response.headers['content-type'] === 'application/json'
+                        && response.data
+                        && response.data.token) {
+                        localStorage.setItem('rememberMe', JSON.stringify(response.data))
+                    }
+
                     if (this.redirect) {
                         this.$router.push(this.redirect)
                     }

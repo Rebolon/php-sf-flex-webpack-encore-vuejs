@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class ProjectBookEdition implements LibraryInterface
 {
     /**
-     * @Groups("book_detail")
+     * @Groups("book_detail_read")
      *
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -32,7 +32,7 @@ class ProjectBookEdition implements LibraryInterface
     private $id;
 
     /**
-     * @Groups("book_detail")
+     * @Groups({"book_detail_read", "book_detail_write"})
      *
      * @ORM\Column(type="date", nullable=true, options={"default":"now()"}, name="publication_date")
      *
@@ -41,7 +41,7 @@ class ProjectBookEdition implements LibraryInterface
     private $publicationDate;
 
     /**
-     * @Groups("book_detail")
+     * @Groups({"book_detail_read", "book_detail_write"})
      *
      * @ORM\Column(type="string", nullable=true)
      *
@@ -53,7 +53,7 @@ class ProjectBookEdition implements LibraryInterface
      * @ApiProperty(
      *     iri="http://schema.org/isbn"
      * )
-     * @Groups("book_detail")
+     * @Groups({"book_detail_read", "book_detail_write"})
      *
      * @ORM\Column(nullable=true)
      *
@@ -62,7 +62,7 @@ class ProjectBookEdition implements LibraryInterface
     private $isbn;
 
     /**
-     * @Groups("book_detail")
+     * @Groups({"book_detail_read", "book_detail_write"})
      *
      * @ORM\ManyToOne(
      *     targetEntity="App\Entity\Library\Editor",

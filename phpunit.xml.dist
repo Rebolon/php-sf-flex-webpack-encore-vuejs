@@ -21,6 +21,13 @@
         <!-- ###+ nelmio/cors-bundle ### -->
         <env name="CORS_ALLOW_ORIGIN" value="^https?://localhost:?[0-9]*$"/>
         <!-- ###- nelmio/cors-bundle ### -->
+
+        <!-- ###+ lexik/jwt-authentication-bundle ### -->
+        <!-- Key paths should be relative to the project directory -->
+        <env name="JWT_PRIVATE_KEY_PATH" value="var/cache/config/jwt-test/private.pem"/>
+        <env name="JWT_PUBLIC_KEY_PATH" value="var/cache/config/jwt-test/public.pem"/>
+        <env name="JWT_PASSPHRASE" value="test"/>
+        <!-- ###- lexik/jwt-authentication-bundle ### -->
     </php>
 
     <testsuites>
