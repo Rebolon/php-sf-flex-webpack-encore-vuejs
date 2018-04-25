@@ -257,6 +257,11 @@ You have to pay attention at them. And you can play with them on those sites: ht
 Take care at the custom listeners that you could write based on [Api-Platform documentation](https://api-platform.com/docs/core/events/). They are used by all controllers, not only those
 from ApiPlatform.
 
+### Security
+
+In /api you can test the API with the swagger interface. Because the route uses JWT token you have to call the /demo/security/login/jwt/tokens route with HTTP POST and Basic Auth. Login is test_php or test_js and password is test !
+Then in the swagger interface click on the upper right button Authorization and add 'Bearer THETOKENRECEIVED'
+
 ### Sort
 
 If you want to allow sorting based on columns, you will have to add Filter annotations on Entity. Look at the [Book entity and its ApiFilter](https://github.com/Rebolon/php-sf-flex-webpack-encore-vuejs/blob/38d98658b5e9c2848fe6ad0187c24650225be508/src/Entity/Library/Book.php#L27) which allow to sort on id and title.
