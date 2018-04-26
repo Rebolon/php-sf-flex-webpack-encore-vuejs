@@ -53,7 +53,7 @@ import { QField, QIcon, QInput, QBtn, QSpinnerCircles, Notify } from 'quasar-fra
 import { required } from 'vuelidate/lib/validators'
 import getToken from '../../lib/csrfToken'
 import isLoggedIn from '../../lib/login'
-import {loginInfos } from '../../lib/config'
+import { loginInfos } from '../../lib/config'
 import axios from '../../lib/axiosMiddlewares'
 
 export default {
@@ -66,7 +66,7 @@ export default {
         QSpinnerCircles,
         Notify,
     },
-    props: ['redirect', 'loginUri'],
+    props: ['redirect', 'loginUri', 'loggedInUri'],
     data() {
         return {
             msg: 'Login',
@@ -79,7 +79,11 @@ export default {
     },
     created() {
         this.isLoading = true
-        isLoggedIn()
+        if (!this.loginUri) {
+            this.loginUri = loginInfos.json
+        }
+
+        isLoggedIn(undefined, this.loggedInUri)
             .then(() => {
                 Notify.create({
                     message: 'You are logged in.',
@@ -87,6 +91,12 @@ export default {
                 })
 
                 if (this.redirect) {
+                    if (this.redirect.startsWith('http')) {
+                        location.href = this.redirect
+
+                        return
+                    }
+
                     this.$router.push(this.redirect)
                 }
             })
@@ -134,8 +144,7 @@ export default {
                 data: body,
             }
             this.isLoading = true
-            //axios.request(this.loginUri, config)
-            axios.request(loginInfos.uriLoginJwt, config)
+            axios.request(this.loginUri, config)
                 .then(response => {
                     console.info('Login.Vue', response)
 
@@ -150,6 +159,12 @@ export default {
                     }
 
                     if (this.redirect) {
+                        if (this.redirect.startsWith('http')) {
+                            location.href = this.redirect
+
+                            return
+                        }
+
                         this.$router.push(this.redirect)
                     }
                 })

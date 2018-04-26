@@ -16,7 +16,7 @@ export default new Router({
             props: {
                 default: true,
                 redirect: '/books',
-                loginUri: loginInfos.uriLoginJwt
+                loginUri: loginInfos.uriLogin.jwt
             },
         },
         {

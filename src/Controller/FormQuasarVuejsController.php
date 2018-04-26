@@ -16,6 +16,6 @@ class FormQuasarVuejsController extends Controller
      */
     public function index()
     {
-        return $this->render('form/app.html.twig', ['appName' => 'form', ]);
+        return $this->render('form-quasar-vuejs/app.html.twig', ['appName' => 'form-quasar-vuejs', ]);
     }
 }
