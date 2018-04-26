@@ -1,6 +1,6 @@
 import router from '../form-quasar-vuejs/router/index'
 import { Notify } from 'quasar-framework/dist/quasar.mat.esm'
-import axios from 'axios'
+import axios from './axiosMiddlewares'
 import { logoutStdInterceptors } from './axiosMiddlewares'
 import Rx from 'rxjs/Rx'
 import { loginInfos } from './config'
