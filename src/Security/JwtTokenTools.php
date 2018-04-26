@@ -3,6 +3,7 @@
 namespace App\Security;
 
 use Psr\Log\LoggerInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\InMemoryUserProvider;
@@ -39,7 +40,7 @@ class JwtTokenTools
             if ($logger) $logger->alert(sprintf('Exception: \Exception: %s', $e->getMessage()));
         } finally {
             if (!isset($user)) {
-                throw $this->createNotFoundException();
+                throw new NotFoundHttpException();
             }
         }
 

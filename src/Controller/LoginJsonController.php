@@ -53,7 +53,7 @@ class LoginJsonController extends Controller
             return new RedirectResponse($router->generate('demo_login_json'));
         }
 
-        return new RedirectResponse($router->generate('demo_secured_page_json_is_logged_in'));
+        return $this->isLoggedIn();
     }
 
     /**
