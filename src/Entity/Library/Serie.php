@@ -112,6 +112,7 @@ class Serie implements LibraryInterface
 
     /**
      * Mandatory for EasyAdminBundle to build the select box
+     * It also helps to build a footprint of the object, even if with the Serializer component it might be more pertinent
      *
      * @return string
      */

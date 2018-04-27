@@ -2,13 +2,13 @@
 /**
  * run it with phpunit --group git-pre-push
  */
-namespace App\Tests;
+namespace App\Tests\Command;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
  *
  */
-class CommandTest extends WebTestCase
+class DumpJsConfig extends WebTestCase
 {
     /**
      * @group git-pre-push

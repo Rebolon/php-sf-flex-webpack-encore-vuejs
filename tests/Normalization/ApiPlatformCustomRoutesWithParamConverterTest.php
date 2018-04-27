@@ -2,7 +2,7 @@
 /**
  * run it with phpunit --group git-pre-push
  */
-namespace App\Tests;
+namespace App\Tests\Normalization;
 
 use App\Tests\Common\ApiAbstract;
 use App\Tests\Common\JsonBook;
@@ -26,7 +26,7 @@ class ApiPlatformCustomRoutesWithParamConverterTest extends ApiAbstract
         // $uri = $router->generate('book_special_sample3', []);
         // router fails to generate the route so for instance don't loose time and force uri
         $uri = '/api/booksiu/special_3';
-        $content = JsonBook::$bodyOk;;
+        $content = JsonBook::$bodyOk;
         $expected = json_decode($content);
 
         $client->request('POST', $uri, [], [], [], $content);

@@ -2,7 +2,7 @@
 /**
  * run it with phpunit --group git-pre-push
  */
-namespace App\Tests;
+namespace App\Tests\Normalization;
 
 use App\Tests\Common\ApiAbstract;
 use App\Tests\Common\JsonBook;
@@ -19,9 +19,11 @@ class ApiPlatformDenormalizerTest extends ApiAbstract
     protected function setUp()
     {
         $this->markTestIncomplete();
+        // parent::setUp();
     }
 
     /**
+     * @todo : i tested the $content in Postman and it works so i don't understand, for instance, why i get a 406 HTTP here
      * @group git-pre-push
      */
     public function testBookSpecialSample3WithAllEntitiesToBeCreated()
@@ -31,7 +33,7 @@ class ApiPlatformDenormalizerTest extends ApiAbstract
         // $uri = $router->generate('book_special_sample3', []);
         // router fails to generate the route so for instance don't loose time and force uri
         $uri = '/api/books';
-        $content = JsonBook::$bodyOk;
+        $content = JsonBook::$bodyOkForDenormalizer;
         $expected = json_decode($content);
 
         $client->request('POST', $uri, [], [], [], $content);
