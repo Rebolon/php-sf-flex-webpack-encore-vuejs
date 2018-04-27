@@ -19,7 +19,7 @@ class LoginJsonTest extends ToolsAbstract
         $client = $this->getClient();
         $router = $this->getRouter();
         $uriSecured = $router->generate('demo_secured_page_json', []);
-        $uriLogin = $router->generate('demo_login_json', []);
+        $uriLogin = $router->generate('demo_login_json_check', []);
         $uriToken = $router->generate('token', []);
         $errMsg = sprintf("route: %s", $uriSecured);
         $headers = [
@@ -49,7 +49,9 @@ class LoginJsonTest extends ToolsAbstract
 
         $client->request('POST', $uriLogin, [], [], $headers, json_encode(['login_username' => $this->testLogin, 'login_password' => $this->testPwd, '_csrf_token' => $token,]));
         $this->assertEquals(200, $client->getResponse()->getStatusCode(), $errMsg);
-        $this->assertEquals([], json_decode($client->getResponse()->getContent(), true), $errMsg);
+        $result =json_decode($client->getResponse()->getContent(), true);
+        $this->assertArrayHasKey('isLoggedIn', $result, $errMsg);
+        $this->assertEquals(1, $result['isLoggedIn'], $errMsg);
 
         $crawler = $client->request('GET', $uriSecured);
         $this->assertEquals(200, $client->getResponse()->getStatusCode(), $errMsg);

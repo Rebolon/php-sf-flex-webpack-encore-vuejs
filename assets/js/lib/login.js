@@ -1,18 +1,18 @@
-import router from '../form/router/index'
+import router from '../form-quasar-vuejs/router/index'
 import { Notify } from 'quasar-framework/dist/quasar.mat.esm'
-import axios from 'axios'
+import axios from './axiosMiddlewares'
 import { logoutStdInterceptors } from './axiosMiddlewares'
 import Rx from 'rxjs/Rx'
 import { loginInfos } from './config'
 
 // allow components to be alerted when the user is logged in / off
 const IsLoggedInSubject = new Rx.ReplaySubject(2)
-export const IsLoggedInObservable = IsLoggedInSubject.asObservable().filter(isLoggedIn => Boolean(isLoggedIn && isLoggedIn.length))
+export const IsLoggedInObservable = IsLoggedInSubject.asObservable().filter(data => Boolean(data && data.isLoggedIn))
 
 axios.interceptors.request.eject(logoutStdInterceptors)
 
 // @todo move it to RxJs implementation with subscribe + only call the uri on last call of the method during 300ms
-export default function isLoggedIn(loaderToActivate, uri = loginInfos.uriIsLoggedIn) {
+export default function isLoggedIn(loaderToActivate, uri = loginInfos.uriIsLoggedIn.json) {
     return new Promise((resolve, reject) => {
         if (loaderToActivate && loaderToActivate.isLoading) {
             loaderToActivate.isLoading = true

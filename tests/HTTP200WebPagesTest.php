@@ -76,7 +76,7 @@ class HTTP200WebPagesTest extends WebPagesAbstract
         $demoRoutes['login: standard - symfony form page '] = ['uri'=> $router->generate('demo_secured_page_standard'), 'statusCode' => 401, ];
 
         $demoRoutes['login: json - vuejs secured page'] = ['uri'=> $router->generate('demo_secured_page_json'), 'statusCode' => 401, ];
-        $demoRoutes['login: json - vuejs form page'] = ['uri'=> $router->generate('app_loginjson_form'), ];
+        $demoRoutes['login: json - vuejs form page'] = ['uri'=> $router->generate('demo_login_json'), ];
 
         $demoRoutes['js: csrf token generation'] = ['uri'=> $router->generate('token'), ];
         $demoRoutes['js: user login check for json login app'] = ['uri'=> $router->generate('demo_secured_page_json_is_logged_in'), 'statusCode' => 401, ];

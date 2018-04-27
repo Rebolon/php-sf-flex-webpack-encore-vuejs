@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Security\JwtTokenTools;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -9,9 +10,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\InMemoryUserProvider;
-use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 
 class LoginJwtController extends Controller
@@ -31,13 +31,30 @@ class LoginJwtController extends Controller
     }
 
     /**
+     * The route that displays the JS form and will display the token
+     * @Route("/demo/security/login/jwt/frontend")
+     * @Method({"GET"})
+     */
+    public function form()
+    {
+        return $this->render('spa-quasar.html.twig', ['appName' => 'login', 'useParent' => true, ]);
+    }
+
+    /**
      * The route that generate token for a couple login/password
      * It works with Basi HTTP auth or with formData using login/password where path are store in parameters: login_username_path/login_password_path
      *
-     * @Route("/demo/security/login/jwt/tokens")
+     * @Route("/demo/security/login/jwt/tokens",
+     *     defaults={"_format"="json"})
      * @Method({"POST"})
      */
-    public function newToken(Request $request, InMemoryUserProvider $provider, JWTEncoderInterface $encoder, LoggerInterface $logger)
+    public function newToken(
+        Request $request,
+        InMemoryUserProvider $provider,
+        JWTEncoderInterface $encoder,
+        UserPasswordEncoderInterface $passwordEncoder,
+        LoggerInterface $logger,
+        JwtTokenTools $tokenTool)
     {
         $username = $request->getUser() ? : $request->request->get($this->getParameter('login_username_path'));
         $password = $request->getPassword() ? : $request->request->get($this->getParameter('login_password_path'));
@@ -50,29 +67,7 @@ class LoginJwtController extends Controller
             }
         }
 
-        try {
-            $user = $provider->loadUserByUsername($username);
-        } catch (UsernameNotFoundException $e) {
-            $logger->alert(sprintf('Exception: UsernameNotFoundException: %s', $e->getMessage()));
-        } catch (\Exception $e) {
-            $logger->alert(sprintf('Exception: \Exception: %s', $e->getMessage()));
-        } finally {
-            if (!isset($user)) {
-                throw $this->createNotFoundException();
-            }
-        }
-
-        $isValid = $this->get('security.password_encoder')
-            ->isPasswordValid($user, $password);
-
-        if (!$isValid) {
-            throw new BadCredentialsException();
-        }
-
-        $token = $encoder->encode([
-            'username' => $username,
-            'exp' => time() * $this->getParameter('token_jwt_ttl')
-        ]);
+        $token = $tokenTool->encodeToken($provider, $encoder, $passwordEncoder, $this->getParameter('token_jwt_ttl'), $username, $password, $logger);
 
         return new JsonResponse(['token' => $token]);
     }
@@ -89,6 +84,7 @@ class LoginJwtController extends Controller
      * @Route(
      *     "/demo/security/login/jwt/isloggedin",
      *     name="demo_secured_page_jwt_is_logged_in",
+     *     defaults={"_format"="json"}
      *     )
      * @Method({"GET"})
      */

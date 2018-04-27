@@ -87,7 +87,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
     public function supports(Request $request)
     {
         return $this->csrfTokenParameter &&
-            !(false === false /*strpos($request->getRequestFormat(), 'json')*/ // @todo didn't succeed to set Accept Header in WebTestCase !
+            !(false === strpos($request->getRequestFormat(), 'json')
             && false === strpos($request->getContentType(), 'json'));
     }
 

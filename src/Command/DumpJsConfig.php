@@ -117,7 +117,7 @@ class DumpJsConfig extends ContainerAwareCommand
             'apiPlatformPrefix' => $this->apiPlatformPrefix,
             'loginUsernamePath' => $this->loginUsernamePath,
             'loginPasswordPath' => $this->loginPasswordPath,
-            'uriLoginJson' => $this->router->generate('demo_login_json'),
+            'uriLoginJson' => $this->router->generate('demo_login_json_check'),
             'uriLoginJwt' => $this->router->generate('app_loginjwt_newtoken'),
             'uriIsLoggedInJson' => $this->router->generate('demo_secured_page_json_is_logged_in'),
             'uriIsLoggedInJwt' => $this->router->generate('demo_secured_page_jwt_is_logged_in'),

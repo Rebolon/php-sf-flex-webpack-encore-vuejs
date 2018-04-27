@@ -14,6 +14,6 @@ class FormDevXpressAngularController extends Controller
      */
     public function index()
     {
-        return $this->render('devxpress-angular/app.html.twig', ['appName' => 'devxpress-angular', 'title' => 'DevxpressAngular', ]);
+        return $this->render('form-devxpress-angular/app.html.twig', ['appName' => 'devxpress-angular', 'title' => 'DevxpressAngular', ]);
     }
 }

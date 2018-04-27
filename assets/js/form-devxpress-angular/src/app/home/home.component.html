@@ -10,7 +10,8 @@ This is the home page of the proof of concept !<br />
     <span *ngIf="checkToken(); else noToken">
         <span style="color: darkgreen">You have a token, but it might be expired,</span>
     </span>
-        so you will have to <a href="/demo/form/quasar-vuejs">login again here</a>
+    <!-- crappy solution to use the vuejs login. @todo implement a login component here -->
+        so you will have to <a href="/demo/security/login/json/frontend?redirect={{getRedirectUri()}}&mode=jwt" style="text-decoration: underline">login again here</a>
 </div>
 
 <ng-template #noToken>

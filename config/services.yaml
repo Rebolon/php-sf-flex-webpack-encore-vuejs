@@ -60,6 +60,9 @@ services:
         arguments:
             - '@doctrine.dbal.fixtures_connection'
 
+    App\Security\JwtTokenTools:
+        public: true
+
     App\Request\ParamConverter\Library\AuthorConverter:
         public: true
         arguments:

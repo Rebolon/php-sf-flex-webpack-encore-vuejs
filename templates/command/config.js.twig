@@ -7,8 +7,10 @@ export const csrfParameter = '{{ csrfTokenParameter }}' // _csrf_token
 export const apiPlatformPrefix = '{{ apiPlatformPrefix | raw }}' // /api
 export const quasarStyle = '{{ quasarStyle }}' // can be mat or ios
 export const loginInfos = {
-    uriJson: '{{ uriLoginJson | raw }}',
-    uriLoginJwt: '{{ uriLoginJwt | raw }}',
+    uriLogin: {
+        json: '{{ uriLoginJson | raw }}',
+        jwt: '{{ uriLoginJwt | raw }}'
+    },
     uriIsLoggedIn: {
         json: '{{ uriIsLoggedInJson | raw }}',
         jwt: '{{ uriIsLoggedInJwt | raw }}',

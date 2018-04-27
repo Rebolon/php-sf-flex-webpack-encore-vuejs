@@ -25,6 +25,64 @@ export const vueRouterIsLoggedIn = (to, from, next) => {
     }
 }
 
+
+/**
+ * Just for the POC, i should need a login form dedicated for devxpress-angular app, but i don't have time for instance
+ * so i add these options to allow redirect
+ *
+ * @type {string}
+ */
+// allow to use the Login component with dynamic redirect
+let redirect = decodeURIComponent(
+    location.search
+        .substr(1)
+        .split('&')
+        .filter(item => item.split('=')[0] === 'redirect')
+        .map(item => {
+            if (!item) {
+                return
+            }
+
+            return item.split('=')[1]
+        })
+        .join('')
+)
+
+if (!redirect) {
+    redirect = '/secured'
+}
+
+let loggedInUri = loginInfos.uriIsLoggedIn.json
+let loginUri = decodeURIComponent(
+    location.search
+        .substr(1)
+        .split('&')
+        .filter(item => item.split('=')[0] === 'mode')
+        .map(item => {
+            if (!item) {
+                return
+            }
+
+            const mode = item.split('=')[1]
+            if (['json', 'jwt'].includes(mode)) {
+                switch (mode) {
+                    case 'jwt':
+                        loggedInUri = loginInfos.uriIsLoggedIn.jwt
+
+                        return loginInfos.uriLogin.jwt
+                    case 'json':
+                    default:
+                        return loginInfos.uriLogin.json
+                }
+            }
+        })
+        .join('')
+)
+
+if (!loginUri) {
+    loginUri = loginInfos.uriLogin.json
+}
+
 export default new Router({
     routes: [
         {
@@ -33,8 +91,9 @@ export default new Router({
             component: Login,
             props: {
                 default: true,
-                redirect: '/secured',
-                loginUri: loginInfos.uriJson
+                redirect: redirect,
+                loginUri: loginUri,
+                loggedInUri: loggedInUri,
             },
         },
         {

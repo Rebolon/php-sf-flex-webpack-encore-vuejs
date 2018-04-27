@@ -12,7 +12,7 @@ simple:
 # firewall JSON: do not uncomment ! if you do and replace the path in the security.yaml by the name of the route, it will fail !
 # @todo: open an issue on Symfony to see if the behaviour is 'expected'
 #demo_login_json_check:
-#    path: /demo/security/login/json
+#    path: /demo/security/login/json/authenticate
 demo_login_json_logout:
     path: /demo/security/login/json/logout
 # firewall MAIN

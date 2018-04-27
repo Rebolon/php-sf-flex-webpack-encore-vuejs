@@ -8,22 +8,25 @@
                 Hello {{ user.username }}
             </q-toolbar-title>
         </q-toolbar>
+        <q-spinner-circles v-if="isLoading" size="20px"/>
     </div>
 </template>
 
 <script>
-import { QToolbar, QToolbarTitle, Notify } from 'quasar-framework/dist/quasar.mat.esm'
-import { IsLoggedInObservable } from '../../lib/login'
+import { QToolbar, QToolbarTitle, Notify, QSpinnerCircles, } from 'quasar-framework/dist/quasar.mat.esm'
+import isLoggedIn, { IsLoggedInObservable } from '../../lib/login'
 export default {
     name: 'Secured',
     components: {
         QToolbar,
         QToolbarTitle,
+        QSpinnerCircles,
         Notify
     },
     data() {
         return {
             user: {},
+            isLoading: true,
         }
     },
     created() {
@@ -49,7 +52,9 @@ export default {
             } else {
                 this.user = isLoggedIn.me
             }
+            this.isLoading = false
         })
+        isLoggedIn()
     },
 }
 </script>
