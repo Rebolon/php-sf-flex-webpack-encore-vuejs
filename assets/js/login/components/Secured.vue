@@ -53,6 +53,13 @@ export default {
                 this.user = isLoggedIn.me
             }
             this.isLoading = false
+        }, err => {
+            // @todo we may have different message belongs to err
+            Notify.create({
+                message: 'You need to log in to access the app.',
+                type: 'info'
+            })
+            this.$router.push('Login')
         })
         isLoggedIn()
     },

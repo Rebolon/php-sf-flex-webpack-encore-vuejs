@@ -107,7 +107,7 @@ class Book implements LibraryInterface
     private $reviews;
 
     /**
-     * @var ProjectBookCreation
+     * @var ArrayCollection of ProjectBookCreation
      *
      * @ApiSubresource(maxDepth=1)
      * @Groups({"book_detail_read", "book_detail_write"})
@@ -117,7 +117,7 @@ class Book implements LibraryInterface
     private $authors;
 
     /**
-     * @var ProjectBookEdition
+     * @var ArrayCollection of ProjectBookEdition
      *
      * @ApiSubresource(maxDepth=1)
      * @Groups({"book_detail_read", "book_detail_write"})

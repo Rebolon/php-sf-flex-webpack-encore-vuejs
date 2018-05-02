@@ -2,12 +2,17 @@ import router from '../form-quasar-vuejs/router/index'
 import { Notify } from 'quasar-framework/dist/quasar.mat.esm'
 import axios from './axiosMiddlewares'
 import { logoutStdInterceptors } from './axiosMiddlewares'
-import Rx from 'rxjs/Rx'
+import { ReplaySubject } from 'rxjs'
+import { filter } from 'rxjs/operators'
 import { loginInfos } from './config'
 
 // allow components to be alerted when the user is logged in / off
-const IsLoggedInSubject = new Rx.ReplaySubject(2)
-export const IsLoggedInObservable = IsLoggedInSubject.asObservable().filter(data => Boolean(data && data.isLoggedIn))
+const IsLoggedInSubject = new ReplaySubject(2)
+export const IsLoggedInObservable = IsLoggedInSubject
+    .asObservable()
+    .pipe(
+        filter(data => Boolean(data && data.isLoggedIn))
+    )
 
 axios.interceptors.request.eject(logoutStdInterceptors)
 

@@ -86,7 +86,8 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function supports(Request $request)
     {
-        return $this->csrfTokenParameter &&
+        return strtolower($request->getMethod()) !== 'get'
+            && $this->csrfTokenParameter &&
             !(false === strpos($request->getRequestFormat(), 'json')
             && false === strpos($request->getContentType(), 'json'));
     }
