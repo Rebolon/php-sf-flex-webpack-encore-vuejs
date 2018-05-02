@@ -44,7 +44,7 @@ class DefaultController extends Controller
         $demoRoutes['Easy admin'] = $router->generate('admin');
 
         if (!$hasPemCertificate) {
-            $demoRoutes['Httpplug demo'] = [
+            $demoRoutes['Basic: HttpPlug demo'] = [
                 'uri' => $router->generate('app_httpplug_call'),
                 'note' => 'You need to set php.ini vars: curl.cainfo and openssl.cafile to the path of the pem file.'
                     . ' if you need one, <a href="https://curl.haxx.se/docs/caextract.html">download the certificate</a>',
