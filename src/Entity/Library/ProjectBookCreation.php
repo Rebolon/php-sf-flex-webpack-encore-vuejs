@@ -105,7 +105,7 @@ class ProjectBookCreation implements LibraryInterface
     /**
      * @return Book
      */
-    public function getBook(): Book
+    public function getBook(): ?Book
     {
         return $this->book;
     }
@@ -142,11 +142,14 @@ class ProjectBookCreation implements LibraryInterface
 
     /**
      * Mandatory for EasyAdminBundle to build the select box
+     * It also helps to build a footprint of the object, even if with the Serializer component it might be more pertinent
      *
      * @return string
      */
     public function __toString(): string
     {
-        return $this->getBook()->getTitle() . ' ' . $this->getAuthor()->getName() . ' ' . $this->getRole()->getTranslationKey();
+        return ($this->getBook() ? $this->getBook()->getTitle() . ', ' : '')
+            . $this->getAuthor()->__toString() . ' '
+            . $this->getRole()->__toString();
     }
 }

@@ -2,7 +2,7 @@
 /**
  * run it with phpunit --group git-pre-push
  */
-namespace App\Tests;
+namespace App\Tests\Controller\Api;
 
 use App\Tests\Common\ApiAbstract;
 

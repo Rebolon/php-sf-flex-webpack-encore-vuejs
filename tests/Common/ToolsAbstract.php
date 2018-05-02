@@ -9,6 +9,7 @@ use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
+use Doctrine\ORM\EntityManagerInterface;
 
 abstract class ToolsAbstract extends WebTestCase
 {
@@ -36,6 +37,11 @@ abstract class ToolsAbstract extends WebTestCase
      * @var \Doctrine\DBAL\Connection
      */
     protected $dbCon;
+
+    /**
+     * @var EntityManagerInterface
+     */
+    protected $em;
 
     static public function getOutPut() {
         return new ConsoleOutput(ConsoleOutput::VERBOSITY_VERBOSE);
@@ -73,6 +79,7 @@ abstract class ToolsAbstract extends WebTestCase
 
         $kernel = static::bootKernel();
         $this->dbCon = $kernel->getContainer()->get('database_connection');
+        $this->em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
         $application = new Application($kernel);
         $application->setAutoExit(false);
         $input = new ArrayInput(array(

@@ -230,6 +230,17 @@ class Book implements LibraryInterface
     {
         return $this->reviews;
     }
+
+    /**
+     * @return Book
+     */
+    public function setReviews(ArrayCollection $reviews): Book
+    {
+        $this->reviews = $reviews;
+
+        return $this;
+    }
+
     /**
      * @param Review $review
      * @return Book
@@ -262,12 +273,34 @@ class Book implements LibraryInterface
     }
 
     /**
+     * @param ArrayCollection|ArrayCollection $projects
+     *
+     * @return Book
+     */
+    public function setAuthors($projects): Book
+    {
+        $this->authors->clear();
+
+        foreach($projects as $project) {
+            $this->addAuthors($project);
+        }
+
+        return $this;
+    }
+
+    /**
      * @param ProjectBookCreation $project
      *
      * @return Book
      */
-    public function setAuthor(ProjectBookCreation $project): Book
+    public function addAuthors(ProjectBookCreation $project): Book
     {
+        // Take care that contains will just do an in_array strict check
+        if ($this->hasProjectBookCreation($project)) {
+            return $this;
+        }
+
+        $project->setBook($this); // mandatory
         $this->authors[] = $project;
 
         return $this;
@@ -285,15 +318,7 @@ class Book implements LibraryInterface
             ->setAuthor($author)
             ->setRole($job);
 
-        // @test this feature to check that it really works vs if ($this->projectBookCreation->contains($project)) return $this;
-        foreach ($this->authors as $projectToCheck) {
-            if ($projectToCheck->getAuthor() === $author
-                && $projectToCheck->role === $job) {
-                return $this;
-            }
-        }
-
-        $this->setAuthor($project);
+        $this->addAuthors($project);
 
         return $this;
     }
@@ -310,11 +335,31 @@ class Book implements LibraryInterface
     }
 
     /**
+     * @param array|ArrayCollection $projects
+     * @return Book
+     */
+    public function setEditors($projects): Book
+    {
+        $this->editors->clear();
+
+        foreach($projects as $project) {
+            $this->addEditors($project);
+        }
+
+        return $this;
+    }
+
+    /**
      * @param ProjectBookEdition $project
      * @return Book
      */
-    public function setEditor(ProjectBookEdition $project): Book
+    public function addEditors(ProjectBookEdition $project): Book
     {
+        if ($this->hasProjectBookEdition($project)) {
+            return $this;
+        }
+
+        $project->setBook($this); // mandatory
         $this->editors[] = $project;
 
         return $this;
@@ -336,17 +381,7 @@ class Book implements LibraryInterface
             ->setIsbn($isbn)
             ->setCollection($collection);
 
-        // @todo test this feature to check that it really works vs if ($this->projectBookEdition->contains($project)) return $this;
-        foreach ($this->editors as $projectToCheck) {
-            if ($projectToCheck->getEditor() === $editor
-                && $projectToCheck->getPublicationDate() === $date
-                && $projectToCheck->getISBN() === $isbn
-                && $projectToCheck->getCollection() === $collection) {
-                return $this;
-            }
-        }
-
-        $this->setEditor($project);
+        $this->addEditors($project);
 
         return $this;
     }
@@ -364,12 +399,82 @@ class Book implements LibraryInterface
     }
 
     /**
+     * Better than ArrayCollection->contains(object) that only does an in_array strict check
+     * Always find a way to distinguish your Entities:
+     *  * if they are already persisted, the ID is the best solution
+     *  * or use a __toString() that will build the footprint of your object
+     *
+     * With the if condition we block homonyme author, it's maybe not the wished behaviour. But it would be easy in real
+     * world to distinguish author: add extra info like nationality, birthdate, sex, ...
+     * We could also decide to check only on ID if it exists, in that cas :
+     *  * there is an ID => i can add it, so for homonym you would have to create it first and add it after
+     *  * there is no ID => i check with __toString()
+     *
+     * @param ProjectBookCreation $project
+     * @return bool
+     */
+    protected function hasProjectBookCreation(ProjectBookCreation $project)
+    {
+        foreach ($this->authors as $projectToCheck) {
+            if (
+                (
+                    !is_null($project->getAuthor()->getId())
+                    && $projectToCheck->getAuthor()->getId() === $project->getAuthor()->getId()
+                    || $projectToCheck->getAuthor()->__toString() === $project->getAuthor()->__toString()
+                ) && (
+                    !is_null($project->getRole()->getId())
+                    && $projectToCheck->getRole()->getId() === $project->getRole()->getId()
+                    || $projectToCheck->getRole()->__toString() === $project->getRole()->__toString()
+                )
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Better than ArrayCollection->contains(object) that only does an in_array strict check
+     * Always find a way to distinguish your Entities:
+     *  * if they are already persisted, the ID is the best solution
+     *  * or use a __toString() that will build the footprint of your object
+     *
+     * With the if condition we block homonyme author, it's maybe not the wished behaviour. But it would be easy in real
+     * world to distinguish author: add extra info like nationality, birthdate, sex, ...
+     * We could also decide to check only on ID if it exists, in that cas :
+     *  * there is an ID => i can add it, so for homonym you would have to create it first and add it after
+     *  * there is no ID => i check with __toString()
+     *
+     * @param ProjectBookEdition $project
+     * @return bool
+     */
+    protected function hasProjectBookEdition(ProjectBookEdition $project)
+    {
+        foreach ($this->editors as $projectToCheck) {
+            if (
+                !is_null($project->getEditor()->getId())
+                && $projectToCheck->getEditor()->getId() === $project->getEditor()->getId()
+                || $projectToCheck->__toString() === $project->__toString()
+            ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Mandatory for EasyAdminBundle to build the select box
+     * It also helps to build a footprint of the object, even if with the Serializer component it might be more pertinent
      *
      * @return string
      */
     public function __toString(): string
     {
-        return $this->getTitle();
+        return $this->getTitle()
+            . ($this->getDescription() ? ', ' . $this->getDescription() : '')
+            . (!is_null($this->getIndexInSerie()) ? ', #' . $this->getIndexInSerie() : '')
+            ;
     }
 }
