@@ -12,12 +12,12 @@
 
 ## requirements
 
-You need PHP (7.1+), composer, node (8+ because of quasar-cli 0.15+) npm or yarn and @angular/cli package installed globally
-You also need to configure your php with curl and openssl
-You have to setup the certificates [download pem file](https://curl.haxx.se/docs/caextract.html), put it somewhere on your system and set your php.ini with those values:
+* You need PHP (7.1+), composer, node (8+ is better) npm or yarn and @angular/cli package installed globally
+* You also need to configure your php with curl and openssl
+* You have to setup the certificates [download pem file](https://curl.haxx.se/docs/caextract.html), put it somewhere on your system and set your php.ini with those values:
 
- * curl.cainfo = PATH_TO_YOUR_CERTIFICATE/cacert.pe
- * openssl.cafile = PATH_TO_YOUR_CERTIFICATE/cacert.pem
+   * curl.cainfo = PATH_TO_YOUR_CERTIFICATE/cacert.pe
+   * openssl.cafile = PATH_TO_YOUR_CERTIFICATE/cacert.pem
 
 You can run the app with a PHP Built_in server (all npm command relys on it), but some features may not work finely. In fact,
 Api-platform package rely on some HTTP SERVER features that are not implemented by the PHP Built-in server. So the api indexes
@@ -35,7 +35,7 @@ Here is how it has been created:
 * composer req encore annotations twig api jwt-auth http profiler log doctrine-migrations admin webonyx/graphql-php
 * composer require --dev doctrine/doctrine-fixtures-bundle phpunit/phpunit symfony/dom-crawler symfony/browser-kit symfony/css-selector security-checker roave/security-advisories:dev-master
 * yarn add vue vue-router quasar-framework quasar-extras vuelidate vue-apollo@next graphql apollo-client apollo-link apollo-link-http apollo-link-error apollo-cache-inmemory graphql-tag react react-dom prop-types axios rxjs @devexpress/dx-react-core @devexpress/dx-react-grid
-* yarn add --dev vue-loader vue-template-compiler vue-router react-loader babel-preset-es2017 babel-preset-react sass-loader node-sass bootstrap@4.0.0 testcafe testcafe-vue-selectors jasmine karma karma-jasmine karma-spec-reporter karma-junit-reporter karma-webpack karma-chrome-launcher offline-plugin
+* yarn add --dev vue-loader vue-template-compiler vue-router react-loader babel-preset-es2017 babel-preset-react sass-loader node-sass bootstrap@4.0.0 testcafe testcafe-vue-selectors jasmine karma karma-jasmine karma-spec-reporter karma-junit-reporter karma-webpack karma-chrome-launcher offline-plugin rxjs-tslint
 * yarn install
 
 Then some php controllers has been created on following routes :

@@ -4,11 +4,18 @@ import { authClient, initToken } from './authClient'
 import { host, apiPlatformPrefix } from '../lib/config'
 
 const entrypoint = `//${host}${apiPlatformPrefix}`
+const fetchHeaders = (options) => {
+    const token = localStorage.getItem('token');
 
+    if (!token) {
+        return
+    }
+
+    options.headers.set('Authorization', `Bearer ${token}`);
+};
 const fetchWithAuth = (url, options = {}) => {
     if (!options.headers) options.headers = new Headers({ Accept: 'application/ld+json' });
-
-    options.credentials = 'same-origin'
+    fetchHeaders(options)
 
     // fix https://github.com/api-platform/api-platform/issues/584
     if (apiPlatformPrefix) {
