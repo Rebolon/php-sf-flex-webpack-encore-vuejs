@@ -43,16 +43,16 @@ Then some php controllers has been created on following routes :
  * / : DefaultController with the menu to navigate throught different controllers
  * /demo/simple : SimpleController with route config in routes.yaml and logger injection with autowiring
  * /demo/hello/:name : HelloController with route config in annotations and twig template
+ * /demo/http-plug : HttpPlugController to show how to call external API from your controller
+ * /demo/login/standard/secured : LoginController for standard login by Symfony
+ * /demo/login/json/authenticate : LoginJsonController for json login with JS applications but in stateful context
  * /demo/vuejs : VuejsController with route config in annotations and VueJS app with specific js/css import
  * /demo/quasar : QuasarController like VuejsController but with the Quasar framework for UX components
- * /demo/http-plug : HttpPlugController to show how to call external API from your controller
- * /demo/login : LoginController for standard login by Symfony
- * /demo/vuejs/login : LoginJsonController for json login with JS applications
- * /demo/form : [Work in progress] authentification with javascript, and a full web application with vuejs and api-platform(rest/graphql)
- * /demo/devxpress-angular : Angular5 demo with DevXpress UI components (Datagrid and a Wizard sample with local storage and a sumup zone)
+ * /demo/form/quasar-vuejs : [Work in progress] authentification with javascript, and a full web application with vuejs and api-platform(rest/graphql)
+ * /demo/form/devxpress-angular : Angular5 demo with DevXpress UI components (Datagrid and a Wizard sample with local storage and a sumup zone)
  * /api : access ApiPlatform api doc (you need to be authentified from /demo/form if you want to play with it: all entities are configured to be accessed with ROLE_USER)
  * /api/graphql : access ApiPlatform GraphQL implementation (beta release)
- * /api-platform-admin-react : the react admin provided by api platform package (more info here [https://api-platform.com/docs/admin/getting-started](https://api-platform.com/docs/admin/getting-started))
+ * /demo/api-platform-admin-react : the react admin provided by api platform package (more info here [https://api-platform.com/docs/admin/getting-started](https://api-platform.com/docs/admin/getting-started))
  * /admin : use the easy admin bundle to allow a comparison between fullstack PHP and PHP/VueJS
 
 And then we followed the [documentation here from api platform](https://api-platform.com/docs/admin/getting-started) to create the Admin React tool. We just proceed to some adjustments:
