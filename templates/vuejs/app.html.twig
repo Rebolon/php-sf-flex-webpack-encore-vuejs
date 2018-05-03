@@ -1,14 +1,1 @@
 {% extends 'spa.html.twig' %}
-
-{% block stylesheets %}
-{{ parent() }}
-<link rel="stylesheet" href="{{ asset('dist/js/vuejs.css') }}">
-{% endblock %}
-
-{% block javascripts %}
-<script src="{{ asset('dist/js/vuejs.js') }}"></script>
-{% endblock %}
-
-{% block body %}
-<div id="app"></div>
-{% endblock %}
