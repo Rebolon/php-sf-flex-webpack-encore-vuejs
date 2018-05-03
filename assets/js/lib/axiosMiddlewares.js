@@ -66,19 +66,12 @@ const JwtTokenHeader = function (config) {
 }
 
 const CsrfTokenHeader = function (config) {
-    let meta = getTokenFromMeta()
-
-    switch (config.method.toLowerCase()) {
-        case 'get':
-            if (!config.params) {
-                config.params = {}
-            }
-            config.params[csrfParameter] = meta
-            break;
-        case 'post': // and all other methods throught default
-        default:
-            config.data[csrfParameter] = meta
+    if (config.method.toLowerCase() === 'get') {
+        return config
     }
+
+    let meta = getTokenFromMeta()
+    config.data[csrfParameter] = meta
 
     console.info('axios intercep request', 'csrf', meta)
 

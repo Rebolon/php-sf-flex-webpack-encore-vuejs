@@ -21,9 +21,7 @@ class CsrfToken
      */
     public function getToken($tokenId)
     {
-        $token = $this->tokenManager->getToken($tokenId);
-
-        return $token;
+        return $this->tokenManager->getToken($tokenId);
     }
 
     /**

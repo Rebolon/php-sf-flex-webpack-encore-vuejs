@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Security\UserInfo;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -70,22 +71,18 @@ class LoginJsonController extends Controller
      *     name="demo_secured_page_json_is_logged_in",
      *     defaults={"_format"="json"}
      *     )
-     * @Method({"GET"})
+     * @Method({"GET", "POST"})
      */
     public function isLoggedIn()
     {
-        // will be usefull if we decide to return always 200 + the real Json content represented by isLoggedIn: 0|1
-        $authenticated = $this->isGranted('IS_AUTHENTICATED_FULLY');
-        $data = ['isLoggedIn' => (int)$authenticated, ];
+        $isGranted = function ($att) {
+            return $this->isGranted($att);
+        };
 
-        if ($authenticated) {
-            $user = $this->getUser();
-            $data['me'] = [
-                'username' => $user->getUsername(),
-                'roles' => $user->getRoles(),
-                ];
-        }
+        $getUser = function () {
+            return $this->getUser();
+        };
 
-        return new JsonResponse($data);
+        return new JsonResponse(UserInfo::getUserInfo($isGranted, $getUser));
     }
 }
