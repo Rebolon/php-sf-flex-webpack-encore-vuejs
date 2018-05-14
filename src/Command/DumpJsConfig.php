@@ -48,6 +48,15 @@ class DumpJsConfig extends ContainerAwareCommand
      */
     protected $rootDir;
 
+    /**
+     * DumpJsConfig constructor.
+     * @param string $csrfTokenParameter
+     * @param string $apiPlatformPrefix
+     * @param string $loginUsernamePath
+     * @param string $loginPasswordPath
+     * @param \Twig_Environment $twig
+     * @param RouterInterface $router
+     */
     public function __construct(
         string $csrfTokenParameter,
         string $apiPlatformPrefix,
@@ -66,6 +75,9 @@ class DumpJsConfig extends ContainerAwareCommand
         $this->loginPasswordPath = $loginPasswordPath;
     }
 
+    /**
+     * 
+     */
     protected function configure()
     {
         $this
@@ -77,6 +89,14 @@ class DumpJsConfig extends ContainerAwareCommand
             ->addArgument('quasarStyle', InputArgument::OPTIONAL, 'The style for quasar framework: mat or ios.', 'mat');
     }
 
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int|null|void
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $env = $this->getEnv();
@@ -84,100 +104,17 @@ class DumpJsConfig extends ContainerAwareCommand
         $port = $input->getArgument('port');
         $quasarStyle = $input->getArgument('quasarStyle');
 
-        $validator = Validation::createValidator();
-        $violations = [];
-
-        $violations['port'] = $validator->validate($port, [
-            new Assert\Type(['type' => 'numeric', ]),
-        ]);
-
-        $violations['quasarStyle'] = $validator->validate($quasarStyle, [
-            new Assert\Choice(['choices' => ['mat', 'ios'], ]),
-        ]);
-
-        if (0 !== count($violations['port']) && 0 !== count($violations['quasarstyle'])) {
-            $output->writeln([
-                'Params errors',
-                '=======================', ]);
-            foreach ($violations as $paramName => $violation) {
-                foreach($violation as $v) {
-                    $output->writeln(ucfirst($paramName) . ': ' . $v->getMessage());
-                }
-            }
-
+        if (!$this->validateInputs($output, $port, $quasarStyle)) {
             return;
         }
 
         $apiPlatform = $this->loadApiPlatformConfig($output);
-        $apiPlatformOutput = function () use ($apiPlatform) {
-            $output = [];
-            foreach ($apiPlatform as $key => $value) {
-                $output[] = $key . ': ' . $value;
-            }
+        $this->displayJsConfigArguments($output, $apiPlatform, $host, $port, $quasarStyle);
 
-            return join(', ', $output);
-        };
-        $output->writeln([
-            'Js config file creation',
-            '=======================',
-            'arguments:',
-            'host:port = ' . $host . ':' . $port,
-            'quasarStyle = ' . $quasarStyle,
-            'apiPlatform = ' . $apiPlatformOutput(),
-        ]);
+        $content = $this->render($env, $host, $port, $quasarStyle, $apiPlatform);
+        $this->displayJsConfigOutput($output, $content);
 
-        $content = $this->twig->render('command/config.js.twig', [
-            'env' => $env,
-            'host' => trim($host),
-            'port' => trim($port),
-            'csrfTokenParameter' => $this->csrfTokenParameter,
-            'apiPlatformPrefix' => $this->apiPlatformPrefix,
-            'loginUsernamePath' => $this->loginUsernamePath,
-            'loginPasswordPath' => $this->loginPasswordPath,
-            'uriLoginJson' => $this->router->generate('demo_login_json_check'),
-            'uriLoginJwt' => $this->router->generate('app_loginjwt_newtoken'),
-            'uriIsLoggedInJson' => $this->router->generate('demo_secured_page_json_is_logged_in'),
-            'uriIsLoggedInJwt' => $this->router->generate('demo_secured_page_jwt_is_logged_in'),
-            'quasarStyle' => $quasarStyle,
-            'apiPlatform' => $apiPlatform,
-        ]);
-
-        $output->writeln([
-            'File content',
-            '============',
-            $content,
-        ]);
-
-        $helper = $this->getHelper('question');
-        $projectDir = $this->getContainer()->get('kernel')->getRootDir() . '/..';
-        $configFilepath = '/assets/js/lib/config.js';
-        $filepath = $projectDir . $configFilepath;
-
-        if (file_exists($filepath)) {
-            $question = new ConfirmationQuestion($configFilepath . ' file already exists, confirm it`s replacement (y or n, default n) ?', false);
-            $response = $helper->ask($input, $output, $question);
-            if (!$response) {
-                $output->writeln([
-                    $response,
-                    'Process stopped',
-                    'New file not saved',
-                ]);
-
-                return;
-            }
-        }
-
-        $res = file_put_contents($filepath, $content);
-
-        if (!$res) {
-            $output->writeln([
-                'Creation file failed',
-            ]);
-        } else {
-            $output->writeln([
-                'File created at ' . $configFilepath,
-            ]);
-        }
+        $this->writeJsConfigFile($input, $output, $content);
     }
 
     /**
@@ -214,6 +151,9 @@ class DumpJsConfig extends ContainerAwareCommand
         return [];
     }
 
+    /**
+     * @return string
+     */
     protected function getEnv(): string
     {
         $systemEnv = getenv();
@@ -224,5 +164,150 @@ class DumpJsConfig extends ContainerAwareCommand
         }
 
         return $env;
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param $port
+     * @param $quasarStyle
+     * @return bool
+     */
+    protected function validateInputs(OutputInterface $output, $port, $quasarStyle): bool
+    {
+        $validator = Validation::createValidator();
+        $violations = [];
+
+        $violations['port'] = $validator->validate($port, [
+            new Assert\Type(['type' => 'numeric',]),
+        ]);
+
+        $violations['quasarStyle'] = $validator->validate($quasarStyle, [
+            new Assert\Choice(['choices' => ['mat', 'ios'],]),
+        ]);
+
+        if (0 !== count($violations['port']) && 0 !== count($violations['quasarstyle'])) {
+            $output->writeln([
+                'Params errors',
+                '=======================',]);
+            foreach ($violations as $paramName => $violation) {
+                foreach ($violation as $v) {
+                    $output->writeln(ucfirst($paramName) . ': ' . $v->getMessage());
+                }
+            }
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param $apiPlatform
+     * @param $host
+     * @param $port
+     * @param $quasarStyle
+     */
+    protected function displayJsConfigArguments(OutputInterface $output, $apiPlatform, $host, $port, $quasarStyle): void
+    {
+        $apiPlatformOutput = function () use ($apiPlatform) {
+            $output = [];
+            foreach ($apiPlatform as $key => $value) {
+                $output[] = $key . ': ' . $value;
+            }
+
+            return join(', ', $output);
+        };
+        $output->writeln([
+            'Js config file creation',
+            '=======================',
+            'arguments:',
+            'host:port = ' . $host . ':' . $port,
+            'quasarStyle = ' . $quasarStyle,
+            'apiPlatform = ' . $apiPlatformOutput(),
+        ]);
+    }
+
+    /**
+     * @param $env
+     * @param $host
+     * @param $port
+     * @param $quasarStyle
+     * @param $apiPlatform
+     * @return string
+     * @throws \Twig_Error_Loader
+     * @throws \Twig_Error_Runtime
+     * @throws \Twig_Error_Syntax
+     */
+    protected function render($env, $host, $port, $quasarStyle, $apiPlatform): string
+    {
+        $content = $this->twig->render('command/config.js.twig', [
+            'env' => $env,
+            'host' => trim($host),
+            'port' => trim($port),
+            'csrfTokenParameter' => $this->csrfTokenParameter,
+            'apiPlatformPrefix' => $this->apiPlatformPrefix,
+            'loginUsernamePath' => $this->loginUsernamePath,
+            'loginPasswordPath' => $this->loginPasswordPath,
+            'uriLoginJson' => $this->router->generate('demo_login_json_check'),
+            'uriLoginJwt' => $this->router->generate('app_loginjwt_newtoken'),
+            'uriIsLoggedInJson' => $this->router->generate('demo_secured_page_json_is_logged_in'),
+            'uriIsLoggedInJwt' => $this->router->generate('demo_secured_page_jwt_is_logged_in'),
+            'quasarStyle' => $quasarStyle,
+            'apiPlatform' => $apiPlatform,
+        ]);
+        return $content;
+    }
+
+    /**
+     * @param OutputInterface $output
+     * @param $content
+     */
+    protected function displayJsConfigOutput(OutputInterface $output, $content): void
+    {
+        $output->writeln([
+            'File content',
+            '============',
+            $content,
+        ]);
+    }
+
+    /**
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @param $content
+     */
+    protected function writeJsConfigFile(InputInterface $input, OutputInterface $output, $content): void
+    {
+        $helper = $this->getHelper('question');
+        $projectDir = $this->getContainer()->get('kernel')->getRootDir() . '/..';
+        $configFilepath = '/assets/js/lib/config.js';
+        $filepath = $projectDir . $configFilepath;
+
+        if (file_exists($filepath)) {
+            $question = new ConfirmationQuestion($configFilepath . ' file already exists, confirm it`s replacement (y or n, default n) ?', false);
+            $response = $helper->ask($input, $output, $question);
+            if (!$response) {
+                $output->writeln([
+                    $response,
+                    'Process stopped',
+                    'New file not saved',
+                ]);
+
+                return;
+            }
+        }
+
+        $res = file_put_contents($filepath, $content);
+
+        if (!$res) {
+            $output->writeln([
+                'Creation file failed',
+            ]);
+        } else {
+            $output->writeln([
+                'File created at ' . $configFilepath,
+            ]);
+        }
     }
 }
