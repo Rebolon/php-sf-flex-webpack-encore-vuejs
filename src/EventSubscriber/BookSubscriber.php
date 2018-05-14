@@ -47,11 +47,11 @@ final class BookSubscriber implements EventSubscriberInterface
         }
 
         $this->logger->debug('DENORMALIZATION');
-        $this->logger->debug( 'book: ' . $book->getTitle());
-        $this->logger->debug( 'serie: ' . $book->getSerie()->getName());
-        $this->logger->debug( '#authors: ' . $book->getAuthors()->count());
+        $this->logger->debug('book: ' . $book->getTitle());
+        $this->logger->debug('serie: ' . $book->getSerie()->getName());
+        $this->logger->debug('#authors: ' . $book->getAuthors()->count());
         foreach ($book->getAuthors()->toArray() as $project) {
-            $this->logger->debug( "\t author: " . $project->getAuthor()->getFirstname());
+            $this->logger->debug("\t author: " . $project->getAuthor()->getFirstname());
         }
     }
 
@@ -64,11 +64,11 @@ final class BookSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->logger->debug( 'DENORMALIZATION_AFTER_PERSIST' );
-        $this->logger->debug( 'serie:' . $book->getSerie()->getName());
-        $this->logger->debug( '#authors: ' . $book->getAuthors()->count());
+        $this->logger->debug('DENORMALIZATION_AFTER_PERSIST');
+        $this->logger->debug('serie:' . $book->getSerie()->getName());
+        $this->logger->debug('#authors: ' . $book->getAuthors()->count());
         foreach ($book->getAuthors()->toArray() as $author) {
-            $this->logger->debug( "\t author: " . $author->getAuthor()->getFirstname());
+            $this->logger->debug("\t author: " . $author->getAuthor()->getFirstname());
         }
     }
 }

@@ -178,17 +178,17 @@ class DumpJsConfig extends ContainerAwareCommand
         $violations = [];
 
         $violations['port'] = $validator->validate($port, [
-            new Assert\Type(['type' => 'numeric',]),
+            new Assert\Type(['type' => 'numeric', ]),
         ]);
 
         $violations['quasarStyle'] = $validator->validate($quasarStyle, [
-            new Assert\Choice(['choices' => ['mat', 'ios'],]),
+            new Assert\Choice(['choices' => ['mat', 'ios'], ]),
         ]);
 
         if (0 !== count($violations['port']) && 0 !== count($violations['quasarstyle'])) {
             $output->writeln([
                 'Params errors',
-                '=======================',]);
+                '=======================', ]);
             foreach ($violations as $paramName => $violation) {
                 foreach ($violation as $v) {
                     $output->writeln(ucfirst($paramName) . ': ' . $v->getMessage());
@@ -210,7 +210,7 @@ class DumpJsConfig extends ContainerAwareCommand
      */
     protected function displayJsConfigArguments(OutputInterface $output, $apiPlatform, $host, $port, $quasarStyle): void
     {
-        $apiPlatformOutput = function () use ($apiPlatform) {
+        $apiPlatformOutput = function() use ($apiPlatform) {
             $output = [];
             foreach ($apiPlatform as $key => $value) {
                 $output[] = $key . ': ' . $value;

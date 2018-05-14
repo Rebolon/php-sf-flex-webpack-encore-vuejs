@@ -20,6 +20,6 @@ class HelloController extends Controller
      */
     public function world($name)
     {
-        return $this->render('hello/world.html.twig', ['name' => $name,]);
+        return $this->render('hello/world.html.twig', ['name' => $name, ]);
     }
 }

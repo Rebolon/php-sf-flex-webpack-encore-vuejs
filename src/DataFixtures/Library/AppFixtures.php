@@ -59,7 +59,7 @@ class AppFixtures extends Fixture
         // add job (indexed are 0->writer, 1->cartoonist, 2->color)
         foreach (['writer', 'cartoonist', 'color', ] as $jobTitle) {
             $job = (new Job())
-                ->setTranslationKey('JOB_'.strtoupper($jobTitle));
+                ->setTranslationKey('JOB_' . strtoupper($jobTitle));
 
             $manager->persist($job);
             $this->cache['jobs'][] = $job;

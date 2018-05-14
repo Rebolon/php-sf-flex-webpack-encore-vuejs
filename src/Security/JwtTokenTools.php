@@ -35,9 +35,13 @@ class JwtTokenTools
         try {
             $user = $provider->loadUserByUsername($username);
         } catch (UsernameNotFoundException $e) {
-            if ($logger) $logger->alert(sprintf('Exception: UsernameNotFoundException: %s', $e->getMessage()));
+            if ($logger) {
+                $logger->alert(sprintf('Exception: UsernameNotFoundException: %s', $e->getMessage()));
+            }
         } catch (\Exception $e) {
-            if ($logger) $logger->alert(sprintf('Exception: \Exception: %s', $e->getMessage()));
+            if ($logger) {
+                $logger->alert(sprintf('Exception: \Exception: %s', $e->getMessage()));
+            }
         } finally {
             if (!isset($user)) {
                 throw new NotFoundHttpException();

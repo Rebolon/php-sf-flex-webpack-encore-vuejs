@@ -56,8 +56,8 @@ class LoginJwtController extends Controller
         LoggerInterface $logger,
         JwtTokenTools $tokenTool)
     {
-        $username = $request->getUser() ? : $request->request->get($this->getParameter('login_username_path'));
-        $password = $request->getPassword() ? : $request->request->get($this->getParameter('login_password_path'));
+        $username = $request->getUser() ?: $request->request->get($this->getParameter('login_username_path'));
+        $password = $request->getPassword() ?: $request->request->get($this->getParameter('login_password_path'));
 
         if (!$username) {
             $json = json_decode($request->getContent(), true);
@@ -92,7 +92,7 @@ class LoginJwtController extends Controller
     {
         // will be usefull if we decide to return always 200 + the real Json content represented by isLoggedIn: 0|1
         $authenticated = $this->isGranted('IS_AUTHENTICATED_FULLY');
-        $data = ['isLoggedIn' => (int)$authenticated, ];
+        $data = ['isLoggedIn' => (int) $authenticated, ];
 
         if ($authenticated) {
             $user = $this->getUser();
