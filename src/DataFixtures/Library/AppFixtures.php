@@ -11,6 +11,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\DBAL\Connection;
 use \PDO;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class AppFixtures extends Fixture
@@ -31,14 +32,21 @@ class AppFixtures extends Fixture
     protected $env;
 
     /**
+     * @var LoggerInterface
+     */
+    protected $logger;
+
+    /**
      * AppFixtures constructor.
      * @param ConnectionFixtures $dbCon
      * @param KernelInterface $kernel
+     * @param LoggerInterface $logger
      */
-    public function __construct(ConnectionFixtures $dbCon, KernelInterface $kernel)
+    public function __construct(ConnectionFixtures $dbCon, KernelInterface $kernel, LoggerInterface $logger)
     {
         $this->env = $kernel->getEnvironment();
         $this->dbCon = $dbCon->get();
+        $this->logger = $logger;
     }
 
     /**
@@ -71,7 +79,7 @@ class AppFixtures extends Fixture
         $q = $dbh->query($qry);
         foreach ($q->fetchAll() as $row) {
             try {
-                $book = new Book();
+                $book = new Book($this->logger);
                 $book->setTitle($row['title']);
                 $this->addSerie($row, $book, $dbh, $manager);
 
@@ -199,8 +207,7 @@ SQL
         $sth->execute();
         $rows = $sth->fetchAll();
 
-        if ($rows
-            && count($rows)) {
+        if (count($rows)) {
             $i = 0;
             foreach ($rows as $row) {
                 $authorName = explode('| ', $row['name']);

@@ -143,7 +143,7 @@ class Author implements LibraryInterface
     /**
      * @return string
      */
-    public function getName(): ?string
+    public function getName(): string
     {
         return trim($this->getFirstname() . ' ' . $this->getLastname());
     }

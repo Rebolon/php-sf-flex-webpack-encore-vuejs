@@ -2,6 +2,7 @@
 
 namespace App\Request\ParamConverter\Library;
 
+use Psr\Log\LoggerInterface;
 use Rebolon\Request\ParamConverter\ItemAbstractConverter;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Library\Book;
@@ -46,6 +47,7 @@ class BookConverter extends ItemAbstractConverter
      * @param ProjectBookCreationConverter $projectBookCreationConverter
      * @param ProjectBookEditionConverter $projectBookEditionConverter
      * @param SerieConverter $serieConverter
+     * @param LoggerInterface $logger
      */
     public function __construct(
         ValidatorInterface $validator,
@@ -53,13 +55,15 @@ class BookConverter extends ItemAbstractConverter
         EntityManagerInterface $entityManager,
         ProjectBookCreationConverter $projectBookCreationConverter,
         ProjectBookEditionConverter $projectBookEditionConverter,
-        SerieConverter $serieConverter
+        SerieConverter $serieConverter,
+        LoggerInterface $logger
     ) {
         parent::__construct($validator, $serializer, $entityManager);
 
         $this->projectBookCreationConverter = $projectBookCreationConverter;
         $this->projectBookEditionConverter = $projectBookEditionConverter;
         $this->serieConverter = $serieConverter;
+        $this->constructorParams[] = $logger;
     }
 
     /**

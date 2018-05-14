@@ -70,6 +70,11 @@ class CsrfTokenAuthenticator extends AbstractGuardAuthenticator
     protected $router;
 
     /**
+     * @var ContainerInterface
+     */
+    protected $container;
+
+    /**
      * TokenAuthenticator constructor.
      * @param string $csrfTokenParameter
      * @param string $csrfTokenId

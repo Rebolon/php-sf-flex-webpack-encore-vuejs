@@ -3,6 +3,7 @@
 namespace App\Request\ParamConverter\Library;
 
 use App\Entity\Library\ProjectBookEdition;
+use Psr\Log\LoggerInterface;
 use Rebolon\Request\ParamConverter\ListAbstractConverter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -28,16 +29,19 @@ class ProjectBookEditionConverter extends ListAbstractConverter
      * @param SerializerInterface $serializer
      * @param EntityManagerInterface $entityManager
      * @param EditorConverter $editorConverter
+     * @param LoggerInterface $logger
      */
     public function __construct(
         ValidatorInterface $validator,
         SerializerInterface $serializer,
         EntityManagerInterface $entityManager,
-        EditorConverter $editorConverter
+        EditorConverter $editorConverter,
+        LoggerInterface $logger
     ) {
         parent::__construct($validator, $serializer, $entityManager);
 
         $this->editorConverter = $editorConverter;
+        $this->constructorParams[] = $logger;
     }
 
     /**

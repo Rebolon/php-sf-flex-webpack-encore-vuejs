@@ -6,9 +6,11 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use App\Entity\LoggerTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -38,10 +40,12 @@ use Symfony\Component\Validator\Constraints as Assert;
  * )
  * @ApiFilter(OrderFilter::class, properties={"id", "title"}, arguments={"orderParameterName"="order"})
  *
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="BookRepository")
  */
 class Book implements LibraryInterface
 {
+    use LoggerTrait;
+
     /**
      * @ApiProperty(
      *     iri="http://schema.org/identifier"
@@ -96,6 +100,8 @@ class Book implements LibraryInterface
     private $indexInSerie;
 
     /**
+     * @var ArrayCollection of ProjectBookEdition
+     *
      * @ApiProperty(
      *     iri="http://schema.org/reviews"
      * )
@@ -137,9 +143,12 @@ class Book implements LibraryInterface
 
     /**
      * Book constructor.
+     * @param LoggerInterface $logger
      */
-    public function __construct()
+    public function __construct(LoggerInterface $logger)
     {
+        $this->setLogger($logger);
+
         $this->reviews = new ArrayCollection();
         $this->authors = new ArrayCollection();
         $this->editors = new ArrayCollection();
@@ -232,6 +241,7 @@ class Book implements LibraryInterface
     }
 
     /**
+     * @param ArrayCollection $reviews
      * @return Book
      */
     public function setReviews(ArrayCollection $reviews): Book
@@ -368,13 +378,13 @@ class Book implements LibraryInterface
     /**
      * @param Editor $editor
      * @param \DateTime $date
-     * @param null $isbn
-     * @param null $collection
+     * @param string $isbn
+     * @param string $collection
      * @return $this
      */
     public function addEditor(Editor $editor, \DateTime $date, $isbn = null, $collection = null): Book
     {
-        $project = (new ProjectBookEdition())
+        $project = (new ProjectBookEdition($this->logger))
             ->setBook($this)
             ->setEditor($editor)
             ->setPublicationDate($date)
@@ -418,12 +428,12 @@ class Book implements LibraryInterface
         foreach ($this->authors as $projectToCheck) {
             if (
                 (
-                    !is_null($project->getAuthor()->getId())
-                    && $projectToCheck->getAuthor()->getId() === $project->getAuthor()->getId()
+                    (!is_null($project->getAuthor()->getId())
+                    && $projectToCheck->getAuthor()->getId() === $project->getAuthor()->getId())
                     || $projectToCheck->getAuthor()->__toString() === $project->getAuthor()->__toString()
                 ) && (
-                    !is_null($project->getRole()->getId())
-                    && $projectToCheck->getRole()->getId() === $project->getRole()->getId()
+                    (!is_null($project->getRole()->getId())
+                    && $projectToCheck->getRole()->getId() === $project->getRole()->getId())
                     || $projectToCheck->getRole()->__toString() === $project->getRole()->__toString()
                 )
             ) {
@@ -453,8 +463,8 @@ class Book implements LibraryInterface
     {
         foreach ($this->editors as $projectToCheck) {
             if (
-                !is_null($project->getEditor()->getId())
-                && $projectToCheck->getEditor()->getId() === $project->getEditor()->getId()
+                (!is_null($project->getEditor()->getId())
+                && $projectToCheck->getEditor()->getId() === $project->getEditor()->getId())
                 || $projectToCheck->__toString() === $project->__toString()
             ) {
                 return true;

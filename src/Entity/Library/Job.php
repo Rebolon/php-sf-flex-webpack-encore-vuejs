@@ -86,6 +86,6 @@ class Job implements LibraryInterface
      */
     public function __toString(): string
     {
-        return $this->getTranslationKey();
+        return $this->getTranslationKey() ? $this->getTranslationKey() : '';
     }
 }

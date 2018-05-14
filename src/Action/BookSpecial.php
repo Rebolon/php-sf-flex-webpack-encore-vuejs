@@ -20,17 +20,17 @@ use Symfony\Component\Serializer\SerializerInterface;
 class BookSpecial
 {
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     private $em;
 
     /**
-     * @var Router
+     * @var RouterInterface
      */
     private $router;
 
     /**
-     * @var Serializer
+     * @var SerializerInterface
      */
     private $serializer;
 
@@ -136,8 +136,6 @@ class BookSpecial
             $this->em->persist($book);
 
             $this->em->flush();
-
-            $iris = $this->router->generate('api_books_get_item', ['id' => $book->getId(), ]);
 
             $response = $this->serializer->serialize($book, 'json');
         } else {

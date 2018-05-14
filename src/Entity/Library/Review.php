@@ -212,6 +212,6 @@ class Review implements LibraryInterface
         return $this->getRating()
             . ($this->getBody() ? ': ' . $this->getBody() : '')
             . ($this->getUsername() ? ', @' . $this->getUsername() : '')
-            . ($this->getPublicationDate() ? ' (' . $this->getPublicationDate() . ')' : '');
+            . ($this->getPublicationDate() ? ' (' . $this->getPublicationDate()->format('Ymd') . ')' : '');
     }
 }
