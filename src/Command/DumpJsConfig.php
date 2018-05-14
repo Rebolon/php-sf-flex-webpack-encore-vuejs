@@ -19,6 +19,11 @@ class DumpJsConfig extends ContainerAwareCommand
     protected $twig;
 
     /**
+     * @var RouterInterface
+     */
+    protected $router;
+
+    /**
      * @var string
      */
     protected $csrfTokenParameter;
@@ -27,6 +32,16 @@ class DumpJsConfig extends ContainerAwareCommand
      * @var string
      */
     protected $apiPlatformPrefix;
+
+    /**
+     * @var string
+     */
+    protected $loginUsernamePath;
+
+    /**
+     * @var string
+     */
+    protected $loginPasswordPath;
 
     /**
      * @var string
@@ -70,6 +85,8 @@ class DumpJsConfig extends ContainerAwareCommand
         $quasarStyle = $input->getArgument('quasarStyle');
 
         $validator = Validation::createValidator();
+        $violations = [];
+
         $violations['port'] = $validator->validate($port, [
             new Assert\Type(['type' => 'numeric', ]),
         ]);
@@ -201,7 +218,8 @@ class DumpJsConfig extends ContainerAwareCommand
     {
         $systemEnv = getenv();
         $env = 'dev'; // default
-        if (array_key_exists('APP_ENV', $systemEnv)) {
+        if (is_array($systemEnv)
+            && array_key_exists('APP_ENV', $systemEnv)) {
             $env = $systemEnv['APP_ENV'];
         }
 

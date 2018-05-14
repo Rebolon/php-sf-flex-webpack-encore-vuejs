@@ -2,6 +2,7 @@
 
 namespace App\Tests\Common;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -10,11 +11,17 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Routing\RouterInterface;
 
 abstract class ToolsAbstract extends WebTestCase
 {
     /**
-     * @var Router
+     * @var LoggerInterface
+     */
+    protected $logger;
+
+    /**
+     * @var RouterInterface
      */
     protected $router;
 
@@ -78,8 +85,15 @@ abstract class ToolsAbstract extends WebTestCase
         $this->testPwd = 'test';
 
         $kernel = static::bootKernel();
-        $this->dbCon = $kernel->getContainer()->get('database_connection');
-        $this->em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
+        $client = self::createClient();
+
+        // mock useless class
+        $this->logger = $this->createMock('\Psr\Log\LoggerInterface');
+
+        // reuse service
+        $this->dbCon = $client->getContainer()->get('database_connection');
+        $this->em = $client->getContainer()->get('doctrine.orm.entity_manager');
+
         $application = new Application($kernel);
         $application->setAutoExit(false);
         $input = new ArrayInput(array(

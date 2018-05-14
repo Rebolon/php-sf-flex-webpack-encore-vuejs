@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Security\UserInfo;
+use Psr\Http\Message\ResponseInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -20,6 +22,8 @@ class LoginJsonController extends Controller
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @Route("/demo/security/login/json/secured", name="demo_secured_page_json")
      * @Method({"GET"})
+     *
+     * @return Response
      */
     public function index()
     {
@@ -32,6 +36,8 @@ class LoginJsonController extends Controller
      * The route that displays the JS form
      * @Route("/demo/security/login/json/frontend", name="demo_login_json")
      * @Method({"GET"})
+     *
+     * @return Response
      */
     public function form()
     {
@@ -44,7 +50,7 @@ class LoginJsonController extends Controller
      *
      * @Route("/demo/security/login/json/authenticate", name="demo_login_json_check")
      *
-     * @return RedirectResponse
+     * @return Response
      */
     public function loginJson(RouterInterface $router)
     {
@@ -72,6 +78,8 @@ class LoginJsonController extends Controller
      *     defaults={"_format"="json"}
      *     )
      * @Method({"GET", "POST"})
+     *
+     * @return Response
      */
     public function isLoggedIn()
     {

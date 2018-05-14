@@ -6,7 +6,9 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use App\Entity\LoggerTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -22,6 +24,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ProjectBookEdition implements LibraryInterface
 {
+    use LoggerTrait;
+
     /**
      * @Groups("book_detail_read")
      *
@@ -86,6 +90,15 @@ class ProjectBookEdition implements LibraryInterface
     private $book;
 
     /**
+     * ProjectBookEdition constructor.
+     * @param LoggerInterface $logger
+     */
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->setLogger($logger);
+    }
+
+    /**
      * mandatory for api-platform to get a valid IRI
      *
      * @return int
@@ -121,12 +134,22 @@ class ProjectBookEdition implements LibraryInterface
     public function setPublicationDate($publicationDate): ProjectBookEdition
     {
         if (is_string($publicationDate)) {
+            $dateString = $publicationDate;
             try {
-                $publicationDate = new \DateTime($publicationDate);
+                if (preg_match('/\d*/', $publicationDate)) {
+                    $dateTime = new \DateTime();
+                    $publicationDate = $dateTime->setTimestamp((int) $publicationDate);
+                } else {
+                    $publicationDate = new \DateTime($publicationDate);
+                }
             } catch (\Exception $e) {
-                $dateTime = new \DateTime();
-                $publicationDate = $dateTime->setTimestamp($publicationDate);
+                $this->logger->warning(sprintf('Wrong input for publicationDate, %s', $dateString));
             }
+        } elseif (!($publicationDate instanceof \DateTime)) {
+            $this->logger->warning(sprintf(
+                'Wrong input for publicationDate, should be \\DateTime or valid date string or unixTimestamp, %s',
+                is_object($publicationDate) ? $publicationDate->__toString() : $publicationDate
+            ));
         }
 
         $this->publicationDate = $publicationDate;

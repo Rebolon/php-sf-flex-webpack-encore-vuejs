@@ -22,6 +22,7 @@ class DefaultController extends Controller
 
         $router = $this->get('router');
 
+        $demoRoutes = [];
         $demoRoutes['Basic: Simple controller'] = $router->generate('simple');
         $demoRoutes['Basic: Hello controller with twig'] = $router->generate('app_hello_world', ['name' => 'world', ]);
         $demoRoutes['Basic: HttpPlug demo'] = $router->generate('app_httpplug_call');
