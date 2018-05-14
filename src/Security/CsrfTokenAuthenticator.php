@@ -1,9 +1,12 @@
 <?php
 namespace App\Security;
 
+use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
@@ -14,7 +17,7 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Csrf\CsrfToken as SymfonyCsrfToken;
 
-class TokenAuthenticator extends AbstractGuardAuthenticator
+class CsrfTokenAuthenticator extends AbstractGuardAuthenticator
 {
     /**
      * @var string
@@ -57,17 +60,40 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
     protected $authenticationManager;
 
     /**
+     * @var TokenStorageInterface
+     */
+    protected $tokenStorage;
+
+    /**
+     * @var RouterInterface
+     */
+    protected $router;
+
+    /**
      * TokenAuthenticator constructor.
-     *
      * @param string $csrfTokenParameter
      * @param string $csrfTokenId
      * @param string $loginUsernamePath
      * @param string $loginPasswordPath
-     * @param string $providerKey : don't know how to inject it from security.yaml
-     * @param AuthenticationManagerInterface $authenticationManager : don't know how to inject this
-     * @param CsrfTokenManagerInterface $csrfTokenManager : don't know how to inject this
+     * @param string $providerKey
+     * @param string $apiPlatformPrefix
+     * @param AuthenticationManagerInterface $authenticationManager
+     * @param CsrfTokenManagerInterface $csrfTokenManager
+     * @param TokenStorageInterface $tokenStorage
+     * @param RouterInterface $router
      */
-    public function __construct(string $csrfTokenParameter, string $csrfTokenId, string $loginUsernamePath, string $loginPasswordPath, string $providerKey, string $apiPlatformPrefix, AuthenticationManagerInterface $authenticationManager, CsrfTokenManagerInterface $csrfTokenManager)
+    public function __construct(
+        string $csrfTokenParameter,
+        string $csrfTokenId,
+        string $loginUsernamePath,
+        string $loginPasswordPath,
+        string $providerKey,
+        string $apiPlatformPrefix,
+        AuthenticationManagerInterface $authenticationManager,
+        CsrfTokenManagerInterface $csrfTokenManager,
+        TokenStorageInterface $tokenStorage,
+        RouterInterface $router,
+        ContainerInterface $container)
     {
         $this->csrfTokenParameter = $csrfTokenParameter;
         $this->csrfTokenId = $csrfTokenId;
@@ -77,16 +103,34 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
         $this->apiPlatformPrefix = $apiPlatformPrefix;
         $this->authenticationManager = $authenticationManager;
         $this->csrfTokenManager = $csrfTokenManager;
+        $this->tokenStorage = $tokenStorage;
+        $this->router = $router;
+
+        // to remove, for debug purpose to find the right service that will allow to retreive the user in Session
+        $this->container = $container;
     }
 
     /**
      * Called on every request to decide if this authenticator should be
      * used for the request. Returning false will cause this authenticator
      * to be skipped.
+     *
+     * Since this Authenticator must be used only for json_login form, then we must not check HTTP Method or Route path
      */
     public function supports(Request $request)
     {
-        return strtolower($request->getMethod()) !== 'get'
+        $requestSupported = false;
+
+        // Only for non GET method
+        if (strtolower($request->getMethod()) !== 'get') {
+            // for other Methods, then there must be a body HTTP with JSON content
+            $content = json_decode($request->getContent());
+            if (!is_null($content)) {
+                $requestSupported = true;
+            }
+        }
+
+        return $requestSupported
             && $this->csrfTokenParameter &&
             !(false === strpos($request->getRequestFormat(), 'json')
             && false === strpos($request->getContentType(), 'json'));
@@ -98,23 +142,38 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function getCredentials(Request $request)
     {
-        $content = json_decode($request->getContent());
-        if (is_null($content)) {
-            $content = [];
-        }
+        // for GET Method
+        if (strtolower($request->getMethod()) !== 'get') {
+            // for other Methods, then there must be a body HTTP with JSON content
+            $content = json_decode($request->getContent());
+            if (is_null($content)) {
+                if (json_last_error()) {
+                    throw new AuthenticationException('Json format: ' . json_last_error_msg(), 420);
+                }
 
-        $json = new \ArrayObject($content, \ArrayObject::STD_PROP_LIST);
+                $content = [];
+            }
+
+            $json = new \ArrayObject($content, \ArrayObject::STD_PROP_LIST);
+        }
 
         if (!isset($json[$this->csrfTokenParameter])) {
             throw new AuthenticationException($this->csrfTokenParameter . ' mandatory', 420);
         }
 
+        // if not on login route return simple credentials with only token
+        if ($this->router->generate('demo_login_json_check') !== $request->getPathInfo()) {
+            return array(
+                'token' => $json[$this->csrfTokenParameter],
+            );
+        }
+
         if (!isset($json[$this->loginUsernamePath])) {
-            throw new \HttpInvalidParamException($this->loginUsernamePath . ' mandatory', 420);
+            throw new AuthenticationException($this->loginUsernamePath . ' mandatory', 420);
         }
 
         if (!isset($json[$this->loginPasswordPath])) {
-            throw new \HttpInvalidParamException($this->loginPasswordPath . ' mandatory', 420);
+            throw new AuthenticationException($this->loginPasswordPath . ' mandatory', 420);
         }
 
         return array(
@@ -132,6 +191,19 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
         }
 
         try {
+            if (!array_key_exists('username', $credentials)) {
+                if (null === $token = $this->tokenStorage->getToken()) {
+                    throw new AuthenticationException('Missing tokenStorage');
+                }
+
+                if (!is_object($user = $token->getUser())) {
+                    // e.g. anonymous authentication
+                    throw new AuthenticationException('Anonymous authentication');
+                }
+
+                return $user;
+            }
+
             return $userProvider->loadUserByUsername($credentials['username']);
         } catch (AuthenticationException $e) {
             // i don't want the user to be able to get message 'Username could not be found.'
@@ -141,6 +213,11 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
 
     public function checkCredentials($credentials, UserInterface $user)
     {
+        // The CsrfTokenAuthenticator has just been used to validate csrf token on non GET route
+        if (count($credentials) === 1) {
+            return true;
+        }
+
         $token = new UsernamePasswordToken($credentials['username'], $credentials['password'], $this->providerKey);
 
         $this->authenticationManager->authenticate($token);

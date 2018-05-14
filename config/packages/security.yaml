@@ -45,7 +45,7 @@ security:
             # this guard solve this issue: https://github.com/symfony/symfony/issues/25806
             guard:
                 authenticators:
-                    - App\Security\TokenAuthenticator
+                    - App\Security\CsrfTokenAuthenticator
             #THIS FAILS coz i don't succeed to inject some services (maybe private) and no way to load user
             #simple_preauth:
             #    authenticator: App\Security\ApiKeyAuthenticator

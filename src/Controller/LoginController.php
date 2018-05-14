@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Security\UserInfo;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -54,5 +56,29 @@ class LoginController extends Controller
             'token'         => $token,
             'error'         => $error,
         ));
+    }
+
+    /**
+     * This action is the same as LoginJsonController, that's why i extracted quickly the content into a static method (even if a part of developers don't like that)
+     *
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Route(
+     *     "/demo/security/login/standard/isloggedin",
+     *     name="demo_secured_page_standard_is_logged_in",
+     *     defaults={"_format"="json"}
+     *     )
+     * @Method({"GET", "POST"})
+     */
+    public function isLoggedIn()
+    {
+        $isGranted = function ($att) {
+            return $this->isGranted($att);
+        };
+
+        $getUser = function () {
+            return $this->getUser();
+        };
+
+        return new JsonResponse(UserInfo::getUserInfo($isGranted, $getUser));
     }
 }
