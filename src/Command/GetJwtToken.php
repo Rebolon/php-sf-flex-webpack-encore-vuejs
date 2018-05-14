@@ -64,8 +64,8 @@ class GetJwtToken extends ContainerAwareCommand
             ->setName('app:new-jwt-token')
             ->setDescription('Generate a new valid JWT token')
             ->setHelp('Generate a new valid JWT token, to use with API for example.')
-            ->addArgument('username', InputArgument::OPTIONAL,'the username (default from in_memory provider will be used if exists).')
-            ->addArgument('password', InputArgument::OPTIONAL,'the password (default from in_memory provider will be used if exists).');
+            ->addArgument('username', InputArgument::OPTIONAL, 'the username (default from in_memory provider will be used if exists).')
+            ->addArgument('password', InputArgument::OPTIONAL, 'the password (default from in_memory provider will be used if exists).');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

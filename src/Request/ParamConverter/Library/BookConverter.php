@@ -92,14 +92,14 @@ class BookConverter extends ItemAbstractConverter
         return [
             'authors' => [
                 'converter' => $this->projectBookCreationConverter, 'setter' => 'addAuthors',
-                'cb' => function ($relation, $entity) {
+                'cb' => function($relation, $entity) {
                     // not mandatory coz you may do this in in the entity->addAuthors but this is for sample of 'cb' operations
                     $relation->setBook($entity);
                 },
             ],
             'editors' => [
                 'converter' => $this->projectBookEditionConverter, 'setter' => 'addEditors',
-                'cb' => function ($relation, $entity) {
+                'cb' => function($relation, $entity) {
                     // not mandatory coz you may do this in in the entity->addAuthors but this is for sample of 'cb' operations
                     $relation->setBook($entity);
                 },

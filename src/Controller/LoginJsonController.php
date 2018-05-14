@@ -83,11 +83,11 @@ class LoginJsonController extends Controller
      */
     public function isLoggedIn()
     {
-        $isGranted = function ($att) {
+        $isGranted = function($att) {
             return $this->isGranted($att);
         };
 
-        $getUser = function () {
+        $getUser = function() {
             return $this->getUser();
         };
 

@@ -291,7 +291,7 @@ class Book implements LibraryInterface
     {
         $this->authors->clear();
 
-        foreach($projects as $project) {
+        foreach ($projects as $project) {
             $this->addAuthors($project);
         }
 
@@ -352,7 +352,7 @@ class Book implements LibraryInterface
     {
         $this->editors->clear();
 
-        foreach($projects as $project) {
+        foreach ($projects as $project) {
             $this->addEditors($project);
         }
 
