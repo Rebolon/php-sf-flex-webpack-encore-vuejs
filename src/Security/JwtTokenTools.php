@@ -21,7 +21,7 @@ class JwtTokenTools
      * @param $password
      * @param LoggerInterface|null $logger
      * @return string
-     * @throws \Exception
+     * @throws \Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTEncodeFailureException
      */
     public function encodeToken(
         InMemoryUserProvider $provider,
@@ -35,10 +35,6 @@ class JwtTokenTools
         try {
             $user = $provider->loadUserByUsername($username);
 
-            if (!isset($user)) {
-                throw new NotFoundHttpException();
-            }
-
             $isValid = $passwordEncoder
                 ->isPasswordValid($user, $password);
 
@@ -46,22 +42,19 @@ class JwtTokenTools
                 throw new BadCredentialsException();
             }
 
-            return $encoder->encode([
+            $token = $encoder->encode([
                 'username' => $username,
                 'exp' => time() * $tokenJwtTtl
             ]);
+
+            return $token;
         } catch (UsernameNotFoundException $e) {
+            $msg = sprintf('Exception: UsernameNotFoundException: %s', $e->getMessage());
             if ($logger) {
-                $logger->alert(sprintf('Exception: UsernameNotFoundException: %s', $e->getMessage()));
+                $logger->alert($msg);
             }
 
-            throw $e;
-        } catch (BadCredentialsException $e) {
-            if ($logger) {
-                $logger->alert(sprintf('Exception: BadCredentialsException: %s', $e->getMessage()));
-            }
-
-            throw $e;
+            throw new NotFoundHttpException($msg);
         } catch (\Exception $e) {
             if ($logger) {
                 $logger->alert(sprintf('Exception: \Exception: %s', $e->getMessage()));
