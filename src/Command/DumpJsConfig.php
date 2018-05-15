@@ -13,6 +13,12 @@ use Symfony\Component\Yaml\Yaml;
 
 class DumpJsConfig extends ContainerAwareCommand
 {
+    const ARG_HOST = 'host';
+
+    const ARG_PORT = 'port';
+
+    const ARG_QUASAR_STYLE = 'quasarStyle';
+
     /**
      * @var \Twig_Environment
      */
@@ -84,9 +90,9 @@ class DumpJsConfig extends ContainerAwareCommand
             ->setName('app:dump-js-config')
             ->setDescription('Create the config.js file.')
             ->setHelp('Dump symfony configuration into a config.js file available from assets/js/*')
-            ->addArgument('host', InputArgument::OPTIONAL, 'The full hostname of the web-server.', 'localhost')
-            ->addArgument('port', InputArgument::OPTIONAL, 'The port for the web-server.', '80')
-            ->addArgument('quasarStyle', InputArgument::OPTIONAL, 'The style for quasar framework: mat or ios.', 'mat');
+            ->addArgument(self::ARG_HOST, InputArgument::OPTIONAL, 'The full hostname of the web-server.', 'localhost')
+            ->addArgument(self::ARG_PORT, InputArgument::OPTIONAL, 'The port for the web-server.', '80')
+            ->addArgument(self::ARG_QUASAR_STYLE, InputArgument::OPTIONAL, 'The style for quasar framework: mat or ios.', 'mat');
     }
 
     /**
@@ -100,9 +106,9 @@ class DumpJsConfig extends ContainerAwareCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $env = $this->getEnv();
-        $host = $input->getArgument('host');
-        $port = $input->getArgument('port');
-        $quasarStyle = $input->getArgument('quasarStyle');
+        $host = $input->getArgument(self::ARG_HOST);
+        $port = $input->getArgument(self::ARG_PORT);
+        $quasarStyle = $input->getArgument(self::ARG_QUASAR_STYLE);
 
         if (!$this->validateInputs($output, $port, $quasarStyle)) {
             return;
@@ -118,6 +124,7 @@ class DumpJsConfig extends ContainerAwareCommand
     }
 
     /**
+     * @param OutputInterface $output
      * @return array
      */
     protected function loadApiPlatformConfig(OutputInterface $output): array
@@ -129,21 +136,23 @@ class DumpJsConfig extends ContainerAwareCommand
             $values = Yaml::parseFile($configDir . 'packages/api_platform.yaml');
             $config = $values['api_platform'];
 
-            if ($config['collection'] && $config['collection']['pagination']) {
-                foreach ($mandatoryKeys as $key) {
-                    if (!array_key_exists($key, $config['collection']['pagination'])) {
-                        $missingKeys[] = $key;
-                    }
-                }
-
-                if (count($missingKeys)) {
-                    throw new \Exception(sprintf('those keys are mandatory for the frontend configuration: %s', join(', ', $missingKeys)));
-                }
-
-                return $config['collection']['pagination'];
+            if (!($config['collection'] && $config['collection']['pagination'])) {
+                throw new \Exception('Missing pagination section in api_platform.yaml');
             }
 
-            throw new \Exception('Missing pagination section in api_platform.yaml');
+            foreach ($mandatoryKeys as $key) {
+                if (array_key_exists($key, $config['collection']['pagination'])) {
+                    continue;
+                }
+
+                $missingKeys[] = $key;
+            }
+
+            if (count($missingKeys)) {
+                throw new \Exception(sprintf('those keys are mandatory for the frontend configuration: %s', join(', ', $missingKeys)));
+            }
+
+            return $config['collection']['pagination'];
         } catch (\Exception $e) {
             $output->writeln(sprintf('api_platform.yaml error: "%s"', $e->getMessage()));
         }
@@ -177,15 +186,15 @@ class DumpJsConfig extends ContainerAwareCommand
         $validator = Validation::createValidator();
         $violations = [];
 
-        $violations['port'] = $validator->validate($port, [
+        $violations[self::ARG_PORT] = $validator->validate($port, [
             new Assert\Type(['type' => 'numeric', ]),
         ]);
 
-        $violations['quasarStyle'] = $validator->validate($quasarStyle, [
+        $violations[self::ARG_QUASAR_STYLE] = $validator->validate($quasarStyle, [
             new Assert\Choice(['choices' => ['mat', 'ios'], ]),
         ]);
 
-        if (0 !== count($violations['port']) && 0 !== count($violations['quasarstyle'])) {
+        if (0 !== count($violations[self::ARG_PORT]) && 0 !== count($violations[self::ARG_QUASAR_STYLE])) {
             $output->writeln([
                 'Params errors',
                 '=======================', ]);

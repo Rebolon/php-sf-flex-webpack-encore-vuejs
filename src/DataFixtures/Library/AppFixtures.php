@@ -191,6 +191,35 @@ SQL
      */
     protected function addAuthor($bookFixture, Book $book, Connection $dbh, ObjectManager $manager)
     {
+        $rows = $this->getAuthorsInfo($bookFixture, $dbh);
+
+        if (!count($rows)) {
+            return;
+        }
+
+        $i = 0;
+        foreach ($rows as $row) {
+            $authorName = explode('| ', $row['name']);
+            if (!in_array($row['id'], $this->cache['authors'])) {
+                $author = $this->getNewAuthor($manager, $authorName, $row);
+            } else {
+                $author = $this->getExistingAuthor($manager, $authorName);
+            }
+
+            $this->attachAuthorToBook($book, $author, $i);
+
+            $i++;
+        }
+    }
+
+    /**
+     * @param $bookFixture
+     * @param Connection $dbh
+     * @return array
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    protected function getAuthorsInfo($bookFixture, Connection $dbh): array
+    {
         $bookId = $bookFixture['id'];
 
         // add author
@@ -206,41 +235,59 @@ SQL
         $sth->bindParam('bookId', $bookId, PDO::PARAM_INT);
         $sth->execute();
         $rows = $sth->fetchAll();
+        return $rows;
+    }
 
-        if (count($rows)) {
-            $i = 0;
-            foreach ($rows as $row) {
-                $authorName = explode('| ', $row['name']);
-                if (!in_array($row['id'], $this->cache['authors'])) {
-                    $author = new Author();
-                    if (2 === count($authorName)) {
-                        $author->setFirstname($authorName[0])
-                            ->setLastname($authorName[1]);
-                    } else {
-                        $author->setFirstname($authorName[0]);
-                    }
-
-                    $manager->persist($author);
-
-                    $this->cache['authors'][] = $row['id'];
-                } else {
-                    $criterias = ['firstname' => $authorName[0], 'lastname' => null, ];
-                    if (2 === count($authorName)) {
-                        $criterias['lastname'] = $authorName[1];
-                    }
-                    $author = $manager
-                        ->getRepository('\\App\\Entity\\Library\\Author')
-                        ->findOneBy($criterias);
-                }
-
-                $job = $this->cache['jobs'][0];
-                if (1 === $i) {
-                    $job = $this->cache['jobs'][0];
-                }
-                $book->addAuthor($author, $job);
-
-                $i++;
-            }
+    /**
+     * @param ObjectManager $manager
+     * @param $authorName
+     * @param $row
+     * @return Author
+     */
+    protected function getNewAuthor(ObjectManager $manager, $authorName, $row): Author
+    {
+        $author = new Author();
+        if (2 === count($authorName)) {
+            $author->setFirstname($authorName[0])
+                ->setLastname($authorName[1]);
+        } else {
+            $author->setFirstname($authorName[0]);
         }
+
+        $manager->persist($author);
+
+        $this->cache['authors'][] = $row['id'];
+        return $author;
+    }
+
+    /**
+     * @param ObjectManager $manager
+     * @param $authorName
+     * @return null|object
+     */
+    protected function getExistingAuthor(ObjectManager $manager, $authorName)
+    {
+        $criterias = ['firstname' => $authorName[0], 'lastname' => null,];
+        if (2 === count($authorName)) {
+            $criterias['lastname'] = $authorName[1];
+        }
+        $author = $manager
+            ->getRepository('\\App\\Entity\\Library\\Author')
+            ->findOneBy($criterias);
+        return $author;
+    }
+
+    /**
+     * @param Book $book
+     * @param $author
+     * @param $i
+     */
+    protected function attachAuthorToBook(Book $book, $author, $i): void
+    {
+        $job = $this->cache['jobs'][0];
+        if (1 === $i) {
+            $job = $this->cache['jobs'][0];
+        }
+        $book->addAuthor($author, $job);
     }
 }

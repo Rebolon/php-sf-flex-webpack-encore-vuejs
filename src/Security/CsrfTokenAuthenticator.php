@@ -1,6 +1,7 @@
 <?php
 namespace App\Security;
 
+use http\Exception\RuntimeException;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -148,19 +149,21 @@ class CsrfTokenAuthenticator extends AbstractGuardAuthenticator
     public function getCredentials(Request $request)
     {
         // for GET Method
-        if (strtolower($request->getMethod()) !== 'get') {
-            // for other Methods, then there must be a body HTTP with JSON content
-            $content = json_decode($request->getContent());
-            if (is_null($content)) {
-                if (json_last_error()) {
-                    throw new AuthenticationException('Json format: ' . json_last_error_msg(), 420);
-                }
+        if (strtolower($request->getMethod()) === 'get') {
+            throw new RuntimeException('Should not be here when method is get, check the CLASS::supports methods');
+        }
 
-                $content = [];
+        // for other Methods, then there must be a body HTTP with JSON content
+        $content = json_decode($request->getContent());
+        if (is_null($content)) {
+            if (json_last_error()) {
+                throw new AuthenticationException('Json format: ' . json_last_error_msg(), 420);
             }
 
-            $json = new \ArrayObject($content, \ArrayObject::STD_PROP_LIST);
+            $content = [];
         }
+
+        $json = new \ArrayObject($content, \ArrayObject::STD_PROP_LIST);
 
         if (!isset($json[$this->csrfTokenParameter])) {
             throw new AuthenticationException($this->csrfTokenParameter . ' mandatory', 420);
@@ -173,21 +176,14 @@ class CsrfTokenAuthenticator extends AbstractGuardAuthenticator
             );
         }
 
-        if (!isset($json[$this->loginUsernamePath])) {
-            throw new AuthenticationException($this->loginUsernamePath . ' mandatory', 420);
-        }
-
-        if (!isset($json[$this->loginPasswordPath])) {
-            throw new AuthenticationException($this->loginPasswordPath . ' mandatory', 420);
-        }
-
-        return array(
-            'token' => $json[$this->csrfTokenParameter],
-            'username' => $json[$this->loginUsernamePath],
-            'password' => $json[$this->loginPasswordPath]
-        );
+        return $this->checkAndBuildFullCredentials($json);
     }
 
+    /**
+     * @param mixed $credentials
+     * @param UserProviderInterface $userProvider
+     * @return mixed|null|UserInterface
+     */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
         if (false === $this->csrfTokenManager->isTokenValid(new SymfonyCsrfToken($this->csrfTokenId, $credentials['token']))) {
@@ -216,6 +212,11 @@ class CsrfTokenAuthenticator extends AbstractGuardAuthenticator
         }
     }
 
+    /**
+     * @param mixed $credentials
+     * @param UserInterface $user
+     * @return bool
+     */
     public function checkCredentials($credentials, UserInterface $user)
     {
         // The CsrfTokenAuthenticator has just been used to validate csrf token on non GET route
@@ -230,12 +231,23 @@ class CsrfTokenAuthenticator extends AbstractGuardAuthenticator
         return true;
     }
 
+    /**
+     * @param Request $request
+     * @param TokenInterface $token
+     * @param string $providerKey
+     * @return null|Response
+     */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
         // on success, let the request continue
         return null;
     }
 
+    /**
+     * @param Request $request
+     * @param AuthenticationException $exception
+     * @return null|JsonResponse|Response
+     */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
         $message = $exception->getMessage() ? $exception->getMessage() : strtr($exception->getMessageKey(), $exception->getMessageData());
@@ -265,8 +277,32 @@ class CsrfTokenAuthenticator extends AbstractGuardAuthenticator
         return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
     }
 
+    /**
+     * @return bool
+     */
     public function supportsRememberMe()
     {
         return false;
+    }
+
+    /**
+     * @param $json
+     * @return array
+     */
+    protected function checkAndBuildFullCredentials($json): array
+    {
+        if (!isset($json[$this->loginUsernamePath])) {
+            throw new AuthenticationException($this->loginUsernamePath . ' mandatory', 420);
+        }
+
+        if (!isset($json[$this->loginPasswordPath])) {
+            throw new AuthenticationException($this->loginPasswordPath . ' mandatory', 420);
+        }
+
+        return array(
+            'token' => $json[$this->csrfTokenParameter],
+            'username' => $json[$this->loginUsernamePath],
+            'password' => $json[$this->loginPasswordPath]
+        );
     }
 }

@@ -34,10 +34,28 @@ class JwtTokenTools
     {
         try {
             $user = $provider->loadUserByUsername($username);
+
+            $isValid = $passwordEncoder
+                ->isPasswordValid($user, $password);
+
+            if (!$isValid) {
+                throw new BadCredentialsException();
+            }
+
+            return $encoder->encode([
+                'username' => $username,
+                'exp' => time() * $tokenJwtTtl
+            ]);
         } catch (UsernameNotFoundException $e) {
             if ($logger) {
                 $logger->alert(sprintf('Exception: UsernameNotFoundException: %s', $e->getMessage()));
             }
+        } catch (BadCredentialsException $e) {
+            if ($logger) {
+                $logger->alert(sprintf('Exception: UsernameNotFoundException: %s', $e->getMessage()));
+            }
+
+            throw $e;
         } catch (\Exception $e) {
             if ($logger) {
                 $logger->alert(sprintf('Exception: \Exception: %s', $e->getMessage()));
@@ -47,19 +65,5 @@ class JwtTokenTools
                 throw new NotFoundHttpException();
             }
         }
-
-        $isValid = $passwordEncoder
-            ->isPasswordValid($user, $password);
-
-        if (!$isValid) {
-            throw new BadCredentialsException();
-        }
-
-        $token = $encoder->encode([
-            'username' => $username,
-            'exp' => time() * $tokenJwtTtl
-        ]);
-
-        return $token;
     }
 }
