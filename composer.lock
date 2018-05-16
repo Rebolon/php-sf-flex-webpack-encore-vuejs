@@ -44,16 +44,16 @@
         },
         {
             "name": "api-platform/core",
-            "version": "v2.2.5",
+            "version": "v2.2.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/api-platform/core.git",
-                "reference": "d21403eda880a9431da96f45bd77e8a7a7b400c4"
+                "reference": "9d712177fea904b84cf08f1570584ee03d0b95e1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/api-platform/core/zipball/d21403eda880a9431da96f45bd77e8a7a7b400c4",
-                "reference": "d21403eda880a9431da96f45bd77e8a7a7b400c4",
+                "url": "https://api.github.com/repos/api-platform/core/zipball/9d712177fea904b84cf08f1570584ee03d0b95e1",
+                "reference": "9d712177fea904b84cf08f1570584ee03d0b95e1",
                 "shasum": ""
             },
             "require": {
@@ -77,7 +77,7 @@
                 "behat/mink-browserkit-driver": "^1.3.1",
                 "behat/mink-extension": "^2.2",
                 "behat/symfony2-extension": "^2.1.1",
-                "behatch/contexts": "^3.0@dev",
+                "behatch/contexts": "^3.1",
                 "doctrine/annotations": "^1.2",
                 "doctrine/doctrine-bundle": "^1.6.3",
                 "doctrine/orm": "^2.5.2",
@@ -110,7 +110,7 @@
                 "symfony/twig-bundle": "^3.1 || ^4.0",
                 "symfony/validator": "^3.3 || ^4.0",
                 "symfony/yaml": "^3.3 || ^4.0",
-                "webonyx/graphql-php": "^0.10.2"
+                "webonyx/graphql-php": "^0.11.5"
             },
             "suggest": {
                 "friendsofsymfony/user-bundle": "To use the FOSUserBundle bridge.",
@@ -157,7 +157,7 @@
                 "rest",
                 "swagger"
             ],
-            "time": "2018-04-03T15:42:30+00:00"
+            "time": "2018-05-14T13:11:32+00:00"
         },
         {
             "name": "clue/stream-filter",

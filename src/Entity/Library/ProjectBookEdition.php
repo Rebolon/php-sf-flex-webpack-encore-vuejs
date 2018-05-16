@@ -197,9 +197,9 @@ class ProjectBookEdition implements LibraryInterface
     }
 
     /**
-     * @return Editor
+     * @return Editor|null null in the case that the editor has been removed, we may should add a log on this
      */
-    public function getEditor(): Editor
+    public function getEditor(): ?Editor
     {
         return $this->editor;
     }

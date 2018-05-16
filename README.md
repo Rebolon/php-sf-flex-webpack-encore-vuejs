@@ -46,6 +46,7 @@ Then some php controllers has been created on following routes :
  * /demo/http-plug : HttpPlugController to show how to call external API from your controller
  * /demo/login/standard/secured : LoginController for standard login by Symfony
  * /demo/login/json/authenticate : LoginJsonController for json login with JS applications but in stateful context
+ * /demo/login/jwt/frontend: LoginJwtController for jwt login with JS applications in a stateless context
  * /demo/vuejs : VuejsController with route config in annotations and VueJS app with specific js/css import
  * /demo/quasar : QuasarController like VuejsController but with the Quasar framework for UX components
  * /demo/form/quasar-vuejs : [Work in progress] authentification with javascript, and a full web application with vuejs and api-platform(rest/graphql)
@@ -231,6 +232,12 @@ On JS i use snyk services.
 @TODO finish on PHP and JS checks + tools to audit the code + software that analyse sql/xss/file injection, csrf, ...
 @TODO explain the usage of tools like OWASP ZED, sqlmap, php avenger...
 @TODO help to setup security system: stateful app = take care at csrf ; stateless app = should i use jwt, api key, OAuth, anything else ?
+
+Don't forget to use HTTPS, even in local to help you find errors that will happen in production. One certificate has been generated for localhost (with http://www.selfsignedcertificate.com/) and is available in /var/certificates/*.cert|*.key
+There is a simple nginx conf (used for travis CI) that use those certificates so you can use nginx to work (just don't forget to change the port that is fixed to 80 like setup in the package.json).
+
+TestCafé for functional testing generate an error when you don't use ssl: Uncaught (in promise) DOMException: Only secure origins are allowed (see: https://goo.gl/Y0ZkNV).
+But for instance i didn't found any solution to run it finely without --skip-js-errors parameters.
 
 ### Symfony security
 In Symfony i configured different firewalls:
@@ -479,11 +486,12 @@ It takes the following JSON string as Body:
 - [ ] api: graphQL: multiple mutations in one call ?
 - [ ] api: graphQL: how to mutate nested objects in a minimal call ?
 - [X] api: check best security system to setup with ApiPlatform (JWT / ApiKey / cookie & csrf system but in that case we are stateful which is not cool for deployment and replication ?). Finally we use JWT which is the best thing to do and compliant with statefull or stateless.
-- [ ] api: JWT setup the pattern for the refresh-token or anything else more info here https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/
+- [ ] api: JWT setup the pattern for the refresh-token or anything else more info here https://auth0.com/blog/refresh-tokens-what-are-they-and-when-to-use-them/ : when getting a 401 from api it should tells more information: does the token is valid or not ?
 - [x] front: setup VueJS
 - [x] front: use Quasar with VueJS
 - [x] front: move on Quasar 0.15.x
 - [x] front: setup CSRF protection with VueJS app
+- [ ] front: migrate app 'form-devextrem-angular' to angular6 when there will be compatible (this thread may helps: https://stackoverflow.com/questions/48970553/want-to-upgrade-project-from-angular-v5-to-angular-v6)
 - [x] quality: setup unit tests for JS (karma/jasmine)
 - [x] quality: setup e2e tests for JS (testcafé)
 - [x] quality: setup phpunit tests for PHP (unit test and webtestcase)
@@ -506,6 +514,7 @@ It takes the following JSON string as Body:
 - [x] security: check if i need the JMSSerializerBundle or if the serializer component is enough (if autowiring runs well, why not): **I prefer to use Symfony serializer, it's enough**
 - [ ] db: have a lookAt the HauteLookAliceBundle to help in the creation of real fixtures during tests (instead of generating a new test.db which could be long)
 - [ ] api: try https://github.com/overblog/GraphQLBundle instead of ApiPlatform to try nested query/mutations (resolver are not auto-generated)
+- [ ] quality: use a server logger for both JS and PHP (and also maybe HTTP, DB, MessageQueuing, ...), it will helps to improve quality of the app by identifing users system/browser and most current errors (Sentry or other service must be tested https://www.slant.co/options/964/alternatives/~sentry-alternatives)
 
 * improve this tutorial with ~~an API Route built with Api platform (without DB)~~ and install the vue-generator from api-platform for a crud sample
 * manage Entity orphanRemoval / CASCADE onDelete
@@ -564,7 +573,10 @@ I wrote some articles on medium to explain some practices setup in this project:
  * https://github.com/symfony/symfony/issues/25806
  * https://github.com/symfony/symfony/issues/8467
  * https://github.com/symfony/webpack-encore/issues/256
+ * https://github.com/symfony/webpack-encore/issues/326 (compat with vue-loader >15)
  * https://testcafe-discuss.devexpress.com/t/role-sometime-it-doesnt-seem-to-be-played/875
+ * https://testcafe-discuss.devexpress.com/t/it-doesnt-run-all-tests-files/1230/2
+ * https://testcafe-discuss.devexpress.com/t/object-domexceptio-error-when-running-tests/1231
 
 
 ## License

@@ -42,18 +42,42 @@ class GetJwtToken extends ContainerAwareCommand
      */
     protected $tokenTools;
 
+    /**
+     * @var int
+     */
+	protected $tokenJwtTtl;
+
+	/**
+	 * @var string
+	 */
+	protected $tokenJwtBearer;
+
+    /**
+     * GetJwtToken constructor.
+     * @param LoggerInterface $logger
+     * @param InMemoryUserProvider $provider
+     * @param JWTEncoderInterface $encoder
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param JwtTokenTools $tokenTools
+     * @param string $tokenJwtTtl
+     * @param string $tokenJwtBearer
+     */
     public function __construct(
         LoggerInterface $logger,
         InMemoryUserProvider $provider,
         JWTEncoderInterface $encoder,
         UserPasswordEncoderInterface $passwordEncoder,
-        JwtTokenTools $tokenTools)
+        JwtTokenTools $tokenTools,
+        string $tokenJwtTtl,
+        string $tokenJwtBearer)
     {
         $this->logger = $logger;
         $this->provider = $provider;
         $this->encoder = $encoder;
         $this->passwordEncoder = $passwordEncoder;
         $this->tokenTools = $tokenTools;
+        $this->tokenJwtTtl = (int) $tokenJwtTtl;
+        $this->tokenJwtBearer = $tokenJwtBearer;
 
         parent::__construct();
     }
@@ -88,7 +112,7 @@ class GetJwtToken extends ContainerAwareCommand
             $this->provider,
             $this->encoder,
             $this->passwordEncoder,
-            $this->getContainer()->getParameter('token_jwt_ttl'),
+            $this->tokenJwtTtl,
             $username,
             $password,
             $this->logger
@@ -101,7 +125,7 @@ class GetJwtToken extends ContainerAwareCommand
             '',
             'Copy paste this into the HTTP Authorization header of your HTTP Request',
             '=======================================================================',
-            'Bearer ' . $token,
+            $this->tokenJwtBearer . ' ' . $token,
             '=======================================================================',
         ]);
     }
