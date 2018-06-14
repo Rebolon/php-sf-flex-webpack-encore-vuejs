@@ -18,7 +18,7 @@
         "db-init": "$npm_package_config_php bin/console doctrine:database:create && $npm_package_config_php bin/console doctrine:schema:create && $npm_package_config_php bin/console doctrine:fixtures:load -n",
         "db-init:windows": "%npm_package_config_php% bin/console doctrine:database:create && %npm_package_config_php% bin/console doctrine:schema:create && %npm_package_config_php% bin/console doctrine:fixtures:load -n",
         "jwt-init": "echo 'Use the same passphrase that is your .env file' && mkdir -p config/jwt && npm run jwt-generation && jwt-generation-test",
-        "jwt-init:windows": "echo 'Use the same passphrase that is your .env file' && mkdir -p config\\jwt && npm run jwt-generation && jwt-generation-test:windows",
+        "jwt-init:windows": "echo 'Use the same passphrase that is your .env file' && mkdir -p config\\jwt && npm run jwt-generation:windows && jwt-generation-test:windows",
         "jwt-generation": "cd config/jwt && openssl genrsa -out private.pem -aes256 4096 && openssl rsa -pubout -in private.pem -out public.pem && cd ../..",
         "jwt-generation:windows": "cd config\\jwt && openssl genrsa -out private.pem -aes256 4096 && openssl rsa -pubout -in private.pem -out public.pem && cd ..\\..",
         "jwt-generation-test": "echo 'Certificates generation for tests, use the following passphrase: test' && mkdir -p var/cache/config/jwt-test && cp var/travis/jwt-test/* var/cache/config/jwt-test",
