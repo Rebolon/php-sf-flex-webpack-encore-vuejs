@@ -9,7 +9,7 @@ parameters:
     # must be the same value as the firewall key for json_login
     provider_id: 'security_json'
     api_platform_prefix: '/api'
-    token_jwt_ttl: 3
+    token_jwt_ttl: 3600
 
 services:
     # default configuration for services in *this* file

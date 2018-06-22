@@ -126,7 +126,7 @@ For [Angular](https://angular.io/) (v5), i decided to do quite different way:
 
 ## run
 
-* install the project with `npm run init-project` (or init-project:windows for windows system) which will launch :
+* install the project with `npm run init-project` (or init-project:win for windows system) which will launch :
   1. copy the env file (or set them on your system) : `cp .env.dist .env`
   2. php dependancies installation: `composer install`
   3. nodejs tooling installation (and angular deps): `npm install && cd assets/js/devxpress-angular && npm install`
@@ -140,8 +140,8 @@ For [Angular](https://angular.io/) (v5), i decided to do quite different way:
   2. Run `npm run jwt-init` and use the passphrase you setup for JWT_PASSPHRASE
 * Run your application with php built-in server:
   1. Change to the project directory
-  2. Execute the `npm run dev-server-hot` (or dev-server-hot:windows for windows system) command to start the asset server that will build your assets and your manifest.json and serve the assets with hot module replacment when you do a modification on a vuejs file
-  3. Execute the `npm run sf-dev` (or sf-dev:windows for windows system) command;
+  2. Execute the `npm run dev-server-hot` (or dev-server-hot:win for windows system) command to start the asset server that will build your assets and your manifest.json and serve the assets with hot module replacment when you do a modification on a vuejs file
+  3. Execute the `npm run sf-dev` (or sf-dev:win for windows system) command;
   4. Browse to the http://localhost:80/ URL.
 
      * Run composer require symfony/web-server-bundle for a better web server.
@@ -160,7 +160,7 @@ Default ports are 80 and 8080.
 If you update the project:
 
  * Don't forget to run `doctrine:migrations:migrate` to take care of DB modifications.
- * Do the following command `npm run dump-js-config` (or dump-js-config:windows for windows system) to create the js config file
+ * Do the following command `npm run dump-js-config` (or dump-js-config:win for windows system) to create the js config file
 
 ## webpack
 
