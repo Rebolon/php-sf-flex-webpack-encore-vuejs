@@ -21,7 +21,7 @@ class JwtTokenTools
      * @param $password
      * @param LoggerInterface|null $logger
      * @return string
-     * @throws \Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTEncodeFailureException
+     * @throws \Exception
      */
     public function encodeToken(
         InMemoryUserProvider $provider,
@@ -44,7 +44,7 @@ class JwtTokenTools
 
             $token = $encoder->encode([
                 'username' => $username,
-                'exp' => time() * $tokenJwtTtl
+                'exp' => time() + $tokenJwtTtl,
             ]);
 
             return $token;

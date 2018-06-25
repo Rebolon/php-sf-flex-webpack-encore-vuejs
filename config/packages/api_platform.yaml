@@ -2,7 +2,8 @@ api_platform:
     title: 'My comics library'
     description: '<strong>Demo of an API built with Api-Platform v2 (use REST or GraphQL).</strong>
       <br />My comics library allow to manage your comics collection in a simple way.
-      <br />To use the Api, first get a valid token with this command in a shell `php bin/console app:new-jwt-token` and copy paste the last row in the form after clicking on "Authorize" green button, here on the top right corner.'
+      <br />To use the Api, first get a valid token with this command in a shell <strong>`php bin/console app:new-jwt-token`</strong> and copy paste the last row in the form after clicking on "Authorize" green button, here on the top right corner.
+      <br /><strong>Take care at the EOL character when you copy/paste the token !!!</strong>'
     version: '1.0.0'
     mapping:
         paths: ['%kernel.project_dir%/src/Entity']

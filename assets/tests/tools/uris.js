@@ -1,6 +1,6 @@
-export const phpLoginFormPath = '/demo/login/standard'
-export const phpLoginSuccessPath = '/demo/login/secured'
-export const phpLoginAuthenticatePath = '/demo/login/authenticate'
+export const phpLoginFormPath = '/demo/security/login/standard'
+export const phpLoginSuccessPath = '/demo/security/login/standard/secured'
+export const phpLoginAuthenticatePath = '/demo/security/login/standard/authenticate'
 
-export const jsLoginFormPath = '/demo/form'
-export const jsLoginSuccessPath = '/demo/form#/books'
+export const jsLoginFormPath = '/demo/form/quasar-vuejs'
+export const jsLoginSuccessPath = '/demo/form/quasar-vuejs#/books'

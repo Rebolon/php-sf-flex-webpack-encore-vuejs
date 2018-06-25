@@ -47,14 +47,14 @@ export class DatagridComponent implements OnInit {
 
                   // Take care, until you click on the parent window, data won't be refreshed in datagrid. don't know if it's because of browser behavior or DevXpress.datagrid
                   notify(`new Book received with id ${book.id}, focus the window to see the changes in datagrid. 
-                  Data is not saved until you edit it`, "info", 5000)
+                    Data is not saved until you edit it`, "info", 5000)
                   this.dataGrid.instance.clearSelection()
 
                   break
               case 'hello':
               case 'ping':
               default:
-                  notify("data received from second screen", "info", 5000)
+                  notify(`data received from second screen (cmd=${message.cmd})`, "info", 5000)
                   break
           }
       })
@@ -151,7 +151,7 @@ export class DatagridComponent implements OnInit {
 
   getSelectedRow () {
       const rows = this.dataGrid.instance.getSelectedRowKeys()
-      const url = `/demo/devxpress-angular/book/${rows[0].id}`
+      const url = `/demo/form/devxpress-angular/book/${rows[0].id}`
       const options = {
           menubar: 'false',
           toolbar: 'false',

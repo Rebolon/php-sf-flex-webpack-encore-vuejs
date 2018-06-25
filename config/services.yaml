@@ -10,6 +10,7 @@ parameters:
     provider_id: 'security_json'
     api_platform_prefix: '/api'
     token_jwt_ttl: 3600
+    token_jwt_bearer: 'Bearer'
 
 services:
     # default configuration for services in *this* file
@@ -22,6 +23,8 @@ services:
         # if you need to do this, you can override this setting on individual services
         public: false
         # new way of injecting parameters to services
+        # @todo But it doesn't seem to work for Controllers, why ?
+        # maybe to prevent bug when paramName is the same as the requestParamArgument ?
         bind:
             $csrfTokenParameter: '%csrf_token_parameter%'
             $csrfTokenId: '%csrf_token_id%'
@@ -29,6 +32,8 @@ services:
             $loginPasswordPath : '%login_password_path%'
             $providerKey : '%provider_id%'
             $apiPlatformPrefix: '%api_platform_prefix%'
+            $tokenJwtTtl: '%token_jwt_ttl%'
+            $tokenJwtBearer: '%token_jwt_bearer%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -65,36 +70,26 @@ services:
 
     App\Request\ParamConverter\Library\AuthorConverter:
         public: true
-        arguments:
-            - '@validator'
         tags:
             - { name: request.param_converter, priority: -2, converter: author }
 
     App\Request\ParamConverter\Library\BookConverter:
         public: true
-        arguments:
-            - '@validator'
         tags:
             - { name: request.param_converter, priority: -2, converter: book }
 
     App\Request\ParamConverter\Library\EditorConverter:
         public: true
-        arguments:
-            - '@validator'
         tags:
             - { name: request.param_converter, priority: -2, converter: editor }
 
     App\Request\ParamConverter\Library\JobConverter:
         public: true
-        arguments:
-            - '@validator'
         tags:
             - { name: request.param_converter, priority: -2, converter: job }
 
     App\Request\ParamConverter\Library\ProjectBookCreationConverter:
         public: true
-        arguments:
-            - '@validator'
         tags:
             - { name: request.param_converter, priority: -2, converter: authors }
 
@@ -107,8 +102,6 @@ services:
 
     App\Request\ParamConverter\Library\SerieConverter:
         public: true
-        arguments:
-            - '@validator'
         tags:
             - { name: request.param_converter, priority: -2, converter: serie }
 

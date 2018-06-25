@@ -1,11 +1,12 @@
 import { Selector } from 'testcafe'
 import { host, port } from '../js/lib/config'
+import {scheme} from "./tools/authentification";
 
 fixture `Test homepage`
-    .page `http://${host}`
+    .page `${scheme}://${host}`
 
-test('List of demos', async t => {
-    const expectedCount = 14
+test('Test homepage', async t => {
+    const expectedCount = 15
     const h1 = await Selector('h2')
     const list = await Selector('ul li')
 

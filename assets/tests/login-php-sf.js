@@ -1,10 +1,10 @@
 import { Selector, ClientFunction } from 'testcafe'
-import { StandardSfAccUser } from './tools/authentification'
+import {scheme, StandardSfAccUser} from './tools/authentification'
 import { phpLoginFormPath, phpLoginSuccessPath, phpLoginAuthenticatePath } from './tools/uris'
 import { host, csrfParameter } from '../js/lib/config'
 
 fixture `Test symfony login`
-    .page `http://${host}${phpLoginFormPath}`
+    .page `${scheme}://${host}${phpLoginFormPath}`
 
 /**
  * Test the login page:
@@ -12,7 +12,7 @@ fixture `Test symfony login`
  *    * wrong user should stay on form and display alert message
  *    * right user should be able to access to a secured page
  */
-test('Login page', async t => {
+test('Login page: standard login', async t => {
   const getLocation = ClientFunction(() => document.location.href)
   const form = await Selector(`form[action="${phpLoginAuthenticatePath}"]`)
   const alert = await Selector('div[role="alert"]')

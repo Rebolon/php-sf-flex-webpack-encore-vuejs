@@ -1,18 +1,21 @@
 import { Selector, ClientFunction } from 'testcafe'
-import { StandardVueJSAccUser } from './tools/authentification'
+import {StandardVueJSAccUser, usernameStd, passwordStd, scheme} from './tools/authentification'
 import { jsLoginFormPath, jsLoginSuccessPath } from './tools/uris'
 import { host, csrfParameter } from '../js/lib/config'
 
 const booksList = Selector('div.books')
 const head = Selector('head')
 const form = Selector('form.login')
-const toast = Selector('div.q-toast-container')
+const toast = Selector('div.q-notifications')
 const getLocation = ClientFunction(() => document.location.href)
 
-fixture.only `Test vuejs login`
-    .page `http://${host}${jsLoginFormPath}`
+// to debug in testcafe, use .debug() on t variable, or add --debug-mode in the running script
+// to focus on this test use 'only'
+//fixture.only `Test vuejs login`
+fixture `Test vuejs login`
+    .page `${scheme}://${host}${jsLoginFormPath}`
 
-test('Login page: fake user', async t => {
+test('Login page: vuejs login', async t => {
   await t
       .navigateTo(jsLoginSuccessPath)
       .expect(getLocation()).notContains('#/books')
@@ -23,21 +26,11 @@ test('Login page: fake user', async t => {
       .typeText('input[name="password"]', 'fakeUser11111')
       .click('button')
       .expect(getLocation()).contains(jsLoginFormPath)
-      .expect(toast.find('div.q-toast.bg-warning').count).eql(1, "Missing warning toast message")
-})
+      .expect(toast.find('div.q-alert.bg-warning').count).eql(1, "Missing warning toast message")
 
-// don't understand why, but sometimes it works (and the login form is well filled) and sometimes nothing happen !
-// ugly behavior
-test('Login page: normal user', async t => {
-    await t
-        //.useRole(StandardVueJSAccUser)
-    // @todo until role doesn't work each time, i prefer to use those 3 lines of code
-        .typeText('input[name="username"]', 'test')
-        .typeText('input[name="password"]', 'test')
-        .click('button')
-        // works with it but useless
-        //.navigateTo(jsLoginSuccessPath)
-        .expect(getLocation()).contains(jsLoginSuccessPath)
-        .expect(booksList.exists).ok()
-
+      .useRole(StandardVueJSAccUser)
+      //.debug() //this is where firefox seems to crash, but not sure
+      .wait(3000)
+      .expect(getLocation()).contains(jsLoginSuccessPath)
+      .expect(booksList.exists).ok()
 })

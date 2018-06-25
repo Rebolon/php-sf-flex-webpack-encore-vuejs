@@ -28,10 +28,16 @@ class JwtTokenAuthenticator extends AbstractGuardAuthenticator
      */
     private $userProvider;
 
-    public function __construct(JWTEncoderInterface $jwtEncoder, InMemoryUserProvider $userProvider)
+    /**
+     * @var string
+     */
+    private $tokenJwtBearer;
+
+    public function __construct(JWTEncoderInterface $jwtEncoder, InMemoryUserProvider $userProvider, string $tokenJwtBearer)
     {
         $this->jwtEncoder = $jwtEncoder;
         $this->userProvider = $userProvider;
+        $this->tokenJwtBearer = $tokenJwtBearer;
     }
 
     /**
@@ -44,17 +50,15 @@ class JwtTokenAuthenticator extends AbstractGuardAuthenticator
      */
     public function supports(Request $request)
     {
-        return !(
-            false === strpos($request->getRequestFormat(), 'json')
-            && false === strpos($request->getContentType(), 'json')
-            && false === strpos($request->headers->get('accept'), 'json')
-        );
+        return !(false === strpos($request->getRequestFormat(), 'json')
+                && false === strpos($request->getContentType(), 'json')
+                && false === strpos($request->headers->get('accept'), 'json'));
     }
 
     public function getCredentials(Request $request)
     {
         $extractor = new AuthorizationHeaderTokenExtractor(
-            'Bearer',
+            $this->tokenJwtBearer,
             'Authorization'
         );
 

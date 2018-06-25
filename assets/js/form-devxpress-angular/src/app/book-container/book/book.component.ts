@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core'
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core'
 import { Observable } from 'rxjs/Observable'
 import {Subject} from "rxjs/Subject";
 import 'rxjs/add/operator/toPromise';
@@ -16,6 +16,7 @@ import {Book} from "../../../entities/library/book";
 export class BookComponent implements OnInit, OnDestroy {
     protected ngUnsubscribe: Subject<void> = new Subject()
     protected book: Book
+    protected isLoading = true
 
     constructor(private route: ActivatedRoute, private bookService: WizardBook, private broadcastChannel: BroadcastChannelApi) {}
 
@@ -39,7 +40,9 @@ export class BookComponent implements OnInit, OnDestroy {
                 this.bookService
                     .get(parseInt(bookId, 10))
                     .takeUntil(this.ngUnsubscribe)
-                    .subscribe()
+                    .subscribe((res: Book) => {
+                        this.isLoading = false
+                    })
             })
     }
 
@@ -56,5 +59,9 @@ export class BookComponent implements OnInit, OnDestroy {
         this.book.title = newTitle
 
         this.broadcastChannel.sendBook(this.book)
+    }
+
+    isSecondWindow() {
+        return window['name'] === 'second-screen'
     }
 }
