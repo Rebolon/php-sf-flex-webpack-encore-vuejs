@@ -175,12 +175,17 @@ export default {
                     let errMsg = err.response.statusText
                     let code = err.response.status
                     if (err.response.data) {
-                        if (err.response.data.message) {
-                            errMsg = err.response.data.message
-                        }
+                        if (err.response.data.error.exception) {
+                            err.response.data.error.exception["0"].message.startsWith('Exception: UsernameNotFoundException')
+                            errMsg = 'User not found'
+                        } else {
+                            if (err.response.data.message) {
+                                errMsg = err.response.data.message
+                            }
 
-                        if (err.response.data.code) {
-                            code = err.response.data.code
+                            if (err.response.data.code) {
+                                code = err.response.data.code
+                            }
                         }
                     }
 
@@ -193,6 +198,12 @@ export default {
                         case 403:
                             Notify.create({
                                 message: 'Wrong credentials, please try again',
+                                type: 'warning'
+                            })
+                            break;
+                        case 404:
+                            Notify.create({
+                                message: `Wrong credentials, please try again (${errMsg})`,
                                 type: 'warning'
                             })
                             break;

@@ -29,6 +29,7 @@ class DefaultController extends Controller
 
         $demoRoutes['Login: Symfony secured page with form_login'] = $router->generate('demo_secured_page_standard');
         $demoRoutes['Login: Vuejs secured page with json_login'] = $router->generate('demo_login_json_check'); // if i go to demo_secured_page_json i will just get a json string !!! user won't know how to go to the form uri (i may add the uri in the response, but if i link to the form and the user is already logged, it will then be redirected to the secured page)
+        $demoRoutes['Login: Quasar secured page with JWT system'] = $router->generate('demo_login_json_check'); // if i go to demo_secured_page_json i will just get a json string !!! user won't know how to go to the form uri (i may add the uri in the response, but if i link to the form and the user is already logged, it will then be redirected to the secured page)
 
         $demoRoutes['JS app: Csrf token generation for statefull app'] = $router->generate('token');
         $demoRoutes['JS app: User login check (security_json firewall)'] = $router->generate('demo_secured_page_json_is_logged_in');

@@ -1,14 +1,20 @@
-<div class="row">
-    <my-wizard-sumup></my-wizard-sumup>
-</div>
+<dx-load-indicator class='button-indicator'
+                   [visible]="isLoading">
+</dx-load-indicator>
 
-<div class="form-group">
-    <div class="form-row">
-        <label for="titleChange">Change the title:</label>
-        <input #newTitle [value]=book?.title class="input-sm form-control" type="text" id="titleChange">
+<div *ngIf="!isLoading" id="form-edit-title">
+    <div class="row">
+        <my-wizard-sumup></my-wizard-sumup>
     </div>
-    <div class="form-row">
-        <button (click)="sendBookToParent(newTitle.value)" class="btn btn-primary btn-lg btn-block">send Book with new title</button>
-        <button (click)="sendMessage()" class="btn btn-info btn-lg btn-block">send event to other window</button>
+
+    <div *ngIf="!isLoading" class="form-group form-edit-title">
+        <div class="form-row">
+            <label for="titleChange">Change the title:</label>
+            <input #newTitle [value]=book?.title class="input-sm form-control" type="text" id="titleChange">
+        </div>
+        <div class="form-row">
+            <button (click)="sendBookToParent(newTitle.value)" class="btn btn-primary btn-lg btn-block">send Book with new title</button>
+            <button *ngIf="isSecondWindow()" (click)="sendMessage()" class="btn btn-info btn-lg btn-block">send event to other window</button>
+        </div>
     </div>
 </div>

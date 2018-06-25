@@ -1,7 +1,7 @@
 import axios from 'axios'
 import { logout } from './login'
-import { getTokenFromMeta } from './csrfToken'
-import { csrfParameter } from './config'
+import getToken, { getTokenFromMeta } from './csrfToken'
+import { csrfParameter, tokenJwtBearer } from './config'
 import { Notify } from 'quasar-framework/dist/quasar.mat.esm'
 
 // @todo add an interceptors that will always retrieve the csrf token and add it inside the request
@@ -53,8 +53,13 @@ const JwtTokenHeader = function (config) {
     const rememberMe = localStorage.getItem('rememberMe')
     if (rememberMe) {
         const jsonInfos = JSON.parse(rememberMe)
+        let token = jsonInfos.token
+        if (!token.match(tokenJwtBearer + ' ')) {
+            token = `${tokenJwtBearer} ${token}`
+        }
+
         const headers = {
-            'Authorization': `Bearer ${jsonInfos.token}`,
+            'Authorization': token,
         }
 
         config.headers = Object.assign(config.headers ? config.headers : {}, headers)
@@ -81,6 +86,12 @@ const CsrfTokenHeader = function (config) {
 const CsrfTokenRetreiveOnInvalidResponse = function (error) {
     console.info('axios intercep response error', 'csrf')
     // @todo Is it possible to do a retry of the request with a new token ?
+
+    if (!error.response) {
+        console.info('axios intercep response error, unknown error', 'csrf', error)
+
+        return Promise.reject(error)
+    }
 
     let status = error.response.status
     if (error.response.data && error.response.data.code) {

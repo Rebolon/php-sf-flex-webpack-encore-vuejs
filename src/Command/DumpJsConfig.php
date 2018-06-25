@@ -52,6 +52,11 @@ class DumpJsConfig extends ContainerAwareCommand
     /**
      * @var string
      */
+    protected $tokenJwtBearer;
+
+    /**
+     * @var string
+     */
     protected $rootDir;
 
     /**
@@ -60,6 +65,7 @@ class DumpJsConfig extends ContainerAwareCommand
      * @param string $apiPlatformPrefix
      * @param string $loginUsernamePath
      * @param string $loginPasswordPath
+     * @param string $tokenJwtBearer
      * @param \Twig_Environment $twig
      * @param RouterInterface $router
      */
@@ -68,6 +74,7 @@ class DumpJsConfig extends ContainerAwareCommand
         string $apiPlatformPrefix,
         string $loginUsernamePath,
         string $loginPasswordPath,
+        string $tokenJwtBearer,
         \Twig_Environment $twig,
         RouterInterface $router)
     {
@@ -79,10 +86,11 @@ class DumpJsConfig extends ContainerAwareCommand
         $this->apiPlatformPrefix = $apiPlatformPrefix;
         $this->loginUsernamePath = $loginUsernamePath;
         $this->loginPasswordPath = $loginPasswordPath;
+        $this->tokenJwtBearer = $tokenJwtBearer;
     }
 
     /**
-     * 
+     *
      */
     protected function configure()
     {
@@ -258,6 +266,7 @@ class DumpJsConfig extends ContainerAwareCommand
             'apiPlatformPrefix' => $this->apiPlatformPrefix,
             'loginUsernamePath' => $this->loginUsernamePath,
             'loginPasswordPath' => $this->loginPasswordPath,
+            'tokenJwtBearer' => $this->tokenJwtBearer,
             'uriLoginJson' => $this->router->generate('demo_login_json_check'),
             'uriLoginJwt' => $this->router->generate('app_loginjwt_newtoken'),
             'uriIsLoggedInJson' => $this->router->generate('demo_secured_page_json_is_logged_in'),
@@ -265,6 +274,7 @@ class DumpJsConfig extends ContainerAwareCommand
             'quasarStyle' => $quasarStyle,
             'apiPlatform' => $apiPlatform,
         ]);
+
         return $content;
     }
 

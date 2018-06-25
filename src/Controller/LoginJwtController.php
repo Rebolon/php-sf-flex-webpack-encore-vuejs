@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Security\JwtTokenTools;
+use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTDecodeFailureException;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -42,11 +43,20 @@ class LoginJwtController extends Controller
 
     /**
      * The route that generate token for a couple login/password
-     * It works with Basi HTTP auth or with formData using login/password where path are store in parameters: login_username_path/login_password_path
+     * It works with Basic HTTP auth or with formData using login/password where path are store in parameters: login_username_path/login_password_path
      *
      * @Route("/demo/security/login/jwt/tokens",
      *     defaults={"_format"="json"})
      * @Method({"POST"})
+     *
+     * @param Request $request
+     * @param InMemoryUserProvider $provider
+     * @param JWTEncoderInterface $encoder
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param LoggerInterface $logger
+     * @param JwtTokenTools $tokenTool
+     * @return JsonResponse
+     * @throws \Exception
      */
     public function newToken(
         Request $request,
@@ -67,9 +77,17 @@ class LoginJwtController extends Controller
             }
         }
 
-        $token = $tokenTool->encodeToken($provider, $encoder, $passwordEncoder, $this->getParameter('token_jwt_ttl'), $username, $password, $logger);
+        $token = $tokenTool->encodeToken(
+            $provider,
+            $encoder,
+            $passwordEncoder,
+            $this->getParameter('token_jwt_ttl'),
+            $username,
+            $password,
+            $logger
+        );
 
-        return new JsonResponse(['token' => $token]);
+        return new JsonResponse(['token' => $this->getParameter('token_jwt_bearer') . ' ' . $token]);
     }
 
     /**
@@ -87,8 +105,13 @@ class LoginJwtController extends Controller
      *     defaults={"_format"="json"}
      *     )
      * @Method({"GET"})
+     *
+     * @param Request $request
+     * @param JWTEncoderInterface $jwtEncoder
+     * @return JsonResponse
+     * @throws JWTDecodeFailureException
      */
-    public function isLoggedIn()
+    public function isLoggedIn(Request $request, JWTEncoderInterface $jwtEncoder)
     {
         // will be usefull if we decide to return always 200 + the real Json content represented by isLoggedIn: 0|1
         $authenticated = $this->isGranted('IS_AUTHENTICATED_FULLY');
@@ -100,6 +123,10 @@ class LoginJwtController extends Controller
                 'username' => $user->getUsername(),
                 'roles' => $user->getRoles(),
                 ];
+
+            // check validity of the token
+            $bearer = $request->headers->get('Authorization');
+            $jwtEncoder->decode(substr($bearer, 7));
         }
 
         return new JsonResponse($data);

@@ -50,6 +50,7 @@ class LoginJsonController extends Controller
      *
      * @Route("/demo/security/login/json/authenticate", name="demo_login_json_check")
      *
+     * @var RouterInterface $router
      * @return Response
      */
     public function loginJson(RouterInterface $router)

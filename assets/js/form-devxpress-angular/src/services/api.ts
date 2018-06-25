@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs/Observable'
 import { environment } from '../environments/environment'
-import {apiPlatformPrefix} from '../../../lib/config'
+import {apiPlatformPrefix, tokenJwtBearer} from '../../../lib/config'
 import 'rxjs/add/operator/do'
 import 'rxjs/add/operator/map'
 
@@ -107,7 +107,12 @@ export class ApiService {
         }*/
 
         if (!Object.keys(this.options.headers).find(prop => prop.toLowerCase() === 'authorization')) {
-            this.options.headers['Authorization'] = `Bearer ${user.token}`
+            let token = user.token
+            if (!token.match(tokenJwtBearer + ' ')) {
+              token = `${tokenJwtBearer} ${token}`
+            }
+
+            this.options.headers['Authorization'] = token
         }
 
         return this

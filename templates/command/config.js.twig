@@ -3,6 +3,7 @@ export const env = '{{ env }}'
 export function isProduction () {
     return env === 'prod'
 }
+export const tokenJwtBearer = '{{ tokenJwtBearer }}' // _csrf_token
 export const csrfParameter = '{{ csrfTokenParameter }}' // _csrf_token
 export const apiPlatformPrefix = '{{ apiPlatformPrefix | raw }}' // /api
 export const quasarStyle = '{{ quasarStyle }}' // can be mat or ios
