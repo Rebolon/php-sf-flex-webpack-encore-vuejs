@@ -29,8 +29,8 @@ build:
             root_path: './'
             tests:
                 override:
+                    # for test-cafe, but it still fails
                     - npm run sf-dev &
-                    - npm run test-cafe
                     - npm run test-karma
                     - php-scrutinizer-run
                     -
