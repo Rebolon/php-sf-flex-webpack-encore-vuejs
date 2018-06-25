@@ -39,7 +39,7 @@ class LoginJwtTest extends ToolsAbstract
         $client->request('POST', $uriLogin, [], [], $headers, json_encode(['login_username' => $this->testLogin, 'login_password' => $this->testPwd, ]));
         $tokenRaw = $client->getResponse()->getContent();
         $token = json_decode($tokenRaw);
-        $headers['HTTP_AUTHORIZATION'] = 'Bearer ' . $token->token;
+        $headers['HTTP_AUTHORIZATION'] = $token->token;
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode(), $errMsg);
         $this->assertObjectHasAttribute('token', $token, $errMsg);
