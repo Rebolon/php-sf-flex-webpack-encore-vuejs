@@ -515,6 +515,7 @@ It takes the following JSON string as Body:
 - [ ] db: have a lookAt the HauteLookAliceBundle to help in the creation of real fixtures during tests (instead of generating a new test.db which could be long)
 - [ ] api: try https://github.com/overblog/GraphQLBundle instead of ApiPlatform to try nested query/mutations (resolver are not auto-generated)
 - [ ] quality: use a server logger for both JS and PHP (and also maybe HTTP, DB, MessageQueuing, ...), it will helps to improve quality of the app by identifing users system/browser and most current errors (Sentry or other service must be tested https://www.slant.co/options/964/alternatives/~sentry-alternatives)
+- [ ] front: move on babel 7 with babel-preset-env (remove all related babel from readme and read babeljs.io for more info on update)
 
 * improve this tutorial with ~~an API Route built with Api platform (without DB)~~ and install the vue-generator from api-platform for a crud sample
 * manage Entity orphanRemoval / CASCADE onDelete

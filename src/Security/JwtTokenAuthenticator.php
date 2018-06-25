@@ -51,7 +51,8 @@ class JwtTokenAuthenticator extends AbstractGuardAuthenticator
     public function supports(Request $request)
     {
         return !(false === strpos($request->getRequestFormat(), 'json')
-                && false === strpos($request->getContentType(), 'json'));
+                && false === strpos($request->getContentType(), 'json')
+                && false === strpos($request->headers->get('accept'), 'json'));
     }
 
     public function getCredentials(Request $request)
