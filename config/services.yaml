@@ -70,15 +70,11 @@ services:
 
     App\Request\ParamConverter\Library\AuthorConverter:
         public: true
-        arguments:
-            - '@validator'
         tags:
             - { name: request.param_converter, priority: -2, converter: author }
 
     App\Request\ParamConverter\Library\BookConverter:
         public: true
-        arguments:
-            - '@validator'
         tags:
             - { name: request.param_converter, priority: -2, converter: book }
 
