@@ -100,6 +100,7 @@ The test_browser section represent all the browsers you want to use with the tes
 * http: a cool library to do http call from http (you could switch it with Guzzle)
 * doctrine-migrations: based on Doctrine ORM, it make it easy to change your db during a project life
 * doctrine-fixture: also based on Doctrine to help you to add fixtures in your DB (for your tests or for project init)
+* ocramius/proxy-manager: i don't directly need it, in fact it's doctrine migrations that needs it. But since the release 2.2, it requires PHP7.2.* and i want this project to be compliant with 7.1 so i force the version of this package until i decide to be only compliant PHP7.2
 * admin: easy admin component to build quick backend with auto form
 * profiler: for debugging purpose
 * log: a logger for symfony
