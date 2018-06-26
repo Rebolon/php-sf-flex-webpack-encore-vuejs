@@ -270,6 +270,12 @@ from ApiPlatform.
 In /api you can test the API with the swagger interface. Because the route uses JWT token you have to call the /demo/security/login/jwt/tokens route with HTTP POST and Basic Auth. Login is test_php or test_js and password is test !
 Then in the swagger interface click on the upper right button Authorization and add 'Bearer THETOKENRECEIVED'
 
+To get a valid JWT token you could use the login jwt route: /demo/login/jwt/frontend
+But, because i'm cool ;-) i made a command that will provide you the token. So just do `php bin/console app:new-jwt-token` and it will return a token.
+You can also provide a username/password to the command, i let you read the help of the command to know how-to do.
+
+When using GraphiQL with secured resources, you won't be able to provide any token (i didn't find any clue for this). So i found this good tool to query my API by providing required Authorization header: [https://altair.sirmuel.design/](https://altair.sirmuel.design/).
+
 ### Sort
 
 If you want to allow sorting based on columns, you will have to add Filter annotations on Entity. Look at the [Book entity and its ApiFilter](https://github.com/Rebolon/php-sf-flex-webpack-encore-vuejs/blob/38d98658b5e9c2848fe6ad0187c24650225be508/src/Entity/Library/Book.php#L27) which allow to sort on id and title.
@@ -579,6 +585,7 @@ I wrote some articles on medium to explain some practices setup in this project:
  * https://testcafe-discuss.devexpress.com/t/role-sometime-it-doesnt-seem-to-be-played/875
  * https://testcafe-discuss.devexpress.com/t/it-doesnt-run-all-tests-files/1230/2
  * https://testcafe-discuss.devexpress.com/t/object-domexceptio-error-when-running-tests/1231
+ * https://stackoverflow.com/questions/51042516/how-to-use-graphiql-when-route-are-secured
 
 
 ## License
