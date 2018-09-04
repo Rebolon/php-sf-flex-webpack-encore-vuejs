@@ -128,6 +128,7 @@ For [Angular](https://angular.io/) (v5), i decided to do quite different way:
 
 ## run
 
+* clone the project like this `git clone git@github.com:Rebolon/php-sf-flex-webpack-encore-vuejs.git` and go into this directory
 * install the project with `npm run init-project` (or init-project:win for windows system) which will launch :
   1. copy the env file (or set them on your system) : `cp .env.dist .env`
   2. php dependancies installation: `composer install`
