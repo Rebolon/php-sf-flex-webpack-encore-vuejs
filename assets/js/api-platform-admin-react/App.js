@@ -11,7 +11,7 @@ const fetchHeaders = (options) => {
         return
     }
 
-    options.headers.set('Authorization', `Bearer ${token}`);
+    options.headers.set('Authorization', `${token}`);
 };
 const fetchWithAuth = (url, options = {}) => {
     if (!options.headers) options.headers = new Headers({ Accept: 'application/ld+json' });

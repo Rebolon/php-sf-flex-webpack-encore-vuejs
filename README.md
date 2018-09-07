@@ -131,7 +131,7 @@ For [Angular](https://angular.io/) (v5), i decided to do quite different way:
 * install the project with `npm run init-project` (or init-project:win for windows system) which will launch :
   1. copy the env file (or set them on your system) : `cp .env.dist .env`
   2. php dependancies installation: `composer install`
-  3. nodejs tooling installation (and angular deps): `npm install && cd assets/js/devxpress-angular && npm install`
+  3. nodejs tooling installation (and angular deps): `npm install && cd assets/js/form-devxpress-angular && npm install`
   4. assets generation: `npm run dev`
   5. db init: `php bin/console doctrine:database:create` & `doctrine:schema:create` & `doctrine:fixtures:load`
      * it creates the physical database from the `config/packages/doctrine.yaml` file
@@ -142,15 +142,16 @@ For [Angular](https://angular.io/) (v5), i decided to do quite different way:
   2. Run `npm run jwt-init` and use the passphrase you setup for JWT_PASSPHRASE
 * Run your application with php built-in server:
   1. Change to the project directory
-  2. Execute the `npm run dev-server-hot` (or dev-server-hot:win for windows system) command to start the asset server that will build your assets and your manifest.json and serve the assets with hot module replacment when you do a modification on a vuejs file
-  3. Execute the `npm run sf-dev` (or sf-dev:win for windows system) command;
-  4. Browse to the http://localhost:80/ URL.
+  2. Execute the `npm run build` that will build assets and watch for angular app change
+  3. Execute the `npm run dev-server-hot` (or dev-server-hot:win for windows system) command to start the asset server that will build your assets for vue and react and your manifest.json and serve the assets with hot module replacement when you do a modification on a vuejs file
+  4. Execute the `npm run sf-dev` (or sf-dev:win for windows system) command;
+  5. Browse to the http://localhost:80/ URL.
 
      * Run composer require symfony/web-server-bundle for a better web server.
      * Quit the server with CTRL-C.
      * And launch `php bin/console server:start 127.0.0.1:80`
 
-  5. Run frontend tests with `npm run test`
+  6. Run frontend tests with `npm run test`
 
 Don't forget to prefer an nginx/apache server to be able to use full features of api-platform.
 

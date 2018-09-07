@@ -18,6 +18,7 @@ axios.interceptors.request.eject(logoutStdInterceptors)
 
 // @todo move it to RxJs implementation with subscribe + only call the uri on last call of the method during 300ms
 export default function isLoggedIn(loaderToActivate, uri = loginInfos.uriIsLoggedIn.json) {
+    debugger
     return new Promise((resolve, reject) => {
         if (loaderToActivate && loaderToActivate.isLoading) {
             loaderToActivate.isLoading = true

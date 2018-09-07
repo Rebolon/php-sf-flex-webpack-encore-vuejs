@@ -33,7 +33,7 @@ class LoginJwtController extends Controller
 
     /**
      * The route that displays the JS form and will display the token
-     * @Route("/demo/security/login/jwt/frontend")
+     * @Route("/demo/security/login/jwt/frontend", name="demo_login_jwt")
      * @Method({"GET"})
      */
     public function form()

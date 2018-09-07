@@ -23,6 +23,7 @@ export default {
         QSpinnerCircles,
         Notify
     },
+    props: ['loggedInUri'],
     data() {
         return {
             user: {},
@@ -61,7 +62,7 @@ export default {
             })
             this.$router.push('Login')
         })
-        isLoggedIn()
+        isLoggedIn(undefined, this.loggedInUri)
     },
 }
 </script>

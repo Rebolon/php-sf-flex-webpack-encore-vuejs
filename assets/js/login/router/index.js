@@ -54,26 +54,23 @@ if (!redirect) {
 
 let loggedInUri = loginInfos.uriIsLoggedIn.json
 let loginUri = decodeURIComponent(
-    location.search
-        .substr(1)
-        .split('&')
-        .filter(item => item.split('=')[0] === 'mode')
-        .map(item => {
-            if (!item) {
+    // looks for jwt or json string in uri, it will determine which uri to login with (this is only for this demo app, you should not have to do this)
+    location.pathname
+        .split('/')
+        .filter(item => ['json', 'jwt'].includes(item))
+        .map(mode => {
+            if (!mode) {
                 return
             }
 
-            const mode = item.split('=')[1]
-            if (['json', 'jwt'].includes(mode)) {
-                switch (mode) {
-                    case 'jwt':
-                        loggedInUri = loginInfos.uriIsLoggedIn.jwt
+            switch (mode) {
+                case 'jwt':
+                    loggedInUri = loginInfos.uriIsLoggedIn.jwt
 
-                        return loginInfos.uriLogin.jwt
-                    case 'json':
-                    default:
-                        return loginInfos.uriLogin.json
-                }
+                    return loginInfos.uriLogin.jwt
+                case 'json':
+                default:
+                    return loginInfos.uriLogin.json
             }
         })
         .join('')
@@ -100,7 +97,10 @@ export default new Router({
             path: '/secured',
             name: 'Secured',
             component: Secured,
-            props: true,
+            props: {
+                default: true,
+                loggedInUri: loggedInUri,
+            },
             beforeEnter: vueRouterIsLoggedIn,
         },
     ],
