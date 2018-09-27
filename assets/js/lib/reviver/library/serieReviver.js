@@ -28,7 +28,7 @@ export class SerieReviver extends ItemAbstractReviver
      *   }
      * }
      */
-    public getEzPropsName()
+    getEzPropsName()
     {
         return ['id', 'name', ]
     }
@@ -36,7 +36,7 @@ export class SerieReviver extends ItemAbstractReviver
     /**
      * {@inheritdoc}
      */
-    public getManyRelPropsName()
+    getManyRelPropsName()
     {
         // for instance i don't want to allow the creation of a serie with all embeded books, this is not a usual way of working
         // that's why i don't add books here
@@ -46,7 +46,7 @@ export class SerieReviver extends ItemAbstractReviver
     /**
      * {@inheritdoc}
      */
-    public getOneRelPropsName()
+    getOneRelPropsName()
     {
         return {}
     }

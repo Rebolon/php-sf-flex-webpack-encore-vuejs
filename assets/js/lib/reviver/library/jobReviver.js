@@ -28,7 +28,7 @@ export class JobReviver extends ItemAbstractReviver
      *   }
      * }
      */
-    public getEzPropsName()
+    getEzPropsName()
     {
         return ['id', 'translationKey', ]
     }
@@ -36,7 +36,7 @@ export class JobReviver extends ItemAbstractReviver
     /**
      * {@inheritdoc}
      */
-    public getManyRelPropsName()
+    getManyRelPropsName()
     {
         return {}
     }
@@ -44,7 +44,7 @@ export class JobReviver extends ItemAbstractReviver
     /**
      * {@inheritdoc}
      */
-    public getOneRelPropsName()
+    getOneRelPropsName()
     {
         return {}
     }
