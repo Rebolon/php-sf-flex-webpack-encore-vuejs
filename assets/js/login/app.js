@@ -7,7 +7,7 @@ import { isProduction } from '../lib/config'
 import Vuelidate from 'vuelidate'
 
 import Quasar, { Notify } from 'quasar-framework/dist/quasar.mat.esm'
-import 'quasar-framework/dist/umd/quasar.mat.css'
+import 'quasar-framework/dist/quasar.mat.styl'
 import 'quasar-extras/roboto-font'
 import 'quasar-extras/material-icons'
 import 'quasar-extras/fontawesome'

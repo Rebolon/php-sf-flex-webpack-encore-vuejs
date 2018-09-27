@@ -86,7 +86,7 @@ class HTTP200WebPagesTest extends WebPagesAbstract
         $demoRoutes['vuejs: with quasar and vue-router'] = ['uri'=> $router->generate('app_quasar_index'), ];
 
         $demoRoutes['form & grid: quasar with vuejs'] = ['uri'=> $router->generate('app_formquasarvuejs_index'), ];
-        $demoRoutes['form & grid: devxpress with angular5'] = ['uri'=> $router->generate('app_formdevxpressangular_index'), ];
+        $demoRoutes['form & grid: devxpress with angular6'] = ['uri'=> $router->generate('app_formdevxpressangular_index'), ];
 
         $demoRoutes['api-platform: rest'] = ['uri'=> $router->generate('api_entrypoint'), ];
         $demoRoutes['api-platform: graphql'] = ['uri'=> $router->generate('api_graphql_entrypoint'), ];

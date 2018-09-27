@@ -70,6 +70,9 @@ Encore
         resolveUrlLoader: false,
     })
 
+    // for quasar styles
+    .enableStylusLoader()
+
     // VueJS
     .enableVueLoader()
 
