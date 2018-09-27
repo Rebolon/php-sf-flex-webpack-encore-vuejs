@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core'
-import { Observable } from 'rxjs/Observable'
+import { Observable, of } from 'rxjs'
 
 import { ApiService } from './api'
-import 'rxjs/add/operator/delay'
-import 'rxjs/add/operator/do'
-import 'rxjs/add/operator/map'
-import 'rxjs/add/observable/of'
+import { tap, map, delay } from 'rxjs/operators'
 
 import { books } from '../mocks/books'
 import { jobs } from '../mocks/jobs'
@@ -22,11 +19,11 @@ export class ApiServiceMock extends ApiService {
         const uri = this.buildUri(path)
 
         if (new URL(uri).pathname.match(/^\/api\/books/)) {
-            return Observable.of(books).delay(0)
+            return of(books).pipe(delay(0))
         }
 
         if (new URL(uri).pathname.match(/^\/api\/jobs/)) {
-            return Observable.of(jobs).delay(0)
+            return of(jobs).pipe(delay(0))
         }
 
         throw new ApiMockError(`Unknown route ${uri} from ApiServiceMock::get`)
@@ -42,11 +39,11 @@ export class ApiServiceMock extends ApiService {
         const uri = this.buildUri(path)
 
         if (new URL(uri).pathname.match(/^\/api\/books/)) {
-            return Observable.of(books).delay(0)
+            return of(books).pipe(delay(0))
         }
 
         if (new URL(uri).pathname.match(/^\/api\/jobs/)) {
-            return Observable.of(jobs).delay(0)
+            return of(jobs).pipe(delay(0))
         }
 
         throw new ApiMockError(`Unknown route ${uri} from ApiServiceMock::post`)

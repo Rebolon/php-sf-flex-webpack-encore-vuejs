@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
-import { Observable } from 'rxjs/Observable'
+import { Observable } from 'rxjs'
 import { environment } from '../environments/environment'
 import {apiPlatformPrefix, tokenJwtBearer} from '../../../lib/config'
-import 'rxjs/add/operator/do'
-import 'rxjs/add/operator/map'
+import { map, tap } from 'rxjs/operators'
 
 @Injectable()
 export class ApiService {
