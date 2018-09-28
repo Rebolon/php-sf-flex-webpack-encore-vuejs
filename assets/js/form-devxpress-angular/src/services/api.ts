@@ -74,11 +74,9 @@ export class ApiService {
           return this;
         }*/
 
-        let token = user.token
-        if (!token.match(tokenJwtBearer + ' ')) {
-          token = `${tokenJwtBearer} ${token}`
+        if (user && user.token) {
+          this.jwtInterceptorService.setJwtToken(user.token);
         }
-        this.jwtInterceptorService.setJwtToken(token);
 
         return this
     }
