@@ -4,6 +4,7 @@ import { Observable } from 'rxjs'
 import { environment } from '../environments/environment'
 import {apiPlatformPrefix, tokenJwtBearer} from '../../../lib/config'
 import { map, tap } from 'rxjs/operators'
+import {JwtInterceptorService} from "./jwt-interceptor";
 
 @Injectable()
 export class ApiService {
@@ -17,7 +18,7 @@ export class ApiService {
         headers: {}
     }
 
-    constructor(protected http: HttpClient) { }
+    constructor(protected http: HttpClient, protected jwtInterceptorService: JwtInterceptorService) { }
 
     get(path: string, options: Object = {}): Observable<any> {
         const init = Object.assign(options, this.options)
@@ -60,13 +61,8 @@ export class ApiService {
 
     addJwtTokenIfExists() {
         const rememberMe = window.localStorage.getItem('rememberMe')
-debugger
-        if (!rememberMe) {
-            // look at the typings for the Authorization it allows to prevent following error: error TS2459: Type '{}' has no property 'Authorization' and no string index signature.
-            this.options.headers = (({Authorization, ...tails}: {
-                Authorization?: string
-            }) => (tails))(this.options.headers)
 
+        if (!rememberMe) {
             return this
         }
 
@@ -78,14 +74,11 @@ debugger
           return this;
         }*/
 
-        if (!Object.keys(this.options.headers).find(prop => prop.toLowerCase() === 'authorization')) {
-            let token = user.token
-            if (!token.match(tokenJwtBearer + ' ')) {
-              token = `${tokenJwtBearer} ${token}`
-            }
-
-            this.options.headers['Authorization'] = token
+        let token = user.token
+        if (!token.match(tokenJwtBearer + ' ')) {
+          token = `${tokenJwtBearer} ${token}`
         }
+        this.jwtInterceptorService.setJwtToken(token);
 
         return this
     }
