@@ -21,7 +21,11 @@
     "@angular/platform-browser-dynamic": "^6.1.0",
     "@angular/router": "^6.1.0",
     "core-js": "^2.5.4",
-    "rxjs": "~6.2.0",
+    "devextreme": "^18.1.6",
+    "devextreme-angular": "^18.1.6",
+    "immutable": "^3.8.2",
+    "rxjs": "^6.3.3",
+    "rxjs-compat": "^6.3.3",
     "zone.js": "~0.8.26"
   },
   "devDependencies": {
@@ -43,6 +47,6 @@
     "protractor": "~5.4.0",
     "ts-node": "~7.0.0",
     "tslint": "~5.11.0",
-    "typescript": "~2.9.2"
+    "typescript": "^2.9.2"
   }
 }
