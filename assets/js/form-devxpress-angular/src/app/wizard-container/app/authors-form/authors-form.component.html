@@ -1,0 +1,80 @@
+<script src="../../../../../../../../public/dist-ng/devxpress/inline.5a8e517895094b877313.bundle.js"></script>
+<form (submit)="addAuthor($event, authorsForm)">
+  <div class="d-flex flex-lg-row">
+      <h3>Create Authors</h3>
+  </div>
+  <div class="d-flex flex-lg-row">
+      <dx-form  #authorsForm
+                id="form-authors"
+                [(formData)]="authors"
+                [readOnly]="options.readonly"
+                [showColonAfterLabel]="options.showColon"
+                [labelLocation]="options.labelLocation"
+                [minColWidth]="options.minColWidth"
+                [colCount]="options.colCount"
+                [width]="options.width"
+                validationGroup="creationGroup">
+
+          <dxi-item dataField="role">
+              <dx-select-box
+                      name="role"
+                      [dataSource]="jobDatasource"
+                      displayExpr="translationKey"
+                      placeholder="Select a job">
+              </dx-select-box>
+
+              <dxi-validation-rule
+                      type="required"
+                      message="Role is required">
+              </dxi-validation-rule>
+          </dxi-item>
+
+          <dxi-item
+                  itemType="group"
+                  caption="Select an author">
+              <dxi-item dataField="author" #authorNameField>
+                  <dx-autocomplete
+                          placeholder="Type author firstname..."
+                          [dataSource]="authorsDatasource"
+                          searchExpr="firstname"
+                          valueExpr="name"
+                          (onSelectionChanged)="resetNameAuthor($event, fieldFirstname, fieldLastname)"
+                  >
+                      <div *dxTemplate="let item of 'item'">
+                          <span><strong>{{item.firstname}}</strong> {{item.lastname}}</span>
+                      </div>
+                  </dx-autocomplete>
+              </dxi-item>
+          </dxi-item>
+
+          <dxi-item
+                  itemType="group"
+                  caption="Or create a new one">
+              <dxi-item #fieldFirstname dataField="firstname">
+                  <dxi-validation-rule
+                          type="custom"
+                          reevaluate="true"
+                          [validationCallback]="validateAddOrSelectAuthor">
+                  </dxi-validation-rule>
+              </dxi-item>
+              <dxi-item #fieldLastname dataField="lastname"></dxi-item>
+          </dxi-item>
+      </dx-form>
+  </div>
+  <div class="d-flex flex-lg-row">
+      <dx-button
+              text="add new author"
+              type="success"
+              icon="add"
+              [useSubmitBehavior]="true"
+              validationGroup="creationGroup">
+      </dx-button>
+  </div>
+  <div class="d-flex flex-lg-row">
+      <button (click)="goBack($event)" class="btn btn-secondary col-6">back</button>
+      <button (click)="goEnd($event)" class="btn btn-warning col-6">end</button>
+  </div>
+</form>
+
+<my-wizard-list-authors *ngIf="authors; else noAuuthors" [authors]="authors" [removeEnabled]="true" (removeAuthors)="removeAuthor($event)"></my-wizard-list-authors>
+<ng-template #noAuuthors>No authors created</ng-template>

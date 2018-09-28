@@ -19,11 +19,6 @@ export class ApiService {
 
     constructor(protected http: HttpClient) { }
 
-    /**
-     *
-     * @param path
-     * @returns {Observable<any>}
-     */
     get(path: string, options: Object = {}): Observable<any> {
         const init = Object.assign(options, this.options)
         const uri = this.buildUri(path)
@@ -33,12 +28,6 @@ export class ApiService {
             .request('GET', uri, init)
     }
 
-    /**
-     *
-     * @param path
-     * @param body
-     * @returns {Observable<R>}
-     */
     post(path: string, body: any, options: Object = {}): Observable<any> {
         const init = Object.assign(options, this.options)
         init.body = body
@@ -49,12 +38,6 @@ export class ApiService {
             .request('POST', uri, init)
     }
 
-    /**
-     *
-     * @param path
-     * @param body
-     * @returns {Observable<R>}
-     */
     put(path: string, body: any, options: Object = {}): Observable<any> {
         const init = Object.assign(options, this.options)
         init.body = body
@@ -65,12 +48,6 @@ export class ApiService {
             .request('PUT', uri, init)
     }
 
-    /**
-     *
-     * @param path
-     * @param body
-     * @returns {Observable<R>}
-     */
     delete(path: string, options: Object = {}): Observable<any> {
         const httpOptions = Object.assign(options, this.options)
         httpOptions.body = null
@@ -81,13 +58,9 @@ export class ApiService {
             .request('DELETE', uri, httpOptions)
     }
 
-    /**
-     *
-     * @returns {HttpService}
-     */
     addJwtTokenIfExists() {
         const rememberMe = window.localStorage.getItem('rememberMe')
-
+debugger
         if (!rememberMe) {
             // look at the typings for the Authorization it allows to prevent following error: error TS2459: Type '{}' has no property 'Authorization' and no string index signature.
             this.options.headers = (({Authorization, ...tails}: {
@@ -117,11 +90,6 @@ export class ApiService {
         return this
     }
 
-    /**
-     * build a clean uri
-     * @param path
-     * @returns {string}
-     */
     buildUri(path: string) {
         let uri = this.baseUrl
 

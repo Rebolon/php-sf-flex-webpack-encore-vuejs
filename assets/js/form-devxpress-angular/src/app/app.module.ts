@@ -7,12 +7,14 @@ import {appRoutes} from './app.routes';
 import {HomeComponent} from './home/home.component';
 import {BookComponent} from './book-container/book/book.component';
 import {SharedModule} from './shared/shared.module';
+import {WizardModule} from "./wizard-container/wizard.module";
+import {ApiService} from "../services/api";
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    BookComponent
+    BookComponent,
   ],
   imports: [
     BrowserModule,
@@ -21,8 +23,11 @@ import {SharedModule} from './shared/shared.module';
       { enableTracing: false }// debugging purposes only
     ),
     SharedModule,
+    WizardModule,
   ],
-  providers: [],
+  providers: [
+    ApiService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

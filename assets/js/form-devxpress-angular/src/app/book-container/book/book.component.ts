@@ -22,26 +22,28 @@ export class BookComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         // Observe the params from activatedRoute AND then load the story
         this.route.paramMap
-            .takeUntil(this.ngUnsubscribe)
+            .pipe(takeUntil(this.ngUnsubscribe))
             .subscribe(params => {
-                const bookId = params.get('id')
+              const bookId = params.get('id')
 
-                if (bookId === null) {
-                    throw new Error('Cannot access Book without any selected one')
-                }
+              if (bookId === null) {
+                throw new Error('Cannot access Book without any selected one')
+              }
 
-                // subscribe to the book Observable
-                this.bookService
-                    .book
-                    .subscribe((res: Book) => this.book = res)
+              // subscribe to the book Observable
+              this.bookService
+                .book
+                .subscribe((res: Book) => this.book = res)
 
-                // then do the main call
-                this.bookService
-                    .get(parseInt(bookId, 10))
-                    .takeUntil(this.ngUnsubscribe)
-                    .subscribe((res: Book) => {
-                        this.isLoading = false
-                    })
+              // then do the main call
+              this.bookService
+                .get(parseInt(bookId, 10))
+                .pipe(
+                  takeUntil(this.ngUnsubscribe)
+                )
+                .subscribe((res: Book) => {
+                  this.isLoading = false
+                })
             })
     }
 
