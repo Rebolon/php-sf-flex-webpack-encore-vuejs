@@ -37,7 +37,13 @@ class DefaultController extends Controller
         $demoRoutes['Vuejs: page with vue-router'] = $router->generate('app_vuejs_index');
         $demoRoutes['Vuejs: with quasar and vue-router'] = $router->generate('app_quasar_index');
 
-        $demoRoutes['Form & grid: Quasar with Vuejs'] = $router->generate('app_formquasarvuejs_index');
+        if ($isPhpBuiltInServer) {
+            $demoRoutes['Form & grid: Quasar with Vuejs'] = [
+                'uri' => $router->generate('app_formquasarvuejs_index'),
+                'note' => 'You are using PHP Built-in server, api indexes for json/jsonld or html may not work and return a '
+                    . '404 Not Found',
+            ];
+        }
         $demoRoutes['Form & grid: DevXpress with Angular6'] = $router->generate('app_formdevxpressangular_index');
 
         $demoRoutes['Api-platform: rest'] = $router->generate('api_entrypoint');
