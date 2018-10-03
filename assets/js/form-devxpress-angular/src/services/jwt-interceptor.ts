@@ -11,6 +11,7 @@ export class JwtInterceptorService implements HttpInterceptor {
   private token: string | null;
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    debugger
     if (this.token) {
       const clone = req.clone({ setHeaders: { 'Authorization': `${tokenJwtBearer} ${this.token}` } });
       return next.handle(clone);
@@ -19,8 +20,9 @@ export class JwtInterceptorService implements HttpInterceptor {
   }
 
   setJwtToken(token: string) {
-    if (token.match(tokenJwtBearer + ' ')) {
-      token = token.replace(`${tokenJwtBearer} `, '')
+    debugger
+    if (token.startsWith(tokenJwtBearer)) {
+      token = token.replace(`${tokenJwtBearer} `, '');
     }
 
     this.token = token;

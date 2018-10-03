@@ -1,10 +1,6 @@
 import { Injectable} from '@angular/core'
-import {Observable} from "rxjs/Observable";
-import 'rxjs/add/operator/filter'
-import 'rxjs/add/operator/mergeMap'
-import { forkJoin } from 'rxjs/observable/forkJoin';
-import {Subject} from "rxjs/Subject";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
+import {Observable, forkJoin, Subject, BehaviorSubject} from "rxjs";
+import {filter, mergeMap} from "rxjs/operators"
 import {Book} from "../../../entities/library/book";
 import {Editors} from "../../../entities/library/editors";
 import {Authors} from "../../../entities/library/authors";
