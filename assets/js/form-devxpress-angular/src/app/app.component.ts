@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
   providers: [],
 })
 export class AppComponent {
-  title = 'ponyracer';
+  title = 'devxpress';
 }

@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ponyracer": {
+    "devxpress": {
       "root": "",
       "sourceRoot": "src",
       "projectType": "application",
@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/ponyracer",
+            "outputPath": "../../../public/dist-ng/devxpress/",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -50,18 +50,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "ponyracer:build"
+            "browserTarget": "devxpress:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "ponyracer:build:production"
+              "browserTarget": "devxpress:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "ponyracer:build"
+            "browserTarget": "devxpress:build"
           }
         },
         "test": {
@@ -95,7 +95,7 @@
         }
       }
     },
-    "ponyracer-e2e": {
+    "devxpress-e2e": {
       "root": "e2e/",
       "projectType": "application",
       "targets": {
@@ -103,11 +103,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "ponyracer:serve"
+            "devServerTarget": "devxpress:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "ponyracer:serve:production"
+              "devServerTarget": "devxpress:serve:production"
             }
           }
         },
@@ -123,5 +123,5 @@
       }
     }
   },
-  "defaultProject": "ponyracer"
+  "defaultProject": "devxpress"
 }
