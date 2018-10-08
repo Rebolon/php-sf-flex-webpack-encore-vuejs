@@ -18,7 +18,7 @@ import {SerieReviver} from './services/reviver/library/serieReviver';
 @NgModule({
     imports: [
         CommonModule,
-        DevExtremeModule
+        DevExtremeModule,
     ],
     declarations: [
         WizardListAuthorsComponent,
@@ -30,7 +30,7 @@ import {SerieReviver} from './services/reviver/library/serieReviver';
         DevExtremeModule,
         WizardListAuthorsComponent,
         WizardListEditorsComponent,
-        WizardSumupComponent
+        WizardSumupComponent,
     ],
     providers: [
         BroadcastChannelApi,
@@ -43,7 +43,7 @@ import {SerieReviver} from './services/reviver/library/serieReviver';
         EditorsReviver,
         JobReviver,
         SerieReviver,
-    ]
+    ],
 })
 export class SharedModule {
 }

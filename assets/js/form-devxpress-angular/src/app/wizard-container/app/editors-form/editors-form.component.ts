@@ -1,21 +1,22 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core'
-import {WizardRouting} from "../../../shared/services/wizard-routing";
-import {options} from "../../../shared/tools/form-options";
-import {Editors} from "../../../../entities/library/editors";
-import {Editor} from "../../../../entities/library/editor";
-import CustomStore from "devextreme/data/custom_store";
-import {ApiService} from "../../../../services/api";
-import {apiConfig} from "../../../../../../lib/config";
-import {DxFormComponent, DxLookupComponent} from "devextreme-angular";
-import {WizardBook} from "../../../shared/services/wizard-book";
-import {CacheKey} from "../../enums/cache-key";
-import notify from "devextreme/ui/notify";
-import {Subscription} from "rxjs/Subscription";
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {WizardRouting} from '../../../shared/services/wizard-routing';
+import {options} from '../../../shared/tools/form-options';
+import {Editors} from '../../../../entities/library/editors';
+import {Editor} from '../../../../entities/library/editor';
+import CustomStore from 'devextreme/data/custom_store';
+import {ApiService} from '../../../../services/api';
+import {apiConfig} from '../../../../../../lib/config';
+import {DxFormComponent, DxLookupComponent} from 'devextreme-angular';
+import {WizardBook} from '../../../shared/services/wizard-book';
+import {CacheKey} from '../../enums/cache-key';
+import notify from 'devextreme/ui/notify';
+import {Subscription} from 'rxjs';
+import 'rxjs/add/operator/toPromise'; // @deprecated find an alternative
 
 @Component({
   selector: 'my-wizard-editors',
   templateUrl: './editors-form.component.html',
-  styleUrls: ['./editors-form.component.scss']
+  styleUrls: ['./editors-form.component.scss'],
 })
 export class EditorsFormComponent implements OnInit, OnDestroy {
     // @todo should use dxAutocomplete (not described in the demo but exists in documentation > UI widgets)

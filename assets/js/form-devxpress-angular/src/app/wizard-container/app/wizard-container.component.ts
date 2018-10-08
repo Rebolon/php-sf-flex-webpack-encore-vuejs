@@ -1,17 +1,17 @@
-import {Component, OnDestroy, OnInit} from '@angular/core'
-import {WizardRouting} from "../../shared/services/wizard-routing";
-import {ActivatedRoute, Router, Routes, UrlSegment} from "@angular/router";
-import {wizardRoutes} from "../wizard.routes";
-import {WizardBook} from "../../shared/services/wizard-book";
-import {CacheKey} from "../enums/cache-key";
-import {Book} from "../../../entities/library/book";
-import {Subscription} from "rxjs/Subscription";
-import {BookReviver} from "../../shared/services/reviver/library/bookReviver";
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {WizardRouting} from '../../shared/services/wizard-routing';
+import {ActivatedRoute, Router, Routes, UrlSegment} from '@angular/router';
+import {wizardRoutes} from '../wizard.routes';
+import {WizardBook} from '../../shared/services/wizard-book';
+import {CacheKey} from '../enums/cache-key';
+import {Book} from '../../../entities/library/book';
+import {Subscription} from 'rxjs';
+import {BookReviver} from '../../shared/services/reviver/library/bookReviver';
 
 @Component({
     selector: 'my-wizard',
     templateUrl: './wizard-container.component.html',
-    styleUrls: ['./wizard-container.component.scss']
+    styleUrls: ['./wizard-container.component.scss'],
 })
 // @todo may use of ActivatedRoute to prevent test in html to set Active class : routerLinkActive="active" in button
 export class WizardContainerComponent implements OnInit, OnDestroy {
@@ -25,7 +25,7 @@ export class WizardContainerComponent implements OnInit, OnDestroy {
     protected subscriptions: Array<Subscription> = []
 
     constructor(private bookService: WizardBook, private routingService: WizardRouting, private router: Router, private route: ActivatedRoute, private bookReviver: BookReviver) {
-        this.steps = wizardRoutes.filter(route => route.path !== '**')
+        this.steps = wizardRoutes.filter(oneRoute => oneRoute.path !== '**')
     }
 
     ngOnInit(): void {

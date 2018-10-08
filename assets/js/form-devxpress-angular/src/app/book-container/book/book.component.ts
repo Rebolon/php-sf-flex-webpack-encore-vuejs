@@ -1,7 +1,6 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core'
-import { Observable, Subject } from 'rxjs'
-import { takeUntil } from 'rxjs/operators'
-import 'rxjs/add/operator/toPromise'; // @todo: deprecated ?
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import {ActivatedRoute} from '@angular/router';
 import {WizardBook} from '../../shared/services/wizard-book';
 import {BroadcastChannelApi} from '../../shared/services/broadcast-channel-api';
@@ -10,7 +9,7 @@ import {Book} from '../../../entities/library/book';
 @Component({
   selector: 'my-book',
   templateUrl: './book.component.html',
-  styleUrls: ['./book.component.scss']
+  styleUrls: ['./book.component.scss'],
 })
 export class BookComponent implements OnInit, OnDestroy {
     protected ngUnsubscribe: Subject<void> = new Subject()
