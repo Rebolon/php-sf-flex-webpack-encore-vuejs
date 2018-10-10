@@ -10,7 +10,7 @@ import {DxFormComponent, DxLookupComponent} from "devextreme-angular";
 import {WizardBook} from "../../../shared/services/wizard-book";
 import {CacheKey} from "../../enums/cache-key";
 import notify from "devextreme/ui/notify";
-import {Subscription} from "rxjs/Subscription";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'my-wizard-editors',

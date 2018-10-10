@@ -1,7 +1,6 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core'
 import { Observable, Subject } from 'rxjs'
 import { takeUntil } from 'rxjs/operators'
-import 'rxjs/add/operator/toPromise'; // @todo: deprecated ?
 import {ActivatedRoute} from '@angular/router';
 import {WizardBook} from '../../shared/services/wizard-book';
 import {BroadcastChannelApi} from '../../shared/services/broadcast-channel-api';

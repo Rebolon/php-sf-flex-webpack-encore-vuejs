@@ -5,6 +5,7 @@ import {WizardRouting} from './services/wizard-routing';
 import {DevExtremeModule} from 'devextreme-angular';
 import {WizardListAuthorsComponent} from './wizard-list-authors/wizard-list-authors.component';
 import {WizardListEditorsComponent} from './wizard-list-editors/wizard-list-editors.component';
+import {LoginComponent} from "./login/login.component";
 import {CommonModule} from '@angular/common';
 import {BroadcastChannelApi} from './services/broadcast-channel-api';
 import {BookReviver} from './services/reviver/library/bookReviver';
@@ -18,9 +19,10 @@ import {SerieReviver} from './services/reviver/library/serieReviver';
 @NgModule({
     imports: [
         CommonModule,
-        DevExtremeModule
+        DevExtremeModule,
     ],
     declarations: [
+        LoginComponent,
         WizardListAuthorsComponent,
         WizardListEditorsComponent,
         WizardSumupComponent,
@@ -28,9 +30,10 @@ import {SerieReviver} from './services/reviver/library/serieReviver';
     exports: [
         CommonModule,
         DevExtremeModule,
+        LoginComponent,
         WizardListAuthorsComponent,
         WizardListEditorsComponent,
-        WizardSumupComponent
+        WizardSumupComponent,
     ],
     providers: [
         BroadcastChannelApi,
@@ -43,7 +46,7 @@ import {SerieReviver} from './services/reviver/library/serieReviver';
         EditorsReviver,
         JobReviver,
         SerieReviver,
-    ]
+    ],
 })
 export class SharedModule {
 }

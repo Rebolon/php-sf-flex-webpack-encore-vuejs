@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core'
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {WizardRouting} from "../../../shared/services/wizard-routing";
 import {options} from "../../../shared/tools/form-options";
 import {Authors} from "../../../../entities/library/authors";
@@ -8,7 +8,7 @@ import CustomStore from "devextreme/data/custom_store";
 import DataSource from "devextreme/data/data_source";
 import {WizardBook} from "../../../shared/services/wizard-book";
 import {CacheKey} from "../../enums/cache-key";
-import {Subscription} from "rxjs/Subscription";
+import {Subscription} from "rxjs";
 import {DxAutocompleteComponent, DxFormComponent, DxLookupComponent, DxSelectBoxComponent} from "devextreme-angular";
 import notify from 'devextreme/ui/notify';
 import {Author} from '../../../../entities/library/author';

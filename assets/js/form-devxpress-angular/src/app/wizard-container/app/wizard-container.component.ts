@@ -5,7 +5,7 @@ import {wizardRoutes} from "../wizard.routes";
 import {WizardBook} from "../../shared/services/wizard-book";
 import {CacheKey} from "../enums/cache-key";
 import {Book} from "../../../entities/library/book";
-import {Subscription} from "rxjs/Subscription";
+import {Subscription} from "rxjs";
 import {BookReviver} from "../../shared/services/reviver/library/bookReviver";
 
 @Component({
