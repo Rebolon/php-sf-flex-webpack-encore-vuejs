@@ -8,7 +8,7 @@ import {wizardRoutes} from './wizard-container/wizard.routes';
 
 export const appRoutes: Routes = [
     {path: 'home', component: HomeComponent},
-    { path: 'login', component: LoginComponent },
+    {path: 'login', component: LoginComponent},
     {path: 'datagrid', component: DatagridComponent},
     {path: 'book/:id', component: BookComponent},
     {path: 'wizard', component: WizardContainerComponent, children: wizardRoutes},

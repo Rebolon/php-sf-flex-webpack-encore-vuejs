@@ -1,15 +1,16 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {WizardRouting} from "../../../shared/services/wizard-routing";
-import {options} from "../../../shared/tools/form-options";
-import {Authors} from "../../../../entities/library/authors";
-import {apiConfig} from "../../../../../../lib/config";
-import {ApiService} from "../../../../services/api";
-import CustomStore from "devextreme/data/custom_store";
-import DataSource from "devextreme/data/data_source";
-import {WizardBook} from "../../../shared/services/wizard-book";
-import {CacheKey} from "../../enums/cache-key";
-import {Subscription} from "rxjs";
-import {DxAutocompleteComponent, DxFormComponent, DxLookupComponent, DxSelectBoxComponent} from "devextreme-angular";
+import {WizardRouting} from '../../../shared/services/wizard-routing';
+import {options} from '../../../shared/tools/form-options';
+import {Authors} from '../../../../entities/library/authors';
+import {apiConfig} from '../../../../../../lib/config';
+import {ApiService} from '../../../../services/api';
+import CustomStore from 'devextreme/data/custom_store';
+import DataSource from 'devextreme/data/data_source';
+import {WizardBook} from '../../../shared/services/wizard-book';
+import {CacheKey} from '../../enums/cache-key';
+import {Subscription} from 'rxjs';
+import 'rxjs/add/operator/toPromise';
+import {DxAutocompleteComponent, DxFormComponent, DxLookupComponent, DxSelectBoxComponent} from 'devextreme-angular';
 import notify from 'devextreme/ui/notify';
 import {Author} from '../../../../entities/library/author';
 import {Job} from '../../../../entities/library/job';
@@ -57,7 +58,7 @@ export class AuthorsFormComponent implements OnInit, OnDestroy {
                 let itemPerPage = this.apiConfig.itemsPerPage
 
                 let options = {
-                    params: []
+                    params: [],
                 }
 
                 // manage number of items wished by the datagrid and that the API must return (take care to configure the config/packages/api_platform.yaml:client_items_per_page key)

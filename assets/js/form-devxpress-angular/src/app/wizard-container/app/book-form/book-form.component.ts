@@ -1,21 +1,21 @@
 import {Component, OnDestroy, OnInit} from '@angular/core'
-import {WizardRouting} from "../../../shared/services/wizard-routing";
-import {Book} from "../../../../entities/library/book";
-import {options} from "../../../shared/tools/form-options";
-import {WizardBook} from "../../../shared/services/wizard-book";
-import {CacheKey} from "../../enums/cache-key";
-import notify from "devextreme/ui/notify";
-import {Subscription} from "rxjs";
+import {WizardRouting} from '../../../shared/services/wizard-routing';
+import {Book} from '../../../../entities/library/book';
+import {options} from '../../../shared/tools/form-options';
+import {WizardBook} from '../../../shared/services/wizard-book';
+import {CacheKey} from '../../enums/cache-key';
+import notify from 'devextreme/ui/notify';
+import {Subscription} from 'rxjs';
 
 @Component({
     selector: 'my-wizard-book',
     templateUrl: './book-form.component.html',
-    styleUrls: ['./book-form.component.scss']
+    styleUrls: ['./book-form.component.scss'],
 })
 export class BookFormComponent implements OnInit, OnDestroy {
     book: Book
     options = options
-    nextPageNotifyMsg = "Local save success"
+    nextPageNotifyMsg = 'Local save success';
 
     // pattern to unsubscribe everything
     protected subscriptions: Array<Subscription> = []
@@ -44,7 +44,7 @@ export class BookFormComponent implements OnInit, OnDestroy {
 
         // reset localStorage and service
         // @todo should be in a Guar route when exit wizard/*
-        for (let cacheKey of Object.values(CacheKey)) {
+        for (const cacheKey of Object.values(CacheKey)) {
             localStorage.removeItem(cacheKey)
         }
 
@@ -60,10 +60,10 @@ export class BookFormComponent implements OnInit, OnDestroy {
         notify({
             message: this.nextPageNotifyMsg,
             position: {
-                my: "center top",
-                at: "center top"
-            }
-        }, "success", 3000);
+                my: 'center top',
+                at: 'center top',
+            },
+        }, 'success', 3000);
 
         // propagate to other component
         this.bookService.updateBook(this.book)

@@ -9,10 +9,11 @@ import {HomeComponent} from './home/home.component';
 import {BookComponent} from './book-container/book/book.component';
 import {DatagridComponent} from "./datagrid/datagrid.component";
 import {SharedModule} from './shared/shared.module';
-import {WizardModule} from "./wizard-container/wizard.module";
-import {ApiService} from "../services/api";
+import {WizardModule} from './wizard-container/wizard.module';
+import {ApiService} from '../services/api';
 import { JwtInterceptorService } from '../services/jwt-interceptor';
 import {environment} from '../environments/environment'
+import {DatagridComponent} from './datagrid/datagrid.component';
 
 @NgModule({
   declarations: [

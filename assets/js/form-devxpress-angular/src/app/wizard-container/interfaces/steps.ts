@@ -1,3 +1,3 @@
 export interface ISteps {
-    label: 'book' | 'editors' | 'authors' | undefined
+    label: 'book' | 'editors' | 'authors' | undefined,
 }

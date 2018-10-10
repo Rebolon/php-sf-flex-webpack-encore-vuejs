@@ -3,7 +3,7 @@ import {Component, Input} from '@angular/core'
 @Component({
     selector: 'my-wizard-step',
     templateUrl: './wizard-step.component.html',
-    styleUrls: ['./wizard-step.component.scss']
+    styleUrls: ['./wizard-step.component.scss'],
 })
 export class WizardStepComponent {
     @Input() title: string
