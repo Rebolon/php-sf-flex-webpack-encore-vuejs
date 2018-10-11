@@ -499,6 +499,9 @@ It takes the following JSON string as Body:
 - [x] front: setup VueJS
 - [x] front: use Quasar with VueJS
 - [x] front: move on Quasar 0.15.x
+- [ ] front: move on Quasar 0.17.x
+- [x] front: move on Angular 6 with HttpInterceptor, Guards, SSR
+- [ ] front: move on Devxtreme 18.x and use it with VueJS
 - [x] front: setup CSRF protection with VueJS app
 - [ ] front: migrate app 'form-devextrem-angular' to angular6 when there will be compatible (this thread may helps: https://stackoverflow.com/questions/48970553/want-to-upgrade-project-from-angular-v5-to-angular-v6)
 - [x] quality: setup unit tests for JS (karma/jasmine)
@@ -509,7 +512,7 @@ It takes the following JSON string as Body:
 - [x] quality: write some PHP tests
 - [ ] quality: fix testcafe role where sometimes they are not played: https://testcafe-discuss.devexpress.com/t/role-sometime-it-doesnt-seem-to-be-played/875
 - [x] quality: setup tests reports
-- [ ] security: setup security with Symfony (ticket open coz i get 500 instead of 403: https://github.com/symfony/symfony/issues/25806) and choose between cookie (stateful), JWT (with Lexik bundle) or ApiKey (https://symfony.com/doc/current/security/guard_authentication.html)
+- [x] security: setup security with Symfony (ticket open coz i get 500 instead of 403: https://github.com/symfony/symfony/issues/25806 Still WIP at this time) and choose between cookie (stateful), JWT (with Lexik bundle) or ApiKey (https://symfony.com/doc/current/security/guard_authentication.html) : I implement both statefull and JWT samples, but i didn't take the time for ApiKey
 - [x] back: setup EasyAdminBundle
 - [ ] back: improve EasyAdminBundle with custom screen
 - [x] back: setup React Admin from ApiPlatform (take care at this issue is mandatory https://github.com/api-platform/api-platform/issues/584)
