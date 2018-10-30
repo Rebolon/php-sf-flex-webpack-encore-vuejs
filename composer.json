@@ -23,7 +23,6 @@
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.0",
         "friendsofphp/php-cs-fixer": "^2.10",
-        "phpunit/phpunit": "^6.5",
         "roave/security-advisories": "dev-master",
         "sensiolabs/security-checker": "^4.1",
         "squizlabs/PHP_CodeSniffer": "^3.2",
@@ -32,6 +31,7 @@
         "symfony/dom-crawler": "^4.0.0",
         "symfony/dotenv": "^4.0.0",
         "symfony/flex": "1.0.70",
+        "symfony/test-pack": "^1.0",
         "symfony/webpack-encore-pack": "^1.0"
     },
     "minimum-stability": "dev",
