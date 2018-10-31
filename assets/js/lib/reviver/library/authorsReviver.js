@@ -46,7 +46,7 @@ export class AuthorsReviver extends ListAbstractReviver
      *   }
      * }
      */
-    public getEzPropsName()
+    getEzPropsName()
     {
         return ['id', ]
     }
@@ -54,7 +54,7 @@ export class AuthorsReviver extends ListAbstractReviver
     /**
      * {@inheritdoc}
      */
-    public getManyRelPropsName()
+    getManyRelPropsName()
     {
         return {}
     }
@@ -62,7 +62,7 @@ export class AuthorsReviver extends ListAbstractReviver
     /**
      * {@inheritdoc}
      */
-    public getOneRelPropsName()
+    getOneRelPropsName()
     {
         return {
             'role': {

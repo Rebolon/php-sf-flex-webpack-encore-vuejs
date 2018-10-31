@@ -46,7 +46,7 @@ export class EditorsReviver extends ListAbstractReviver
      *   }
      * }
      */
-    public getEzPropsName()
+    getEzPropsName()
     {
         return ['id', 'publicationDate', 'collection', 'isbn', ]
     }
@@ -54,7 +54,7 @@ export class EditorsReviver extends ListAbstractReviver
     /**
      * {@inheritdoc}
      */
-    public getManyRelPropsName()
+    getManyRelPropsName()
     {
         return {}
     }
@@ -62,7 +62,7 @@ export class EditorsReviver extends ListAbstractReviver
     /**
      * {@inheritdoc}
      */
-    public getOneRelPropsName()
+    getOneRelPropsName()
     {
         return {
             'editor': {

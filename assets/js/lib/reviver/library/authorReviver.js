@@ -29,7 +29,7 @@ export class AuthorReviver extends ItemAbstractReviver
      *   }
      * }
      */
-    public getEzPropsName()
+    getEzPropsName()
     {
         return ['id', 'firstname', 'lastname', ]
     }
@@ -37,7 +37,7 @@ export class AuthorReviver extends ItemAbstractReviver
     /**
      * {@inheritdoc}
      */
-    public getManyRelPropsName()
+    getManyRelPropsName()
     {
         return {}
     }
@@ -45,7 +45,7 @@ export class AuthorReviver extends ItemAbstractReviver
     /**
      * {@inheritdoc}
      */
-    public getOneRelPropsName()
+    getOneRelPropsName()
     {
         return {}
     }

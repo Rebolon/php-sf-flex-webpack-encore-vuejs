@@ -51,7 +51,7 @@ export class BookReviver extends ItemAbstractReviver
      *   }
      * }
      */
-    public getEzPropsName()
+    getEzPropsName()
     {
         return ['id', 'title', 'description', 'indexInSerie', ]
     }
@@ -59,7 +59,7 @@ export class BookReviver extends ItemAbstractReviver
     /**
      * {@inheritdoc}
      */
-    public getManyRelPropsName()
+    getManyRelPropsName()
     {
         // for instance i don't want to allow the creation of reviews with all embeded reviews, this is not a usual way of working
         // that's why i don't add reviews here
@@ -86,7 +86,7 @@ export class BookReviver extends ItemAbstractReviver
      *
      * registryKey could be used if we create an endpoint that allow batch POST/PUT of book with embedded serie
      */
-    public getOneRelPropsName()
+    getOneRelPropsName()
     {
         return {
             'serie': {
