@@ -1,8 +1,5 @@
 import {Book} from "../../entities/library/book"
 import {ItemAbstractReviver, Accessor} from "@rebolon/json-reviver";
-import {AuthorsReviver} from "./authorsReviver";
-import {SerieReviver} from "./serieReviver";
-import {EditorsReviver} from "./editorsReviver";
 
 export class BookReviver extends ItemAbstractReviver
 {

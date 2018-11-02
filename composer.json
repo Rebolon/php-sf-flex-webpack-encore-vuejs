@@ -17,6 +17,7 @@
         "symfony/framework-bundle": "^4.0.0",
         "symfony/monolog-bundle": "^3.1.0",
         "symfony/profiler-pack": "^1.0",
+        "symfony/test-pack": "^1.0",
         "symfony/yaml": "^4.0.0",
         "webonyx/graphql-php": "^0.11.5"
     },
@@ -31,7 +32,6 @@
         "symfony/dom-crawler": "^4.0.0",
         "symfony/dotenv": "^4.0.0",
         "symfony/flex": "^1.1",
-        "symfony/test-pack": "^1.0",
         "symfony/webpack-encore-pack": "^1.0"
     },
     "minimum-stability": "dev",
