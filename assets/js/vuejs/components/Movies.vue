@@ -9,7 +9,7 @@
                 <router-link :to="{name: 'Movie', params: { id: movie.id } }">{{ movie.title }}</router-link>
             </li>
         </ul>
-        <Loader v-else="!isLoading"></Loader>
+        <Loader v-if="isLoading"></Loader>
     </div>
 </template>
 

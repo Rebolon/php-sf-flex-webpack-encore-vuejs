@@ -58,7 +58,7 @@ export default {
             pagination: {
                 endCursor: '',
                 nexEndCursor: '',
-                
+
                 // for quasar
                 sortBy: null, // String, column "name" property value
                 descending: false,
@@ -106,13 +106,14 @@ export default {
 
             axiosJsonLd.get(uri)
                 .then(res => {
-                    let content = res.data
                     this.isLoading = false
 
                     // prevent response analyse
-                    if (!res || !content) {
+                    if (!res || !res.data) {
                         return
-                    }
+                    }Movies.com
+
+                    let content = res.data
 
                     // store data
                     if (undefined !== content['hydra:member']) {
