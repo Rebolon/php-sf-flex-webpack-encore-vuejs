@@ -1,5 +1,5 @@
 import { Selector } from 'testcafe'
-import { host, port } from '../js/lib/config'
+import { host } from '../js/lib/config'
 import {scheme} from "./tools/authentification";
 
 fixture `Test homepage`

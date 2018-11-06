@@ -20,8 +20,7 @@ export default {
     components: {
         QToolbar,
         QToolbarTitle,
-        QSpinnerCircles,
-        Notify
+        QSpinnerCircles
     },
     props: ['loggedInUri'],
     data() {

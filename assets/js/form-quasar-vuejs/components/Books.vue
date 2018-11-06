@@ -19,17 +19,9 @@
 
 <script>
 import {
-    QToolbar,
-    QToolbarTitle,
     QTable,
-    QTooltip,
-    QItem,
-    QItemMain,
-    QItemTile,
-    QBtn,
 } from 'quasar-framework/dist/quasar.mat.esm'
 
-import Book from './Book.vue'
 import gql from 'graphql-tag'
 import { axiosJsonLd } from '../../lib/axiosMiddlewares'
 import { apiPlatformPrefix, apiConfig } from '../../lib/config'
@@ -38,15 +30,7 @@ import { BooksTableDefinition } from '../dataTableDefinitions/Books'
 export default {
     name: 'Books',
     components: {
-        QToolbar,
-        QToolbarTitle,
         QTable,
-        QTooltip,
-        QItem,
-        QItemMain,
-        QItemTile,
-        QBtn,
-        Book,
     },
     data() {
         return {
@@ -111,7 +95,7 @@ export default {
                     // prevent response analyse
                     if (!res || !res.data) {
                         return
-                    }Movies.com
+                    }
 
                     let content = res.data
 
