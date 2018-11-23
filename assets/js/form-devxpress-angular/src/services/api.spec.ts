@@ -44,7 +44,7 @@ describe('Http Service', () => {
         httpService.post('/api/books', hardcodedBooks).subscribe((res) => {
             expect(res).toBe(hardcodedBooks)
         })
-        debugger
+
         http.expectOne('/api/books')
             .flush(hardcodedBooks)
     }))

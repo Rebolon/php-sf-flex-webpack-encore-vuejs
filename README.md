@@ -501,6 +501,7 @@ It takes the following JSON string as Body:
 - [x] front: move on Quasar 0.15.x
 - [ ] front: move on Quasar 0.17.x
 - [x] front: move on Angular 6 with HttpInterceptor, Guards, SSR
+- [ ] front: Angular6 with prod build, the assets (js/css) are not wel loaded coz they are generated with versoning hash whereas the twig template load them in hard without hash (no manijest may help the asset helper)
 - [ ] front: move on Devxtreme 18.x and use it with VueJS
 - [x] front: setup CSRF protection with VueJS app
 - [ ] front: migrate app 'form-devextrem-angular' to angular6 when there will be compatible (this thread may helps: https://stackoverflow.com/questions/48970553/want-to-upgrade-project-from-angular-v5-to-angular-v6)

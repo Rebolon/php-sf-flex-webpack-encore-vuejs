@@ -14,7 +14,7 @@ import {Book} from '../../../entities/library/book';
 export class BookComponent implements OnInit, OnDestroy {
     protected ngUnsubscribe: Subject<void> = new Subject()
     protected book: Book
-    protected isLoading = true
+    public isLoading = true
 
     constructor(private route: ActivatedRoute, private bookService: WizardBook, private broadcastChannel: BroadcastChannelApi) {}
 
