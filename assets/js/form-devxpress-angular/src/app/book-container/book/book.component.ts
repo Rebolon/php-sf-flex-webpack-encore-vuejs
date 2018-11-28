@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core'
-import { Observable } from 'rxjs/Observable'
+import {Observable} from 'rxjs/Observable'
 import {Subject} from "rxjs/Subject";
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/takeUntil'
@@ -16,7 +16,7 @@ import {Book} from "../../../entities/library/book";
 export class BookComponent implements OnInit, OnDestroy {
     protected ngUnsubscribe: Subject<void> = new Subject()
     protected book: Book
-    protected isLoading = true
+    public isLoading = true
 
     constructor(private route: ActivatedRoute, private bookService: WizardBook, private broadcastChannel: BroadcastChannelApi) {}
 

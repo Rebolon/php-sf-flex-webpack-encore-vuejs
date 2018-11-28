@@ -13,7 +13,7 @@
         "quasar_style": "mat"
     },
     "scripts": {
-        "init-project": "cp .env.dist .env && cp phpunit.xml.dist phpunit.xml && composer install && npm install && npm run db-init && npm run dump-js-config && cd assets/js/form-devxpress-angular/ && npm install && cd ../../../ && npm run dev",
+        "init-project": "[ -f .env ] && echo '.env file already exists' || cp .env.dist .env && cp phpunit.xml.dist phpunit.xml && composer install && npm install && npm run db-init && npm run dump-js-config && cd assets/js/form-devxpress-angular/ && npm install && cd ../../../ && npm run dev",
         "init-project:win": "cp .env.dist .env && cp phpunit.xml.dist phpunit.xml && composer install && npm install && npm run db-init:win && npm run dump-js-config:win && cd assets/js/form-devxpress-angular/ && npm install && cd ../../../ && npm run dev:win",
         "db-init": "$npm_package_config_php bin/console doctrine:database:create && $npm_package_config_php bin/console doctrine:schema:create && $npm_package_config_php bin/console doctrine:fixtures:load -n",
         "db-init:win": "%npm_package_config_php% bin/console doctrine:database:create && %npm_package_config_php% bin/console doctrine:schema:create && %npm_package_config_php% bin/console doctrine:fixtures:load -n",
@@ -34,7 +34,7 @@
         "dev": "./node_modules/.bin/encore dev && cd assets/js/form-devxpress-angular/ && node_modules/.bin/ng build --dev --extract-css",
         "dev:win": ".\\node_modules\\.bin\\encore dev && cd assets/js/form-devxpress-angular/ && node_modules\\.bin\\ng build --dev --extract-css",
         "watch": "./node_modules/.bin/encore dev --watch && cd assets/js/form-devxpress-angular/ && node_modules/.bin/ng build --dev --watch --extract-css",
-        "watch:win": "START /B .\\node_modules\\.bin\\encore dev --watch && cd assets/js/form-devxpress-angular/ && node_modules\\.bin\\ng build --dev --watch --extract-css",
+        "watch:win": "START /B .\\node_modules\\.bin\\encore dev --watch && cd assets/js/form-devxpress-angular/ && node_modules\\.bin\\ng build -dev --watch --extract-css",
         "build": "./node_modules/.bin/encore production && cd assets/js/form-devxpress-angular/ && node_modules/.bin/ng build --prod -aot --watch --extract-css",
         "build:win": ".\\node_modules\\.bin\\encore production && cd assets/js/form-devxpress-angular/ && node_modules\\.bin\\ng build --prod -aot --watch --extract-css",
         "build-for-test": "./node_modules/.bin/encore dev",
