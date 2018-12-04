@@ -14,7 +14,7 @@
         >
         </q-table-->
 
-        <dx-data-grid :data-source="getListByRest">
+        <dx-data-grid :data-source="dataSource">
             <dx-column data-field="id"/>
             <dx-column data-field="title" caption="Title"/>
         </dx-data-grid>
@@ -24,8 +24,8 @@
 
 <script>
 import DxDataGrid, { DxColumn } from "devextreme-vue/data-grid";
-
 import gql from 'graphql-tag'
+import {dataSource} from "../services/books"
 
 export default {
     name: 'Books',
@@ -39,13 +39,10 @@ export default {
             isLoading: true,
             books: [],
             id: undefined,
+            dataSource: dataSource,
         }
     },
-    created() {
-        this.getListByRest()
-    },
     methods: {
-
         addBook() {
             const newBook = {
                 title: 'test livre',

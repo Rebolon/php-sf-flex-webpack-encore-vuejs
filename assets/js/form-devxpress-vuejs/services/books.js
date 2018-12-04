@@ -1,5 +1,6 @@
+import CustomStore from 'devextreme/data/custom_store';
 import { axiosJsonLd } from '../../lib/axiosMiddlewares'
-import { apiPlatformPrefix, apiConfig } from '../../lib/config'
+import { apiPlatformPrefix, apiConfig, host } from '../../lib/config'
 
 const pagination = {
     endCursor: '',
@@ -18,6 +19,43 @@ const pagination = {
 const getBooks = {
     pageInfo: {},
 }
+
+const uri = `http://${host}${apiPlatformPrefix}/books`
+
+export const dataSource = {
+    store: new CustomStore({
+        load: function(loadOptions) {
+            let params = '?';
+
+            // @todo not sure it's a good algo: skip maybe the number of rows wheras apiPlatform expect a pageNumber
+            // const nextPage = loadOptions.skip > 0 ? (loadOptions.skip/loadOptions.take)+1 : 1
+            params += `page=${loadOptions.skip || 1}`;
+
+            if (loadOptions.take || loadOptions.itemsPerPage) {
+                params += `&${apiConfig.itemsPerPageParameterName}=${loadOptions.take || loadOptions.itemsPerPage}`;
+            }
+
+            if(loadOptions.sort) {
+                params += `&orderby=${loadOptions.sort[0].selector}`;
+                if(loadOptions.sort[0].desc) {
+                    params += ' desc';
+                }
+            }
+
+            return axiosJsonLd
+                .get(`${uri}${params}`)
+                .then((response) => {
+                    const data = response.data
+
+                    return {
+                        data: data['hydra:membre'],
+                        totalCount: data['hydra:totalItems'],
+                    };
+                })
+                .catch(() => { throw 'Data Loading Error'; });
+        }
+    })
+};
 
 export default {
     getOtherPage({pageInfos, filter}) {
