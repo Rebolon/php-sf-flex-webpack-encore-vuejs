@@ -4,7 +4,7 @@
             <h5 class="title">List of books</h5>
         </label>
 
-        <q-table
+        <!--q-table
                 :data="books"
                 :columns="dataTableColumns"
                 :pagination.sync="pagination"
@@ -12,117 +12,39 @@
                 @request="getOtherPage($event)"
                 @refresh=""
         >
-        </q-table>
+        </q-table-->
+
+        <dx-data-grid :data-source="getListByRest">
+            <dx-column data-field="id"/>
+            <dx-column data-field="title" caption="Title"/>
+        </dx-data-grid>
 
     </div>
 </template>
 
 <script>
-import {
-    QTable,
-} from 'quasar-framework/dist/quasar.mat.esm'
+import DxDataGrid, { DxColumn } from "devextreme-vue/data-grid";
 
 import gql from 'graphql-tag'
-import { axiosJsonLd } from '../../lib/axiosMiddlewares'
-import { apiPlatformPrefix, apiConfig } from '../../lib/config'
-import { BooksTableDefinition } from '../dataTableDefinitions/Books'
 
 export default {
     name: 'Books',
     components: {
-        QTable,
+        DxDataGrid,
+        DxColumn,
     },
     data() {
         return {
             msg: 'List of books',
             isLoading: true,
             books: [],
-            dataTableColumns: BooksTableDefinition,
             id: undefined,
-            pagination: {
-                endCursor: '',
-                nexEndCursor: '',
-
-                // for quasar
-                sortBy: null, // String, column "name" property value
-                descending: false,
-                page: 1,
-                rowsPerPage: apiConfig.itemsPerPage, // current rows per page being displayed
-                rowsNumber: 0 // mandatory for server-side pagination
-            },
-
-            // dataStore for GraphQL Queries: vue-apollo will inject data in vue components based on the name of the query
-            getBooks: {
-                pageInfo: {},
-            },
         }
     },
     created() {
         this.getListByRest()
     },
     methods: {
-        getOtherPage({ pagination, filter }) {
-            // for graphQl
-            // @todo find a way to identify if we get the data in the store or if we need to ask for new data
-            // @todo how to manage 'previous' link ? for instance this code should not work in all case, only if user click on next
-            if (this.getBooks.pageInfo.hasNextPage) {
-                const [last] = [...this.getBooks.edges].reverse()
-                this.pagination.endCursor = last.cursor
-            }
-
-            // change # of rows returned by the grid
-            if (pagination.rowsPerPage) {
-                this.pagination.rowsPerPage = pagination.rowsPerPage
-            }
-
-            // for Rest
-            this.getListByRest(pagination.page)
-        },
-
-        getListByRest(page = 1) {
-            this.isLoading = true
-            const pageInt = Number.parseInt(page)
-            let uri = `${apiPlatformPrefix}/books?page=${pageInt}`
-
-            if (this.pagination.rowsPerPage !== apiConfig.rowsPerPage) {
-                uri += `&${apiConfig.itemsPerPageParameterName}=${this.pagination.rowsPerPage}`
-            }
-
-            axiosJsonLd.get(uri)
-                .then(res => {
-                    this.isLoading = false
-
-                    // prevent response analyse
-                    if (!res || !res.data) {
-                        return
-                    }
-
-                    let content = res.data
-
-                    // store data
-                    if (undefined !== content['hydra:member']) {
-                        this.books = content['hydra:member']
-                    }
-
-                    // manage pagination
-                    if (undefined !== content['hydra:totalItems']) {
-                        this.pagination.rowsNumber = content['hydra:totalItems']
-                    }
-
-                    if (undefined !== content['hydra:view']) {
-                        ['first', 'last', 'next', 'previous'].forEach(key => {
-                            if (undefined !== content['hydra:view'][`hydra:${key}`]) {
-                                const pageParam = content['hydra:view'][`hydra:${key}`].match(/page=\d*/)
-                                const pageValue = Number.parseInt(pageParam[0].replace('page=', ''))
-                                if (key === 'next'
-                                    && pageValue !== this.pagination.page) {
-                                    this.pagination.page += 1
-                                }
-                            }
-                        })
-                    }
-                })
-        },
 
         addBook() {
             const newBook = {

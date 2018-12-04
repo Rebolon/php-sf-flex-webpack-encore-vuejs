@@ -59,6 +59,8 @@
         "apollo-link-error": "^1.1.0",
         "apollo-link-http": "^1.5.4",
         "axios": "^0.18.0",
+        "devextreme": "^18.2.3",
+        "devextreme-vue": "^18.2.3",
         "graphql": "^0.13.2",
         "graphql-tag": "^2.9.2",
         "offline-plugin": "^5.0.3",
