@@ -48,7 +48,7 @@ export const dataSource = {
                     const data = response.data
 
                     return {
-                        data: data['hydra:membre'],
+                        data: data['hydra:member'],
                         totalCount: data['hydra:totalItems'],
                     };
                 })
