@@ -5,9 +5,10 @@
   [![Tested with TestCafe](https://img.shields.io/badge/tested%20with-TestCafe-2fa4cf.svg)](https://github.com/DevExpress/testcafe)
   [![Build Status](https://travis-ci.org/Rebolon/php-sf-flex-webpack-encore-vuejs.png?branch=master)](https://travis-ci.org/Rebolon/php-sf-flex-webpack-encore-vuejs)
   [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Rebolon/php-sf-flex-webpack-encore-vuejs/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Rebolon/php-sf-flex-webpack-encore-vuejs/badges/quality-score.png?b=master)
+  [![DeepScan grade](https://deepscan.io/api/teams/2301/projects/3192/branches/26485/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=2301&pid=3192&bid=26485)
   [![Known Vulnerabilities](https://snyk.io/test/github/rebolon/php-sf-flex-webpack-encore-vuejs/badge.svg?targetFile=package.json)](https://snyk.io/test/github/rebolon/php-sf-flex-webpack-encore-vuejs?targetFile=package.json)
   [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FRebolon%2Fphp-sf-flex-webpack-encore-vuejs.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FRebolon%2Fphp-sf-flex-webpack-encore-vuejs?ref=badge_shield)
-
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FRebolon%2Fphp-sf-flex-webpack-encore-vuejs.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FRebolon%2Fphp-sf-flex-webpack-encore-vuejs?ref=badge_shield)
 </p>
 
 ## requirements
@@ -51,6 +52,7 @@ Then some php controllers has been created on following routes :
  * /demo/quasar : QuasarController like VuejsController but with the Quasar framework for UX components
  * /demo/form/quasar-vuejs : [Work in progress] authentification with javascript, and a full web application with vuejs and api-platform(rest/graphql)
  * /demo/form/devxpress-angular : Angular6 demo with DevXpress UI components (Datagrid and a Wizard sample with local storage and a sumup zone)
+ * /demo/form/devxpress-vuejs : VueJS demo with DevXpress UI components (Datagrid)
  * /api : access ApiPlatform api doc (you need to be authentified from /demo/form if you want to play with it: all entities are configured to be accessed with ROLE_USER)
  * /api/graphql : access ApiPlatform GraphQL implementation (beta release)
  * /demo/api-platform-admin-react : the react admin provided by api platform package (more info here [https://api-platform.com/docs/admin/getting-started](https://api-platform.com/docs/admin/getting-started))
@@ -96,7 +98,7 @@ The test_browser section represent all the browsers you want to use with the tes
 * [twig](https://twig.symfony.com/): symfony template solution, useless if you don't want to render template with symfony, but usefull to be able to use assets twig helper with webpack encore
 * [api](api-platform.com): api-platform to build REST api(instead of fosrestbundle)
 * [react](https://reactjs.org/): js framework used here by api-platform for their react admin component, it's built on top of [https://marmelab.com/admin-on-rest](https://marmelab.com/admin-on-rest)
-* [@devexpress/dx-react-core @devexpress/dx-react-grid](https://devexpress.github.io/devextreme-reactive/react/grid/docs/guides/getting-started/): UX components library based on React
+* [@devexpress](https://devexpress.github.io): UX components library for Angular, React, VueJS or VanillaJS, with commercial licence and also an open-source free under some conditions
 * http: a cool library to do http call from http (you could switch it with Guzzle)
 * doctrine-migrations: based on Doctrine ORM, it make it easy to change your db during a project life
 * doctrine-fixture: also based on Doctrine to help you to add fixtures in your DB (for your tests or for project init)
@@ -501,8 +503,8 @@ It takes the following JSON string as Body:
 - [x] front: move on Quasar 0.15.x
 - [ ] front: move on Quasar 0.17.x
 - [x] front: move on Angular 6 with HttpInterceptor, Guards, SSR
-- [ ] front: Angular6 with prod build, the assets (js/css) are not wel loaded coz they are generated with versoning hash whereas the twig template load them in hard without hash (no manijest may help the asset helper)
-- [ ] front: move on Devxtreme 18.x and use it with VueJS
+- [x] front: Angular6 with prod build, the assets (js/css) are not wel loaded coz they are generated with versoning hash whereas the twig template load them in hard without hash (no manijest may help the asset helper)
+- [x] front: move on Devxtreme 18.x and use it with VueJS
 - [x] front: setup CSRF protection with VueJS app
 - [ ] front: migrate app 'form-devextrem-angular' to angular6 when there will be compatible (this thread may helps: https://stackoverflow.com/questions/48970553/want-to-upgrade-project-from-angular-v5-to-angular-v6)
 - [x] quality: setup unit tests for JS (karma/jasmine)

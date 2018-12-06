@@ -1,6 +1,4 @@
 import {Authors} from "../../entities/library/authors"
-import {JobReviver} from "./jobReviver";
-import {AuthorReviver} from "./authorReviver";
 import {ListAbstractReviver} from "@rebolon/json-reviver";
 
 export class AuthorsReviver extends ListAbstractReviver

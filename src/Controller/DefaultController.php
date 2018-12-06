@@ -38,6 +38,7 @@ class DefaultController extends Controller
         $demoRoutes['Vuejs: with quasar and vue-router'] = $router->generate('app_quasar_index');
 
         $demoRoutes['Form & grid: Quasar with Vuejs'] = $router->generate('app_formquasarvuejs_index');
+        $demoRoutes['Form & grid: DevXpress with Vuejs'] = $router->generate('app_formdevxpressvuejs_index');
         $demoRoutes['Form & grid: DevXpress with Angular6'] = $router->generate('app_formdevxpressangular_index');
 
         $demoRoutes['Api-platform: rest'] = $router->generate('api_entrypoint');

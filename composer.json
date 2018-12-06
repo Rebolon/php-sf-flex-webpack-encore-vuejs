@@ -16,14 +16,14 @@
         "symfony/console": "^4.0.0",
         "symfony/framework-bundle": "^4.0.0",
         "symfony/monolog-bundle": "^3.1.0",
-        "symfony/profiler-pack": "^1.0",
         "symfony/yaml": "^4.0.0",
         "webonyx/graphql-php": "^0.11.5"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.0",
         "friendsofphp/php-cs-fixer": "^2.10",
-        "phpunit/phpunit": "^6.5",
+        "symfony/profiler-pack": "^1.0",
+        "symfony/test-pack": "^1.0",
         "roave/security-advisories": "dev-master",
         "sensiolabs/security-checker": "^4.1",
         "squizlabs/PHP_CodeSniffer": "^3.2",

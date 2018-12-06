@@ -1,5 +1,5 @@
 import { Selector, ClientFunction } from 'testcafe'
-import {StandardVueJSAccUser, usernameStd, passwordStd, scheme} from './tools/authentification'
+import {StandardVueJSAccUser, scheme} from './tools/authentification'
 import { jsLoginFormPath, jsLoginSuccessPath } from './tools/uris'
 import { host, csrfParameter } from '../js/lib/config'
 

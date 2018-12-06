@@ -64,7 +64,6 @@ export default {
         QInput,
         QBtn,
         QSpinnerCircles,
-        Notify,
     },
     props: ['redirect', 'loginUri', 'loggedInUri'],
     data() {

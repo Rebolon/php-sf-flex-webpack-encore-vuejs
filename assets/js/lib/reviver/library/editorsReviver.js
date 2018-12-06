@@ -1,5 +1,4 @@
 import {Editors} from "../../entities/library/editors"
-import {EditorReviver} from './editorReviver'
 import {ListAbstractReviver} from "@rebolon/json-reviver";
 
 export class EditorsReviver extends ListAbstractReviver

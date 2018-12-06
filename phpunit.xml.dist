@@ -2,7 +2,7 @@
 
 <!-- https://phpunit.de/manual/current/en/appendixes.configuration.html -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/6.1/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/6.5/phpunit.xsd"
          backupGlobals="false"
          colors="true"
          bootstrap="vendor/autoload.php"
@@ -14,9 +14,9 @@
         <env name="APP_DEBUG" value="1" />
         <env name="APP_SECRET" value="s$cretf0rt3st" />
         <env name="SHELL_VERBOSITY" value="-1" />
+        <!-- define your env variables for the test env here -->
         <env name="FIXTURES_DATABASE_URL" value="sqlite:///%kernel.project_dir%/var/data/fixtures.db" />
         <env name="DATABASE_URL" value="sqlite:///%kernel.project_dir%/var/data/test.db" />
-        <!-- define your env variables for the test env here -->
 
         <!-- ###+ nelmio/cors-bundle ### -->
         <env name="CORS_ALLOW_ORIGIN" value="^https?://localhost:?[0-9]*$"/>
@@ -41,6 +41,7 @@
             <directory>src</directory>
         </whitelist>
     </filter>
+
     <logging>
         <log type="coverage-html" target="var/report/phpunit" lowUpperBound="35"
              highLowerBound="70"/>
@@ -52,4 +53,7 @@
         <log type="testdox-text" target="var/report/phpunit/testdox.txt"/>
     </logging>
 
+    <listeners>
+        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
+    </listeners>
 </phpunit>

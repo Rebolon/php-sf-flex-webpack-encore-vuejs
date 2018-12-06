@@ -14,10 +14,24 @@ export const IsLoggedInObservable = IsLoggedInSubject
         filter(data => Boolean(data && data.isLoggedIn))
     )
 
-axios.interceptors.request.eject(logoutStdInterceptors)
+const axiosEject = {
+    ejected: {},
+    eject(axios, interceptors) {
+        if (this.ejected[interceptors]) {
+            return;
+        }
+
+        if (axios && axios.interceptors) {
+            axios.interceptors.request.eject(interceptors)
+            this.ejected[interceptors] = true;
+        }
+    }
+}
 
 // @todo move it to RxJs implementation with subscribe + only call the uri on last call of the method during 300ms
 export default function isLoggedIn(loaderToActivate, uri = loginInfos.uriIsLoggedIn.json) {
+    axiosEject.eject(axios, logoutStdInterceptors)
+
     return new Promise((resolve, reject) => {
         if (loaderToActivate && loaderToActivate.isLoading) {
             loaderToActivate.isLoading = true
@@ -51,6 +65,7 @@ export const resetLoginInfo = function() {
     IsLoggedInSubject.next(undefined)
 }
 
+// @todo refactor coz it should abstract the Notify => for instance it's conly compatible with Quasar, it's stupid, even the redirect is stupid coz depend on the framework used
 export const logout = function() {
     resetLoginInfo()
     Notify.create({
