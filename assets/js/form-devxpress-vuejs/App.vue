@@ -1,12 +1,14 @@
 <template>
     <div id="app">
-        <router-view/>
+        <Books></Books>
     </div>
 </template>
 
 <script>
+import Books from "./components/Books";
 export default {
     name: 'app',
+    components: {Books},
 }
 </script>
 
