@@ -3,7 +3,9 @@ import {EditorReviver} from './editorReviver';
 import {ListAbstractReviver} from '@rebolon/json-reviver';
 import {Injectable} from '@angular/core';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class EditorsReviver extends ListAbstractReviver
 {
     protected editorReviver: EditorReviver

@@ -2,7 +2,9 @@ import {Serie} from '../../../../../entities/library/serie';
 import {ItemAbstractReviver} from '@rebolon/json-reviver';
 import {Injectable} from '@angular/core';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SerieReviver extends ItemAbstractReviver
 {
     getNodeName(): string {

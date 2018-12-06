@@ -2,7 +2,9 @@ import {Editor} from '../../../../../entities/library/editor';
 import {ItemAbstractReviver} from '@rebolon/json-reviver';
 import {Injectable} from '@angular/core';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class EditorReviver extends ItemAbstractReviver
 {
     getNodeName(): string {

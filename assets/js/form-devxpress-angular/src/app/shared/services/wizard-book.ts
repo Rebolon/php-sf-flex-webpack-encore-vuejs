@@ -11,7 +11,9 @@ import {BookReviver} from './reviver/library/bookReviver';
 import {EditorsReviver} from './reviver/library/editorsReviver';
 import {AuthorsReviver} from './reviver/library/authorsReviver';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class WizardBook {
     private _book: BehaviorSubject<Book> = new BehaviorSubject<Book>(null)
     book: Observable<any> = this._book.asObservable().pipe(filter(value => Boolean(value)))

@@ -6,7 +6,9 @@ import {apiPlatformPrefix, tokenJwtBearer} from '../../../lib/config'
 import { map, tap } from 'rxjs/operators'
 import {JwtInterceptorService} from "./jwt-interceptor";
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class ApiService {
 
     baseUrl = environment.rest.baseUrl
@@ -24,8 +26,7 @@ export class ApiService {
         const init = Object.assign(options, this.options)
         const uri = this.buildUri(path)
 
-        return this.addJwtTokenIfExists()
-            .http
+        return this.http
             .request('GET', uri, init)
     }
 
@@ -34,8 +35,7 @@ export class ApiService {
         init.body = body
         const uri = this.buildUri(path)
 
-        return this.addJwtTokenIfExists()
-            .http
+        return this.http
             .request('POST', uri, init)
     }
 
@@ -44,8 +44,7 @@ export class ApiService {
         init.body = body
         const uri = this.buildUri(path)
 
-        return this.addJwtTokenIfExists()
-            .http
+        return this.http
             .request('PUT', uri, init)
     }
 
@@ -54,31 +53,8 @@ export class ApiService {
         httpOptions.body = null
         const uri = this.buildUri(path)
 
-        return this.addJwtTokenIfExists()
-            .http
+        return this.http
             .request('DELETE', uri, httpOptions)
-    }
-
-    addJwtTokenIfExists() {
-        const rememberMe = window.localStorage.getItem('rememberMe')
-
-        if (!rememberMe) {
-            return this
-        }
-
-        const user = JSON.parse(rememberMe)
-
-        /* comment for unit test pass
-        if (!user) {
-          this.headers.delete('Authorization');
-          return this;
-        }*/
-
-        if (user && user.token) {
-          this.jwtInterceptorService.setJwtToken(user.token);
-        }
-
-        return this
     }
 
     buildUri(path: string) {

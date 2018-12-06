@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import {host} from '../../../../../lib/config.js';
+import {Router} from "@angular/router";
+import {User} from "../services/user";
 
 @Component({
   selector: 'my-login',
@@ -7,10 +9,25 @@ import {host} from '../../../../../lib/config.js';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  checkToken() {
-      const rememberMe = localStorage.getItem('rememberMe');
+  public credentials = {
+    login: '',
+    password: ''
+  };
+  authenticationFailed = false;
 
-      return rememberMe;
+  constructor(private router: Router, private userService: User) {
+  }
+
+  ngOnInit() {
+  }
+
+  authenticate() {
+    this.authenticationFailed = false;
+    this.userService.authenticate(this.credentials)
+      .subscribe(
+        () => this.router.navigate([this.getRedirectUri()]),
+        () => this.authenticationFailed = true
+      );
   }
 
   getRedirectUri() {

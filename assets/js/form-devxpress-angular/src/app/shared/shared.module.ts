@@ -1,4 +1,5 @@
 import {NgModule} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {WizardSumupComponent} from './wizard-sumup/wizard-sumup.component';
 import {WizardBook} from './services/wizard-book';
 import {WizardRouting} from './services/wizard-routing';
@@ -20,6 +21,8 @@ import {SerieReviver} from './services/reviver/library/serieReviver';
     imports: [
         CommonModule,
         DevExtremeModule,
+        FormsModule,
+        ReactiveFormsModule,
     ],
     declarations: [
         LoginComponent,
@@ -34,18 +37,6 @@ import {SerieReviver} from './services/reviver/library/serieReviver';
         WizardListAuthorsComponent,
         WizardListEditorsComponent,
         WizardSumupComponent,
-    ],
-    providers: [
-        BroadcastChannelApi,
-        WizardRouting,
-        WizardBook,
-        AuthorReviver,
-        AuthorsReviver,
-        BookReviver,
-        EditorReviver,
-        EditorsReviver,
-        JobReviver,
-        SerieReviver,
     ],
 })
 export class SharedModule {

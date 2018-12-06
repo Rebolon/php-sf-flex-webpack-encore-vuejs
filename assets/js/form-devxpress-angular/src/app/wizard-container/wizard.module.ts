@@ -23,8 +23,6 @@ import {SharedModule} from '../shared/shared.module';
         HttpClientModule,
         SharedModule,
     ],
-    providers: [
-    ],
     bootstrap: [WizardContainerComponent],
 })
 export class WizardModule {

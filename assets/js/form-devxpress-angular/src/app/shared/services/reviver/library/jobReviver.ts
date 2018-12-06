@@ -2,7 +2,9 @@ import {Job} from '../../../../../entities/library/job';
 import {ItemAbstractReviver} from '@rebolon/json-reviver';
 import {Injectable} from '@angular/core';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class JobReviver extends ItemAbstractReviver
 {
     getNodeName(): string {

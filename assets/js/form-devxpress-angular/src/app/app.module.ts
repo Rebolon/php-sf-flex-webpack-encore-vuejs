@@ -34,7 +34,6 @@ import {environment} from '../environments/environment';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useExisting: JwtInterceptorService, multi: true },
-    ApiService,
   ],
   bootstrap: [AppComponent],
 })

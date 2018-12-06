@@ -6,7 +6,9 @@ import {EditorsReviver} from './editorsReviver';
 import {Accessor} from '@rebolon/json-reviver';
 import {Injectable} from '@angular/core';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class BookReviver extends ItemAbstractReviver
 {
     /**

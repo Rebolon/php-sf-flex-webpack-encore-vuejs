@@ -2,7 +2,9 @@ import {Injectable} from '@angular/core';
 import {Author} from '../../../../../entities/library/author';
 import {ItemAbstractReviver} from '@rebolon/json-reviver';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthorReviver extends ItemAbstractReviver
 {
     getNodeName(): string {

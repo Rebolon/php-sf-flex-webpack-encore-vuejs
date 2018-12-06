@@ -4,7 +4,9 @@ import {filter} from 'rxjs/operators'
 import {BookModel} from '../../../models/book.model';
 import {Book} from '../../../entities/library/book';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class BroadcastChannelApi {
     protected channel: BroadcastChannel
 
