@@ -55,10 +55,19 @@ export class BookComponent implements OnInit, OnDestroy {
         this.broadcastChannel.ping()
     }
 
-    sendBookToParent(newTitle) {
-        this.book.title = newTitle
-
+    sendBookToParent() {
         this.broadcastChannel.sendBook(this.book)
+    }
+
+    saveBookTitle(newTitle) {
+      this.book.title = newTitle
+      this.bookService.updateBook(this.book)
+      this.bookService.save()
+
+      // might be useless if parent already has a listener on Book Observable, it will depends on the pattern used by the datagrid to refresh
+      if (this.isSecondWindow()) {
+        this.sendBookToParent()
+      }
     }
 
     isSecondWindow() {

@@ -13,7 +13,7 @@
             <input #newTitle [value]=book?.title class="input-sm form-control" type="text" id="titleChange">
         </div>
         <div class="form-row">
-            <button (click)="sendBookToParent(newTitle.value)" class="btn btn-primary btn-lg btn-block">send Book with new title</button>
+            <button (click)="saveBookTitle(newTitle.value)" class="btn btn-primary btn-lg btn-block">Send Book with new title to parent</button>
             <button *ngIf="isSecondWindow()" (click)="sendMessage()" class="btn btn-info btn-lg btn-block">send event to other window</button>
         </div>
     </div>

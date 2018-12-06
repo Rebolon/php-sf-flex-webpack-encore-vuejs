@@ -31,7 +31,7 @@
         "dev-server:win": ".\\node_modules\\.bin\\encore dev-server --port %npm_package_config_server_port_asset%",
         "dev-server-hot": "./node_modules/.bin/encore dev-server --hot --port $npm_package_config_server_port_asset",
         "dev-server-hot:win": ".\\node_modules\\.bin\\encore dev-server --hot --port %npm_package_config_server_port_asset%",
-        "dev": "./node_modules/.bin/encore dev && cd assets/js/form-devxpress-angular/ && node_modules/.bin/ng build --dev --extract-css",
+        "dev": "./node_modules/.bin/encore dev && cd assets/js/form-devxpress-angular/ && node_modules/.bin/ng build --extract-css",
         "dev:win": ".\\node_modules\\.bin\\encore dev && cd assets/js/form-devxpress-angular/ && node_modules\\.bin\\ng build --extract-css",
         "watch": "./node_modules/.bin/encore dev --watch && cd assets/js/form-devxpress-angular/ && node_modules/.bin/ng build --watch --extract-css",
         "watch:win": "START /B .\\node_modules\\.bin\\encore dev --watch && cd assets/js/form-devxpress-angular/ && node_modules\\.bin\\ng build --dev --watch --extract-css",

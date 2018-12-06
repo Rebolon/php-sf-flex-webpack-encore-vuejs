@@ -86,7 +86,8 @@ export class WizardBook {
         }
         if (book.id) {
         this.api
-            .put('/booksiu/special_3', JSON.stringify(body))
+            //.put('/booksiu/special_3', JSON.stringify(body))
+            .put('/booksiu/special_3', body)
             .subscribe(() => {
                 res.next(book)
             }, err => {
