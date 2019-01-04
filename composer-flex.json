@@ -2,7 +2,7 @@
     "type": "project",
     "license": "proprietary",
     "require": {
-        "php": "^7.0.8",
+        "php": "^7.1.0",
         "ext-pdo_sqlite": "*",
         "ext-curl": "*",
         "api-platform/api-pack": "^1.0",
