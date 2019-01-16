@@ -87,6 +87,7 @@ class CsrfTokenAuthenticator extends AbstractGuardAuthenticator
      * @param CsrfTokenManagerInterface $csrfTokenManager
      * @param TokenStorageInterface $tokenStorage
      * @param RouterInterface $router
+     * @param ContainerInterface
      */
     public function __construct(
         string $csrfTokenParameter,
@@ -99,8 +100,8 @@ class CsrfTokenAuthenticator extends AbstractGuardAuthenticator
         CsrfTokenManagerInterface $csrfTokenManager,
         TokenStorageInterface $tokenStorage,
         RouterInterface $router,
-        ContainerInterface $container)
-    {
+        ContainerInterface $container
+    ) {
         $this->csrfTokenParameter = $csrfTokenParameter;
         $this->csrfTokenId = $csrfTokenId;
         $this->loginUsernamePath = $loginUsernamePath;
