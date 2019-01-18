@@ -39,7 +39,7 @@ class DefaultController extends Controller
 
         $demoRoutes['Form & grid: Quasar with Vuejs'] = $router->generate('app_formquasarvuejs_index');
         $demoRoutes['Form & grid: DevXpress with Vuejs'] = $router->generate('app_formdevxpressvuejs_index');
-        $demoRoutes['Form & grid: DevXpress with Angular5'] = $router->generate('app_formdevxpressangular_index');
+        $demoRoutes['Form & grid: DevXpress with Angular6'] = $router->generate('app_formdevxpressangular_index');
 
         $demoRoutes['Api-platform: rest'] = $router->generate('api_entrypoint');
         $demoRoutes['Api-platform: graphql'] = $router->generate('api_graphql_entrypoint');
@@ -48,7 +48,7 @@ class DefaultController extends Controller
 
         if (!$hasPemCertificate) {
             $demoRoutes['Basic: HttpPlug demo'] = [
-                'uri' => $router->generate('app_httpplug_call'),
+                'uri' => $demoRoutes['Basic: HttpPlug demo'],
                 'note' => 'You need to set php.ini vars: curl.cainfo and openssl.cafile to the path of the pem file.'
                     . ' if you need one, <a href="https://curl.haxx.se/docs/caextract.html">download the certificate</a>',
             ];
@@ -57,6 +57,13 @@ class DefaultController extends Controller
         if ($isPhpBuiltInServer) {
             $note = 'You are using PHP Built-in server, api indexes for json/jsonld or html may not work and return a '
             . '404 Not Found';
+
+            $demoRoutes['Form & grid: Quasar with Vuejs'] = [
+                'uri' => $demoRoutes['Form & grid: Quasar with Vuejs'],
+                'note' => 'You are using PHP Built-in server, api indexes for json/jsonld or html may not work and return a '
+                    . '404 Not Found',
+            ];
+
             $demoRoutes['Api-platform: rest'] = [
                 'uri' => $demoRoutes['Api-platform: rest'],
                 'note' => $note,

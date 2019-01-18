@@ -3,6 +3,9 @@
 {% block body %}
     <div class="container">
         <h2>List of demos</h2>
+        <aside>
+            For login forms, you can use test_js/test or test_php/test !
+        </aside>
         <ul class="list-group">
         {% for routeName, route in routes %}
             {% if route is iterable %}

@@ -1,22 +1,16 @@
-import {Job} from "../../../../../entities/library/job"
-import {ItemAbstractReviver} from "@rebolon/json-reviver";
-import {Injectable} from "@angular/core";
+import {Job} from '../../../../../entities/library/job';
+import {ItemAbstractReviver} from '@rebolon/json-reviver';
+import {Injectable} from '@angular/core';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class JobReviver extends ItemAbstractReviver
 {
-    /**
-     *
-     * @returns {string}
-     */
     getNodeName(): string {
         return 'job'
     }
 
-    /**
-     *
-     * @returns {Object}
-     */
     getNewEntity(): Object {
         return new Job()
     }
@@ -30,24 +24,18 @@ export class JobReviver extends ItemAbstractReviver
      *   }
      * }
      */
-    public getEzPropsName()
-    {
+    public getEzPropsName() {
         return ['id', 'translationKey', ]
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public getManyRelPropsName(): Object
-    {
+    public getManyRelPropsName(): Object {
         return {}
     }
 
     /**
      * {@inheritdoc}
      */
-    public getOneRelPropsName(): Object
-    {
+    public getOneRelPropsName(): Object {
         return {}
     }
 }

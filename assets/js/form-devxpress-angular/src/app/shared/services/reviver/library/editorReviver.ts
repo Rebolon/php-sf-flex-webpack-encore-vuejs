@@ -1,22 +1,16 @@
-import {Editor} from "../../../../../entities/library/editor"
-import {ItemAbstractReviver} from "@rebolon/json-reviver";
-import {Injectable} from "@angular/core";
+import {Editor} from '../../../../../entities/library/editor';
+import {ItemAbstractReviver} from '@rebolon/json-reviver';
+import {Injectable} from '@angular/core';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class EditorReviver extends ItemAbstractReviver
 {
-    /**
-     *
-     * @returns {string}
-     */
     getNodeName(): string {
         return 'editor'
     }
 
-    /**
-     *
-     * @returns {Object}
-     */
     getNewEntity(): Object {
         return new Editor()
     }
@@ -30,24 +24,15 @@ export class EditorReviver extends ItemAbstractReviver
      *   }
      * }
      */
-    public getEzPropsName()
-    {
+    public getEzPropsName() {
         return ['id', 'name', ]
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public getManyRelPropsName(): Object
-    {
+    public getManyRelPropsName(): Object {
         return {}
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public getOneRelPropsName(): Object
-    {
+    public getOneRelPropsName(): Object {
         return {}
     }
 }

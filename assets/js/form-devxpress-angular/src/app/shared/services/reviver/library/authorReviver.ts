@@ -1,23 +1,17 @@
-import {Injectable} from "@angular/core";
-import {Author} from "../../../../../entities/library/author"
-import {ItemAbstractReviver} from "@rebolon/json-reviver";
+import {Injectable} from '@angular/core';
+import {Author} from '../../../../../entities/library/author';
+import {ItemAbstractReviver} from '@rebolon/json-reviver';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthorReviver extends ItemAbstractReviver
 {
-    /**
-     *
-     * @returns {string}
-     */
     getNodeName(): string {
         return 'author'
     }
 
-    /**
-     *
-     * @returns {Object}
-     */
-    getNewEntity(): Object {
+   getNewEntity(): Object {
         return new Author()
     }
 
@@ -31,24 +25,15 @@ export class AuthorReviver extends ItemAbstractReviver
      *   }
      * }
      */
-    public getEzPropsName()
-    {
+    public getEzPropsName() {
         return ['id', 'firstname', 'lastname', ]
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public getManyRelPropsName(): Object
-    {
+    public getManyRelPropsName(): Object {
         return {}
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public getOneRelPropsName(): Object
-    {
+    public getOneRelPropsName(): Object {
         return {}
     }
 }

@@ -1,35 +1,31 @@
-import {Book} from "../../../../../entities/library/book"
-import {ItemAbstractReviver} from "@rebolon/json-reviver";
-import {AuthorsReviver} from "./authorsReviver";
-import {SerieReviver} from "./serieReviver";
-import {EditorsReviver} from "./editorsReviver";
-import {Accessor} from "@rebolon/json-reviver";
-import {Injectable} from "@angular/core";
+import {Book} from '../../../../../entities/library/book';
+import {ItemAbstractReviver} from '@rebolon/json-reviver';
+import {AuthorsReviver} from './authorsReviver';
+import {SerieReviver} from './serieReviver';
+import {EditorsReviver} from './editorsReviver';
+import {Accessor} from '@rebolon/json-reviver';
+import {Injectable} from '@angular/core';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class BookReviver extends ItemAbstractReviver
 {
     /**
      * @var AuthorsReviver
      */
-    protected authorsReviver
+    protected authorsReviver: AuthorsReviver
 
     /**
      * @var EditorReviver
      */
-    protected editorsReviver
+    protected editorsReviver: EditorsReviver
 
     /**
      * @var SerieReviver
      */
-    protected serieReviver
+    protected serieReviver: SerieReviver
 
-    /**
-     *
-     * @param {AuthorsReviver} authorsReviver
-     * @param {EditorsReviver} editorsReviver
-     * @param {SerieReviver} serieReviver
-     */
     constructor (
         authorsReviver: AuthorsReviver,
         editorsReviver: EditorsReviver,
@@ -42,18 +38,10 @@ export class BookReviver extends ItemAbstractReviver
         this.serieReviver = serieReviver
     }
 
-    /**
-     *
-     * @returns {string}
-     */
     getNodeName(): string {
         return 'book'
     }
 
-    /**
-     *
-     * @returns {Object}
-     */
     getNewEntity(): Object {
         return new Book()
     }
@@ -69,16 +57,11 @@ export class BookReviver extends ItemAbstractReviver
      *   }
      * }
      */
-    public getEzPropsName()
-    {
+    public getEzPropsName() {
         return ['id', 'title', 'description', 'indexInSerie', ]
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public getManyRelPropsName(): Object
-    {
+    public getManyRelPropsName(): Object {
         // for instance i don't want to allow the creation of reviews with all embeded reviews, this is not a usual way of working
         // that's why i don't add reviews here
         return {
@@ -104,8 +87,7 @@ export class BookReviver extends ItemAbstractReviver
      *
      * registryKey could be used if we create an endpoint that allow batch POST/PUT of book with embedded serie
      */
-    public getOneRelPropsName(): Object
-    {
+    public getOneRelPropsName(): Object {
         return {
             'serie': {
                 'reviver': this.serieReviver,

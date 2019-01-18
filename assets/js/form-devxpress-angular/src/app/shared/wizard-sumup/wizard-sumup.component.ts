@@ -1,9 +1,8 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core'
-import {Book} from "../../../entities/library/book";
-import {Subject} from "rxjs/Subject";
-import {Map} from "immutable";
-import {WizardBook} from "../services/wizard-book";
-import {Subscription} from "rxjs/Subscription";
+import {Book} from '../../../entities/library/book';
+import {Subscription, Subject} from 'rxjs';
+import {Map} from 'immutable';
+import {WizardBook} from '../services/wizard-book';
 
 @Component({
   selector: 'my-wizard-sumup',

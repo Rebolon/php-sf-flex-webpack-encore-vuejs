@@ -1,24 +1,22 @@
 import { Injectable} from '@angular/core'
-import {Observable} from "rxjs/Observable";
-import 'rxjs/add/operator/filter'
-import 'rxjs/add/operator/mergeMap'
-import { forkJoin } from 'rxjs/observable/forkJoin';
-import {Subject} from "rxjs/Subject";
-import {BehaviorSubject} from "rxjs/BehaviorSubject";
-import {Book} from "../../../entities/library/book";
-import {Editors} from "../../../entities/library/editors";
-import {Authors} from "../../../entities/library/authors";
+import {Observable, Subject, BehaviorSubject, forkJoin} from 'rxjs';
+import { filter, mergeMap, map} from 'rxjs/operators'
+import {Book} from '../../../entities/library/book';
+import {Editors} from '../../../entities/library/editors';
+import {Authors} from '../../../entities/library/authors';
 import {ApiService} from '../../../services/api';
-import {apiConfig} from "../../../../../lib/config";
-import {options} from "../tools/form-options";
-import {BookReviver} from "./reviver/library/bookReviver";
-import {EditorsReviver} from "./reviver/library/editorsReviver";
-import {AuthorsReviver} from "./reviver/library/authorsReviver";
+import {apiConfig} from '../../../../../lib/config';
+import {options} from '../tools/form-options';
+import {BookReviver} from './reviver/library/bookReviver';
+import {EditorsReviver} from './reviver/library/editorsReviver';
+import {AuthorsReviver} from './reviver/library/authorsReviver';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class WizardBook {
     private _book: BehaviorSubject<Book> = new BehaviorSubject<Book>(null)
-    book: Observable<any> = this._book.asObservable().filter(value => Boolean(value))
+    book: Observable<any> = this._book.asObservable().pipe(filter(value => Boolean(value)))
     protected apiConfig
     protected options = options
 
@@ -88,7 +86,8 @@ export class WizardBook {
         }
         if (book.id) {
         this.api
-            .put('/booksiu/special_3', JSON.stringify(body))
+            //.put('/booksiu/special_3', JSON.stringify(body))
+            .put('/booksiu/special_3', body)
             .subscribe(() => {
                 res.next(book)
             }, err => {
@@ -180,15 +179,19 @@ export class WizardBook {
 
         this.api
             .get(`/project_book_editions/${id}`)
-            .mergeMap(edition => {
+            .pipe(
+              mergeMap(edition => {
                 return this.api
                     .get(edition.editor)
-                    .map(editor => {
-                        edition.editor = editor
+                    .pipe(
+                      map(editor => {
+                          edition.editor = editor
 
-                        return edition
-                    })
-            })
+                          return edition
+                      })
+                    )
+              })
+            )
             .subscribe((edition) => {
                 const book = this._book.getValue()
                 const revivedEdition = this.editorsReviver.main(edition).pop()
@@ -208,24 +211,30 @@ export class WizardBook {
 
         this.api
             .get(`/project_book_creations/${id}`)
-            .mergeMap(authors => {
+            .pipe(
+              mergeMap(authors => {
                 return forkJoin(
                     this.api
                         .get(authors.author)
-                        .map(author => {
+                        .pipe(
+                          map(author => {
                             authors.author = author
 
                             return authors
-                        }),
+                          })
+                        ),
                     this.api
                         .get(authors.role)
-                        .map(role => {
+                        .pipe(
+                          map(role => {
                             authors.role = role
 
                             return authors
-                        })
+                          })
+                        )
                 )
-            })
+              })
+            )
             .subscribe((authors) => {
                 const book = this._book.getValue()
                 const revivedAuthors = this.authorsReviver.main(authors).pop()

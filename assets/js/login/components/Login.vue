@@ -79,7 +79,7 @@ export default {
     created() {
         this.isLoading = true
         if (!this.loginUri) {
-            this.loginUri = loginInfos.json
+            this.loginUri = loginInfos.uriLogin.json
         }
 
         isLoggedIn(undefined, this.loggedInUri)
@@ -228,6 +228,15 @@ export default {
                                 message: `Unknown error ${err.response.status} ${errMsg}`,
                                 type: 'warning'
                             })
+                    }
+
+                    // tutorial to give more information about usual mistakes when running this app, should not be used for real apps ;-)
+                    if (this.loginUri = loginInfos.uriLogin.jwt) {
+                        console.warn(err.response)
+                        Notify.create({
+                            message: `Read the README.md, maybe you forgot to run this: npm run jwt-init, to generate certificate for JWT authentification`,
+                            type: 'warning'
+                        })
                     }
                 })
                 .finally(() => {

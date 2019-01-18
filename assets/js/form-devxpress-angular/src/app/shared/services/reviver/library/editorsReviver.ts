@@ -1,20 +1,15 @@
-import {Editors} from "../../../../../entities/library/editors"
-import {EditorReviver} from './editorReviver'
-import {ListAbstractReviver} from "@rebolon/json-reviver";
-import {Injectable} from "@angular/core";
+import {Editors} from '../../../../../entities/library/editors';
+import {EditorReviver} from './editorReviver';
+import {ListAbstractReviver} from '@rebolon/json-reviver';
+import {Injectable} from '@angular/core';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class EditorsReviver extends ListAbstractReviver
 {
-    /**
-     * @var EditorReviver
-     */
     protected editorReviver: EditorReviver
 
-    /**
-     *
-     * @param {EditorReviver} editorReviver
-     */
     constructor (
         editorReviver: EditorReviver
     ) {
@@ -23,18 +18,10 @@ export class EditorsReviver extends ListAbstractReviver
         this.editorReviver = editorReviver
     }
 
-    /**
-     *
-     * @returns {string}
-     */
     getNodeName(): string {
         return 'editors'
     }
 
-    /**
-     *
-     * @returns {Object}
-     */
     getNewEntity(): Object {
         return new Editors()
     }
@@ -53,24 +40,15 @@ export class EditorsReviver extends ListAbstractReviver
      *   }
      * }
      */
-    public getEzPropsName()
-    {
+    public getEzPropsName() {
         return ['id', 'publicationDate', 'collection', 'isbn', ]
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public getManyRelPropsName(): Object
-    {
+    public getManyRelPropsName(): Object {
         return {}
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public getOneRelPropsName(): Object
-    {
+    public getOneRelPropsName(): Object {
         return {
             'editor': {
                 'reviver': this.editorReviver,

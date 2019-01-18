@@ -1,23 +1,17 @@
-import {Serie} from "../../../../../entities/library/serie"
-import {ItemAbstractReviver} from "@rebolon/json-reviver";
-import {Injectable} from "@angular/core";
+import {Serie} from '../../../../../entities/library/serie';
+import {ItemAbstractReviver} from '@rebolon/json-reviver';
+import {Injectable} from '@angular/core';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class SerieReviver extends ItemAbstractReviver
 {
-    /**
-     *
-     * @returns {string}
-     */
     getNodeName(): string {
         return 'serie'
     }
 
-    /**
-     *
-     * @returns {Object}
-     */
-    getNewEntity(): Object {
+   getNewEntity(): Object {
         return new Serie()
     }
 
@@ -30,26 +24,17 @@ export class SerieReviver extends ItemAbstractReviver
      *   }
      * }
      */
-    public getEzPropsName()
-    {
+    public getEzPropsName() {
         return ['id', 'name', ]
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public getManyRelPropsName(): Object
-    {
+    public getManyRelPropsName(): Object {
         // for instance i don't want to allow the creation of a serie with all embeded books, this is not a usual way of working
         // that's why i don't add books here
         return {}
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public getOneRelPropsName(): Object
-    {
+    public getOneRelPropsName(): Object {
         return {}
     }
 }

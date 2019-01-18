@@ -1,10 +1,12 @@
-import {Authors} from "../../../../../entities/library/authors"
-import {JobReviver} from "./jobReviver";
-import {AuthorReviver} from "./authorReviver";
-import {ListAbstractReviver} from "@rebolon/json-reviver";
-import {Injectable} from "@angular/core";
+import {Authors} from '../../../../../entities/library/authors';
+import {JobReviver} from './jobReviver';
+import {AuthorReviver} from './authorReviver';
+import {ListAbstractReviver} from '@rebolon/json-reviver';
+import {Injectable} from '@angular/core';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthorsReviver extends ListAbstractReviver
 {
     /**
@@ -17,11 +19,6 @@ export class AuthorsReviver extends ListAbstractReviver
      */
     protected authorReviver: AuthorReviver
 
-    /**
-     *
-     * @param {JobReviver} jobReviver
-     * @param {AuthorReviver} authorReviver
-     */
     constructor (
         jobReviver: JobReviver,
         authorReviver: AuthorReviver
@@ -32,18 +29,10 @@ export class AuthorsReviver extends ListAbstractReviver
         this.authorReviver = authorReviver
     }
 
-    /**
-     *
-     * @returns {string}
-     */
     getNodeName(): string {
         return 'authors'
     }
 
-    /**
-     *
-     * @returns {Object}
-     */
     getNewEntity(): Object {
         return new Authors()
     }
@@ -58,24 +47,15 @@ export class AuthorsReviver extends ListAbstractReviver
      *   }
      * }
      */
-    public getEzPropsName()
-    {
+    public getEzPropsName() {
         return ['id', ]
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public getManyRelPropsName(): Object
-    {
+    public getManyRelPropsName(): Object {
         return {}
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public getOneRelPropsName(): Object
-    {
+    public getOneRelPropsName(): Object {
         return {
             'role': {
                 'reviver': this.jobReviver,

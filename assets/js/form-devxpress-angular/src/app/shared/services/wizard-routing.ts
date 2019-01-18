@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core'
-import {Observable} from "rxjs/Observable";
-import 'rxjs/add/operator/filter'
-import {Subject} from "rxjs/Subject";
+import {Observable, Subject} from 'rxjs'
+import {filter} from 'rxjs/operators'
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class WizardRouting {
     private _cancel: Subject<string> = new Subject()
     cancel: Observable<any> = this._cancel.asObservable()
