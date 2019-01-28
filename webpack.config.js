@@ -11,6 +11,19 @@ Encore
     // uncomment to create hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
 
+    /* to copy image and make them available from js code
+    .copyFiles({
+        from: './assets/images',
+         // optional target path, relative to the output dir
+         //to: 'images/[path][name].[ext]',
+
+         // if versioning is enabled, add the file hash too
+         //to: 'images/[path][name].[hash:8].[ext]',
+
+         // only copy files matching this pattern
+         //pattern: /\.(png|jpg|jpeg)$/
+     })*/
+
     // first, install any presets you want to use (e.g. yarn add babel-preset-es2017)
     // then, modify the default Babel configuration
     // if you prefer using a .babelrc file then this configureBabel will be omit, reactPreset will also need to be loaded with babelrc file
@@ -64,6 +77,12 @@ Encore
         // this CSS will *not* be included in vuejs.css anymore
         './assets/css/app.scss',
     ])
+    .splitEntryChunks()
+    /* chunks can be controlled (when & how) by the following code
+    .configureSplitChunks(function(splitChunks) {
+         // change the configuration
+         splitChunks.minSize = 0;
+     })*/
 
     // uncomment if you use Sass/SCSS files
     // parameters are not mandatory, only if webpack build is slow with bootstrap (http://symfony.com/doc/current/frontend/encore/bootstrap.html)
@@ -82,6 +101,12 @@ Encore
 
     // uncomment for legacy applications that require $/jQuery as a global variable
     // .autoProvidejQuery()
+
+    .enableTypeScriptLoader()
+    // optionally enable forked type script for faster builds
+    // https://www.npmjs.com/package/fork-ts-checker-webpack-plugin
+    // requires that you have a tsconfig.json file that is setup correctly.
+    //.enableForkedTypeScriptTypesChecking()
 
 // customize webpack configuration
 let config = Encore.getWebpackConfig();
