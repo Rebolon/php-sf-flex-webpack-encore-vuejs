@@ -17,15 +17,19 @@ class PingDataProvider implements ItemDataProviderInterface, CollectionDataProvi
     public function getItem(string $resourceClass, $id, string $operationName = null, array $context = [])
     {
         $pong = new Ping();
+        $pong->setId(1);
 
         return $pong;
     }
 
     public function getCollection(string $resourceClass, string $operationName = null, array $context = [])
     {
-        $pong = new Ping();
+        $pongOne = new Ping();
+        $pongOne->setId(1);
+        $pongTwo = new Ping();
+        $pongTwo->setId(2);
 
-        return [$pong];
+        return [$pongOne, $pongTwo];
     }
 
 }
