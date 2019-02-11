@@ -7,6 +7,7 @@ use App\Entity\Library\Book;
 use App\Entity\Library\Editor;
 use App\Entity\Library\Job;
 use App\Entity\Library\Serie;
+use App\Entity\Library\Tag;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\DBAL\Connection;
@@ -19,7 +20,7 @@ class AppFixtures extends Fixture
     /**
      * @var array
      */
-    protected $cache = ["series" => [], "authors" => [], "editors" => [], "jobs" => [], ];
+    protected $cache = ["series" => [], "tags" => [], "authors" => [], "editors" => [], "jobs" => [], ];
 
     /**
      * @var Connection
@@ -82,6 +83,7 @@ class AppFixtures extends Fixture
                 $book = new Book($this->logger);
                 $book->setTitle($row['title']);
                 $this->addSerie($row, $book, $dbh, $manager);
+                $this->addTags($row, $book, $dbh, $manager);
 
                 // @todo does this persist mandatory ?
                 $manager->persist($book);
@@ -137,6 +139,47 @@ SQL
 
             $book->setSerie($serie)
                 ->setIndexInSerie($bookFixture['series_index']);
+        }
+    }
+
+    /**
+     * @param $bookFixture
+     * @param Book $book
+     * @param Connection $dbh
+     * @param ObjectManager $manager
+     * @throws \Doctrine\DBAL\DBALException
+     */
+    protected function addTags($bookFixture, Book $book, Connection $dbh, ObjectManager $manager)
+    {
+        $bookId = $bookFixture['id'];
+
+        // add serie
+        $sth = $dbh->prepare(
+            <<<SQL
+SELECT m.id, m.name
+FROM books_tags_link AS t
+INNER JOIN tags AS m ON t.tag = m.id
+WHERE t.book = :bookId
+SQL
+        );
+        $sth->bindParam('bookId', $bookId, PDO::PARAM_INT);
+        $sth->execute();
+        $row = $sth->fetch();
+
+        if ($row) {
+            if (!in_array($row['id'], $this->cache['tags'])) {
+                $tag = (new Tag())
+                    ->setName($row['name']);
+                $manager->persist($tag);
+
+                $this->cache['series'][] = $row['id'];
+            } else {
+                $tag = $manager
+                    ->getRepository(Tag::class)
+                    ->findOneBy(['name' => $row['name']]);
+            }
+
+            $book->addTag($tag);
         }
     }
 

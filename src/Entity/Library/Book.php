@@ -142,6 +142,14 @@ class Book implements LibraryInterface
     private $serie;
 
     /**
+     * @ApiSubresource(maxDepth=1)
+     * @Groups({"book_detail_read", "book_detail_write"})
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\Library\Tag", inversedBy="books", cascade={"persist"})
+     */
+    private $tags;
+
+    /**
      * Book constructor.
      * @param LoggerInterface $logger
      */
@@ -150,6 +158,7 @@ class Book implements LibraryInterface
         $this->setLogger($logger);
 
         $this->reviews = new ArrayCollection();
+        $this->tags = new ArrayCollection();
         $this->authors = new ArrayCollection();
         $this->editors = new ArrayCollection();
     }
@@ -228,6 +237,36 @@ class Book implements LibraryInterface
     public function setIndexInSerie($indexInSerie): Book
     {
         $this->indexInSerie = $indexInSerie;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    /**
+     * @param ArrayCollection $tags
+     * @return Book
+     */
+    public function setTags(ArrayCollection $tags): Book
+    {
+        $this->tags = $tags;
+
+        return $this;
+    }
+
+    /**
+     * @param Tag $tag
+     * @return Book
+     */
+    public function addTag(Tag $tag): Book
+    {
+        $this->tags[] = $tag;
 
         return $this;
     }
