@@ -108,3 +108,5 @@ services:
     # needs to alias the current security.user.provider.concrete.in_memory to the class (seems not done in sf or security bundle)
     Symfony\Component\Security\Core\User\InMemoryUserProvider:
         alias: security.user.provider.concrete.in_memory
+
+    App\DataProvider\PingDataProvider: ~
