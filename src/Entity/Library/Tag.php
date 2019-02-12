@@ -91,9 +91,9 @@ class Tag implements LibraryInterface
 
     /**
      * @param mixed $name
-     * @return Serie
+     * @return Tag
      */
-    public function setName($name): Serie
+    public function setName($name): Tag
     {
         $this->name = $name;
 

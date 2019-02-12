@@ -172,7 +172,7 @@ SQL
                     ->setName($row['name']);
                 $manager->persist($tag);
 
-                $this->cache['series'][] = $row['id'];
+                $this->cache['tags'][] = $row['id'];
             } else {
                 $tag = $manager
                     ->getRepository(Tag::class)
