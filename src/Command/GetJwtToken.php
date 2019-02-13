@@ -136,7 +136,7 @@ class GetJwtToken extends ContainerAwareCommand
      */
     protected function loadSecurityConfig(): array
     {
-        $configDir = $this->getContainer()->get('kernel')->getRootDir() . '/../config/';
+        $configDir = $this->getContainer()->get('kernel')->getProjectDir() . '/config/';
         $values = Yaml::parseFile($configDir . 'packages/security.yaml');
         $config = $values['security'];
 

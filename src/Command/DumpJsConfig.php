@@ -76,8 +76,8 @@ class DumpJsConfig extends ContainerAwareCommand
         string $loginPasswordPath,
         string $tokenJwtBearer,
         \Twig_Environment $twig,
-        RouterInterface $router)
-    {
+        RouterInterface $router
+    ) {
         parent::__construct();
 
         $this->twig = $twig;
@@ -139,8 +139,8 @@ class DumpJsConfig extends ContainerAwareCommand
     {
         try {
             $missingKeys = [];
-            $mandatoryKeys = ['items_per_page', 'client_items_per_page', 'items_per_page_parameter_name', 'maximum_items_per_page', ];
-            $configDir = $this->getContainer()->get('kernel')->getRootDir() . '/../config/';
+            $mandatoryKeys = ['items_per_page', 'client_items_per_page', 'items_per_page_parameter_name', 'maximum_items_per_page', 'page_parameter_name'];
+            $configDir = $this->getContainer()->get('kernel')->getProjectDir() . '/config/';
             $values = Yaml::parseFile($configDir . 'packages/api_platform.yaml');
             $config = $values['api_platform'];
 
@@ -154,6 +154,12 @@ class DumpJsConfig extends ContainerAwareCommand
                 }
 
                 $missingKeys[] = $key;
+            }
+
+            if (!array_key_exists('order_parameter_name', $config['collection'])) {
+                $missingKeys[] = 'order_parameter_name';
+            } else { // maybe a bad idea to move the node into pagination, it was originally because in js config file i did only one apiConfig var with only simple entries and not complex object => may need to refactor this later
+                $config['collection']['pagination']['order_parameter_name'] = $config['collection']['order_parameter_name'];
             }
 
             if (count($missingKeys)) {
@@ -227,7 +233,7 @@ class DumpJsConfig extends ContainerAwareCommand
      */
     protected function displayJsConfigArguments(OutputInterface $output, $apiPlatform, $host, $port, $quasarStyle): void
     {
-        $apiPlatformOutput = function() use ($apiPlatform) {
+        $apiPlatformOutput = function () use ($apiPlatform) {
             $output = [];
             foreach ($apiPlatform as $key => $value) {
                 $output[] = $key . ': ' . $value;

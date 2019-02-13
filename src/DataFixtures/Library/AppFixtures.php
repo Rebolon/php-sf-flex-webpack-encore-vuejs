@@ -179,7 +179,9 @@ SQL
                     ->findOneBy(['name' => $row['name']]);
             }
 
-            $book->addTag($tag);
+            if ($tag) {
+                $book->addTag($tag);
+            }
         }
     }
 

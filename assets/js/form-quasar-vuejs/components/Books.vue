@@ -82,7 +82,7 @@ export default {
         getListByRest(page = 1) {
             this.isLoading = true
             const pageInt = Number.parseInt(page)
-            let uri = `${apiPlatformPrefix}/books?page=${pageInt}`
+            let uri = `${apiPlatformPrefix}/${apiConfig.pageParameterName}?page=${pageInt}`
 
             if (this.pagination.rowsPerPage !== apiConfig.rowsPerPage) {
                 uri += `&${apiConfig.itemsPerPageParameterName}=${this.pagination.rowsPerPage}`
@@ -112,8 +112,9 @@ export default {
                     if (undefined !== content['hydra:view']) {
                         ['first', 'last', 'next', 'previous'].forEach(key => {
                             if (undefined !== content['hydra:view'][`hydra:${key}`]) {
-                                const pageParam = content['hydra:view'][`hydra:${key}`].match(/page=\d*/)
-                                const pageValue = Number.parseInt(pageParam[0].replace('page=', ''))
+                                const regPage = new RegExp(`/${apiConfig.pageParameterName}=\d*/`)
+                                const pageParam = content['hydra:view'][`hydra:${key}`].match(regPage)
+                                const pageValue = Number.parseInt(pageParam[0].replace(apiConfig.pageParameterName+'=', ''))
                                 if (key === 'next'
                                     && pageValue !== this.pagination.page) {
                                     this.pagination.page += 1

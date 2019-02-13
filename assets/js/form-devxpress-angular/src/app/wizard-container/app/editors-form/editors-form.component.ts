@@ -53,7 +53,7 @@ export class EditorsFormComponent implements OnInit, OnDestroy {
 
                 // manage the pagination: ApiPlatform works with hydra system and so a page number whereas DevXpress datagrid uses a skip/take parameter, so it requires a small Math calc
                 if(loadOptions.skip) {
-                    options.params['page'] = loadOptions.skip > 0 ? Math.ceil(loadOptions.skip / itemPerPage) +1 : 1
+                    options.params[this.apiConfig.pageParameterName] = loadOptions.skip > 0 ? Math.ceil(loadOptions.skip / itemPerPage) +1 : 1
                 }
 
                 // search on Editor name
