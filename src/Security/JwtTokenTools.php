@@ -9,11 +9,12 @@ use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\User\InMemoryUserProvider;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class JwtTokenTools
 {
     /**
-     * @param InMemoryUserProvider $provider
+     * @param UserProviderInterface $provider
      * @param JWTEncoderInterface $encoder
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param string $tokenJwtTtl
@@ -24,14 +25,14 @@ class JwtTokenTools
      * @throws \Exception
      */
     public function encodeToken(
-        InMemoryUserProvider $provider,
+        UserProviderInterface $provider,
         JWTEncoderInterface $encoder,
         UserPasswordEncoderInterface $passwordEncoder,
-        string $tokenJwtTtl,
+        int $tokenJwtTtl,
         $username,
         $password,
-        LoggerInterface $logger = null): string
-    {
+        LoggerInterface $logger = null
+    ): string {
         try {
             $user = $provider->loadUserByUsername($username);
 

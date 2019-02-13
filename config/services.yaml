@@ -109,4 +109,5 @@ services:
     Symfony\Component\Security\Core\User\InMemoryUserProvider:
         alias: security.user.provider.concrete.in_memory
 
+    App\Api\Config: ~
     App\DataProvider\PingDataProvider: ~

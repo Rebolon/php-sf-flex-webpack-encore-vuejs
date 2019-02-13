@@ -5,11 +5,10 @@ namespace App\DataProvider;
 use ApiPlatform\Core\DataProvider\CollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
+use App\Api\Config;
 use App\Entity\Library\Tag;
-use App\Entity\Ping;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Yaml\Yaml;
 
 class TagDataProvider implements ItemDataProviderInterface, CollectionDataProviderInterface, RestrictedDataProviderInterface
 {
@@ -19,60 +18,14 @@ class TagDataProvider implements ItemDataProviderInterface, CollectionDataProvid
     protected $managerRegistry;
 
     /**
-     * @var LoggerInterface
-     */
-    protected $logger;
-
-    /**
-     * @var array
+     * @var Config
      */
     protected $apiPlatformConfig = [];
 
-    public function __construct(ManagerRegistry $managerRegistry, LoggerInterface $logger)
+    public function __construct(ManagerRegistry $managerRegistry, Config $apiPlatformConfig)
     {
         $this->managerRegistry = $managerRegistry;
-        $this->apiPlatformConfig = [
-            'collection' => [
-                'order_parameter_name' => 'order',
-                'pagination' => [
-                    'items_per_page' => 30,
-                    'items_per_page_parameter_name' => 'itemsPerPage',
-                    'maximum_items_per_page' => 50,
-                    'page_parameter_name' => 'page',
-                ]
-            ]
-        ];
-
-        try {
-            $apiPlatformConfigFile = __DIR__ . '/../../config/packages/api_platform.yaml';
-            if (is_file($apiPlatformConfigFile)) {
-                $missingKeys = [];
-                $config = Yaml::parseFile($apiPlatformConfigFile);
-                foreach ($this->apiPlatformConfig['collection']['pagination'] as $key => $value) {
-                    if (array_key_exists($key, $config['api_platform']['collection']['pagination'])) {
-                        $this->apiPlatformConfig['collection']['pagination'][$key] = $config['api_platform']['collection']['pagination'][$key];
-                        continue;
-                    }
-
-                    $missingKeys[] = $key;
-                }
-
-                $key = 'order_parameter_name';
-                if (!array_key_exists($key, $config['api_platform']['collection'])) {
-                    $missingKeys[] = $key;
-                } else {
-                    $this->apiPlatformConfig['collection'][$key] = $config['api_platform']['collection'][$key];
-                }
-
-                if ($missingKeys) {
-                    throw new \RuntimeException(sprintf('Missing keys in api_platform config file with pagination node, (%s)', join(', ', $missingKeys)));
-                }
-            } else {
-                throw new \RuntimeException('Missing api_platform config file with pagination node');
-            }
-        } catch (\Exception $e) {
-            $logger->warning($e->getMessage());
-        }
+        $this->apiPlatformConfig = $apiPlatformConfig;
     }
 
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
@@ -95,10 +48,13 @@ class TagDataProvider implements ItemDataProviderInterface, CollectionDataProvid
         // useless if ApiResource has no pagination
         $filters = array_key_exists('filters', $context) ? $context['filters'] : null;
         if ($filters) {
-            // @todo itemsPerPage is defined in symfony parameters => should be retreived by DI
-            $orderBy = array_key_exists($this->apiPlatformConfig['collection']['order_parameter_name'], $filters) ? $filters['order'] : null;
-            $limit = array_key_exists($this->apiPlatformConfig['collection']['pagination']['items_per_page_parameter_name'], $filters) ? $filters[$this->apiPlatformConfig['collection']['pagination']['items_per_page_parameter_name']] : null;
-            $offset = array_key_exists($this->apiPlatformConfig['collection']['pagination']['page_parameter_name'], $filters) ? $filters['page'] : null;
+            $orderKey = $this->apiPlatformConfig->getNameParameterOrder();
+            $limitKey = $this->apiPlatformConfig->getNameParameterPaginationItemsPerPage();
+            $pageKey = $this->apiPlatformConfig->getNameParameterPaginationPage();
+
+            $orderBy = array_key_exists($orderKey, $filters) ? $filters[$orderKey] : null;
+            $limit = array_key_exists($limitKey, $filters) ? $filters[$limitKey] : null;
+            $offset = array_key_exists($pageKey, $filters) ? $filters[$pageKey] : null;
             $resTag = $em->findBy([], $orderBy, $limit, $offset);
         } else {
             $resTag = $em->findAll();
