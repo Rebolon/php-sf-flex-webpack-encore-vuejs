@@ -60,6 +60,13 @@ services:
         arguments: [ '@App\Swagger\SwaggerDecorator.inner' ]
         autoconfigure: false
 
+    # to overload tokenExtractor with specific Bearer, do this:
+    lexik_jwt_authentication.extractor.authorization_header_extractor:
+        class: Lexik\Bundle\JWTAuthenticationBundle\TokenExtractor\AuthorizationHeaderTokenExtractor
+        arguments:
+            - '%token_jwt_bearer%'
+            - 'Authorization'
+
     App\DataFixtures\ConnectionFixtures:
         public: true
         arguments:

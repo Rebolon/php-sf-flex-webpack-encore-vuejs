@@ -17,7 +17,7 @@ class JwtTokenTools
      * @param UserProviderInterface $provider
      * @param JWTEncoderInterface $encoder
      * @param UserPasswordEncoderInterface $passwordEncoder
-     * @param string $tokenJwtTtl
+     * @param int $tokenJwtTtl
      * @param $username
      * @param $password
      * @param LoggerInterface|null $logger

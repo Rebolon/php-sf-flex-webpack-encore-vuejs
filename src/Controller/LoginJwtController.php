@@ -64,8 +64,8 @@ class LoginJwtController extends Controller
         JWTEncoderInterface $encoder,
         UserPasswordEncoderInterface $passwordEncoder,
         LoggerInterface $logger,
-        JwtTokenTools $tokenTool)
-    {
+        JwtTokenTools $tokenTool
+    ) {
         $username = $request->getUser() ?: $request->request->get($this->getParameter('login_username_path'));
         $password = $request->getPassword() ?: $request->request->get($this->getParameter('login_password_path'));
 
