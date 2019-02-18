@@ -17,7 +17,7 @@ class Config
      */
     protected $apiPlatformConfig = [];
 
-    public function __construct(Kernel $kernel, LoggerInterface $logger)
+    public function __construct(string $kernelProjectDir, LoggerInterface $logger)
     {
         $this->apiPlatformConfig = [
             'collection' => [
@@ -32,7 +32,7 @@ class Config
         ];
 
         try {
-            $apiPlatformConfigFile = $kernel->getProjectDir() . '/config/packages/api_platform.yaml';
+            $apiPlatformConfigFile = $kernelProjectDir . '/config/packages/api_platform.yaml';
             if (is_file($apiPlatformConfigFile)) {
                 $missingKeys = [];
                 $config = Yaml::parseFile($apiPlatformConfigFile);

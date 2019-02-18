@@ -34,6 +34,7 @@ services:
             $apiPlatformPrefix: '%api_platform_prefix%'
             $tokenJwtTtl: '%token_jwt_ttl%'
             $tokenJwtBearer: '%token_jwt_bearer%'
+            $kernelProjectDir: '%kernel.project_dir%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
