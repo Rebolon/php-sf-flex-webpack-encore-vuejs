@@ -3,23 +3,24 @@
 namespace App\Controller;
 
 use App\Security\UserInfo;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-class LoginController extends Controller
+class LoginController extends AbstractController
 {
     /**
      * Try to test this security when the one on the bottom works Security("is_granted('IS_AUTHENTICATED_FULLY')")
      *
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     * @Route("/demo/security/login/standard/secured", name="demo_secured_page_standard")
-     * @Method({"GET"})
+     * @Route(
+     *     "/demo/security/login/standard/secured",
+     *     name="demo_secured_page_standard",
+     *     methods={"GET"}
+     *     )
      */
     public function index()
     {
@@ -51,11 +52,11 @@ class LoginController extends Controller
         $tokenId = $this->getParameter('csrf_token_id');
         $token = $tokenManager->getToken($tokenId);
 
-        return $this->render('login/login.html.twig', array(
+        return $this->render('login/login.html.twig', [
             'last_username' => $lastUsername,
             'token'         => $token,
             'error'         => $error,
-        ));
+        ]);
     }
 
     /**
@@ -65,17 +66,17 @@ class LoginController extends Controller
      * @Route(
      *     "/demo/security/login/standard/isloggedin",
      *     name="demo_secured_page_standard_is_logged_in",
-     *     defaults={"_format"="json"}
+     *     defaults={"_format"="json"},
+     *     methods={"GET", "POST"}
      *     )
-     * @Method({"GET", "POST"})
      */
     public function isLoggedIn()
     {
-        $isGranted = function($att) {
+        $isGranted = function ($att) {
             return $this->isGranted($att);
         };
 
-        $getUser = function() {
+        $getUser = function () {
             return $this->getUser();
         };
 

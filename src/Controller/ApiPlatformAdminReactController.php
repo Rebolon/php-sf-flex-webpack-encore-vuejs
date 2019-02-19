@@ -2,15 +2,16 @@
 
 namespace App\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ApiPlatformAdminReactController extends Controller
+class ApiPlatformAdminReactController extends AbstractController
 {
     /**
-     * @Route("/demo/api-platform-admin-react")
-     * @Method({"GET"})
+     * @Route(
+     *     "/demo/api-platform-admin-react",
+     *     methods={"GET"}
+     *     )
      */
     public function index()
     {

@@ -2,15 +2,18 @@
 
 namespace App\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class FormDevXpressAngularController extends Controller
+class FormDevXpressAngularController extends AbstractController
 {
     /**
-     * @Route("/demo/form/devxpress-angular/{ngRouteName}", requirements={"ngRouteName"=".*"}, defaults={"ngRouteName"="home"})
-     * @Method({"GET"})
+     * @Route(
+     *     "/demo/form/devxpress-angular/{ngRouteName}",
+     *     requirements={"ngRouteName"=".*"},
+     *     defaults={"ngRouteName"="home"},
+     *     methods={"GET"}
+     *     )
      */
     public function index()
     {

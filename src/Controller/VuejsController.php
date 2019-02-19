@@ -2,15 +2,15 @@
 
 namespace App\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class VuejsController extends Controller
+class VuejsController extends AbstractController
 {
     /**
-     * @Route("/demo/vuejs")
-     * @Method({"GET"})
+     * @Route(
+     *     "/demo/vuejs",
+     *     methods={"GET"})
      */
     public function index()
     {

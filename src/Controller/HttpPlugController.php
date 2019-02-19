@@ -2,15 +2,15 @@
 
 namespace App\Controller;
 
+use Http\Client\Exception\HttpException;
 use Http\Message\MessageFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Http\Client\HttpAsyncClient;
 
-class HttpPlugController extends Controller
+class HttpPlugController extends AbstractController
 {
     /**
      * @var MessageFactory
@@ -36,8 +36,10 @@ class HttpPlugController extends Controller
 
     /**
      * @Cache(expires="+24 hour")
-     * @Route("/demo/http-plug")
-     * @Method({"GET"})
+     * @Route(
+     *     "/demo/http-plug",
+     *     methods={"GET"}
+     *     )
      */
     public function call()
     {
@@ -46,7 +48,7 @@ class HttpPlugController extends Controller
         $response = $promise->wait();
 
         if ($response->getStatusCode() > 299) {
-            throw new \HttpResponseException($response->getReasonPhrase(), $response->getStatusCode());
+            throw new HttpException("Api ghibli returned bad response", $request, $response);
         }
 
         return new JsonResponse($response->getBody(), 200, [], true);
