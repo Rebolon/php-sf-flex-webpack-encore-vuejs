@@ -20,5 +20,30 @@
             {% endif %}
         {% endfor %}
         </ul>
+
+        <div class="card">
+            <div class="card-header">
+                Database model
+            </div>
+            <img class="card-img-top" src="{{ asset('/img/db-model.png') }}" alt="DB model">
+            <div class="card-body">
+                <p class="card-text">Here is the model used for this demo. There is differents relations type:</p>
+                <ul>
+                    <li>Books -> Serie: OnoToMany</li>
+                    <li>Books -> Reviews: OnoToMany</li>
+                    <li>Books -> Authors: ManyToMany throught ProjectBookCreation join table that contains extra fields (so it's OneToMany between Book and ProjectBookCreation, and OneToMany between Editors and ProjectBookCreation</li>
+                    <li>Books -> Editors: same as Authors but with ProjectBookEdition</li>
+                    <li>Books -> Tags: ManyToMany auto managed with Doctrine</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h3 class="display-4">Api Platform usage</h3>
+                <p class="lead">Except Tags entity, all mapping is done throught Doctrine Entities. It benefits of all native extensions from ApiPlatform like Pagination, Sorting, and all others Filtering systems.<br />
+                Tags entity is managed with DataProvider and DataPersister which is the recommenced pattern from [official documentation](https://api-platform.com/docs/core/design/). With Tags, the aim is to show how to use finely DataProvider and DataPersister with extensions systems (this is a Work In Progress).</p>
+            </div>
+        </div>
     </div>
 {% endblock %}
