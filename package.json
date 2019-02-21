@@ -35,8 +35,8 @@
         "dev:win": ".\\node_modules\\.bin\\encore dev && cd assets/js/form-devxpress-angular/ && node_modules\\.bin\\ng build --extract-css",
         "watch": "./node_modules/.bin/encore dev --watch && cd assets/js/form-devxpress-angular/ && node_modules/.bin/ng build --watch --extract-css",
         "watch:w": "START /B .\\node_modules\\.bin\\encore dev --watch && cd assets/js/form-devxpress-angular/ && node_modules\\.bin\\ng build --watch --extract-css",
-        "build": "./node_modules/.bin/encore production && cd assets/js/form-devxpress-angular/ && node_modules/.bin/ng build --prod --aot --extract-css",
-        "build:w": ".\\node_modules\\.bin\\encore production && cd assets/js/form-devxpress-angular/ && node_modules\\.bin\\ng build --prod --aot --extract-css",
+        "build": "./node_modules/.bin/encore production && cd assets/js/form-devxpress-angular/ && node_modules/.bin/ng build --prod --aot --build-optimizer  --vendor-chunk --common-chunk --lazyModules --optimization=true --extract-css --base-href dist-ng/devxpress --progress --stats-json",
+        "build:w": ".\\node_modules\\.bin\\encore production && cd assets/js/form-devxpress-angular/ && node_modules\\.bin\\ng build --prod --aot --build-optimizer  --vendor-chunk --common-chunk --lazyModules --optimization=true --extract-css --base-href dist-ng/devxpress --progress --stats-json",
         "build-for-test": "./node_modules/.bin/encore dev",
         "build-for-test:w": ".\\node_modules\\.bin\\encore dev",
         "test-cafe": "./node_modules/.bin/testcafe $npm_package_config_test_browser ./assets/tests  --reporter spec,xunit:var/report/testcafe.xml",
@@ -70,7 +70,7 @@
         "react": "^16.4.1",
         "react-dom": "^16.4.2",
         "rxjs": "^6.1.0",
-        "vue": "^2.5.17",
+        "vue": "^2.6.6",
         "vue-apollo": "^3.0.0-beta.10",
         "vue-router": "^3.0.1",
         "vuelidate": "^0.6.2"
@@ -97,6 +97,6 @@
         "testcafe": "^0.20.3",
         "testcafe-vue-selectors": "^3.0.0",
         "vue-loader": "^14.2.2",
-        "vue-template-compiler": "^2.5.16"
+        "vue-template-compiler": "^2.6.6"
     }
 }

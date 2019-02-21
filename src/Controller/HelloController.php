@@ -13,7 +13,7 @@ class HelloController extends AbstractController
      * @Route(
      *     "/demo/hello/{name}",
      *     requirements={"name": "\w*"},
-     *     defaults={"name": "world"}
+     *     defaults={"name": "world"},
      *     methods={"GET"}
      *     )
      *
