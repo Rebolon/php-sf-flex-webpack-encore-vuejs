@@ -66,6 +66,7 @@ class DumpJsConfig extends Command
      * @param string $loginUsernamePath
      * @param string $loginPasswordPath
      * @param string $tokenJwtBearer
+     * @param string $kernelProjectDir
      * @param \Twig_Environment $twig
      * @param RouterInterface $router
      */
@@ -75,6 +76,7 @@ class DumpJsConfig extends Command
         string $loginUsernamePath,
         string $loginPasswordPath,
         string $tokenJwtBearer,
+        string $kernelProjectDir,
         \Twig_Environment $twig,
         RouterInterface $router
     ) {
@@ -87,6 +89,7 @@ class DumpJsConfig extends Command
         $this->loginUsernamePath = $loginUsernamePath;
         $this->loginPasswordPath = $loginPasswordPath;
         $this->tokenJwtBearer = $tokenJwtBearer;
+        $this->rootDir = $kernelProjectDir;
     }
 
     /**
@@ -140,7 +143,7 @@ class DumpJsConfig extends Command
         try {
             $missingKeys = [];
             $mandatoryKeys = ['items_per_page', 'client_items_per_page', 'items_per_page_parameter_name', 'maximum_items_per_page', 'page_parameter_name'];
-            $configDir = $this->getContainer()->get('kernel')->getProjectDir() . '/config/';
+            $configDir = $this->rootDir . '/config/';
             $values = Yaml::parseFile($configDir . 'packages/api_platform.yaml');
             $config = $values['api_platform'];
 
@@ -305,7 +308,7 @@ class DumpJsConfig extends Command
     protected function writeJsConfigFile(InputInterface $input, OutputInterface $output, $content): void
     {
         $helper = $this->getHelper('question');
-        $projectDir = $this->getContainer()->get('kernel')->getRootDir() . '/..';
+        $projectDir = $this->rootDir;
         $configFilepath = '/assets/js/lib/config.js';
         $filepath = $projectDir . $configFilepath;
 

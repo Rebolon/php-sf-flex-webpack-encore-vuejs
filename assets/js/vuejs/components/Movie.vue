@@ -14,7 +14,7 @@
             No movie to display
         </div>
 
-        <Loader v-else></Loader>
+        <Loader v-if="isLoading"></Loader>
 
         <router-link :to="{name: 'Movies'}" class="btn btn-primary">back</router-link>
     </div>

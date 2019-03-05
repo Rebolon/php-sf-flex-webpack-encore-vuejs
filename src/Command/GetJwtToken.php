@@ -52,6 +52,10 @@ class GetJwtToken extends Command
 	 * @var string
 	 */
 	protected $tokenJwtBearer;
+	/**
+	 * @var string
+	 */
+	protected $rootDir;
 
     /**
      * GetJwtToken constructor.
@@ -60,8 +64,9 @@ class GetJwtToken extends Command
      * @param JWTEncoderInterface $encoder
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param JwtTokenTools $tokenTools
-     * @param string $tokenJwtTtl
+     * @param int $tokenJwtTtl
      * @param string $tokenJwtBearer
+     * @param string $kernelProjectDir
      */
     public function __construct(
         LoggerInterface $logger,
@@ -69,9 +74,10 @@ class GetJwtToken extends Command
         JWTEncoderInterface $encoder,
         UserPasswordEncoderInterface $passwordEncoder,
         JwtTokenTools $tokenTools,
-        string $tokenJwtTtl,
-        string $tokenJwtBearer)
-    {
+        int $tokenJwtTtl,
+        string $tokenJwtBearer,
+        string $kernelProjectDir
+    ) {
         $this->logger = $logger;
         $this->provider = $provider;
         $this->encoder = $encoder;
@@ -79,6 +85,7 @@ class GetJwtToken extends Command
         $this->tokenTools = $tokenTools;
         $this->tokenJwtTtl = (int) $tokenJwtTtl;
         $this->tokenJwtBearer = $tokenJwtBearer;
+        $this->rootDir = $kernelProjectDir;
 
         parent::__construct();
     }
@@ -137,7 +144,7 @@ class GetJwtToken extends Command
      */
     protected function loadSecurityConfig(): array
     {
-        $configDir = $this->getContainer()->get('kernel')->getProjectDir() . '/config/';
+        $configDir = $this->rootDir . '/config/';
         $values = Yaml::parseFile($configDir . 'packages/security.yaml');
         $config = $values['security'];
 
