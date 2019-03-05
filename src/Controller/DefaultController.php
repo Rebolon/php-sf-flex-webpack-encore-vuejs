@@ -39,7 +39,7 @@ class DefaultController extends Controller
 
         $demoRoutes['Form & grid: Quasar with Vuejs'] = $router->generate('app_formquasarvuejs_index');
         $demoRoutes['Form & grid: DevXpress with Vuejs'] = $router->generate('app_formdevxpressvuejs_index');
-        $demoRoutes['Form & grid: DevXpress with Angular6'] = $router->generate('app_formdevxpressangular_index');
+        $demoRoutes['Form & grid: DevXpress with Angular7'] = $router->generate('app_formdevxpressangular_index');
 
         $demoRoutes['Api-platform: rest'] = $router->generate('api_entrypoint');
         $demoRoutes['Api-platform: graphql'] = $router->generate('api_graphql_entrypoint');

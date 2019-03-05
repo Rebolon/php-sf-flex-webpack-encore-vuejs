@@ -34,6 +34,7 @@ services:
             $apiPlatformPrefix: '%api_platform_prefix%'
             $tokenJwtTtl: '%token_jwt_ttl%'
             $tokenJwtBearer: '%token_jwt_bearer%'
+            $kernelProjectDir: '%kernel.project_dir%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -108,3 +109,5 @@ services:
     # needs to alias the current security.user.provider.concrete.in_memory to the class (seems not done in sf or security bundle)
     Symfony\Component\Security\Core\User\InMemoryUserProvider:
         alias: security.user.provider.concrete.in_memory
+
+    App\DataProvider\PingDataProvider: ~

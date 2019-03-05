@@ -26,6 +26,6 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Proof of Concept: DevXpress with Angular6');
+    expect(compiled.querySelector('h1').textContent).toContain('Proof of Concept: DevXpress with Angular7');
   }));
 });

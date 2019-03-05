@@ -51,7 +51,7 @@ Then some php controllers has been created on following routes :
  * /demo/vuejs : VuejsController with route config in annotations and VueJS app with specific js/css import
  * /demo/quasar : QuasarController like VuejsController but with the Quasar framework for UX components
  * /demo/form/quasar-vuejs : [Work in progress] authentification with javascript, and a full web application with vuejs and api-platform(rest/graphql)
- * /demo/form/devxpress-angular : Angular6 demo with DevXpress UI components (Datagrid and a Wizard sample with local storage and a sumup zone)
+ * /demo/form/devxpress-angular : Angular7 demo with DevXpress UI components (Datagrid and a Wizard sample with local storage and a sumup zone)
  * /demo/form/devxpress-vuejs : VueJS demo with DevXpress UI components (Datagrid)
  * /api : access ApiPlatform api doc (you need to be authentified from /demo/form if you want to play with it: all entities are configured to be accessed with ROLE_USER)
  * /api/graphql : access ApiPlatform GraphQL implementation (beta release)
@@ -504,6 +504,8 @@ It takes the following JSON string as Body:
 - [ ] front: move on Quasar 0.17.x
 - [x] front: move on Angular 6 with HttpInterceptor, Guards, SSR
 - [x] front: Angular6 with prod build, the assets (js/css) are not wel loaded coz they are generated with versoning hash whereas the twig template load them in hard without hash (no manijest may help the asset helper)
+- [x] front: Update to Angular7
+- [ ] front: improve bundle size for Angular (for instance there is a 4.7Mb vendor.js file which may be devxtrem full deps whereas we use only some widgets)
 - [x] front: move on Devxtreme 18.x and use it with VueJS
 - [x] front: setup CSRF protection with VueJS app
 - [ ] front: migrate app 'form-devextrem-angular' to angular6 when there will be compatible (this thread may helps: https://stackoverflow.com/questions/48970553/want-to-upgrade-project-from-angular-v5-to-angular-v6)
