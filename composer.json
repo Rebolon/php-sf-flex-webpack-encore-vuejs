@@ -17,6 +17,7 @@
         "symfony/framework-bundle": "~4.1",
         "symfony/monolog-bundle": "^3.3.0",
         "symfony/profiler-pack": "~1.0",
+        "symfony/webpack-encore-bundle": "^1.2",
         "symfony/yaml": "~4.1",
         "webonyx/graphql-php": "^0.11.6"
     },

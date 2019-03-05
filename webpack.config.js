@@ -46,8 +46,8 @@ Encore
      */
     .configureBabel(function(babelConfig) {
         // add additional presets
-        babelConfig.presets.push('es2017')
-        babelConfig.presets.push('react')
+        //babelConfig.presets.push('@babel/preset-env');
+        //babelConfig.presets.push('@babel/preset-react');
 
         // no plugins are added by default, but you can add some
         // babelConfig.plugins.push('styled-jsx/babel');
@@ -58,6 +58,7 @@ Encore
     // this one was used for this npm package: offline-plugin to manage cache (angular has already its own worker since ng-5.2 & cli-1.6)
     .addEntry('service-worker', './assets/js/lib/service-worker.js')
 
+    .addEntry('js/vendor', './assets/js/app.js')
     .addEntry('js/vuejs', './assets/js/vuejs/app.js')
     .addEntry('js/quasar', './assets/js/quasar/app.js')
     .addEntry('js/login', './assets/js/login/app.js')
@@ -68,15 +69,7 @@ Encore
     // for specific page css (not managed by vue file per example
     .addStyleEntry('css/quasar-bootstrap', './assets/css/quasar-bootstrap.scss')
 
-    // this creates a 'vendor.js' file with common js code
-    // these modules will *not* be included in js/vuejs.js or js/quasar.js anymore
-    .createSharedEntry('vendor', [
-        './assets/js/app.js',
-
-        // you can also extract CSS - this will create a 'vendor.css' file
-        // this CSS will *not* be included in vuejs.css anymore
-        './assets/css/app.scss',
-    ])
+    .enableSingleRuntimeChunk()
     .splitEntryChunks()
     /* chunks can be controlled (when & how) by the following code
     .configureSplitChunks(function(splitChunks) {
@@ -107,6 +100,8 @@ Encore
     // https://www.npmjs.com/package/fork-ts-checker-webpack-plugin
     // requires that you have a tsconfig.json file that is setup correctly.
     //.enableForkedTypeScriptTypesChecking()
+
+
 
 // customize webpack configuration
 let config = Encore.getWebpackConfig();
