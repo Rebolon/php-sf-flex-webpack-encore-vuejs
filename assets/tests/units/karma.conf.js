@@ -1,25 +1,22 @@
 const Encore = require('@symfony/webpack-encore')
-const ManifestPlugin = require('@symfony/webpack-encore/lib/webpack/webpack-manifest-plugin')
+const ManifestPlugin = require('webpack-manifest-plugin');
 const webpack = require('webpack');
 
 // Initialize Encore before requiring the .config file
 Encore.configureRuntimeEnvironment('dev-server')
 
 // Retrieve webpack config
-const webpackConfig = require('../../../webpack.config')
+const webpackConfig = require('../../../webpack.config.babel')
 
 // Set writeToFileEmit option of the ManifestPlugin to false
-for (const plugin of webpackConfig.plugins) {
+/*for (const plugin of webpackConfig.plugins) {
     if ((plugin instanceof ManifestPlugin) && plugin.opts) {
         plugin.opts.writeToFileEmit = false
     }
-}
-
-// Remove CommonsChunkPlugin: mandatory when we use Encore.createSharedEntry
-webpackConfig.plugins = webpackConfig.plugins.filter(plugin => !(plugin instanceof webpack.optimize.CommonsChunkPlugin));
+}*/
 
 // Remove entry property (handled by Karma)
-delete webpackConfig.entry
+//delete webpackConfig.entry
 
 // Karma options
 module.exports = function(config) {

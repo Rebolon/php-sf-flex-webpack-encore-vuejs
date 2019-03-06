@@ -1,5 +1,5 @@
-var Encore = require('@symfony/webpack-encore')
-var OfflinePlugin = require('offline-plugin')
+const Encore = require('@symfony/webpack-encore')
+const OfflinePlugin = require('offline-plugin')
 
 Encore
     // the project directory where compiled assets will be stored
@@ -67,15 +67,12 @@ Encore
     .addEntry('js/api-platform-admin-react', './assets/js/api-platform-admin-react/index.js')
 
     // for specific page css (not managed by vue file per example
+    .addStyleEntry('css/dx-overload', './assets/css/dx-overload.scss')
     .addStyleEntry('css/quasar-bootstrap', './assets/css/quasar-bootstrap.scss')
 
     .enableSingleRuntimeChunk()
     .splitEntryChunks()
-    /* chunks can be controlled (when & how) by the following code
-    .configureSplitChunks(function(splitChunks) {
-         // change the configuration
-         splitChunks.minSize = 0;
-     })*/
+
 
     // uncomment if you use Sass/SCSS files
     // parameters are not mandatory, only if webpack build is slow with bootstrap (http://symfony.com/doc/current/frontend/encore/bootstrap.html)
@@ -100,8 +97,6 @@ Encore
     // https://www.npmjs.com/package/fork-ts-checker-webpack-plugin
     // requires that you have a tsconfig.json file that is setup correctly.
     //.enableForkedTypeScriptTypesChecking()
-
-
 
 // customize webpack configuration
 let config = Encore.getWebpackConfig();
