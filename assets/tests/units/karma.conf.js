@@ -1,6 +1,6 @@
 const Encore = require('@symfony/webpack-encore')
-const ManifestPlugin = require('webpack-manifest-plugin');
-const webpack = require('webpack');
+//const ManifestPlugin = require('webpack-manifest-plugin');
+//const webpack = require('webpack');
 
 // Initialize Encore before requiring the .config file
 Encore.configureRuntimeEnvironment('dev-server')

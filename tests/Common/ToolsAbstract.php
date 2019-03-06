@@ -50,11 +50,12 @@ abstract class ToolsAbstract extends WebTestCase
      */
     protected $em;
 
-    static public function getOutPut() {
+    public static function getOutPut()
+    {
         return new ConsoleOutput(ConsoleOutput::VERBOSITY_VERBOSE);
     }
 
-    static public function setUpBeforeClass()
+    public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
 
@@ -63,16 +64,16 @@ abstract class ToolsAbstract extends WebTestCase
         $application = new Application($kernel);
         $application->setAutoExit(false);
 
-        $input = new ArrayInput(array(
+        $input = new ArrayInput([
             'command' => 'doctrine:database:drop',
             '--force' => true,
-        ));
+        ]);
         $output = static::getOutPut();
         $application->run($input, $output);
 
-        $input = new ArrayInput(array(
+        $input = new ArrayInput([
             'command' => 'doctrine:database:create',
-        ));
+        ]);
         $output = static::getOutPut();
         $application->run($input, $output);
     }
@@ -96,17 +97,17 @@ abstract class ToolsAbstract extends WebTestCase
 
         $application = new Application($kernel);
         $application->setAutoExit(false);
-        $input = new ArrayInput(array(
+        $input = new ArrayInput([
             'command' => 'doctrine:schema:create',
-        ));
+        ]);
         $output = static::getOutPut();
         $application->run($input, $output);
 
         // @todo don't understand why db is not filled
-        $input = new ArrayInput(array(
+        $input = new ArrayInput([
             'command' => 'doctrine:fixtures:load',
             '--no-interaction' => true,
-        ));
+        ]);
         $application->run($input, $output);
     }
 
@@ -118,10 +119,10 @@ abstract class ToolsAbstract extends WebTestCase
         $application = new Application($kernel);
         $application->setAutoExit(false);
 
-        $input = new ArrayInput(array(
+        $input = new ArrayInput([
             'command' => 'doctrine:schema:drop',
             '--force' => true,
-        ));
+        ]);
         $output = static::getOutPut();
         $application->run($input, $output);
     }
@@ -131,7 +132,7 @@ abstract class ToolsAbstract extends WebTestCase
      * @param array $server
      * @return mixed|Client
      */
-    protected static function createClient(array $options = array(), array $server = array())
+    protected static function createClient(array $options = [], array $server = [])
     {
         $env = getenv();
 

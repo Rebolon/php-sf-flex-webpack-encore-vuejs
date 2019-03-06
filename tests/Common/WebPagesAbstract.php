@@ -16,10 +16,10 @@ abstract class WebPagesAbstract extends ToolsAbstract
         $uri = $this->router->generate('demo_login_standard', [], Router::NETWORK_PATH);
         $crawler = $client->request('GET', $uri);
         $buttonCrawlerNode = $crawler->selectButton('login');
-        $form = $buttonCrawlerNode->form(array(
+        $form = $buttonCrawlerNode->form([
             'login_username' => $this->testLogin,
             'login_password' => $this->testPwd,
-        ));
+        ]);
         $crawler = $client->submit($form);
 
         return $crawler;
