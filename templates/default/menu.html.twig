@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
+    {#<ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item">
             <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Intro</a>
         </li>
@@ -11,10 +11,30 @@
         <li class="nav-item">
             <a class="nav-link" id="extrainfos-tab" data-toggle="tab" href="#extrainfos" role="tab" aria-controls="extrainfos" aria-selected="false">Extra infos</a>
         </li>
-    </ul>
+    </ul>#}
 
     <div class="container">
         <div class="tab-content">
+            <div class="tab-pane fade show active" id="demos" role="tabpanel" aria-labelledby="demos-tab">
+                <h2>List of demos</h2>
+                <aside>
+                    For login forms, you can use test_js/test or test_php/test !
+                </aside>
+                <ul class="list-group">
+                    {% for routeName, route in routes %}
+                        {% if route is iterable %}
+                            <li class="list-group-item">
+                                <a href='{{ route.uri }}'>{{ routeName }}</a>
+                                <div class="alert alert-warning" role="alert">
+                                    <span class="text-warning">&#9888;</span> {{ route.note | raw}}
+                                </div>
+                            </li>
+                        {% else %}
+                            <li class="list-group-item"><a href='{{ route }}'>{{ routeName }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
             <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                 <h2>Introduction</h2>
                 <div>
@@ -39,27 +59,7 @@
                     </div>
                 </div>
             </div>
-            <div class="tab-pane fade" id="demos" role="tabpanel" aria-labelledby="demos-tab">
-                <h2>List of demos</h2>
-                <aside>
-                    For login forms, you can use test_js/test or test_php/test !
-                </aside>
-                <ul class="list-group">
-                    {% for routeName, route in routes %}
-                        {% if route is iterable %}
-                            <li class="list-group-item">
-                                <a href='{{ route.uri }}'>{{ routeName }}</a>
-                                <div class="alert alert-warning" role="alert">
-                                    <span class="text-warning">&#9888;</span> {{ route.note | raw}}
-                                </div>
-                            </li>
-                        {% else %}
-                            <li class="list-group-item"><a href='{{ route }}'>{{ routeName }}</a></li>
-                        {% endif %}
-                    {% endfor %}
-                </ul>
-            </div>
-            <div class="tab-pane fade" id="extrainfos" role="tabpanel" aria-labelledby="extrainfos-tab">
+            <div class="tab-pane fade show active" id="extrainfos" role="tabpanel" aria-labelledby="extrainfos-tab">
                 <h2>Extra informations</h2>
                 <div class="jumbotron jumbotron-fluid">
                     <div class="container">

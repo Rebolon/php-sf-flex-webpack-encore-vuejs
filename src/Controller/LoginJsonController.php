@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Security\UserInfo;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -22,6 +23,7 @@ class LoginJsonController extends AbstractController
      *     name="demo_secured_page_json",
      *     methods={"GET"}
      *     )
+     * @Cache(maxage="2 weeks")
      *
      * @return Response
      */

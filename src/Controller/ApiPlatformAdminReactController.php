@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -12,6 +13,7 @@ class ApiPlatformAdminReactController extends AbstractController
      *     "/demo/api-platform-admin-react",
      *     methods={"GET"}
      *     )
+     * @Cache(maxage="2 weeks")
      */
     public function index()
     {
