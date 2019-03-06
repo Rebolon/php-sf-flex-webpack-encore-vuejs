@@ -39,16 +39,12 @@
         "build:win": ".\\node_modules\\.bin\\encore production && cd assets/js/form-devxpress-angular/ && node_modules\\.bin\\ng build --prod --aot --extract-css",
         "build-for-test": "./node_modules/.bin/encore dev",
         "build-for-test:win": ".\\node_modules\\.bin\\encore dev",
-        "test-cafe": "./node_modules/.bin/testcafe $npm_package_config_test_browser ./assets/tests  --reporter spec,xunit:var/report/testcafe.xml",
-        "test-cafe-skip": "./node_modules/.bin/testcafe $npm_package_config_test_browser ./assets/tests/*.js  --reporter spec,xunit:var/report/testcafe.xml --skip-js-errors",
-        "test-cafe:win": ".\\node_modules\\.bin\\testcafe %npm_package_config_test_browser% ./assets/tests  --reporter  spec,xunit:var/report/testcafe.xml",
-        "test-cafe-skip:win": ".\\node_modules\\.bin\\testcafe %npm_package_config_test_browser% ./assets/tests/*.js --reporter spec,xunit:var/report/testcafe.xml --skip-js-errors",
         "test-karma": "./node_modules/.bin/karma start assets/tests/units/karma.conf.js --single-run",
         "test-karma-watch": "./node_modules/.bin/karma start assets/tests/units/karma.conf.js",
         "test-php": "npm run build-for-test && ./vendor/bin/simple-phpunit",
         "test-php:win": "npm run build-for-test:win && .\\vendor\\bin\\simple-phpunit.bat",
-        "test": "npm run dev && npm run test-php && npm run test-karma && npm run test-cafe && cd assets/js/form-devxpress-angular/ && node_modules/.bin/ng test && node_modules/.bin/ng e2e",
-        "test:win": "npm run dev:win && npm run test-php:win && npm run test-karma && npm run test-cafe:win && cd assets/js/form-devxpress-angular/ && node_modules\\.bin\\ng test && node_modules\\.bin\\ng e2e"
+        "test": "npm run dev && npm run test-php && npm run test-karma && cd assets/js/form-devxpress-angular/ && node_modules/.bin/ng test && node_modules/.bin/ng e2e",
+        "test:win": "npm run dev:win && npm run test-php:win && npm run test-karma && cd assets/js/form-devxpress-angular/ && node_modules\\.bin\\ng test && node_modules\\.bin\\ng e2e"
     },
     "dependencies": {
         "@api-platform/admin": "^0.6.2",
@@ -97,8 +93,6 @@
         "sass-loader": "^7.1.0",
         "stylus": "^0.54.5",
         "stylus-loader": "^3.0.2",
-        "testcafe": "^15.1.317922",
-        "testcafe-vue-selectors": "^3.0.1",
         "ts-loader": "^5.3.0",
         "vue-loader": "^15.7.0",
         "vue-template-compiler": "^2.6.8"
