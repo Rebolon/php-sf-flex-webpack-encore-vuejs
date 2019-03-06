@@ -24,7 +24,6 @@
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.0.4",
         "friendsofphp/php-cs-fixer": "^2.13.1",
-        "phpunit/phpunit": "^7.5",
         "roave/security-advisories": "dev-master",
         "sensiolabs/security-checker": "~4.1",
         "squizlabs/PHP_CodeSniffer": "^3.3.2",
