@@ -59,6 +59,9 @@ abstract class PantherToolsAbstract extends PantherTestCase
     {
         parent::setUpBeforeClass();
 
+        // define globally the port
+        $_SERVER['PANTHER_WEB_SERVER_PORT'] = 9010;
+
         $kernel = static::bootKernel();
 
         $application = new Application($kernel);
