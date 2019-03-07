@@ -434,6 +434,18 @@
             "ref": "85834af1496735f28d831489d12ab1921a875e0d"
         }
     },
+    "symfony/security-core": {
+        "version": "v4.2.4"
+    },
+    "symfony/security-csrf": {
+        "version": "v4.2.4"
+    },
+    "symfony/security-guard": {
+        "version": "v4.2.4"
+    },
+    "symfony/security-http": {
+        "version": "v4.2.4"
+    },
     "symfony/serializer": {
         "version": "v3.3.13"
     },
