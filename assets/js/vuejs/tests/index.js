@@ -1,5 +1,2 @@
-const testsContext = require.context(".", true, /\.spec$/)
-
-//console.log(testsContext);
-
+const testsContext = require.context(".", true, /.*\.spec.js$/)
 testsContext.keys().forEach(testsContext)

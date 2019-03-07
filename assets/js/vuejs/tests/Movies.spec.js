@@ -31,7 +31,7 @@ describe('Movies', () => {
     })
 
     // Mount an instance and inspect the output result
-    xit('is finely rendered with a list of movies', () => {
+    it('is finely rendered with a list of movies', () => {
         const movie = {
             id: 1,
             title: 'The best movie ever',
