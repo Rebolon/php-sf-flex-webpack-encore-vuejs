@@ -51,7 +51,7 @@ class LoginJsonControllerTest extends PantherToolsAbstract
      */
     public function testLoginSuccess()
     {
-        $this->markTestIncomplete('at the end of the test i dont know why but the crawler doesnot find the title `List of books`, instead it keeps the first title `Welcome to` ');
+        //$this->markTestIncomplete('at the end of the test i dont know why but the crawler doesnot find the title `List of books`, instead it keeps the first title `Welcome to` ');
 
         $client = static::createPantherClient(); // Your app is automatically started using the built-in web server
         $uri = $this->getRouter()->generate('app_formquasarvuejs_index');
@@ -70,8 +70,7 @@ class LoginJsonControllerTest extends PantherToolsAbstract
         $form = $crawler->selectButton('LOGIN')->form();
         $crawler = $client->submit($form);
 
-        $client->waitFor('div.q-alert.bg-info');
-        $client->wait(1000);
-        $this->assertEquals('List of books', $crawler->filter('h5')->last()->text());
+        $client->waitFor('div.books h5.title');
+        $this->assertEquals('List of books', $crawler->filter('h5')->text());
     }
 }
