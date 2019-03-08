@@ -51,11 +51,6 @@ before_script:
 #  - sudo service php7.1-fpm restart
 #  - sudo service nginx restart
   - npm run sf-dev &
-# see http://devexpress.github.io/testcafe/documentation/recipes/integrating-testcafe-with-ci-systems/travis.html
-  - "export DISPLAY=:99.0"
-  - "sh -e /etc/init.d/xvfb start"
-  - sleep 3
-  - fluxbox >/dev/null 2>&1 &
 
 script:
   - npm test

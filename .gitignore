@@ -1,11 +1,15 @@
+###> php-sf-flex-webpack-encore-vuejs ###
+/var/certificates
+/var/data/main.db
+/var/report
+/var/tests
+###< php-sf-flex-webpack-encore-vuejs ###
+
 ###> symfony/framework-bundle ###
 .env
 /public/bundles/
 /var/cache
-/var/certificates
-/var/data/main.db
 /var/log
-/var/report
 /vendor/
 ###< symfony/framework-bundle ###
 
