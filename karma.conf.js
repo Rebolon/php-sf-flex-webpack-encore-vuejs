@@ -78,7 +78,7 @@ module.exports = function (config) {
     };
 
     if(process.env.TRAVIS){
-        configuration.browsers = ['Chrome_travis_ci'];
+        configuration.browsers = ['FirefoxHeadless']; // force firefox in Travis coz Chrome is harder to make it works
     }
 
     config.set(configuration);
