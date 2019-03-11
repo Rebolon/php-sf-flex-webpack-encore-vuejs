@@ -2,7 +2,7 @@ dist: trusty
 sudo: required
 
 addons:
-#  chrome: stable
+  chrome: stable
   firefox: latest
   apt:
     sources:
