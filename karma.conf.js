@@ -29,7 +29,7 @@ Object.keys(webpackConfig.plugins).forEach((key) => {
 
 // Karma options
 module.exports = function (config) {
-    config.set({
+    const configuration = {
         browsers: ['Chrome'],
 
         frameworks: ['jasmine'],
@@ -75,5 +75,11 @@ module.exports = function (config) {
         },
 
         autoWatch: true,
-    });
+    };
+
+    if(process.env.TRAVIS){
+        configuration.browsers = ['Chrome_travis_ci'];
+    }
+
+    config.set(configuration);
 }
