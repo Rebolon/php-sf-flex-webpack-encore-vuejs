@@ -16,10 +16,10 @@ abstract class WebPagesAbstract extends ToolsAbstract
         $uri = $this->router->generate('demo_login_standard', [], Router::NETWORK_PATH);
         $crawler = $client->request('GET', $uri);
         $buttonCrawlerNode = $crawler->selectButton('login');
-        $form = $buttonCrawlerNode->form(array(
+        $form = $buttonCrawlerNode->form([
             'login_username' => $this->testLogin,
             'login_password' => $this->testPwd,
-        ));
+        ]);
         $crawler = $client->submit($form);
 
         return $crawler;
@@ -52,9 +52,7 @@ abstract class WebPagesAbstract extends ToolsAbstract
     {
         $filter = $crawler->filter('body nav h1');
         $this->assertCount(1, $filter, $errMsg);
-        $this->assertEquals(
-            <<<HTML
-<a href="/"><u>Demo of symfony 4</u></a>
+        $expected = '<a href="/"><u>Demo of symfony 4</u></a>
                 <span style="font-size: smaller">with flex,
                     <span style="font-size: smaller">and webpack/encore,
                         <span style="font-size: smaller">VueJS,
@@ -64,10 +62,10 @@ abstract class WebPagesAbstract extends ToolsAbstract
                         </span>
                     </span>
                 </span>
-            
-HTML
-            ,
-            $filter->html(),
+';
+        $this->assertEquals(
+            trim(strtr($expected, ["\r\n" => "\n", ])),
+            trim(strtr($filter->html(), ["\r\n" => "\n", ])),
             $errMsg
         );
 

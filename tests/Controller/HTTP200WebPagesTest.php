@@ -45,10 +45,10 @@ class HTTP200WebPagesTest extends WebPagesAbstract
         $this->checkHeader($crawler, $errMsg);
 
         $form = $crawler->selectButton('login')->form();
-        $form->setValues(array(
+        $form->setValues([
             'login_username' => $this->testLogin,
             'login_password' => 'fake',
-        ));
+        ]);
         $crawler = $client->submit($form);
         $bc = $crawler->filter('body div.alert');
         $this->assertContains('Invalid credentials.', trim($bc->text()));
@@ -86,7 +86,7 @@ class HTTP200WebPagesTest extends WebPagesAbstract
         $demoRoutes['vuejs: with quasar and vue-router'] = ['uri'=> $router->generate('app_quasar_index'), ];
 
         $demoRoutes['form & grid: quasar with vuejs'] = ['uri'=> $router->generate('app_formquasarvuejs_index'), ];
-        $demoRoutes['form & grid: devxpress with angular6'] = ['uri'=> $router->generate('app_formdevxpressangular_index'), ];
+        $demoRoutes['form & grid: devxpress with angular7'] = ['uri'=> $router->generate('app_formdevxpressangular_index', ['ngRouteName'=> 'home', ]), ];
 
         $demoRoutes['api-platform: rest'] = ['uri'=> $router->generate('api_entrypoint'), ];
         $demoRoutes['api-platform: graphql'] = ['uri'=> $router->generate('api_graphql_entrypoint'), ];
@@ -111,9 +111,9 @@ class HTTP200WebPagesTest extends WebPagesAbstract
 
             $uri = $routeInfos['uri'];
 
-            $errMsg = sprintf("route: %s, headers: %s", $uri, json_encode($headers));
-
             $crawler = $client->request('GET', $uri, [], [], $headers);
+
+            $errMsg = sprintf("route: %s, headers: %s", $uri, json_encode($headers));
 
             $this->assertEquals(array_key_exists('statusCode', $routeInfos) ? : 200, $client->getResponse()->getStatusCode(), $errMsg);
         }

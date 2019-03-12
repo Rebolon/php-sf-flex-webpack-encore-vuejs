@@ -11,17 +11,20 @@
         <meta name="{{ csrfTokenParameter }}" content="{{ csrf_token }}">
         {% endif %}
         {% block stylesheets %}
-            <link rel="stylesheet" href="{{ asset('dist/vendor.css') }}">
+            {{ encore_entry_link_tags('js/vendor') }}
         {% endblock %}
 
+        {# using builtin twig symfony encore package i cannot use preloading like before (for instance)
         {%  if preventParentJs is not defined or not preventParentJs %}
         <!-- preload JS -->
         <link rel="preload" href="{{ asset('dist/manifest.js') }}" as="script"/>
         <link rel="preload" href="{{ asset("dist/vendor.js") }}" as="script"/>
         <link rel="preload" href="{{ asset("dist/service-worker.js") }}" as="script"/>
         {% endif %}
+        #}
     </head>
-    <body class="mat">
+    {# mat is for quasar, dx-* are for devextrem, it should be configurable @todo #}
+    <body class="dx-theme-generic dx-theme-generic-typography dx-color-scheme-light mat">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <h1><a href="/"><u>Demo of symfony 4</u></a>
                 <span style="font-size: smaller">with flex,
@@ -38,10 +41,10 @@
         {% block body %}{% endblock %}
 
         {%  if preventParentJs is not defined or not preventParentJs %}
-        <script src="{{ asset('dist/manifest.js') }}"></script>
-        <script src="{{ asset('dist/vendor.js') }}"></script>
-        <script src="{{ asset('dist/service-worker.js') }}"></script>
+            {{ encore_entry_script_tags('service-worker') }}
         {% endif %}
-        {% block javascripts %}{% endblock %}
+        {% block javascripts %}
+            {{ encore_entry_script_tags('js/vendor') }}
+        {% endblock %}
     </body>
 </html>

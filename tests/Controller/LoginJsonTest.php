@@ -57,7 +57,7 @@ class LoginJsonTest extends ToolsAbstract
 
         $crawler = $client->request('GET', $uriSecured);
         $this->assertEquals(200, $client->getResponse()->getStatusCode(), $errMsg);
-        $text = implode(' ', array_map(function($item) {
+        $text = implode(' ', array_map(function ($item) {
             $trimmed = trim($item);
             if ($trimmed) {
                 return $trimmed;
@@ -68,7 +68,7 @@ class LoginJsonTest extends ToolsAbstract
         // now test on standard login page that use the same security context whereas it's on another firewall
         $crawler = $client->request('GET', $uriSecuredOnSameContext);
         $this->assertEquals(200, $client->getResponse()->getStatusCode(), $errMsg);
-        $text = implode(' ', array_map(function($item) {
+        $text = implode(' ', array_map(function ($item) {
             $trimmed = trim($item);
             if ($trimmed) {
                 return $trimmed;

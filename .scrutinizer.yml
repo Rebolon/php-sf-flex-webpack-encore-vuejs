@@ -37,7 +37,7 @@ build:
                         command: phpcs-run
                         use_website_config: true
                     # build asset required by php
-                    - npm run build-for-test
+                    - npm run build
                     -
                         command: 'vendor/bin/simple-phpunit --coverage-clover=var/report/clover.xml'
                         coverage:

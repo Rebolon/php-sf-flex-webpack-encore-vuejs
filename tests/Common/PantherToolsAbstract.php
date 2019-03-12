@@ -5,7 +5,7 @@ namespace App\Tests\Common;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\Panther\PantherTestCase;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -13,7 +13,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
-abstract class ToolsAbstract extends WebTestCase
+abstract class PantherToolsAbstract extends PantherTestCase
 {
     /**
      * @var LoggerInterface
@@ -58,6 +58,9 @@ abstract class ToolsAbstract extends WebTestCase
     public static function setUpBeforeClass()
     {
         parent::setUpBeforeClass();
+
+        // define globally the port
+        $_SERVER['PANTHER_WEB_SERVER_PORT'] = 9010;
 
         $kernel = static::bootKernel();
 
@@ -128,29 +131,6 @@ abstract class ToolsAbstract extends WebTestCase
     }
 
     /**
-     * @param array $options
-     * @param array $server
-     * @return mixed|Client
-     */
-    protected static function createClient(array $options = [], array $server = [])
-    {
-        $env = getenv();
-
-        $options = array_merge(['debug' => false], $options);
-
-        // when launched by npm
-        if (array_key_exists('npm_package_config_server_host_web', $env)) {
-            $server = array_merge([
-                'HTTP_HOST' => $env['npm_package_config_server_host_web'] . ':' . $env['npm_package_config_server_port_web'],
-            ], $server);
-        }
-
-        $client = parent::createClient($options, $server);
-
-        return $client;
-    }
-
-    /**
      * @return Router
      */
     protected function getRouter()
@@ -160,21 +140,5 @@ abstract class ToolsAbstract extends WebTestCase
         }
 
         return $this->router;
-    }
-
-    /**
-     * @return Client;
-     */
-    protected function getClient()
-    {
-        // is it a good idea to use the same client on
-        if (!$this->client) {
-            $this->client = static::createClient();
-            $this->client->followRedirects(true);
-        }
-
-        $this->client->restart();
-
-        return $this->client;
     }
 }

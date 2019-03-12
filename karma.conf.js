@@ -1,45 +1,50 @@
-const Encore = require('@symfony/webpack-encore')
-const ManifestPlugin = require('@symfony/webpack-encore/lib/webpack/webpack-manifest-plugin')
+const ManifestPlugin = require('webpack-manifest-plugin');
+const webpackConfig = require('./karma.webpack.config.babel');
 const webpack = require('webpack');
 
-// Initialize Encore before requiring the .config file
-Encore.configureRuntimeEnvironment('dev-server')
-
-// Retrieve webpack config
-const webpackConfig = require('../../../webpack.config')
-
-// Set writeToFileEmit option of the ManifestPlugin to false
+// Configure specific plugin
 for (const plugin of webpackConfig.plugins) {
+    // Set writeToFileEmit option of the ManifestPlugin to false
     if ((plugin instanceof ManifestPlugin) && plugin.opts) {
         plugin.opts.writeToFileEmit = false
     }
 }
 
-// Remove CommonsChunkPlugin: mandatory when we use Encore.createSharedEntry
-webpackConfig.plugins = webpackConfig.plugins.filter(plugin => !(plugin instanceof webpack.optimize.CommonsChunkPlugin));
+// replace mini-css-extract by style-loader ([Encore bug look at here https://github.com/symfony/webpack-encore/issues/256#issuecomment-471233690] until it's fixed in Encore
+const styleExtensions = ['/\\.css$/', '/\\.s[ac]ss$/', '/\\.less$/', '/\\.styl$/'];
+for (const rule of webpackConfig.module.rules) {
+    if (rule.test && rule.oneOf && styleExtensions.includes(rule.test.toString())) {
+        rule.oneOf.forEach((oneOf) => {
+            oneOf.use[0] = 'style-loader';
+        })
+    }
+}
 
 // Remove entry property (handled by Karma)
-delete webpackConfig.entry
+delete webpackConfig.entry;
+
+Object.keys(webpackConfig.plugins).forEach((key) => {
+    console.log(webpackConfig.plugins[key]);
+})
 
 // Karma options
-module.exports = function(config) {
-    config.set({
+module.exports = function (config) {
+    const configuration = {
+        browsers: ['Chrome'],
+
         frameworks: ['jasmine'],
 
         files: [
-            '../../js/vuejs/tests/index.js'
+            './assets/js/vuejs/tests/index.js'
         ],
 
         preprocessors: {
-            '../../js/vuejs/tests/index.js': ['webpack']
+            './assets/js/vuejs/tests/index.js': ['webpack']
         },
-
-        browsers: ['Chrome'],
 
         webpack: webpackConfig,
 
         webpackMiddleware: {
-            stats: 'errors-only',
             noInfo: true,
         },
 
@@ -59,7 +64,7 @@ module.exports = function(config) {
         reporters: ['kjhtml', 'spec', 'junit'],
 
         junitReporter: {
-            outputDir: '../../../var/report', // results will be saved as $outputDir/$browserName.xml
+            outputDir: './var/report', // results will be saved as $outputDir/$browserName.xml
             outputFile: 'karma.xml', // if included, results will be saved as $outputDir/$browserName/$outputFile
             suite: '', // suite will become the package name attribute in xml testsuite element
             useBrowserName: false, // add browser name to report and classes names
@@ -70,5 +75,11 @@ module.exports = function(config) {
         },
 
         autoWatch: true,
-    });
+    };
+
+    if(process.env.TRAVIS){
+        configuration.browsers = ['FirefoxHeadless']; // force firefox in Travis coz Chrome is harder to make it works
+    }
+
+    config.set(configuration);
 }

@@ -2,7 +2,7 @@
 
 <p align="center">
 
-  [![Tested with TestCafe](https://img.shields.io/badge/tested%20with-TestCafe-2fa4cf.svg)](https://github.com/DevExpress/testcafe)
+  ~~[![Tested with testcafe](https://img.shields.io/badge/tested%20with-TestCafe-2fa4cf.svg)](https://github.com/DevExpress/testcafe)~~
   [![Build Status](https://travis-ci.org/Rebolon/php-sf-flex-webpack-encore-vuejs.png?branch=master)](https://travis-ci.org/Rebolon/php-sf-flex-webpack-encore-vuejs)
   [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Rebolon/php-sf-flex-webpack-encore-vuejs/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Rebolon/php-sf-flex-webpack-encore-vuejs/badges/quality-score.png?b=master)
   [![DeepScan grade](https://deepscan.io/api/teams/2301/projects/3192/branches/26485/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=2301&pid=3192&bid=26485)
@@ -36,7 +36,7 @@ Here is how it has been created:
 * composer req encore annotations twig api jwt-auth http profiler log doctrine-migrations admin webonyx/graphql-php
 * composer require --dev doctrine/doctrine-fixtures-bundle phpunit/phpunit symfony/dom-crawler symfony/browser-kit symfony/css-selector security-checker roave/security-advisories:dev-master
 * yarn add vue vue-router quasar-framework quasar-extras vuelidate vue-apollo@next graphql apollo-client apollo-link apollo-link-http apollo-link-error apollo-cache-inmemory graphql-tag react react-dom prop-types axios rxjs @devexpress/dx-react-core @devexpress/dx-react-grid
-* yarn add --dev vue-loader vue-template-compiler vue-router react-loader babel-preset-es2017 babel-preset-react sass-loader node-sass bootstrap@4.0.0 testcafe testcafe-vue-selectors jasmine karma karma-jasmine karma-spec-reporter karma-junit-reporter karma-webpack karma-chrome-launcher offline-plugin rxjs-tslint
+* yarn add --dev vue-loader vue-template-compiler vue-router react-loader babel-preset-env babel-preset-react sass-loader node-sass bootstrap@4.0.0 jasmine karma karma-jasmine karma-spec-reporter karma-junit-reporter karma-webpack karma-chrome-launcher offline-plugin rxjs-tslint
 * yarn install
 
 Then some php controllers has been created on following routes :
@@ -85,7 +85,7 @@ You can also change the web server port and the asset server port in the same co
     },
 ```
 
-The test_browser section represent all the browsers you want to use with the testcafe testing tool.
+The test_browser section represent all the browsers you want to use with the Panther testing tool (we previously used testcafe, but it changes toot much and results was not so satisfying).
 
 ## components
 
@@ -109,8 +109,9 @@ The test_browser section represent all the browsers you want to use with the tes
 * security-checker: a tool to check known securities vulnerabilities, to use it, run `php bin/console security:check`
 * [roave/security-advisories](https://www.websec.io/2018/03/10/Package-Protection-Roave-SecurityAdvisories.html): a tool that prevent the install of PHP package from composer with known vulnerabilities
 * [phpunit](https://phpunit.de/), crawler, browserkit, css-selector: php/symfony task for testing (@todo ll last 3 should be a recipe)
-* babel-preset-es2017: do you really need explanation ?
-* [testcafe](https://testcafe.devexpress.com/): an e2e test framework (might be changed with chimp or anything else, gimme better idea)
+* [panther](https://github.com/symfony/panther): the symfony toolkit to manage testing throught a browser (before this compoennt, we had to use npm libraries to control browser)
+* babel-preset-env: do you really need explanation ? this is just for Babel7
+* ~~[testcafe](https://testcafe.devexpress.com/): an e2e test framework (might be changed with chimp or anything else, gimme better idea)~~
 * [jasmine](https://jasmine.github.io/) & [karma](https://karma-runner.github.io/2.0/index.html): a stack for unit & e2e tests (a more standard stack to replace testcafé)
 * sass: hey, we are not in nineties, we don't write css now
 * [bootstrap](https://getbootstrap.com/): the 4th version of the first class css framework (not used with quasar)
@@ -219,12 +220,16 @@ a mock !
 **JWT Certificates** in test mode, we don't use pem files from your dev/prod env. In fact we use pem files generated specifically for tests and copied from var/travis/config to var/cache/config
 
 On Javascript we have unit and e2 tests. Units tests are managed by jasmine and karma. It allows to test function, class, component.
-For e2e tests we use testcafe from devExpress. It allows to launch browsers and drive them by code to reproduce a human behavior.
-Here the tests runs on a chrome headless, and firefox but you can configure it in the package.json file in the config.test_browser node.
+~~For e2e tests we use testcafe from devExpress. It allows to launch browsers and drive them by code to reproduce a human behavior.
+Here the tests runs on a chrome headless, and firefox but you can configure it in the package.json file in the config.test_browser node.~~
+We now use Panther to run e2e tests. It's automatically ran when we run phpunit commands.
 
-`npm run test-cafe && npm run test-karma` will run js test and will generate a testcafe.xunit.xml and karma_report.xml files in the following folder `/var/report/`.
+`npm run test-karma` will run js test and will generate a karma_report.xml files in the following folder `/var/report/`.
 
 If you wonder how to tests your VueJS components, you can hae a look at [this website which describe a lot of tests](https://blog.octo.com/vue-js-en-tdd/). Sadly it's in french !
+
+In this application i used Karma for one application with VueJS (in /assets/js/vuejs). And i used Panther to test pages fully generated by Symfony. 
+Karma is configured with assets/tests/units/karma.conf.js !
 
 ## Security
 
@@ -515,7 +520,7 @@ It takes the following JSON string as Body:
 - [x] quality: write some JS units tests
 - [x] quality: write some JS e2e tests
 - [x] quality: write some PHP tests
-- [ ] quality: fix testcafe role where sometimes they are not played: https://testcafe-discuss.devexpress.com/t/role-sometime-it-doesnt-seem-to-be-played/875
+- [ ] ~~quality: fix testcafe role where sometimes they are not played: https://testcafe-discuss.devexpress.com/t/role-sometime-it-doesnt-seem-to-be-played/875~~
 - [x] quality: setup tests reports
 - [x] security: setup security with Symfony (ticket open coz i get 500 instead of 403: https://github.com/symfony/symfony/issues/25806 Still WIP at this time) and choose between cookie (stateful), JWT (with Lexik bundle) or ApiKey (https://symfony.com/doc/current/security/guard_authentication.html) : I implement both statefull and JWT samples, but i didn't take the time for ApiKey
 - [x] back: setup EasyAdminBundle
@@ -532,7 +537,7 @@ It takes the following JSON string as Body:
 - [ ] db: have a lookAt the HauteLookAliceBundle to help in the creation of real fixtures during tests (instead of generating a new test.db which could be long)
 - [ ] api: try https://github.com/overblog/GraphQLBundle instead of ApiPlatform to try nested query/mutations (resolver are not auto-generated)
 - [ ] quality: use a server logger for both JS and PHP (and also maybe HTTP, DB, MessageQueuing, ...), it will helps to improve quality of the app by identifing users system/browser and most current errors (Sentry or other service must be tested https://www.slant.co/options/964/alternatives/~sentry-alternatives)
-- [ ] front: move on babel 7 with babel-preset-env (remove all related babel from readme and read babeljs.io for more info on update)
+- [x] front: move on babel 7 with babel-preset-env (remove all related babel from readme and read babeljs.io for more info on update)
 
 * improve this tutorial with ~~an API Route built with Api platform (without DB)~~ and install the vue-generator from api-platform for a crud sample
 * manage Entity orphanRemoval / CASCADE onDelete
@@ -597,6 +602,7 @@ I wrote some articles on medium to explain some practices setup in this project:
  * https://testcafe-discuss.devexpress.com/t/it-doesnt-run-all-tests-files/1230/2
  * https://testcafe-discuss.devexpress.com/t/object-domexceptio-error-when-running-tests/1231
  * https://stackoverflow.com/questions/51042516/how-to-use-graphiql-when-route-are-secured
+ * https://github.com/symfony/webpack-encore/issues/256#issuecomment-471601797
 
 
 ## License
