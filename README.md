@@ -36,7 +36,7 @@ Here is how it has been created:
 * composer req encore annotations twig api jwt-auth http profiler log doctrine-migrations admin webonyx/graphql-php
 * composer require --dev doctrine/doctrine-fixtures-bundle phpunit/phpunit symfony/dom-crawler symfony/browser-kit symfony/css-selector security-checker roave/security-advisories:dev-master
 * yarn add vue vue-router quasar-framework quasar-extras vuelidate vue-apollo@next graphql apollo-client apollo-link apollo-link-http apollo-link-error apollo-cache-inmemory graphql-tag react react-dom prop-types axios rxjs @devexpress/dx-react-core @devexpress/dx-react-grid
-* yarn add --dev vue-loader vue-template-compiler vue-router react-loader babel-preset-env babel-preset-react sass-loader node-sass bootstrap@4.0.0  jasmine karma karma-jasmine karma-spec-reporter karma-junit-reporter karma-webpack karma-chrome-launcher offline-plugin rxjs-tslint
+* yarn add --dev vue-loader vue-template-compiler vue-router react-loader babel-preset-env babel-preset-react sass-loader node-sass bootstrap@4.0.0 jasmine karma karma-jasmine karma-spec-reporter karma-junit-reporter karma-webpack karma-chrome-launcher offline-plugin rxjs-tslint
 * yarn install
 
 Then some php controllers has been created on following routes :
@@ -110,7 +110,7 @@ The test_browser section represent all the browsers you want to use with the Pan
 * [roave/security-advisories](https://www.websec.io/2018/03/10/Package-Protection-Roave-SecurityAdvisories.html): a tool that prevent the install of PHP package from composer with known vulnerabilities
 * [phpunit](https://phpunit.de/), crawler, browserkit, css-selector: php/symfony task for testing (@todo ll last 3 should be a recipe)
 * [panther](https://github.com/symfony/panther): the symfony toolkit to manage testing throught a browser (before this compoennt, we had to use npm libraries to control browser)
-* babel-preset-es2017: do you really need explanation ?
+* babel-preset-env: do you really need explanation ? this is just for Babel7
 * ~~[testcafe](https://testcafe.devexpress.com/): an e2e test framework (might be changed with chimp or anything else, gimme better idea)~~
 * [jasmine](https://jasmine.github.io/) & [karma](https://karma-runner.github.io/2.0/index.html): a stack for unit & e2e tests (a more standard stack to replace testcafé)
 * sass: hey, we are not in nineties, we don't write css now
@@ -537,7 +537,7 @@ It takes the following JSON string as Body:
 - [ ] db: have a lookAt the HauteLookAliceBundle to help in the creation of real fixtures during tests (instead of generating a new test.db which could be long)
 - [ ] api: try https://github.com/overblog/GraphQLBundle instead of ApiPlatform to try nested query/mutations (resolver are not auto-generated)
 - [ ] quality: use a server logger for both JS and PHP (and also maybe HTTP, DB, MessageQueuing, ...), it will helps to improve quality of the app by identifing users system/browser and most current errors (Sentry or other service must be tested https://www.slant.co/options/964/alternatives/~sentry-alternatives)
-- [ ] front: move on babel 7 with babel-preset-env (remove all related babel from readme and read babeljs.io for more info on update)
+- [x] front: move on babel 7 with babel-preset-env (remove all related babel from readme and read babeljs.io for more info on update)
 
 * improve this tutorial with ~~an API Route built with Api platform (without DB)~~ and install the vue-generator from api-platform for a crud sample
 * manage Entity orphanRemoval / CASCADE onDelete
@@ -602,6 +602,7 @@ I wrote some articles on medium to explain some practices setup in this project:
  * https://testcafe-discuss.devexpress.com/t/it-doesnt-run-all-tests-files/1230/2
  * https://testcafe-discuss.devexpress.com/t/object-domexceptio-error-when-running-tests/1231
  * https://stackoverflow.com/questions/51042516/how-to-use-graphiql-when-route-are-secured
+ * https://github.com/symfony/webpack-encore/issues/256#issuecomment-471601797
 
 
 ## License
