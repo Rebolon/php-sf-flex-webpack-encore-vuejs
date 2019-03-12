@@ -113,7 +113,7 @@ class DumpJsConfig extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $env = $this->getEnv();
+        $env = $this->getEnv('APP_ENV');
         $host = $input->getArgument(self::ARG_HOST);
         $port = $input->getArgument(self::ARG_PORT);
         $quasarStyle = $input->getArgument(self::ARG_QUASAR_STYLE);
@@ -173,11 +173,10 @@ class DumpJsConfig extends ContainerAwareCommand
      */
     protected function getEnv(): string
     {
-        $systemEnv = getenv();
+        $systemEnv = getenv('APP_ENV');
         $env = 'dev'; // default
-        if (is_array($systemEnv)
-            && array_key_exists('APP_ENV', $systemEnv)) {
-            $env = $systemEnv['APP_ENV'];
+        if ($systemEnv) {
+            $env = $systemEnv;
         }
 
         return $env;

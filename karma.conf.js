@@ -10,26 +10,35 @@ for (const plugin of webpackConfig.plugins) {
     }
 }
 
+// replace mini-css-extract by style-loader ([Encore bug look at here https://github.com/symfony/webpack-encore/issues/256#issuecomment-471233690] until it's fixed in Encore
+const styleExtensions = ['/\\.css$/', '/\\.s[ac]ss$/', '/\\.less$/', '/\\.styl$/'];
+for (const rule of webpackConfig.module.rules) {
+    if (rule.test && rule.oneOf && styleExtensions.includes(rule.test.toString())) {
+        rule.oneOf.forEach((oneOf) => {
+            oneOf.use[0] = 'style-loader';
+        })
+    }
+}
+
 // Remove entry property (handled by Karma)
 delete webpackConfig.entry;
 
+Object.keys(webpackConfig.plugins).forEach((key) => {
+    console.log(webpackConfig.plugins[key]);
+})
+
 // Karma options
 module.exports = function (config) {
-    config.set({
+    const configuration = {
         browsers: ['Chrome'],
 
         frameworks: ['jasmine'],
 
         files: [
-            //'./assets/js/vuejs/tests/DebugKarma.spec.js',
-            //'./assets/js/vuejs/tests/Movie.spec.js',
             './assets/js/vuejs/tests/index.js'
         ],
 
         preprocessors: {
-            './assets/js/vuejs/tests/DebugKarma.spec.js': ['webpack'],
-            //'./assets/js/vuejs/tests/Movie.spec.js': ['webpack'],
-            //'./assets/js/vuejs/tests/Movies.spec.js': ['webpack'],
             './assets/js/vuejs/tests/index.js': ['webpack']
         },
 
@@ -66,5 +75,11 @@ module.exports = function (config) {
         },
 
         autoWatch: true,
-    });
+    };
+
+    if(process.env.TRAVIS){
+        configuration.browsers = ['FirefoxHeadless']; // force firefox in Travis coz Chrome is harder to make it works
+    }
+
+    config.set(configuration);
 }
