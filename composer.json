@@ -19,7 +19,7 @@
         "symfony/profiler-pack": "~1.0",
         "symfony/webpack-encore-bundle": "^1.2",
         "symfony/yaml": "~4.1",
-        "webonyx/graphql-php": "^0.11.6"
+        "webonyx/graphql-php": "^0.13"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.0.4",
