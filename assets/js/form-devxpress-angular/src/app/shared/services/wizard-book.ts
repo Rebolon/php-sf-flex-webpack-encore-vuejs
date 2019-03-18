@@ -33,31 +33,31 @@ export class WizardBook {
 
         // only replace property from the new book
         Object.keys(book).forEach(prop => currentBook[prop] = book[prop])
-        const newBook = this.bookReviver.main(currentBook)
+        const newBook = this.bookReviver.parse(currentBook)
         this._book.next(newBook)
     }
 
     setEditors(editors: Array<Editors>) {
         const book = this._book.getValue()
-        book.setEdition(this.editorsReviver.main(editors))
+        book.setEdition(this.editorsReviver.parse(editors))
         this._book.next(book)
     }
 
     addEditors(editors: Editors) {
         const book = this._book.getValue()
-        book.addEdition(this.editorsReviver.main(editors))
+        book.addEdition(this.editorsReviver.parse(editors))
         this._book.next(book)
     }
 
     setAuthors(authors: Array<Authors>) {
         const book = this._book.getValue()
-        book.setAuthors(this.authorsReviver.main(authors))
+        book.setAuthors(this.authorsReviver.parse(authors))
         this._book.next(book)
     }
 
     addAuthors(authors: Authors) {
         const book = this._book.getValue()
-        book.addAuthor(this.authorsReviver.main(authors))
+        book.addAuthor(this.authorsReviver.parse(authors))
         this._book.next(book)
     }
 
@@ -143,7 +143,7 @@ export class WizardBook {
             .subscribe((book) => {
                 // revive a lite book
                 const bookToRevive = (({id, title, description, indexInSerie}) => ({id, title, description, indexInSerie}))(book)
-                const revivedBook = this.bookReviver.main(bookToRevive)
+                const revivedBook = this.bookReviver.parse(bookToRevive)
 
                 this._book.next(revivedBook)
                 res.next(revivedBook)
@@ -194,7 +194,7 @@ export class WizardBook {
             )
             .subscribe((edition) => {
                 const book = this._book.getValue()
-                const revivedEdition = this.editorsReviver.main(edition).pop()
+                const revivedEdition = this.editorsReviver.parse(edition).pop()
                 book.addEdition(revivedEdition)
 
                 this._book.next(book)
@@ -237,7 +237,7 @@ export class WizardBook {
             )
             .subscribe((authors) => {
                 const book = this._book.getValue()
-                const revivedAuthors = this.authorsReviver.main(authors).pop()
+                const revivedAuthors = this.authorsReviver.parse(authors).pop()
                 book.addAuthor(revivedAuthors)
 
                 this._book.next(book)

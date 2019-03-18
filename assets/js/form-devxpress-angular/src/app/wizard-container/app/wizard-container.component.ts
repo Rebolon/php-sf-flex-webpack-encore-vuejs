@@ -119,7 +119,7 @@ export class WizardContainerComponent implements OnInit, OnDestroy {
         let objToRestore = new Book()
         const cache = localStorage.getItem(CacheKey.BOOK)
         if (cache) {
-            objToRestore = this.bookReviver.main(cache)
+            objToRestore = this.bookReviver.parse(cache)
         }
 
         this.bookService.createBook(objToRestore)
