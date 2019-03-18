@@ -48,7 +48,7 @@ class LoginJwtTest extends ToolsAbstract
 
         $crawler = $client->request('GET', $uriSecured, [], [], $headers);
         $this->assertEquals(200, $client->getResponse()->getStatusCode(), $errMsg);
-        $text = implode(' ', array_map(function($item) {
+        $text = implode(' ', array_map(function ($item) {
             $trimmed = trim($item);
             if ($trimmed) {
                 return $trimmed;

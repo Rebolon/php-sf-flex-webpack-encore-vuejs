@@ -6,13 +6,13 @@
     {% endif %}
 
     {% if appName %}
-<link rel="stylesheet" href="{{ asset('dist/js/' ~ appName ~ '.css') }}">
+        {{ encore_entry_link_tags('js/'~appName) }}
     {% endif %}
 {% endblock %}
 
 {% block javascripts %}
     {% if appName %}
-<script src="{{ asset('dist/js/' ~ appName ~ '.js') }}"></script>
+        {{ encore_entry_script_tags('js/'~appName) }}
     {% endif %}
 {% endblock %}
 

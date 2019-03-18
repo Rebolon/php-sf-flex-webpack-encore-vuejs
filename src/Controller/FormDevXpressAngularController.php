@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Tools\AngularCli;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class FormDevXpressAngularController extends AbstractController
@@ -18,7 +19,7 @@ class FormDevXpressAngularController extends AbstractController
      *     methods={"GET"}
      *     )
      * @Cache(maxage="2 weeks")
-     *
+     * @return Response
      * @var string $kernelProjectDir
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -31,7 +32,7 @@ class FormDevXpressAngularController extends AbstractController
             'appName' => 'devxpress-angular',
             'title' => 'DevxpressAngular',
             'preventParentJs' => true, // since Angular6, but maybe need to build nativeElement to solve this
-            'useParent' => true,
+            'useParent' => false,
             ]);
     }
 }

@@ -1,5 +1,5 @@
-var Encore = require('@symfony/webpack-encore')
-var OfflinePlugin = require('offline-plugin')
+const Encore = require('@symfony/webpack-encore')
+const OfflinePlugin = require('offline-plugin')
 
 Encore
     // the project directory where compiled assets will be stored
@@ -10,6 +10,19 @@ Encore
     .enableSourceMaps(!Encore.isProduction())
     // uncomment to create hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
+
+    /* to copy image and make them available from js code
+    .copyFiles({
+        from: './assets/images',
+         // optional target path, relative to the output dir
+         //to: 'images/[path][name].[ext]',
+
+         // if versioning is enabled, add the file hash too
+         //to: 'images/[path][name].[hash:8].[ext]',
+
+         // only copy files matching this pattern
+         //pattern: /\.(png|jpg|jpeg)$/
+     })*/
 
     // first, install any presets you want to use (e.g. yarn add babel-preset-es2017)
     // then, modify the default Babel configuration
@@ -33,8 +46,8 @@ Encore
      */
     .configureBabel(function(babelConfig) {
         // add additional presets
-        babelConfig.presets.push('es2017')
-        babelConfig.presets.push('react')
+        //babelConfig.presets.push('@babel/preset-env');
+        //babelConfig.presets.push('@babel/preset-react');
 
         // no plugins are added by default, but you can add some
         // babelConfig.plugins.push('styled-jsx/babel');
@@ -45,6 +58,7 @@ Encore
     // this one was used for this npm package: offline-plugin to manage cache (angular has already its own worker since ng-5.2 & cli-1.6)
     .addEntry('service-worker', './assets/js/lib/service-worker.js')
 
+    .addEntry('js/vendor', './assets/js/app.js')
     .addEntry('js/vuejs', './assets/js/vuejs/app.js')
     .addEntry('js/quasar', './assets/js/quasar/app.js')
     .addEntry('js/login', './assets/js/login/app.js')
@@ -53,17 +67,12 @@ Encore
     .addEntry('js/api-platform-admin-react', './assets/js/api-platform-admin-react/index.js')
 
     // for specific page css (not managed by vue file per example
+    .addStyleEntry('css/dx-overload', './assets/css/dx-overload.scss')
     .addStyleEntry('css/quasar-bootstrap', './assets/css/quasar-bootstrap.scss')
 
-    // this creates a 'vendor.js' file with common js code
-    // these modules will *not* be included in js/vuejs.js or js/quasar.js anymore
-    .createSharedEntry('vendor', [
-        './assets/js/app.js',
+    .enableSingleRuntimeChunk()
+    .splitEntryChunks()
 
-        // you can also extract CSS - this will create a 'vendor.css' file
-        // this CSS will *not* be included in vuejs.css anymore
-        './assets/css/app.scss',
-    ])
 
     // uncomment if you use Sass/SCSS files
     // parameters are not mandatory, only if webpack build is slow with bootstrap (http://symfony.com/doc/current/frontend/encore/bootstrap.html)
@@ -82,6 +91,12 @@ Encore
 
     // uncomment for legacy applications that require $/jQuery as a global variable
     // .autoProvidejQuery()
+
+    .enableTypeScriptLoader()
+    // optionally enable forked type script for faster builds
+    // https://www.npmjs.com/package/fork-ts-checker-webpack-plugin
+    // requires that you have a tsconfig.json file that is setup correctly.
+    //.enableForkedTypeScriptTypesChecking()
 
 // customize webpack configuration
 let config = Encore.getWebpackConfig();
