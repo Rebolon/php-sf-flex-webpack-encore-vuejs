@@ -26,6 +26,7 @@ import gql from 'graphql-tag'
 import { axiosJsonLd } from '../../lib/axiosMiddlewares'
 import { apiPlatformPrefix, apiConfig } from '../../lib/config'
 import { BooksTableDefinition } from '../dataTableDefinitions/Books'
+import * as Revivers from '../../lib/reviver/library/index'
 
 export default {
     name: 'Books',
@@ -82,7 +83,7 @@ export default {
         getListByRest(page = 1) {
             this.isLoading = true
             const pageInt = Number.parseInt(page)
-            let uri = `${apiPlatformPrefix}/${apiConfig.pageParameterName}?page=${pageInt}`
+            let uri = `${apiPlatformPrefix}/books?${apiConfig.pageParameterName}=${pageInt}`
 
             if (this.pagination.rowsPerPage !== apiConfig.rowsPerPage) {
                 uri += `&${apiConfig.itemsPerPageParameterName}=${this.pagination.rowsPerPage}`
@@ -101,7 +102,8 @@ export default {
 
                     // store data
                     if (undefined !== content['hydra:member']) {
-                        this.books = content['hydra:member']
+                        const zombies = Revivers.bookReviver.parse(content['hydra:member'])
+                        this.books = zombies
                     }
 
                     // manage pagination
@@ -112,7 +114,7 @@ export default {
                     if (undefined !== content['hydra:view']) {
                         ['first', 'last', 'next', 'previous'].forEach(key => {
                             if (undefined !== content['hydra:view'][`hydra:${key}`]) {
-                                const regPage = new RegExp(`/${apiConfig.pageParameterName}=\d*/`)
+                                const regPage = new RegExp(`${apiConfig.pageParameterName}=\\d*`)
                                 const pageParam = content['hydra:view'][`hydra:${key}`].match(regPage)
                                 const pageValue = Number.parseInt(pageParam[0].replace(apiConfig.pageParameterName+'=', ''))
                                 if (key === 'next'

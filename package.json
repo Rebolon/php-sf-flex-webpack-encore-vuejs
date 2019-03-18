@@ -46,7 +46,7 @@
     },
     "dependencies": {
         "@api-platform/admin": "^0.6.2",
-        "@rebolon/json-reviver": "0.0.7",
+        "@rebolon/json-reviver": "^0.0.9",
         "apollo-cache-inmemory": "^1.5.1",
         "apollo-client": "^2.5.1",
         "apollo-link": "^1.2.9",
