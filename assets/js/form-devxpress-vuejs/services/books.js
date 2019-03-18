@@ -20,7 +20,7 @@ const getBooks = {
     pageInfo: {},
 }
 
-const uri = `http://${host}${apiPlatformPrefix}/books`
+const uri = `//${host}${apiPlatformPrefix}/books`
 
 export const dataSource = {
     store: new CustomStore({

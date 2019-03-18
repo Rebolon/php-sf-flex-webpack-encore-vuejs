@@ -26,7 +26,7 @@ export class User {
   }
 
   authenticate(credentials: { login: string; password: string }): Observable<UserModel> {
-    const jwtLoginUri = `http://${host}${loginInfos.uriLogin.jwt}`
+    const jwtLoginUri = `//${host}${loginInfos.uriLogin.jwt}`
 
     // it seems that if you don't type the body, then it won't be sent over POST HTTP
     const formatedCredentials: {} = {}

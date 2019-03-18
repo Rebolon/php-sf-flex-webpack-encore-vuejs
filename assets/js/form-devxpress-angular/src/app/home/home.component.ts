@@ -14,6 +14,6 @@ export class HomeComponent {
   }
 
   getRedirectUri() {
-      return `http://${host}/demo/form/devxpress-angular`
+      return `//${host}/demo/form/devxpress-angular`
   }
 }

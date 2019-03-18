@@ -238,7 +238,7 @@ class DumpJsConfig extends ContainerAwareCommand
             'Js config file creation',
             '=======================',
             'arguments:',
-            'host:port = ' . $host . ':' . $port,
+            'host:port = ' . $host . ($port !== 80 ? ':' . $port : ''),
             'quasarStyle = ' . $quasarStyle,
             'apiPlatform = ' . $apiPlatformOutput(),
         ]);
