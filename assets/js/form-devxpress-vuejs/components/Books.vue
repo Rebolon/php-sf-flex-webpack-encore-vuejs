@@ -26,6 +26,7 @@
 import DxDataGrid, { DxColumn } from "devextreme-vue/data-grid";
 import gql from 'graphql-tag'
 import {dataSource} from "../services/books"
+import * as Revivers from '../../lib/reviver/library/index'
 
 export default {
     name: 'Books',

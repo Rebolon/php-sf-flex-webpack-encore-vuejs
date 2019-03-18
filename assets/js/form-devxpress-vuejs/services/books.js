@@ -1,6 +1,7 @@
 import CustomStore from 'devextreme/data/custom_store';
 import { axiosJsonLd } from '../../lib/axiosMiddlewares'
 import { apiPlatformPrefix, apiConfig, host } from '../../lib/config'
+import * as Revivers from '../../lib/reviver/library/index'
 
 const pagination = {
     endCursor: '',
@@ -29,14 +30,14 @@ export const dataSource = {
 
             // @todo not sure it's a good algo: skip maybe the number of rows wheras apiPlatform expect a pageNumber
             // const nextPage = loadOptions.skip > 0 ? (loadOptions.skip/loadOptions.take)+1 : 1
-            params += `page=${loadOptions.skip || 1}`;
+            params += `${apiConfig.pageParameterName}=${loadOptions.skip || 1}`;
 
             if (loadOptions.take || loadOptions.itemsPerPage) {
                 params += `&${apiConfig.itemsPerPageParameterName}=${loadOptions.take || loadOptions.itemsPerPage}`;
             }
 
             if(loadOptions.sort) {
-                params += `&orderby=${loadOptions.sort[0].selector}`;
+                params += `&${apiConfig.orderParameterName}=${loadOptions.sort[0].selector}`;
                 if(loadOptions.sort[0].desc) {
                     params += ' desc';
                 }
@@ -78,7 +79,7 @@ export default {
 
     getListByRest(page = 1) {
         const pageInt = Number.parseInt(page)
-        let uri = `${apiPlatformPrefix}/books?page=${pageInt}`
+        let uri = `${apiPlatformPrefix}/books?${apiConfig.pageParameterName}=${pageInt}`
 
         if (pagination.rowsPerPage !== apiConfig.rowsPerPage) {
             uri += `&${apiConfig.itemsPerPageParameterName}=${pagination.rowsPerPage}`
@@ -95,7 +96,8 @@ export default {
 
                 // store data
                 if (undefined !== content['hydra:member']) {
-                    this.books = content['hydra:member']
+                    const zombies = Revivers.bookReviver.parse(content['hydra:member'])
+                    this.books = zombies
                 }
 
                 // manage pagination
@@ -106,8 +108,9 @@ export default {
                 if (undefined !== content['hydra:view']) {
                     ['first', 'last', 'next', 'previous'].forEach(key => {
                         if (undefined !== content['hydra:view'][`hydra:${key}`]) {
-                            const pageParam = content['hydra:view'][`hydra:${key}`].match(/page=\d*/)
-                            const pageValue = Number.parseInt(pageParam[0].replace('page=', ''))
+                            const regPage = new RegExp(`${apiConfig.pageParameterName}=\\d*`)
+                            const pageParam = content['hydra:view'][`hydra:${key}`].match(regPage)
+                            const pageValue = Number.parseInt(pageParam[0].replace(`${apiConfig.pageParameterName}=`, ''))
                             if (key === 'next'
                                 && pageValue !== pagination.page) {
                                 pagination.page += 1

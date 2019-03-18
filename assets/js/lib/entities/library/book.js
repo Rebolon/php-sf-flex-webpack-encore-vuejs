@@ -1,9 +1,5 @@
-import {EntityAbstract} from "../abstract";
-
-export class Book extends EntityAbstract {
+export class Book{
     constructor() {
-        super()
-
         this.id
         this.title
         this.description

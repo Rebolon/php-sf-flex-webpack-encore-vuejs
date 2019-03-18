@@ -1,9 +1,5 @@
-import {EntityAbstract} from "../abstract";
-
-export class Editors extends EntityAbstract {
+export class Editors {
     constructor() {
-        super()
-
         this.id
         this.editor
         this.publicationDate
