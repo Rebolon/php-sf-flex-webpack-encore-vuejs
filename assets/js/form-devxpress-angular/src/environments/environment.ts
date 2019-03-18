@@ -8,6 +8,6 @@ export const environment = {
   production: false,
   useMock : false,
   rest: {
-      baseUrl: `http://${host}${apiPlatformPrefix}/`
+      baseUrl: `//${host}${apiPlatformPrefix}/`
   },
 };

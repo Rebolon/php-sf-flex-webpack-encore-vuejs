@@ -1,4 +1,4 @@
-export const host = '{{ host }}:{{ port }}'
+export const host = '{{ host }}{% if port != 80 %}:{{ port }}{% endif %}'
 export const env = '{{ env }}'
 export function isProduction () {
     return env === 'prod'
