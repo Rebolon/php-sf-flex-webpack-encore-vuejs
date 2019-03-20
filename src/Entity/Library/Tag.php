@@ -6,18 +6,31 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
  *     iri="http://schema.org/Tags",
- *     attributes={"access_control"="is_granted('ROLE_USER')"}
+ *     attributes={
+ *          "normalization_context"={
+ *              "groups"={"book_detail_read"},
+ *              "enable_max_depth"=true
+ *          },
+ *          "denormalization_context"={
+ *              "groups"={"book_detail_write"}
+ *          }
+ *     }
  * )
  * @ApiFilter(OrderFilter::class, properties={"id", "name"}, arguments={"orderParameterName"="order"})
+ * @ApiFilter(SearchFilter::class, properties={"id": "exact", "name": "istart"})
+ * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false}))
  *
  * @ORM\Entity
  */
@@ -48,8 +61,11 @@ class Tag implements LibraryInterface
      *      iri="http://pending.schema.org/ComicStory"
      * )
      * @ApiSubresource(maxDepth=1)
+     * @MaxDepth(1) // i force MaxDepth here because the above code doesn't seems to be used as expected (a mis comprehension on my side)
+     * // If i want detail on books node instead of just IRI i need to set the group used in normalization context
+     * @Groups({"book_detail_read"})
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Library\Book", mappedBy="tags", orphanRemoval=true)
+     * @ORM\ManyToMany(targetEntity="App\Entity\Library\Book", mappedBy="tags", orphanRemoval=false)
      */
     private $books;
 

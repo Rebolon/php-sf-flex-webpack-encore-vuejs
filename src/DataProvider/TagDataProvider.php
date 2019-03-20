@@ -1,14 +1,14 @@
 <?php
 namespace App\DataProvider;
 
-
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryResultCollectionExtensionInterface;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGenerator;
 use ApiPlatform\Core\DataProvider\CollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Api\Config;
 use App\Entity\Library\Tag;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Psr\Log\LoggerInterface;
 
 class TagDataProvider implements ItemDataProviderInterface, CollectionDataProviderInterface, RestrictedDataProviderInterface
 {
@@ -22,10 +22,22 @@ class TagDataProvider implements ItemDataProviderInterface, CollectionDataProvid
      */
     protected $apiPlatformConfig = [];
 
-    public function __construct(ManagerRegistry $managerRegistry, Config $apiPlatformConfig)
+    /**
+     * @var iterable
+     */
+    protected $itemExtensions = [];
+
+    /**
+     * @var iterable
+     */
+    protected $collectionExtensions = [];
+
+    public function __construct(ManagerRegistry $managerRegistry, Config $apiPlatformConfig, iterable $itemExtensions, iterable $collectionExtensions)
     {
         $this->managerRegistry = $managerRegistry;
         $this->apiPlatformConfig = $apiPlatformConfig;
+        $this->itemExtensions = $itemExtensions;
+        $this->collectionExtensions = $collectionExtensions;
     }
 
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
@@ -43,31 +55,19 @@ class TagDataProvider implements ItemDataProviderInterface, CollectionDataProvid
 
     public function getCollection(string $resourceClass, string $operationName = null, array $context = [])
     {
-        $em = $this->managerRegistry->getRepository(Tag::class);
-
-        // useless if ApiResource has no pagination
-        $filters = array_key_exists('filters', $context) ? $context['filters'] : null;
-        if ($filters) {
-            $orderKey = $this->apiPlatformConfig->getNameParameterOrder();
-            $limitKey = $this->apiPlatformConfig->getNameParameterPaginationItemsPerPage();
-            $pageKey = $this->apiPlatformConfig->getNameParameterPaginationPage();
-
-            $orderBy = array_key_exists($orderKey, $filters) ? $filters[$orderKey] : null;
-            $limit = array_key_exists($limitKey, $filters) ? $filters[$limitKey] : null;
-            $offset = array_key_exists($pageKey, $filters) ? $filters[$pageKey] : null;
-            $resTag = $em->findBy([], $orderBy, $limit, $offset);
-        } else {
-            $resTag = $em->findAll();
-        }
-
         $tags = [];
+        $em = $this->managerRegistry->getRepository(Tag::class);
+        $qb = $em->createQueryBuilder('t');
+        $queryNameGenerator = new QueryNameGenerator();
 
-        foreach ($resTag as $row) {
-            $tag = new Tag();
-            $tag->setId($row->getId())
-                ->setName($row->getName());
-
-            $tags[] = $tag;
+        foreach ($this->collectionExtensions as $extensions) {
+            foreach ($extensions as $extension) {
+                $extension->applyToCollection($qb, $queryNameGenerator, $resourceClass, $operationName, $context);
+                if ($extension instanceof QueryResultCollectionExtensionInterface
+                    && $extension->supportsResult($resourceClass, $operationName, $context)) {
+                    $tags = $extension->getResult($qb, $resourceClass, $operationName, $context);
+                }
+            }
         }
 
         return $tags;

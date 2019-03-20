@@ -8,6 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * Class Ping
  * @ApiResource(
+ *     attributes={"access_control"="is_granted('ROLE_USER')", "status_code"=403},
  *     itemOperations={
  *         "get"={"method"="GET"}
  *     },
@@ -15,9 +16,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          "get"={"method"="GET"}
  *     }
  * )
- * @package App\Entity\Ping
+ * @package App\Entity\PingSecured
  */
-class Ping
+class PingSecured
 {
     /**
      * @Assert\Uuid()

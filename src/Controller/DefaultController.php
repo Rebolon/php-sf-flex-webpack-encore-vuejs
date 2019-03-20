@@ -47,7 +47,7 @@ class DefaultController extends AbstractController
         $demoRoutes['Api-platform: rest'] = $router->generate('api_entrypoint');
         $demoRoutes['Api-platform: graphql'] = $router->generate('api_graphql_entrypoint');
         $demoRoutes['Api-platform: admin react'] = $router->generate('app_apiplatformadminreact_index');
-        $demoRoutes['Easy admin'] = $router->generate('admin');
+        $demoRoutes['Easy admin'] = $router->generate('easyadmin');
 
         if (!$hasPemCertificate) {
             $demoRoutes['Basic: HttpPlug demo'] = [

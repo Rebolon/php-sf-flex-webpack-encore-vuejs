@@ -117,5 +117,9 @@ services:
     Symfony\Component\Security\Core\User\InMemoryUserProvider:
         alias: security.user.provider.concrete.in_memory
 
-    App\Api\Config: ~
-    App\DataProvider\PingDataProvider: ~
+    App\DataProvider\TagDataProvider:
+        arguments:
+            - '@Doctrine\Common\Persistence\ManagerRegistry'
+            - '@App\Api\Config'
+            - $itemExtensions: !tagged api_platform.doctrine.orm.query_extension.item
+            - $collectionExtensions: !tagged api_platform.doctrine.orm.query_extension.collection
