@@ -42,9 +42,9 @@ class PingSecured
 
     /**
      * @param int $id
-     * @return Ping
+     * @return self
      */
-    public function setId(int $id): Ping
+    public function setId(int $id): self
     {
         $this->id = $id;
 

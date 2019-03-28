@@ -6,6 +6,7 @@ use App\Entity\Library\Author;
 use App\Entity\Library\Book;
 use App\Entity\Library\Editor;
 use App\Entity\Library\Job;
+use App\Entity\Library\Reader;
 use App\Entity\Library\Serie;
 use App\Entity\Library\Tag;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -57,6 +58,11 @@ class AppFixtures extends Fixture
      */
     public function load(ObjectManager $manager)
     {
+        // add main reader
+        $reader = new Reader($this->logger);
+        $reader->setFirstname('John')
+            ->setLastname('Doe');
+
         // add job (indexed are 0->writer, 1->cartoonist, 2->color)
         foreach (['writer', 'cartoonist', 'color', ] as $jobTitle) {
             $job = (new Job())
@@ -91,12 +97,22 @@ class AppFixtures extends Fixture
                 $this->addAuthor($row, $book, $dbh, $manager);
                 $this->addEditor($row, $book, $dbh, $manager);
 
+                $reader->addMyLibrary($book);
+
                 $manager->persist($book);
 
                 $manager->flush();
             } catch (\Exception $e) {
                 throw $e;
             }
+        }
+
+        try {
+            $manager->persist($reader);
+
+            $manager->flush();
+        } catch (\Exception $e) {
+            throw $e;
         }
     }
 

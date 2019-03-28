@@ -1,92 +1,59 @@
 <?php
-namespace App\Entity\Library;
+namespace App\Entity\Api\Library;
 
-use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
+use App\Entity\Library\LibraryInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
- * @ORM\Table()
+ * @ApiResource(
+ *     attributes={"access_control"="is_granted('ROLE_USER')"}
+ * )
  */
 class Loan implements LibraryInterface
 {
     /**
+     * @ApiProperty(identifier=true)
      * @Groups({"user_read", "loan_read"})
-     *
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     *
-     * @Assert\Uuid()
      */
     private $id;
 
     /**
-     * @ORM\ManyToOne(
-     *     targetEntity="App\Entity\Library\Book",
-     *     inversedBy="authors",
-     *     fetch="EAGER",
-     *     cascade={"remove"}
-     * )
-     * @ORM\JoinColumn(name="book_id", referencedColumnName="id")
+     * @ApiSubresource(maxDepth=1)
+     * @Groups({"user_read", "loan_read", "loan_write"})
      */
     private $book;
 
     /**
+     * @ApiSubresource(maxDepth=1)
      * @Groups({"user_read", "loan_read", "loan_write"})
-     *
-     * @ORM\ManyToOne(
-     *     targetEntity="App\Entity\Library\Reader",
-     *     fetch="EAGER"
-     * )
-     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
-     *
-     * @Assert\NotBlank()
      */
     private $owner;
 
     /**
+     * @ApiSubresource(maxDepth=1)
      * @Groups({"user_read", "loan_read", "loan_write"})
-     *
-     * @ORM\ManyToOne(
-     *     targetEntity="App\Entity\Library\Reader",
-     *     fetch="EAGER"
-     * )
-     * @ORM\JoinColumn(name="loaner_id", referencedColumnName="id")
-     *
-     * @Assert\NotBlank()
      */
     private $loaner;
 
     /**
+     * @ApiSubresource()
      * @Groups({"user_read", "loan_read", "loan_write"})
-     *
-     * @Assert\DateTime()
      */
     private $startLoan;
 
     /**
+     * @ApiSubresource()
      * @Groups({"user_read", "loan_read", "loan_write"})
-     *
-     * @Assert\DateTime()
-     * @Assert\Blank()
      */
     private $endLoan;
 
     /**
-     * Loan constructor.
-     * @throws \Exception
-     */
-    public function __construct()
-    {
-        $this->setStartLoan(new \DateTime());
-    }
-
-    /**
      * mandatory for api-platform to get a valid IRI
      *
-     * @return int|null
+     * @return int
      */
     public function getId(): ?int
     {
@@ -133,7 +100,7 @@ class Loan implements LibraryInterface
 
     /**
      * @param Reader $reader
-     * @return self
+     * @return $this
      */
     public function setOwner(Reader $reader): self
     {
@@ -152,7 +119,7 @@ class Loan implements LibraryInterface
 
     /**
      * @param Reader $reader
-     * @return self
+     * @return $this
      */
     public function setLoaner(Reader $reader): self
     {
@@ -162,7 +129,7 @@ class Loan implements LibraryInterface
     }
 
     /**
-     * @return \DateTime|null
+     * @return mixed
      */
     public function getStartLoan(): ?\DateTime
     {
@@ -181,7 +148,7 @@ class Loan implements LibraryInterface
     }
 
     /**
-     * @return \DateTime|null
+     * @return \DateTime
      */
     public function getEndLoan(): ?\DateTime
     {
@@ -197,19 +164,5 @@ class Loan implements LibraryInterface
         $this->endLoan = $endLoan;
 
         return $this;
-    }
-
-    /**
-     * Mandatory for EasyAdminBundle to build the select box
-     * It also helps to build a footprint of the object, even if with the Serializer component it might be more pertinent
-     *
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->getOwner()->__toString() . ' loan ' . $this->getBook()->getTitle() . ' to '
-            . $this->getLoaner()->__toString() . ' at ' . $this->getStartLoan()->format('d/m/Y')
-            . ($this->getEndLoan() ? ' and has been returned on ' . $this->getStartLoan()->format('d/m/Y')
-                : ' and has not been returned');
     }
 }

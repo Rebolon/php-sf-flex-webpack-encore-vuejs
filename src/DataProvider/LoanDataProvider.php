@@ -7,11 +7,10 @@ use ApiPlatform\Core\DataProvider\CollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Api\Config;
-use App\Entity\Api\Library\Tagy;
-use App\Entity\Library\Tag;
+use App\Entity\Api\Library\Loan;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
-class TagDataProvider implements ItemDataProviderInterface, CollectionDataProviderInterface, RestrictedDataProviderInterface
+class LoanDataProvider implements ItemDataProviderInterface, CollectionDataProviderInterface, RestrictedDataProviderInterface
 {
     /**
      * @var ManagerRegistry
@@ -43,40 +42,42 @@ class TagDataProvider implements ItemDataProviderInterface, CollectionDataProvid
 
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
     {
-        return Tag::class === $resourceClass;
+        return Loan::class === $resourceClass;
     }
 
     public function getItem(string $resourceClass, $id, string $operationName = null, array $context = [])
     {
-        $em = $this->managerRegistry->getRepository(Tag::class);
-        $tag = $em->find($id);
+        $em = $this->managerRegistry->getRepository(Loan::class);
 
-        return $tag;
+        /**
+         * @todo find a way to retreive only props specified in uri if they exists => Extensions might have helped us but they works only if entity are both orm & apiPlatform
+         */
+
+        $item = $em->find($id);
+
+        return $item;
     }
 
     public function getCollection(string $resourceClass, string $operationName = null, array $context = [])
     {
-        // debug for tagy: so api works but it doesn't take care of Tagy definition: it doesn't have book property
-        if (Tagy::class === $resourceClass) {
-            $resourceClass = Tag::class;
-        }
-
-        $tags = [];
-        $em = $this->managerRegistry->getRepository(Tag::class);
-        $qb = $em->createQueryBuilder('t');
+        $items = [];
+        $em = $this->managerRegistry->getRepository(\App\Entity\Library\Loan::class);
+        $qb = $em->createQueryBuilder('l');
         $queryNameGenerator = new QueryNameGenerator();
 
-        foreach ($this->collectionExtensions as $extensions) {
-            foreach ($extensions as $extension) {
-                $extension->applyToCollection($qb, $queryNameGenerator, $resourceClass, $operationName, $context);
-                if ($extension instanceof QueryResultCollectionExtensionInterface
-                    && $extension->supportsResult($resourceClass, $operationName, $context)) {
-                    $tags = $extension->getResult($qb, $resourceClass, $operationName, $context);
-                }
+        /**
+         * @todo manage extensions sort, search, pagination, at least
+         */
+
+        foreach ($this->collectionExtensions as $extension) {
+            $extension->applyToCollection($qb, $queryNameGenerator, $resourceClass, $operationName, $context);
+            if ($extension instanceof QueryResultCollectionExtensionInterface
+                && $extension->supportsResult($resourceClass, $operationName, $context)) {
+                $items = $extension->getResult($qb, $resourceClass, $operationName, $context);
             }
         }
 
-        return $tags;
+        return $items;
     }
 
 }

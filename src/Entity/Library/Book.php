@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Repository\BookRepository;
 
 /**
  * @ApiResource(
@@ -55,6 +56,8 @@ class Book implements LibraryInterface
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Assert\Uuid()
      */
     private $id;
 
@@ -166,7 +169,7 @@ class Book implements LibraryInterface
     /**
      * id can be null until flush is done
      *
-     * @return int
+     * @return int|null
      */
     public function getId(): ?int
     {
@@ -175,9 +178,9 @@ class Book implements LibraryInterface
 
     /**
      * @param mixed $id
-     * @return Book
+     * @return self
      */
-    public function setId($id): Book
+    public function setId($id): self
     {
         $this->id = $id;
 
@@ -185,7 +188,7 @@ class Book implements LibraryInterface
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
     public function getTitle(): ?string
     {
@@ -194,9 +197,9 @@ class Book implements LibraryInterface
 
     /**
      * @param mixed $title
-     * @return Book
+     * @return self
      */
-    public function setTitle($title): Book
+    public function setTitle($title): self
     {
         $this->title = $title;
 
@@ -204,7 +207,7 @@ class Book implements LibraryInterface
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
     public function getDescription(): ?string
     {
@@ -213,9 +216,9 @@ class Book implements LibraryInterface
 
     /**
      * @param mixed $description
-     * @return Book
+     * @return self
      */
-    public function setDescription($description): Book
+    public function setDescription($description): self
     {
         $this->description = $description;
 
@@ -223,7 +226,7 @@ class Book implements LibraryInterface
     }
 
     /**
-     * @return mixed
+     * @return int|null
      */
     public function getIndexInSerie(): ?int
     {
@@ -232,9 +235,9 @@ class Book implements LibraryInterface
 
     /**
      * @param mixed $indexInSerie
-     * @return Book
+     * @return self
      */
-    public function setIndexInSerie($indexInSerie): Book
+    public function setIndexInSerie($indexInSerie): self
     {
         $this->indexInSerie = $indexInSerie;
 
@@ -251,9 +254,9 @@ class Book implements LibraryInterface
 
     /**
      * @param ArrayCollection $tags
-     * @return Book
+     * @return self
      */
-    public function setTags(ArrayCollection $tags): Book
+    public function setTags(ArrayCollection $tags): self
     {
         $this->tags = $tags;
 
@@ -262,9 +265,9 @@ class Book implements LibraryInterface
 
     /**
      * @param Tag $tag
-     * @return Book
+     * @return self
      */
-    public function addTag(Tag $tag): Book
+    public function addTag(Tag $tag): self
     {
         $this->tags[] = $tag;
 
@@ -281,9 +284,9 @@ class Book implements LibraryInterface
 
     /**
      * @param ArrayCollection $reviews
-     * @return Book
+     * @return self
      */
-    public function setReviews(ArrayCollection $reviews): Book
+    public function setReviews(ArrayCollection $reviews): self
     {
         $this->reviews = $reviews;
 
@@ -292,9 +295,9 @@ class Book implements LibraryInterface
 
     /**
      * @param Review $review
-     * @return Book
+     * @return self
      */
-    public function addReview(Review $review): Book
+    public function addReview(Review $review): self
     {
         $this->reviews[] = $review;
 
@@ -302,7 +305,7 @@ class Book implements LibraryInterface
     }
 
     /**
-     * @return Serie
+     * @return Serie|null
      */
     public function getSerie(): ?Serie
     {
@@ -312,9 +315,9 @@ class Book implements LibraryInterface
     /**
      * @param Serie $serie
      *
-     * @return Book
+     * @return self
      */
-    public function setSerie(Serie $serie): Book
+    public function setSerie(Serie $serie): self
     {
         $this->serie = $serie;
 
@@ -324,9 +327,9 @@ class Book implements LibraryInterface
     /**
      * @param ArrayCollection|ArrayCollection $projects
      *
-     * @return Book
+     * @return self
      */
-    public function setAuthors($projects): Book
+    public function setAuthors($projects): self
     {
         $this->authors->clear();
 
@@ -340,9 +343,9 @@ class Book implements LibraryInterface
     /**
      * @param ProjectBookCreation $project
      *
-     * @return Book
+     * @return self
      */
-    public function addAuthors(ProjectBookCreation $project): Book
+    public function addAuthors(ProjectBookCreation $project): self
     {
         // Take care that contains will just do an in_array strict check
         if ($this->hasProjectBookCreation($project)) {
@@ -358,9 +361,9 @@ class Book implements LibraryInterface
     /**
      * @param Author $author
      * @param Job $job
-     * @return Book
+     * @return self
      */
-    public function addAuthor(Author $author, Job $job): Book
+    public function addAuthor(Author $author, Job $job): self
     {
         $project = (new ProjectBookCreation())
             ->setBook($this)
@@ -385,9 +388,9 @@ class Book implements LibraryInterface
 
     /**
      * @param array|ArrayCollection $projects
-     * @return Book
+     * @return self
      */
-    public function setEditors($projects): Book
+    public function setEditors($projects): self
     {
         $this->editors->clear();
 
@@ -400,9 +403,9 @@ class Book implements LibraryInterface
 
     /**
      * @param ProjectBookEdition $project
-     * @return Book
+     * @return self
      */
-    public function addEditors(ProjectBookEdition $project): Book
+    public function addEditors(ProjectBookEdition $project): self
     {
         if ($this->hasProjectBookEdition($project)) {
             return $this;
@@ -419,9 +422,9 @@ class Book implements LibraryInterface
      * @param \DateTime $date
      * @param string $isbn
      * @param string $collection
-     * @return $this
+     * @return self
      */
-    public function addEditor(Editor $editor, \DateTime $date, $isbn = null, $collection = null): Book
+    public function addEditor(Editor $editor, \DateTime $date, $isbn = null, $collection = null): self
     {
         $project = (new ProjectBookEdition($this->logger))
             ->setBook($this)
@@ -464,6 +467,7 @@ class Book implements LibraryInterface
      */
     protected function hasProjectBookCreation(ProjectBookCreation $project)
     {
+        // @todo check performance: it may be better to do a DQL to check instead of doctrine call to properties that may do new BD call
         foreach ($this->authors as $projectToCheck) {
             if (
                 (
@@ -500,6 +504,7 @@ class Book implements LibraryInterface
      */
     protected function hasProjectBookEdition(ProjectBookEdition $project)
     {
+        // @todo check performance: it may be better to do a DQL to check instead of doctrine call to properties that may do new BD call
         foreach ($this->editors as $projectToCheck) {
             if (
                 (!is_null($project->getEditor()->getId())

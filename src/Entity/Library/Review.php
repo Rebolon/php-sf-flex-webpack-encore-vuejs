@@ -26,6 +26,8 @@ class Review implements LibraryInterface
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Assert\Uuid()
      */
     private $id;
 
@@ -51,6 +53,8 @@ class Review implements LibraryInterface
     private $body;
 
     /**
+     * @todo change username by user and map ManyToOne on Reader => only user that has read the book can set a review ;-)
+     *
      * @ApiProperty(
      *     iri="http://schema.org/givenName"
      * )
@@ -86,7 +90,7 @@ class Review implements LibraryInterface
 
     /**
      * id can be null until flush is done
-     * @return int
+     * @return int|null
      */
     public function getId(): ?int
     {
@@ -95,9 +99,9 @@ class Review implements LibraryInterface
 
     /**
      * @param mixed $id
-     * @return Review
+     * @return self
      */
-    public function setId($id): Review
+    public function setId($id): self
     {
         $this->id = $id;
 
@@ -105,7 +109,7 @@ class Review implements LibraryInterface
     }
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getRating(): ?int
     {
@@ -114,9 +118,9 @@ class Review implements LibraryInterface
 
     /**
      * @param mixed $rating
-     * @return Review
+     * @return self
      */
-    public function setRating($rating): Review
+    public function setRating($rating): self
     {
         $this->rating = $rating;
 
@@ -124,7 +128,7 @@ class Review implements LibraryInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getBody(): ?string
     {
@@ -133,9 +137,9 @@ class Review implements LibraryInterface
 
     /**
      * @param mixed $body
-     * @return Review
+     * @return self
      */
-    public function setBody($body): Review
+    public function setBody($body): self
     {
         $this->body = $body;
 
@@ -143,7 +147,7 @@ class Review implements LibraryInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getUsername(): ?string
     {
@@ -152,9 +156,9 @@ class Review implements LibraryInterface
 
     /**
      * @param mixed $username
-     * @return Review
+     * @return self
      */
-    public function setUsername($username): Review
+    public function setUsername($username): self
     {
         $this->username = $username;
 
@@ -162,7 +166,7 @@ class Review implements LibraryInterface
     }
 
     /**
-     * @return \DateTime
+     * @return \DateTime|null
      */
     public function getPublicationDate(): ?\DateTime
     {
@@ -171,9 +175,9 @@ class Review implements LibraryInterface
 
     /**
      * @param mixed $publicationDate
-     * @return Review
+     * @return self
      */
-    public function setPublicationDate($publicationDate): Review
+    public function setPublicationDate($publicationDate): self
     {
         $this->publicationDate = $publicationDate;
 
@@ -181,7 +185,7 @@ class Review implements LibraryInterface
     }
 
     /**
-     * @return Book
+     * @return Book|null
      */
     public function getBook(): ?Book
     {
@@ -192,9 +196,9 @@ class Review implements LibraryInterface
      * Mandatory for EasyAdminBundle (if i don't want to do custom dev)
      *
      * @param Book $book
-     * @return Review
+     * @return self
      */
-    public function setBook(Book $book): Review
+    public function setBook(Book $book): self
     {
         $this->book = $book;
 

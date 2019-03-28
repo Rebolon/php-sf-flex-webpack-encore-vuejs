@@ -121,5 +121,19 @@ services:
         arguments:
             - '@Doctrine\Common\Persistence\ManagerRegistry'
             - '@App\Api\Config'
-            - $itemExtensions: !tagged api_platform.doctrine.orm.query_extension.item
-            - $collectionExtensions: !tagged api_platform.doctrine.orm.query_extension.collection
+            - !tagged api_platform.doctrine.orm.query_extension.item
+            - !tagged api_platform.doctrine.orm.query_extension.collection
+            -
+    App\DataProvider\LoanDataProvider:
+        arguments:
+            - '@Doctrine\Common\Persistence\ManagerRegistry'
+            - '@App\Api\Config'
+            - !tagged api_platform.doctrine.orm.query_extension.item
+            - !tagged api_platform.doctrine.orm.query_extension.collection
+            -
+    App\DataProvider\ReaderDataProvider:
+        arguments:
+            - '@Doctrine\Common\Persistence\ManagerRegistry'
+            - '@App\Api\Config'
+            - !tagged api_platform.doctrine.orm.query_extension.item
+            - !tagged api_platform.doctrine.orm.query_extension.collection

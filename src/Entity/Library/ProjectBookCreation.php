@@ -7,6 +7,7 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
@@ -25,6 +26,8 @@ class ProjectBookCreation implements LibraryInterface
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Assert\Uuid()
      */
     private $id;
 
@@ -65,7 +68,7 @@ class ProjectBookCreation implements LibraryInterface
     /**
      * mandatory for api-platform to get a valid IRI
      *
-     * @return int
+     * @return int|null
      */
     public function getId(): ?int
     {
@@ -74,9 +77,9 @@ class ProjectBookCreation implements LibraryInterface
 
     /**
      * @param mixed $id
-     * @return ProjectBookCreation
+     * @return self
      */
-    public function setId($id): ProjectBookCreation
+    public function setId($id): self
     {
         $this->id = $id;
 
@@ -93,9 +96,9 @@ class ProjectBookCreation implements LibraryInterface
 
     /**
      * @param Job $role
-     * @return ProjectBookCreation
+     * @return self
      */
-    public function setRole(Job $role): ProjectBookCreation
+    public function setRole(Job $role): self
     {
         $this->role = $role;
 
@@ -103,7 +106,7 @@ class ProjectBookCreation implements LibraryInterface
     }
 
     /**
-     * @return Book
+     * @return Book|null
      */
     public function getBook(): ?Book
     {
@@ -112,9 +115,9 @@ class ProjectBookCreation implements LibraryInterface
 
     /**
      * @param Book $book
-     * @return $this
+     * @return self
      */
-    public function setBook(Book $book): ProjectBookCreation
+    public function setBook(Book $book): self
     {
         $this->book = $book;
 
@@ -131,9 +134,9 @@ class ProjectBookCreation implements LibraryInterface
 
     /**
      * @param Author $author
-     * @return $this
+     * @return self
      */
-    public function setAuthor(Author $author): ProjectBookCreation
+    public function setAuthor(Author $author): self
     {
         $this->author = $author;
 

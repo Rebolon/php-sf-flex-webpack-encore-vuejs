@@ -23,6 +23,8 @@ class Job implements LibraryInterface
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Assert\Uuid()
      */
     private $id;
 
@@ -41,7 +43,7 @@ class Job implements LibraryInterface
 
     /**
      * id can be null until flush is done
-     * @return int
+     * @return int|null
      */
     public function getId(): ?int
     {
@@ -50,9 +52,9 @@ class Job implements LibraryInterface
 
     /**
      * @param mixed $id
-     * @return Job
+     * @return self
      */
-    public function setId($id): Job
+    public function setId($id): self
     {
         $this->id = $id;
 
@@ -60,7 +62,7 @@ class Job implements LibraryInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getTranslationKey(): ?string
     {
@@ -69,9 +71,9 @@ class Job implements LibraryInterface
 
     /**
      * @param mixed $translationKey
-     * @return Job
+     * @return self
      */
-    public function setTranslationKey($translationKey): Job
+    public function setTranslationKey($translationKey): self
     {
         $this->translationKey = $translationKey;
 
@@ -86,6 +88,6 @@ class Job implements LibraryInterface
      */
     public function __toString(): string
     {
-        return $this->getTranslationKey() ? $this->getTranslationKey() : '';
+        return (string) $this->getTranslationKey();
     }
 }

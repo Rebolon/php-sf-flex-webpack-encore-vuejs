@@ -32,6 +32,8 @@ class Author implements LibraryInterface
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Assert\Uuid()
      */
     private $id;
 
@@ -72,7 +74,7 @@ class Author implements LibraryInterface
 
     /**
      * id can be null until flush is done
-     * @return int
+     * @return int|null
      */
     public function getId(): ?int
     {
@@ -81,9 +83,9 @@ class Author implements LibraryInterface
 
     /**
      * @param mixed $id
-     * @return Author
+     * @return self
      */
-    public function setId($id): Author
+    public function setId($id): self
     {
         $this->id = $id;
 
@@ -91,7 +93,7 @@ class Author implements LibraryInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getFirstname(): ?string
     {
@@ -100,9 +102,9 @@ class Author implements LibraryInterface
 
     /**
      * @param mixed $firstname
-     * @return Author
+     * @return self
      */
-    public function setFirstname($firstname): Author
+    public function setFirstname($firstname): self
     {
         $this->firstname = $firstname;
 
@@ -110,7 +112,7 @@ class Author implements LibraryInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getLastname(): ?string
     {
@@ -119,9 +121,9 @@ class Author implements LibraryInterface
 
     /**
      * @param mixed $lastname
-     * @return Author
+     * @return self
      */
-    public function setLastname($lastname): Author
+    public function setLastname($lastname): self
     {
         $this->lastname = $lastname;
 
@@ -141,9 +143,9 @@ class Author implements LibraryInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return trim($this->getFirstname() . ' ' . $this->getLastname());
     }
@@ -156,6 +158,6 @@ class Author implements LibraryInterface
      */
     public function __toString(): string
     {
-        return $this->getName();
+        return (string) $this->getName();
     }
 }

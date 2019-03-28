@@ -32,6 +32,8 @@ class ProjectBookEdition implements LibraryInterface
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Assert\Uuid()
      */
     private $id;
 
@@ -101,7 +103,7 @@ class ProjectBookEdition implements LibraryInterface
     /**
      * mandatory for api-platform to get a valid IRI
      *
-     * @return int
+     * @return int|null
      */
     public function getId(): ?int
     {
@@ -110,9 +112,9 @@ class ProjectBookEdition implements LibraryInterface
 
     /**
      * @param mixed $id
-     * @return ProjectBookEdition
+     * @return self
      */
-    public function setId($id): ProjectBookEdition
+    public function setId($id): self
     {
         $this->id = $id;
 
@@ -129,9 +131,9 @@ class ProjectBookEdition implements LibraryInterface
 
     /**
      * @param mixed $publicationDate
-     * @return ProjectBookEdition
+     * @return self
      */
-    public function setPublicationDate($publicationDate): ProjectBookEdition
+    public function setPublicationDate($publicationDate): self
     {
         if (is_string($publicationDate)) {
             $dateString = $publicationDate;
@@ -158,7 +160,7 @@ class ProjectBookEdition implements LibraryInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getCollection(): ?string
     {
@@ -167,9 +169,9 @@ class ProjectBookEdition implements LibraryInterface
 
     /**
      * @param mixed $collection
-     * @return ProjectBookEdition
+     * @return self
      */
-    public function setCollection($collection): ProjectBookEdition
+    public function setCollection($collection): self
     {
         $this->collection = $collection;
 
@@ -177,7 +179,7 @@ class ProjectBookEdition implements LibraryInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getIsbn(): ?string
     {
@@ -187,9 +189,9 @@ class ProjectBookEdition implements LibraryInterface
     /**
      * @param mixed $isbn
      *
-     * @return ProjectBookEdition
+     * @return self
      */
-    public function setIsbn($isbn): ProjectBookEdition
+    public function setIsbn($isbn): self
     {
         $this->isbn = $isbn;
 
@@ -206,9 +208,9 @@ class ProjectBookEdition implements LibraryInterface
 
     /**
      * @param Editor $editor
-     * @return $this
+     * @return self
      */
-    public function setEditor(Editor $editor): ProjectBookEdition
+    public function setEditor(Editor $editor): self
     {
         $this->editor = $editor;
 
@@ -216,7 +218,7 @@ class ProjectBookEdition implements LibraryInterface
     }
 
     /**
-     * @return Book
+     * @return Book|null
      */
     public function getBook(): ?Book
     {
@@ -225,9 +227,9 @@ class ProjectBookEdition implements LibraryInterface
 
     /**
      * @param Book $book
-     * @return $this
+     * @return self
      */
-    public function setBook(Book $book): ProjectBookEdition
+    public function setBook(Book $book): self
     {
         $this->book = $book;
 

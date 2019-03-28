@@ -30,6 +30,8 @@ class Editor implements LibraryInterface
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Assert\Uuid()
      */
     private $id;
 
@@ -61,7 +63,7 @@ class Editor implements LibraryInterface
 
     /**
      * id can be null until flush is done
-     * @return int
+     * @return int|null
      */
     public function getId(): ?int
     {
@@ -70,9 +72,9 @@ class Editor implements LibraryInterface
 
     /**
      * @param mixed $id
-     * @return Editor
+     * @return self
      */
-    public function setId($id): Editor
+    public function setId($id): self
     {
         $this->id = $id;
 
@@ -80,7 +82,7 @@ class Editor implements LibraryInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getName(): ?string
     {
@@ -89,9 +91,9 @@ class Editor implements LibraryInterface
 
     /**
      * @param mixed $name
-     * @return Editor
+     * @return self
      */
-    public function setName($name): Editor
+    public function setName($name): self
     {
         $this->name = $name;
 
@@ -118,6 +120,6 @@ class Editor implements LibraryInterface
      */
     public function __toString(): string
     {
-        return $this->getName() ? $this->getName() : '';
+        return (string) $this->getName();
     }
 }

@@ -42,6 +42,8 @@ class Tag implements LibraryInterface
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Assert\Uuid()
      */
     private $id;
 
@@ -79,7 +81,7 @@ class Tag implements LibraryInterface
 
     /**
      * id can be null until flush is done
-     * @return int
+     * @return int|null
      */
     public function getId(): ?int
     {
@@ -88,9 +90,9 @@ class Tag implements LibraryInterface
 
     /**
      * @param mixed $id
-     * @return Tag
+     * @return self
      */
-    public function setId($id): Tag
+    public function setId($id): self
     {
         $this->id = $id;
 
@@ -107,9 +109,9 @@ class Tag implements LibraryInterface
 
     /**
      * @param mixed $name
-     * @return Tag
+     * @return self
      */
-    public function setName($name): Tag
+    public function setName($name): self
     {
         $this->name = $name;
 
@@ -132,6 +134,6 @@ class Tag implements LibraryInterface
      */
     public function __toString(): string
     {
-        return $this->getName();
+        return (string) $this->getName();
     }
 }
