@@ -7,8 +7,12 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use App\Entity\LoggerTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
+use \DateTime;
 
 /**
  * @ApiResource(
@@ -22,12 +26,16 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Review implements LibraryInterface
 {
+    use LoggerTrait;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      *
      * @Assert\Uuid()
+     *
+     * @var int
      */
     private $id;
 
@@ -40,6 +48,8 @@ class Review implements LibraryInterface
      *
      * @Assert\NotBlank()
      * @Assert\Range(min="0", max="5")
+     *
+     * @var int
      */
     private $rating;
 
@@ -49,6 +59,8 @@ class Review implements LibraryInterface
      * )
      *
      * @ORM\Column(type="text", nullable=true)
+     *
+     * @var string
      */
     private $body;
 
@@ -62,6 +74,8 @@ class Review implements LibraryInterface
      * @ORM\Column(type="string", length=512, nullable=true)
      *
      * @Assert\Length(max="512")
+     *
+     * @var string
      */
     private $username;
 
@@ -74,6 +88,8 @@ class Review implements LibraryInterface
      *
      * @Assert\NotBlank()
      * @Assert\DateTime()
+     *
+     * @var DateTime
      */
     private $publicationDate;
 
@@ -82,11 +98,23 @@ class Review implements LibraryInterface
      *     iri="http://bib.schema.org/ComicStory"
      * )
      * @ApiSubresource(maxDepth=1)
+     * @MaxDepth(1)
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Library\Book", inversedBy="reviews")
      * @ORM\JoinColumn(name="book_id", referencedColumnName="id", onDelete="CASCADE")
+     *
+     * @var Book
      */
     private $book;
+
+    /**
+     * ProjectBookEdition constructor.
+     * @param LoggerInterface $logger
+     */
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->setLogger($logger);
+    }
 
     /**
      * id can be null until flush is done
@@ -166,9 +194,9 @@ class Review implements LibraryInterface
     }
 
     /**
-     * @return \DateTime|null
+     * @return DateTime|null
      */
-    public function getPublicationDate(): ?\DateTime
+    public function getPublicationDate(): ?DateTime
     {
         return $this->publicationDate;
     }
@@ -179,6 +207,26 @@ class Review implements LibraryInterface
      */
     public function setPublicationDate($publicationDate): self
     {
+        // @todo mutualize this code
+        if (is_string($publicationDate)) {
+            $dateString = $publicationDate;
+            try {
+                if (preg_match('/\d*/', $publicationDate)) {
+                    $dateTime = new DateTime();
+                    $publicationDate = $dateTime->setTimestamp((int) $publicationDate);
+                } else {
+                    $publicationDate = new DateTime($publicationDate);
+                }
+            } catch (\Exception $e) {
+                $this->logger->warning(sprintf('Wrong input for publicationDate, %s', $dateString));
+            }
+        } elseif (!($publicationDate instanceof DateTime)) {
+            $this->logger->warning(sprintf(
+                'Wrong input for publicationDate, should be \DateTime or valid date string or unixTimestamp, %s',
+                is_object($publicationDate) ? $publicationDate->__toString() : $publicationDate
+            ));
+        }
+
         $this->publicationDate = $publicationDate;
 
         return $this;

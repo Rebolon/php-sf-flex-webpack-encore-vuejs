@@ -11,6 +11,8 @@ parameters:
     api_platform_prefix: '/api'
     token_jwt_ttl: 3600
     token_jwt_bearer: 'Bearer'
+    # fallback if no VARNISH_URL env defined
+    env(VARNISH_URL): ''
 
 services:
     # default configuration for services in *this* file

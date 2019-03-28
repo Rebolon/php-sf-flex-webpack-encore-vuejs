@@ -25,6 +25,8 @@ class Reader implements LibraryInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      *
      * @Assert\Uuid()
+     *
+     * @var int
      */
     private $id;
 
@@ -36,6 +38,7 @@ class Reader implements LibraryInterface
      * @Assert\NotBlank()
      * @Assert\Length(max="255")
      *
+     * @var string
      */
     private $lastname;
 
@@ -43,6 +46,8 @@ class Reader implements LibraryInterface
      * @Groups({"reader_read", "reader_write"})
      *
      * @ORM\Column(type="text", nullable=true)
+     *
+     * @var string
      */
     private $firstname;
 
@@ -53,6 +58,8 @@ class Reader implements LibraryInterface
      * @Groups({"reader_read", "reader_write"})
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Library\Book")
+     *
+     * @var Collection|Book[]
      */
     private $myLibrary;
 
@@ -127,7 +134,7 @@ class Reader implements LibraryInterface
     }
 
     /**
-     * @return Collection
+     * @return Collection|Book[]
      */
     public function getMyLibrary(): Collection
     {
@@ -166,6 +173,7 @@ class Reader implements LibraryInterface
      */
     protected function hasBookInMyLibrary(Book $book): bool
     {
+        // @todo check performance: it may be better to do a DQL to check instead of doctrine call to properties that may do new DB call
         foreach ($this->myLibrary as $bookIAlreadyGet) {
             if (
                 (

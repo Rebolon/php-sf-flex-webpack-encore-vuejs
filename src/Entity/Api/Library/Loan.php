@@ -4,12 +4,23 @@ namespace App\Entity\Api\Library;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use App\Entity\Library\Book;
 use App\Entity\Library\LibraryInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use \DateTime;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
- * @ApiResource(
- *     attributes={"access_control"="is_granted('ROLE_USER')"}
+ * @ ApiResource(
+ *     attributes={
+ *          "access_control"="is_granted('ROLE_USER')",
+ *          "normalization_context"={
+ *              "groups"={"user_read", "loan_read"}
+ *          },
+ *          "denormalization_context"={
+ *              "groups"={"user_write", "loan_write"}
+ *          }
+ *     }
  * )
  */
 class Loan implements LibraryInterface
@@ -17,43 +28,50 @@ class Loan implements LibraryInterface
     /**
      * @ApiProperty(identifier=true)
      * @Groups({"user_read", "loan_read"})
+     * @var int
      */
     private $id;
 
     /**
      * @ApiSubresource(maxDepth=1)
+     * @MaxDepth(1)
      * @Groups({"user_read", "loan_read", "loan_write"})
+     * @var Book
      */
     private $book;
 
     /**
      * @ApiSubresource(maxDepth=1)
+     * @MaxDepth(1)
      * @Groups({"user_read", "loan_read", "loan_write"})
+     * @var Reader
      */
     private $owner;
 
     /**
      * @ApiSubresource(maxDepth=1)
+     * @MaxDepth(1)
      * @Groups({"user_read", "loan_read", "loan_write"})
+     * @var Reader
      */
     private $loaner;
 
     /**
-     * @ApiSubresource()
      * @Groups({"user_read", "loan_read", "loan_write"})
+     * @var DateTime|null
      */
     private $startLoan;
 
     /**
-     * @ApiSubresource()
      * @Groups({"user_read", "loan_read", "loan_write"})
+     * @var DateTime|null
      */
     private $endLoan;
 
     /**
      * mandatory for api-platform to get a valid IRI
      *
-     * @return int
+     * @return int|null
      */
     public function getId(): ?int
     {
@@ -81,7 +99,7 @@ class Loan implements LibraryInterface
 
     /**
      * @param Book $book
-     * @return $this
+     * @return self
      */
     public function setBook(Book $book): self
     {
@@ -100,7 +118,7 @@ class Loan implements LibraryInterface
 
     /**
      * @param Reader $reader
-     * @return $this
+     * @return self
      */
     public function setOwner(Reader $reader): self
     {
@@ -119,7 +137,7 @@ class Loan implements LibraryInterface
 
     /**
      * @param Reader $reader
-     * @return $this
+     * @return self
      */
     public function setLoaner(Reader $reader): self
     {
@@ -129,18 +147,18 @@ class Loan implements LibraryInterface
     }
 
     /**
-     * @return mixed
+     * @return DateTime|null
      */
-    public function getStartLoan(): ?\DateTime
+    public function getStartLoan(): ?DateTime
     {
         return $this->startLoan;
     }
 
     /**
-     * @param \DateTime $startLoan
+     * @param DateTime $startLoan
      * @return self
      */
-    public function setStartLoan(\DateTime $startLoan): self
+    public function setStartLoan(DateTime $startLoan): self
     {
         $this->startLoan = $startLoan;
 
@@ -148,18 +166,18 @@ class Loan implements LibraryInterface
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime|null
      */
-    public function getEndLoan(): ?\DateTime
+    public function getEndLoan(): ?DateTime
     {
         return $this->endLoan;
     }
 
     /**
-     * @param \DateTime $endLoan
+     * @param DateTime $endLoan
      * @return Loan
      */
-    public function setEndLoan(\DateTime $endLoan): self
+    public function setEndLoan(DateTime $endLoan): self
     {
         $this->endLoan = $endLoan;
 

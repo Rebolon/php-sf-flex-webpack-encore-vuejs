@@ -1,0 +1,11 @@
+{
+    "fig/link-util": {
+        "version": "1.0.0"
+    },
+    "psr/link": {
+        "version": "1.0.0"
+    },
+    "symfony/web-link": {
+        "version": "v4.2.4"
+    }
+}

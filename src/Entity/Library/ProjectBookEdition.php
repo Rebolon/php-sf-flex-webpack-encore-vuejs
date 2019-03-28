@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use DateTime;
 
 /**
  * @ApiResource(
@@ -34,6 +35,8 @@ class ProjectBookEdition implements LibraryInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      *
      * @Assert\Uuid()
+     *
+     * @var int
      */
     private $id;
 
@@ -43,6 +46,8 @@ class ProjectBookEdition implements LibraryInterface
      * @ORM\Column(type="date", nullable=true, options={"default":"now()"}, name="publication_date")
      *
      * @Assert\DateTime()
+     *
+     * @var DateTime
      */
     private $publicationDate;
 
@@ -52,6 +57,8 @@ class ProjectBookEdition implements LibraryInterface
      * @ORM\Column(type="string", nullable=true)
      *
      * @Assert\Type(type="string")
+     *
+     * @var string
      */
     private $collection;
 
@@ -64,6 +71,8 @@ class ProjectBookEdition implements LibraryInterface
      * @ORM\Column(nullable=true)
      *
      * @Assert\Isbn()
+     *
+     * @var string
      */
     private $isbn;
 
@@ -77,6 +86,8 @@ class ProjectBookEdition implements LibraryInterface
      *     cascade={"remove", "persist"}
      * )
      * @ORM\JoinColumn(name="editor_id", referencedColumnName="id")
+     *
+     * @var Editor
      */
     private $editor;
 
@@ -88,6 +99,8 @@ class ProjectBookEdition implements LibraryInterface
      *     cascade={"remove", "persist"}
      * )
      * @ORM\JoinColumn(name="book_id", referencedColumnName="id")
+     *
+     * @var Book
      */
     private $book;
 
@@ -122,9 +135,9 @@ class ProjectBookEdition implements LibraryInterface
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getPublicationDate(): \DateTime
+    public function getPublicationDate(): DateTime
     {
         return $this->publicationDate;
     }
@@ -135,21 +148,22 @@ class ProjectBookEdition implements LibraryInterface
      */
     public function setPublicationDate($publicationDate): self
     {
+        // @todo mutualize this code
         if (is_string($publicationDate)) {
             $dateString = $publicationDate;
             try {
                 if (preg_match('/\d*/', $publicationDate)) {
-                    $dateTime = new \DateTime();
+                    $dateTime = new DateTime();
                     $publicationDate = $dateTime->setTimestamp((int) $publicationDate);
                 } else {
-                    $publicationDate = new \DateTime($publicationDate);
+                    $publicationDate = new DateTime($publicationDate);
                 }
             } catch (\Exception $e) {
                 $this->logger->warning(sprintf('Wrong input for publicationDate, %s', $dateString));
             }
-        } elseif (!($publicationDate instanceof \DateTime)) {
+        } elseif (!($publicationDate instanceof DateTime)) {
             $this->logger->warning(sprintf(
-                'Wrong input for publicationDate, should be \\DateTime or valid date string or unixTimestamp, %s',
+                'Wrong input for publicationDate, should be \DateTime or valid date string or unixTimestamp, %s',
                 is_object($publicationDate) ? $publicationDate->__toString() : $publicationDate
             ));
         }

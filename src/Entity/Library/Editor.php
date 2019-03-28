@@ -32,6 +32,8 @@ class Editor implements LibraryInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      *
      * @Assert\Uuid()
+     *
+     * @var int
      */
     private $id;
 
@@ -45,11 +47,15 @@ class Editor implements LibraryInterface
      *
      * @Assert\NotBlank()
      * @Assert\Length(max="512")
+     *
+     * @var string
      */
     private $name;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookEdition", mappedBy="editor")
+     *
+     * @var Collection|ProjectBookEdition[]
      */
     private $books;
 
@@ -104,7 +110,7 @@ class Editor implements LibraryInterface
      * @todo the content of the methods + the route mapping for the api
      * Return the list of Books for all projects book edition of this editor
      *
-     * @return Collection
+     * @return Collection|ProjectBookEdition[]
      */
     public function getBooks(): Collection
     {

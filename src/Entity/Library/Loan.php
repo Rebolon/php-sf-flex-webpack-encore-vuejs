@@ -1,9 +1,11 @@
 <?php
 namespace App\Entity\Library;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use \DateTime;
 
 /**
  * @ORM\Entity
@@ -19,6 +21,8 @@ class Loan implements LibraryInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      *
      * @Assert\Uuid()
+     *
+     * @var int
      */
     private $id;
 
@@ -30,6 +34,8 @@ class Loan implements LibraryInterface
      *     cascade={"remove"}
      * )
      * @ORM\JoinColumn(name="book_id", referencedColumnName="id")
+     *
+     * @var Collection|Book[]
      */
     private $book;
 
@@ -43,6 +49,8 @@ class Loan implements LibraryInterface
      * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
      *
      * @Assert\NotBlank()
+     *
+     * @var Reader
      */
     private $owner;
 
@@ -56,21 +64,31 @@ class Loan implements LibraryInterface
      * @ORM\JoinColumn(name="loaner_id", referencedColumnName="id")
      *
      * @Assert\NotBlank()
+     *
+     * @var Reader
      */
     private $loaner;
 
     /**
      * @Groups({"user_read", "loan_read", "loan_write"})
      *
+     * @ORM\Column(type="date", nullable=false, options={"default":"now()"}, name="start_loan")
+     *
      * @Assert\DateTime()
+     *
+     * @var DateTime
      */
     private $startLoan;
 
     /**
      * @Groups({"user_read", "loan_read", "loan_write"})
      *
+     * @ORM\Column(type="date", nullable=true, name="end_loan")
+     *
      * @Assert\DateTime()
      * @Assert\Blank()
+     *
+     * @var DateTime
      */
     private $endLoan;
 
@@ -80,7 +98,7 @@ class Loan implements LibraryInterface
      */
     public function __construct()
     {
-        $this->setStartLoan(new \DateTime());
+        $this->setStartLoan(new DateTime());
     }
 
     /**
@@ -162,18 +180,18 @@ class Loan implements LibraryInterface
     }
 
     /**
-     * @return \DateTime|null
+     * @return DateTime|null
      */
-    public function getStartLoan(): ?\DateTime
+    public function getStartLoan(): ?DateTime
     {
         return $this->startLoan;
     }
 
     /**
-     * @param \DateTime $startLoan
+     * @param DateTime $startLoan
      * @return self
      */
-    public function setStartLoan(\DateTime $startLoan): self
+    public function setStartLoan(DateTime $startLoan): self
     {
         $this->startLoan = $startLoan;
 
@@ -181,18 +199,18 @@ class Loan implements LibraryInterface
     }
 
     /**
-     * @return \DateTime|null
+     * @return DateTime|null
      */
-    public function getEndLoan(): ?\DateTime
+    public function getEndLoan(): ?DateTime
     {
         return $this->endLoan;
     }
 
     /**
-     * @param \DateTime $endLoan
+     * @param DateTime $endLoan
      * @return Loan
      */
-    public function setEndLoan(\DateTime $endLoan): self
+    public function setEndLoan(DateTime $endLoan): self
     {
         $this->endLoan = $endLoan;
 

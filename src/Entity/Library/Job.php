@@ -10,7 +10,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ApiResource(
  *     iri="http://schema.org/Role",
- *     attributes={"access_control"="is_granted('ROLE_USER')"}
+ *     attributes={"access_control"="is_granted('ROLE_USER')"},
+ *     cacheHeaders={"max_age"=3600, "shared_max_age"=7200},
+ *     collectionOperations={
+ *          "get"={"method"="GET"}
+ *     },
+ *     itemOperations={
+ *         "get"={"method"="GET"}
+ *     }
  * )
  *
  * @ORM\Entity
@@ -25,6 +32,8 @@ class Job implements LibraryInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      *
      * @Assert\Uuid()
+     *
+     * @var int
      */
     private $id;
 
@@ -38,6 +47,8 @@ class Job implements LibraryInterface
      *
      * @Assert\NotBlank()
      * @Assert\Length(max="256")
+     *
+     * @var string
      */
     private $translationKey;
 

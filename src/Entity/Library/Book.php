@@ -6,12 +6,14 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Entity\LoggerTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Repository\BookRepository;
 
@@ -40,6 +42,7 @@ use App\Repository\BookRepository;
  *     }
  * )
  * @ApiFilter(OrderFilter::class, properties={"id", "title"}, arguments={"orderParameterName"="order"})
+ * @ApiFilter(SearchFilter::class, properties={"id": "exact", "title": "istart", "description": "partial", "tags.name"="exact"})
  *
  * @ORM\Entity(repositoryClass="BookRepository")
  */
@@ -58,6 +61,8 @@ class Book implements LibraryInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      *
      * @Assert\Uuid()
+     *
+     * @var int
      */
     private $id;
 
@@ -72,6 +77,7 @@ class Book implements LibraryInterface
      * @Assert\NotBlank()
      * @Assert\Length(max="255")
      *
+     * @var string
      */
     private $title;
 
@@ -82,6 +88,8 @@ class Book implements LibraryInterface
      * @Groups({"book_detail_read", "book_detail_write"})
      *
      * @ORM\Column(type="text", nullable=true)
+     *
+     * @var string
      */
     private $description;
 
@@ -99,26 +107,30 @@ class Book implements LibraryInterface
      * @ORM\Column(type="integer", nullable=true, name="index_in_serie")
      *
      * @Assert\Type(type="integer")
+     *
+     * @var int
      */
     private $indexInSerie;
 
     /**
-     * @var ArrayCollection of ProjectBookEdition
+     * @var Collection|ProjectBookEdition[]
      *
      * @ApiProperty(
      *     iri="http://schema.org/reviews"
      * )
      *
      * @ApiSubresource(maxDepth=1)
+     * @MaxDepth(1)
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\Review", mappedBy="book", orphanRemoval=true)
      */
     private $reviews;
 
     /**
-     * @var ArrayCollection of ProjectBookCreation
+     * @var Collection|ProjectBookCreation[]
      *
      * @ApiSubresource(maxDepth=1)
+     * @MaxDepth(1)
      * @Groups({"book_detail_read", "book_detail_write"})
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookCreation", mappedBy="book", cascade={"persist", "remove"})
@@ -126,9 +138,10 @@ class Book implements LibraryInterface
     private $authors;
 
     /**
-     * @var ArrayCollection of ProjectBookEdition
+     * @var Collection|ProjectBookEdition[]
      *
      * @ApiSubresource(maxDepth=1)
+     * @MaxDepth(1)
      * @Groups({"book_detail_read", "book_detail_write"})
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookEdition", mappedBy="book", cascade={"persist", "remove"})
@@ -137,18 +150,24 @@ class Book implements LibraryInterface
 
     /**
      * @ApiSubresource(maxDepth=1)
+     * @MaxDepth(1)
      * @Groups({"book_detail_read", "book_detail_write"})
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Library\Serie", inversedBy="books", cascade={"persist"})
      * @ORM\JoinColumn(name="serie_id", referencedColumnName="id")
+     *
+     * @var Serie
      */
     private $serie;
 
     /**
      * @ApiSubresource(maxDepth=1)
+     * @MaxDepth(1)
      * @Groups({"book_detail_read", "book_detail_write"})
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Library\Tag", inversedBy="books", cascade={"persist"})
+     *
+     * @var Collection|Tag[]
      */
     private $tags;
 
@@ -245,7 +264,7 @@ class Book implements LibraryInterface
     }
 
     /**
-     * @return Collection
+     * @return Collection|Tag[]
      */
     public function getTags(): Collection
     {
@@ -275,7 +294,7 @@ class Book implements LibraryInterface
     }
 
     /**
-     * @return Collection
+     * @return Collection|Review[]
      */
     public function getReviews(): Collection
     {
@@ -325,7 +344,7 @@ class Book implements LibraryInterface
     }
 
     /**
-     * @param ArrayCollection|ArrayCollection $projects
+     * @param ArrayCollection $projects
      *
      * @return self
      */
@@ -378,7 +397,7 @@ class Book implements LibraryInterface
     /**
      * Return the list of Authors with their job for this project book creation
      *
-     * @return Collection
+     * @return Collection|ProjectBookCreation[]
      */
     public function getAuthors(): Collection
     {
@@ -442,7 +461,7 @@ class Book implements LibraryInterface
      * @todo the content of the methods + the route mapping for the api
      * Return the list of Editors for all projects book edition of this book
      *
-     * @return Collection
+     * @return Collection|ProjectBookEdition[]
      */
     public function getEditors(): Collection
     {
@@ -467,7 +486,7 @@ class Book implements LibraryInterface
      */
     protected function hasProjectBookCreation(ProjectBookCreation $project)
     {
-        // @todo check performance: it may be better to do a DQL to check instead of doctrine call to properties that may do new BD call
+        // @todo check performance: it may be better to do a DQL to check instead of doctrine call to properties that may do new DB call
         foreach ($this->authors as $projectToCheck) {
             if (
                 (
@@ -504,7 +523,7 @@ class Book implements LibraryInterface
      */
     protected function hasProjectBookEdition(ProjectBookEdition $project)
     {
-        // @todo check performance: it may be better to do a DQL to check instead of doctrine call to properties that may do new BD call
+        // @todo check performance: it may be better to do a DQL to check instead of doctrine call to properties that may do new DB call
         foreach ($this->editors as $projectToCheck) {
             if (
                 (!is_null($project->getEditor()->getId())

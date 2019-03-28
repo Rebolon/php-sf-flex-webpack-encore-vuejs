@@ -6,10 +6,13 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use App\Entity\Library\Book;
 use App\Entity\Library\LibraryInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
  * @ApiResource(
@@ -33,6 +36,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *     }
  * )
  * @ApiFilter(OrderFilter::class, properties={"id", "lastname"}, arguments={"orderParameterName"="order"})
+ * @ApiFilter(SearchFilter::class, properties={"id": "exact", "lastname": "istart", "firstname": "istart"})
  */
 class Reader implements LibraryInterface
 {
@@ -41,6 +45,7 @@ class Reader implements LibraryInterface
      *     iri="http://schema.org/identifier"
      * )
      * @Groups({"reader_read"})
+     * @var int
      */
     private $id;
 
@@ -49,7 +54,7 @@ class Reader implements LibraryInterface
      *     iri="http://schema.org/lastname"
      * )
      * @Groups({"reader_read", "reader_write"})
-     *
+     * @var string
      */
     private $lastname;
 
@@ -58,6 +63,7 @@ class Reader implements LibraryInterface
      *     iri="http://schema.org/description"
      * )
      * @Groups({"reader_read", "reader_write"})
+     * @var string
      */
     private $firstname;
 
@@ -66,14 +72,17 @@ class Reader implements LibraryInterface
      * different edition ! For instance i keep this implementation for the sample but i might improve this in future
      *
      * @ApiProperty()
+     * @ApiSubresource(maxDepth=1)
+     * @MaxDepth(1)
      * @Groups({"reader_read", "reader_write"})
+     * @var Book[]
      */
     private $myLibrary;
 
     /**
      * id can be null until flush is done
      *
-     * @return int
+     * @return int|null
      */
     public function getId(): ?int
     {
@@ -92,7 +101,7 @@ class Reader implements LibraryInterface
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
     public function getLastname(): ?string
     {
@@ -111,7 +120,7 @@ class Reader implements LibraryInterface
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
     public function getFirstname(): ?string
     {

@@ -34,6 +34,8 @@ class Author implements LibraryInterface
      * @ORM\GeneratedValue(strategy="AUTO")
      *
      * @Assert\Uuid()
+     *
+     * @var int
      */
     private $id;
 
@@ -46,6 +48,8 @@ class Author implements LibraryInterface
      * @ORM\Column(type="string", nullable=false)
      *
      * @Assert\NotBlank()
+     *
+     * @var string
      */
     private $firstname;
 
@@ -56,11 +60,15 @@ class Author implements LibraryInterface
      * @Groups({"book_detail_read", "book_detail_write"})
      *
      * @ORM\Column(type="string", nullable=true)
+     *
+     * @var string
      */
     private $lastname;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookCreation", mappedBy="author")
+     *
+     * @var Collection|ProjectBookCreation[]
      */
     private $books;
 
