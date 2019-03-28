@@ -17,7 +17,7 @@ use DateTime;
  * @ApiResource(
  *     attributes={"access_control"="is_granted('ROLE_USER')"}
  * )
- * @ApiFilter(OrderFilter::class, properties={"id", "book", "editor", "publicationDate", "isbn", "collection"}, arguments={"orderParameterName"="order"})
+ * @ApiFilter(OrderFilter::class, properties={"id", "book", "editor", "publicationDate", "isbn", "collection"})
  * @ApiFilter(DateFilter::class, properties={"publicationDate"})
  *
  * @ORM\Entity

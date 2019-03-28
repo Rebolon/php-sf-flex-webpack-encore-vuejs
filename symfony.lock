@@ -5,6 +5,12 @@
     "psr/link": {
         "version": "1.0.0"
     },
+    "symfony/http-client": {
+        "version": "4.3-dev"
+    },
+    "symfony/polyfill-php73": {
+        "version": "1.11-dev"
+    },
     "symfony/web-link": {
         "version": "v4.2.4"
     }

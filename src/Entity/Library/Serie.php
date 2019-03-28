@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     iri="http://schema.org/Series",
  *     attributes={"access_control"="is_granted('ROLE_USER')"}
  * )
- * @ApiFilter(OrderFilter::class, properties={"id", "name"}, arguments={"orderParameterName"="order"})
+ * @ApiFilter(OrderFilter::class, properties={"id", "name"})
  *
  * @ORM\Entity
  */

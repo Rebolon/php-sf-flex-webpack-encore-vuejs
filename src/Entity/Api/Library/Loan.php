@@ -11,7 +11,7 @@ use \DateTime;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
- * @ ApiResource(
+ * @ApiResource(
  *     attributes={
  *          "access_control"="is_granted('ROLE_USER')",
  *          "normalization_context"={

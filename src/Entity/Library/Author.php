@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,8 +20,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     iri="http://schema.org/author",
  *     attributes={"access_control"="is_granted('ROLE_USER')", "status_code"=403}
  * )
- * @ApiFilter(OrderFilter::class, properties={"id", "lastname", "firstname"}, arguments={"orderParameterName"="order"})
+ * @ApiFilter(OrderFilter::class, properties={"id", "lastname", "firstname"})
  * @ApiFilter(SearchFilter::class, properties={"id": "exact", "firstname": "istart", "lastname": "istart"})
+ * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false}))
  *
  * @ORM\Entity
  */

@@ -36,13 +36,13 @@ api_platform:
                 name: Authorization
                 type: header
 
-    # Cache management (needs a cache proxy)
-    http_cache:
-        invalidation:
-            enabled: true
-            varnish_urls: ['%env(VARNISH_URL)%']
-        # Adds sensitive default cache headers
-        max_age: 0
-        shared_max_age: 3600
-        vary: ['Content-Type', 'Authorization']
-        public: true
+    # Cache management (needs a cache proxy and \GuzzleHttp\Client)
+    #http_cache:
+    #    invalidation:
+    #        enabled: true
+    #        varnish_urls: ['%env(VARNISH_URL)%']
+    #    # Adds sensitive default cache headers
+    #    max_age: 0
+    #    shared_max_age: 3600
+    #    vary: ['Content-Type', 'Authorization']
+    #    public: true

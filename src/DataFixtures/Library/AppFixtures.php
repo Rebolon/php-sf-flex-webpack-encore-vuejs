@@ -58,11 +58,6 @@ class AppFixtures extends Fixture
      */
     public function load(ObjectManager $manager)
     {
-        // add main reader
-        $reader = new Reader($this->logger);
-        $reader->setFirstname('John')
-            ->setLastname('Doe');
-
         // add job (indexed are 0->writer, 1->cartoonist, 2->color)
         foreach (['writer', 'cartoonist', 'color', ] as $jobTitle) {
             $job = (new Job())
@@ -74,6 +69,11 @@ class AppFixtures extends Fixture
         $manager->flush(); // save in db and Ids are created
 
         $dbh = $this->dbCon;
+
+        // add main reader
+        $reader = new Reader($this->logger);
+        $reader->setFirstname('John')
+            ->setLastname('Doe');
 
         // add books && author && editor
         $qry = 'SELECT t.* FROM books t ';

@@ -70,6 +70,10 @@ services:
             - '%token_jwt_bearer%'
             - 'Authorization'
 
+    Symfony\Contracts\HttpClient\HttpClientInterface:
+        factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
+        public: true
+
     App\DataFixtures\ConnectionFixtures:
         public: true
         arguments:
@@ -125,14 +129,14 @@ services:
             - '@App\Api\Config'
             - !tagged api_platform.doctrine.orm.query_extension.item
             - !tagged api_platform.doctrine.orm.query_extension.collection
-            -
+
     App\DataProvider\LoanDataProvider:
         arguments:
             - '@Doctrine\Common\Persistence\ManagerRegistry'
             - '@App\Api\Config'
             - !tagged api_platform.doctrine.orm.query_extension.item
             - !tagged api_platform.doctrine.orm.query_extension.collection
-            -
+
     App\DataProvider\ReaderDataProvider:
         arguments:
             - '@Doctrine\Common\Persistence\ManagerRegistry'

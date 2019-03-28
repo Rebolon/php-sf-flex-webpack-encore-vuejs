@@ -19,7 +19,7 @@ use \DateTime;
  *     iri="http://schema.org/Review",
  *     attributes={"access_control"="is_granted('ROLE_USER')"}
  * )
- * @ApiFilter(OrderFilter::class, properties={"id", "rating", "username", "publicationDate", "book"}, arguments={"orderParameterName"="order"})
+ * @ApiFilter(OrderFilter::class, properties={"id", "rating", "username", "publicationDate", "book"})
  * @ApiFilter(DateFilter::class, properties={"publication_date"})
  *
  * @ORM\Entity

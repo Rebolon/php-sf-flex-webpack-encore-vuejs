@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     attributes={"access_control"="is_granted('ROLE_USER')"}
  * )
- * @ApiFilter(OrderFilter::class, properties={"id", "book", "author"}, arguments={"orderParameterName"="order"})
+ * @ApiFilter(OrderFilter::class, properties={"id", "book", "author"})
  *
  * @ORM\Entity
  * @ORM\Table(name="project_book_creation")

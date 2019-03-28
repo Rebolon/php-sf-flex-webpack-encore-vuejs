@@ -2,6 +2,7 @@
 namespace App\Entity\Library;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -27,22 +28,21 @@ class Loan implements LibraryInterface
     private $id;
 
     /**
-     * @ORM\ManyToOne(
+     * @ORM\OneToOne(
      *     targetEntity="App\Entity\Library\Book",
-     *     inversedBy="authors",
      *     fetch="EAGER",
      *     cascade={"remove"}
      * )
      * @ORM\JoinColumn(name="book_id", referencedColumnName="id")
      *
-     * @var Collection|Book[]
+     * @var Book
      */
     private $book;
 
     /**
      * @Groups({"user_read", "loan_read", "loan_write"})
      *
-     * @ORM\ManyToOne(
+     * @ORM\OneToOne(
      *     targetEntity="App\Entity\Library\Reader",
      *     fetch="EAGER"
      * )
@@ -57,7 +57,7 @@ class Loan implements LibraryInterface
     /**
      * @Groups({"user_read", "loan_read", "loan_write"})
      *
-     * @ORM\ManyToOne(
+     * @ORM\OneToOne(
      *     targetEntity="App\Entity\Library\Reader",
      *     fetch="EAGER"
      * )
