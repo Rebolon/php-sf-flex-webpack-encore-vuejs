@@ -1,6 +1,8 @@
 <?php
 namespace App\DataProvider;
 
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\EagerLoadingExtension;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\FilterEagerLoadingExtension;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryResultCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGenerator;
 use ApiPlatform\Core\DataProvider\CollectionDataProviderInterface;
@@ -8,6 +10,7 @@ use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Api\Config;
 use App\Entity\Api\Library\Reader;
+use App\Entity\Library\Reader as OrmEntityReader;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 class ReaderDataProvider implements ItemDataProviderInterface, CollectionDataProviderInterface, RestrictedDataProviderInterface
@@ -70,13 +73,19 @@ class ReaderDataProvider implements ItemDataProviderInterface, CollectionDataPro
          */
 
         foreach ($this->collectionExtensions as $extension) {
-            $extension->applyToCollection($qb, $queryNameGenerator, $resourceClass, $operationName, $context);
-            if ($extension instanceof QueryResultCollectionExtensionInterface
-                && $extension->supportsResult($resourceClass, $operationName, $context)) {
-                $items = $extension->getResult($qb, $resourceClass, $operationName, $context);
+            if (in_array(\get_class($extension), [
+                EagerLoadingExtension::class, FilterEagerLoadingExtension::class,
+            ])) {
+                $resourceClass = OrmEntityReader::class;
             }
-        }
-
+            echo \get_class($extension).PHP_EOL;
+            $extension->applyToCollection($qb, $queryNameGenerator, $resourceClass, $operationName, $context);
+/*            if ($extension instanceof QueryResultCollectionExtensionInterface
+                && $extension->supportsResult($resourceClass, $operationName, $context)) {
+//                $items = $extension->getResult($qb, $resourceClass, $operationName, $context);
+            }
+*/        }
+die();
         return $items;
     }
 

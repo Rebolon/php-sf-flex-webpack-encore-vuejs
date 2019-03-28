@@ -18,7 +18,7 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
  * @ApiResource(
  *     iri="http://bib.schema.org/user",
  *     collectionOperations={
- *          "get"={"method"="GET"},
+ *          "get"={"method"="GET", "access_control"="is_granted('IS_AUTHENTICATED_ANONYMOUSLY')"},
  *          "post"={"method"="POST", "access_control"="is_granted('ROLE_ADMIN')", "access_control_message"="Only admin users can add users."}
  *     },
  *     itemOperations={
