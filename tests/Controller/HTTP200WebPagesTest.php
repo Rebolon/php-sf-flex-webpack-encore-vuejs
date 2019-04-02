@@ -70,7 +70,7 @@ class HTTP200WebPagesTest extends WebPagesAbstract
 
         $demoRoutes['basic: simple controller'] = ['uri'=> $router->generate('simple'), ];
         $demoRoutes['basic: hello controller with twig'] = ['uri'=> $router->generate('app_hello_world', ['name'=> 'world', ]), ];
-        $demoRoutes['basic: httpplug demo'] = ['uri'=> $router->generate('app_httpplug_call'), ];
+        $demoRoutes['basic: httpplug demo'] = ['uri'=> $router->generate('app_httpclient_call'), ];
 
         $demoRoutes['login: standard - symfony secured page'] = ['uri'=> $router->generate('demo_login_standard_check'), 'statusCode' => 401, ];
         $demoRoutes['login: standard - symfony form page '] = ['uri'=> $router->generate('demo_secured_page_standard'), 'statusCode' => 401, ];
@@ -91,7 +91,7 @@ class HTTP200WebPagesTest extends WebPagesAbstract
         $demoRoutes['api-platform: rest'] = ['uri'=> $router->generate('api_entrypoint'), ];
         $demoRoutes['api-platform: graphql'] = ['uri'=> $router->generate('api_graphql_entrypoint'), ];
         $demoRoutes['api-platform: admin react'] = ['uri'=> $router->generate('app_apiplatformadminreact_index'), ];
-        $demoRoutes['easy admin'] = ['uri'=> $router->generate('admin'), ];
+        $demoRoutes['easy admin'] = ['uri'=> $router->generate('easyadmin'), ];
 
         foreach ($demoRoutes as $routeInfos) {
             $headers = [];

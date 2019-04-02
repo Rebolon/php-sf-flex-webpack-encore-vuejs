@@ -28,7 +28,10 @@ class LoginJwtTest extends ToolsAbstract
 
         $client->request('GET', $uriSecured);
         $this->assertEquals(401, $client->getResponse()->getStatusCode(), $errMsg);
-        $this->assertEquals(["error" => "Authentication Required", ], json_decode($client->getResponse()->getContent(), true), $errMsg);
+        $this->assertEquals([
+            'code' => 401,
+            'message' => 'JWT Token not found',
+        ], json_decode($client->getResponse()->getContent(), true), $errMsg);
 
         $client->request('POST', $uriLogin, [], [], $headers, json_encode(['login_username' => 15, 'login_password' => $this->testPwd, ]));
         $this->assertEquals(404, $client->getResponse()->getStatusCode(), $errMsg);

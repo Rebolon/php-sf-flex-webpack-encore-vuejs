@@ -38,7 +38,7 @@ abstract class ApiAbstract extends ToolsAbstract
         // @todo list manually routes to test and then generate them with valid parameters
         // following code is wrong coz it lacks valid params to generate routes
         foreach ($router->getRouteCollection() as $name => $route) {
-            if (0 !== strpos($name,'api')) {
+            if (0 !== strpos($name, 'api')) {
                 continue;
             }
 

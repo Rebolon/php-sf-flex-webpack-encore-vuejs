@@ -1,7 +1,6 @@
 # Symfony sample
 
 <p align="center">
-  ~~[![Tested with testcafe](https://img.shields.io/badge/tested%20with-TestCafe-2fa4cf.svg)](https://github.com/DevExpress/testcafe)~~
   [![Build Status](https://travis-ci.org/Rebolon/php-sf-flex-webpack-encore-vuejs.png?branch=master)](https://travis-ci.org/Rebolon/php-sf-flex-webpack-encore-vuejs)
   [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Rebolon/php-sf-flex-webpack-encore-vuejs/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Rebolon/php-sf-flex-webpack-encore-vuejs/badges/quality-score.png?b=master)
   [![DeepScan grade](https://deepscan.io/api/teams/2301/projects/3192/branches/26485/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=2301&pid=3192&bid=26485)
