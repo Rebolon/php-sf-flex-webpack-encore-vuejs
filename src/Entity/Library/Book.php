@@ -162,15 +162,15 @@ class Book implements LibraryInterface
     private $serie;
 
     /**
-     * @ApiSubresource(maxDepth=1)
-     * @MaxDepth(1)
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @ ApiSubresource(maxDepth=1)
+     * @ MaxDepth(1)
+     * @ Groups({"book_detail_read", "book_detail_write"})
      *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Library\Tag", inversedBy="books", cascade={"persist"})
+     * @ ORM\ManyToMany(targetEntity="App\Entity\Library\Tag", inversedBy="books", cascade={"persist"})
      *
-     * @var Collection|Tag[]
+     * @ var Collection|Tag[]
      */
-    private $tags;
+    //private $tags;
 
     /**
      * Book constructor.

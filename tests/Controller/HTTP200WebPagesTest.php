@@ -53,7 +53,7 @@ class HTTP200WebPagesTest extends WebPagesAbstract
         $bc = $crawler->filter('body div.alert');
         $this->assertContains('Invalid credentials.', trim($bc->text()));
 
-        $crawler = $this->doLogin($client);
+        $crawler = $this->doLoginStandard($client);
         $bc = $crawler->filter('body div.container');
         $text = trim($bc->text());
         $this->assertContains('Hello Test_php', $text);

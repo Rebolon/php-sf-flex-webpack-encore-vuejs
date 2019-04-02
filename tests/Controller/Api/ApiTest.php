@@ -5,6 +5,7 @@
 namespace App\Tests\Controller\Api;
 
 use App\Tests\Common\ApiAbstract;
+use PHPUnit\Util\Printer;
 
 /**
  * Quick test on all api endpoint that should return at least 200 OK + some other checks
@@ -16,8 +17,6 @@ class ApiTest extends ApiAbstract
      */
     public function testMain()
     {
-        $this->markTestIncomplete('need to list all api route and then test GET, at least');
-
         $client = $this->getClient();
         $router = $this->getRouter();
 
@@ -25,9 +24,11 @@ class ApiTest extends ApiAbstract
 
         $o = new Printer();
 
-        $token = '';
-        foreach ($routesName as $routeInfos) {
-            $headers = [];
+        $tokenResponse = $this->doLoginJwt($client);
+        $token = $tokenResponse->token;
+        // only test GET for instance
+        foreach ($routesName['GET'] as $routeInfos) {
+            $headers = $this->headers;
             if ($token) {
                 $headers['HTTP_Authorization'] = $token;
             }
@@ -58,7 +59,7 @@ class ApiTest extends ApiAbstract
 
             // @TODO check contentType
             $this->assertEquals(200, $client->getResponse()->getStatusCode(), $errMsg);
-            $this->assertEquals('application/json', $client->getResponse()->headers->get('content-type'), $errMsg);
+            $this->assertContains('application/json', $client->getResponse()->headers->get('content-type'), $errMsg);
         }
         $o->flush();
     }

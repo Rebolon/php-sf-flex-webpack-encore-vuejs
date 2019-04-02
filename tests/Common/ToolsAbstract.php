@@ -11,6 +11,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Component\Routing\RouterInterface;
 
 abstract class ToolsAbstract extends WebTestCase
@@ -176,5 +177,23 @@ abstract class ToolsAbstract extends WebTestCase
         $this->client->restart();
 
         return $this->client;
+    }
+
+    /**
+     * @param Client $client
+     * @return Crawler
+     */
+    protected function doLoginStandard(Client $client)
+    {
+        $uri = $this->router->generate('demo_login_standard', [], Router::NETWORK_PATH);
+        $crawler = $client->request('GET', $uri);
+        $buttonCrawlerNode = $crawler->selectButton('login');
+        $form = $buttonCrawlerNode->form([
+            $client->getKernel()->getContainer()->getParameter('login_username_path') => $this->testLogin,
+            $client->getKernel()->getContainer()->getParameter('login_password_path') => $this->testPwd,
+        ]);
+        $crawler = $client->submit($form);
+
+        return $crawler;
     }
 }
