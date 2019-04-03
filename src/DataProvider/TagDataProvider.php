@@ -7,7 +7,6 @@ use ApiPlatform\Core\DataProvider\CollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Api\Config;
-use App\Entity\Api\Library\Tagy;
 use App\Entity\Library\Tag;
 use Doctrine\Common\Persistence\ManagerRegistry;
 

@@ -75,7 +75,7 @@ class Reader implements LibraryInterface
      * @ApiSubresource(maxDepth=1)
      * @MaxDepth(1)
      * @Groups({"reader_read", "reader_write"})
-     * @var Book[]
+     * @var ArrayCollection|Book[]
      */
     private $myLibrary;
 
@@ -139,7 +139,7 @@ class Reader implements LibraryInterface
     }
 
     /**
-     * @return Collection
+     * @return Collection|Book[]
      */
     public function getMyLibrary(): Collection
     {

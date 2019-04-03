@@ -2,8 +2,6 @@
 namespace App\Command;
 
 use App\Security\JwtTokenTools;
-use Http\Client\HttpAsyncClient;
-use Http\Message\MessageFactory;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;

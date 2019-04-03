@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,7 +12,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class HttpClientController extends AbstractController
 {
     /**
-     * @var HttpClient
+     * @var HttpClientInterface
      */
     protected $httpClient;
 

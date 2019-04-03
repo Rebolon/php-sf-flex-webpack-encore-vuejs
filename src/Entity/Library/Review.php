@@ -202,7 +202,7 @@ class Review implements LibraryInterface
     }
 
     /**
-     * @param mixed $publicationDate
+     * @param DateTime|string $publicationDate
      * @return self
      */
     public function setPublicationDate($publicationDate): self
