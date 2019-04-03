@@ -2,6 +2,7 @@
 
 namespace App\Tests\Common;
 
+use ApiPlatform\Core\Exception\RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\DomCrawler\Crawler;
@@ -68,6 +69,24 @@ abstract class ApiAbstract extends ToolsAbstract
     }
 
     /**
+     * @param $headers
+     * @param $bearer
+     * @return mixed
+     */
+    protected function setAuthorization($headers, $bearer = null)
+    {
+        if (!$bearer) {
+            $token = $this->doLoginJwt($this->client);
+            $bearer = $token->token;
+        }
+
+        $headers['Authorization'] = $this->client->getKernel()->getContainer()->getParameter('token_jwt_bearer')
+            . ' ' . $bearer;
+
+        return $headers;
+    }
+
+    /**
      * return array of routes by method like:
      *  ["GET" => ['//localhost/api/books', ], "POST" => ...]
      *
@@ -110,10 +129,79 @@ abstract class ApiAbstract extends ToolsAbstract
 
             $routeName = $router->generate($name, $routerParams, Router::NETWORK_PATH);
             foreach ($route->getMethods() as $method) {
-                $routesName[$method][] = $routeName;
+                $routesName[$method][strtr($route->getPath(), ['.{_format}' => '', ])] = $routeName;
             }
         }
 
         return $routesName;
+    }
+
+    /**
+     * @return string
+     */
+    protected function getJsonSchema()
+    {
+        $headers = $this->prepareHeaders($this->headers);
+        $uri = $this->router->generate('api_doc', ['format' => 'json', 'spec_version' => 3, ], Router::NETWORK_PATH);
+        $client = $this->client;
+        $client->request(
+            'GET',
+            $uri,
+            [],
+            [],
+            $headers
+        );
+
+        if (200 !== $client->getResponse()->getStatusCode()) {
+            throw new RuntimeException(sprintf("Api docs unavailable, code is %d", $client->getResponse()->getStatusCode()));
+        }
+
+        return $client->getResponse()->getContent();
+    }
+
+    /**
+     * @param $def
+     * @return array
+     */
+    protected function getJsonSchemaComponentDef($def)
+    {
+        $response = $this->getJsonSchema();
+
+        $json = json_decode($response, true);
+        $endpointDefs = array_keys($json['components']['schemas']);
+
+        if (!in_array($def, $endpointDefs)) {
+            throw new RuntimeException(sprintf("wrong definitions for schemas %s, (%s)", $def, print_r($endpointDefs, true)));
+        }
+
+        return $json['components']['schemas'][$def];
+    }
+
+    /**
+     * @param $def
+     * @param $json
+     */
+    protected function assertPropsFromJson($def, $json)
+    {
+        $schemas = $this->getJsonSchemaComponentDef($def);
+        $expectedProps = array_keys($schemas['properties']);
+
+        foreach ($expectedProps as $prop) {
+            if (method_exists($schemas['properties'][$prop], '$ref')) {
+                $def = $schemas['properties'][$prop]['$ref'];
+                $defPrefix = '#/components/schemas/';
+                if (false !== strpos($schemas['properties'][$prop]['$ref'], $defPrefix)) {
+                    $def = substr($schemas['properties'][$prop]['$ref'], count($defPrefix));
+                }
+
+                $this->assertPropsFromJson(
+                    $def,
+                    is_array($json->$prop) ? $json->$prop[0] : $json->$prop
+                );
+            }
+
+            $this->assertObjectHasAttribute($prop, $json, print_r($json, true));
+            $this->assertNotEmpty($json->$prop);
+        }
     }
 }

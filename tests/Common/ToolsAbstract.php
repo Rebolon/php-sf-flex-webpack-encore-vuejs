@@ -27,7 +27,7 @@ abstract class ToolsAbstract extends WebTestCase
     protected $router;
 
     /**
-     * @var
+     * @var Client
      */
     protected $client;
 
@@ -149,6 +149,28 @@ abstract class ToolsAbstract extends WebTestCase
         $client = parent::createClient($options, $server);
 
         return $client;
+    }
+
+    /**
+     * Because WebTestCase require HTTP headers to be prefixed with HTTP_
+     * This methods will do it for you, for specified headers
+     *
+     * @param array $headers
+     * @return array
+     */
+    protected function prepareHeaders($headers = [])
+    {
+        foreach ($headers as $keys => $value) {
+            $prefix = 'HTTP_';
+            if (strpos($keys, $prefix) === 0) {
+                continue;
+            }
+
+            $headers[$prefix . $keys] = $value;
+            unset($headers[$keys]);
+        }
+
+        return $headers;
     }
 
     /**
