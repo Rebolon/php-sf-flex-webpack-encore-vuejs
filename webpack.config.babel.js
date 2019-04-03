@@ -48,7 +48,7 @@ Encore
     // enables @babel/preset-env polyfills
     .configureBabel(() => {}, {
         useBuiltIns: 'usage',
-        corejs: 3
+        //corejs: 3 // unknown option, but added with latest update of Webpack/Encore
     })
 
     // uncomment to define the assets of the project
