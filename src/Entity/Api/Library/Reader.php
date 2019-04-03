@@ -75,7 +75,7 @@ class Reader implements LibraryInterface
      * @ApiSubresource(maxDepth=1)
      * @MaxDepth(1)
      * @Groups({"reader_read", "reader_write"})
-     * @var ArrayCollection|Book[]
+     * @var Collection|Book[]
      */
     private $myLibrary;
 
