@@ -75,9 +75,18 @@ class Reader implements LibraryInterface
      * @ApiSubresource(maxDepth=1)
      * @MaxDepth(1)
      * @Groups({"reader_read", "reader_write"})
-     * @var Collection|Book[]
+     *
+     * @var Book[]|Collection
      */
     private $myLibrary;
+
+    /**
+     * Reader constructor.
+     */
+    public function __construct()
+    {
+        $this->myLibrary = new ArrayCollection();
+    }
 
     /**
      * id can be null until flush is done
@@ -139,7 +148,7 @@ class Reader implements LibraryInterface
     }
 
     /**
-     * @return Collection|Book[]
+     * @return Book[]|Collection
      */
     public function getMyLibrary(): Collection
     {
@@ -147,10 +156,10 @@ class Reader implements LibraryInterface
     }
 
     /**
-     * @param ArrayCollection $aLibrary
+     * @param Collection $aLibrary
      * @return self
      */
-    public function setTags(ArrayCollection $aLibrary): self
+    public function setTags(Collection $aLibrary): self
     {
         $this->myLibrary = $aLibrary;
 

@@ -44,13 +44,11 @@ Encore
           ]
      }
      */
-    .configureBabel(function(babelConfig) {
-        // add additional presets
-        //babelConfig.presets.push('@babel/preset-env');
-        //babelConfig.presets.push('@babel/preset-react');
 
-        // no plugins are added by default, but you can add some
-        // babelConfig.plugins.push('styled-jsx/babel');
+    // enables @babel/preset-env polyfills
+    .configureBabel(() => {}, {
+        useBuiltIns: 'usage',
+        corejs: 3
     })
 
     // uncomment to define the assets of the project
@@ -76,7 +74,7 @@ Encore
 
     // uncomment if you use Sass/SCSS files
     // parameters are not mandatory, only if webpack build is slow with bootstrap (http://symfony.com/doc/current/frontend/encore/bootstrap.html)
-    .enableSassLoader(function(sassOptions) {}, {
+    .enableSassLoader(sassOptions => {}, {
         resolveUrlLoader: false,
     })
 
