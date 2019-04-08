@@ -44,9 +44,10 @@ class HTTP200WebPagesTest extends WebPagesAbstract
         $this->checkSEO($crawler, $errMsg);
         $this->checkHeader($crawler, $errMsg);
 
+        $user = $this->profiles[$this->currentProfileIdx];
         $form = $crawler->selectButton('login')->form();
         $form->setValues([
-            'login_username' => $this->testLogin,
+            'login_username' => $user['login'],
             'login_password' => 'fake',
         ]);
         $crawler = $client->submit($form);

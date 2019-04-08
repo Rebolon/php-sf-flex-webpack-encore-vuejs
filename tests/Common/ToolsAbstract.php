@@ -87,10 +87,11 @@ abstract class ToolsAbstract extends WebTestCase
     {
         $uri = $this->router->generate('demo_login_standard', [], Router::NETWORK_PATH);
         $crawler = $client->request('GET', $uri);
+        $user = $this->profiles[$this->currentProfileIdx];
         $buttonCrawlerNode = $crawler->selectButton('login');
         $form = $buttonCrawlerNode->form([
-            $client->getKernel()->getContainer()->getParameter('login_username_path') => $this->testLogin,
-            $client->getKernel()->getContainer()->getParameter('login_password_path') => $this->testPwd,
+            $client->getKernel()->getContainer()->getParameter('login_username_path') => $user['login'],
+            $client->getKernel()->getContainer()->getParameter('login_password_path') => $user['pwd'],
         ]);
         $crawler = $client->submit($form);
 

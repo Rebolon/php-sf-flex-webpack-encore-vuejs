@@ -59,13 +59,14 @@ class LoginJsonControllerTest extends PantherToolsAbstract
 
         $this->assertContains('Welcome to', $crawler->filter('h5')->text()); // You can use any PHPUnit assertion
 
+        $user = $this->profiles[$this->currentProfileIdx];
         $inputUserName = $crawler->filter('form.login input[name=username]')->getElement(0);
         $inputUserName->clear();
-        $inputUserName->sendKeys('test_js');
+        $inputUserName->sendKeys($user['login']);
 
         $inputPwd = $crawler->filter('form.login input[name=password]')->getElement(0);
         $inputPwd->clear();
-        $inputPwd->sendKeys('test');
+        $inputPwd->sendKeys($user['pwd']);
 
         $form = $crawler->selectButton('LOGIN')->form();
         $crawler = $client->submit($form);

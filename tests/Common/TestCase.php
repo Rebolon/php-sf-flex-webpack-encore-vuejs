@@ -2,6 +2,7 @@
 
 namespace App\Tests\Common;
 
+use Doctrine\DBAL\Connection;
 use PHPUnit\Util\Printer;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Client;
@@ -35,15 +36,15 @@ trait TestCase
     /**
      * @var string
      */
-    protected $testLogin;
+    protected $profiles;
 
     /**
-     * @var string
+     * @var int
      */
-    protected $testPwd;
+    protected $currentProfileIdx;
 
     /**
-     * @var \Doctrine\DBAL\Connection
+     * @var Connection
      */
     protected $dbCon;
 
@@ -124,18 +125,22 @@ trait TestCase
     {
         parent::setUp();
 
-        $this->testLogin = 'test_js';
-        $this->testPwd = 'test';
+        $this->profiles = [
+            ['login' => 'test_js', 'pwd' => 'test', ],
+            ['login' => 'test_php', 'pwd' => 'test', ],
+        ];
+
+        $this->currentProfileIdx = 0;
 
         $kernel = static::bootKernel();
-        $client = self::createClient();
+        $this->client = self::createClient();
 
         // mock useless class
         $this->logger = $this->createMock('\Psr\Log\LoggerInterface');
 
         // reuse service
-        $this->dbCon = $client->getContainer()->get('database_connection');
-        $this->em = $client->getContainer()->get('doctrine.orm.entity_manager');
+        $this->dbCon = $this->client->getContainer()->get('database_connection');
+        $this->em = $this->client->getContainer()->get('doctrine.orm.entity_manager');
     }
 
 

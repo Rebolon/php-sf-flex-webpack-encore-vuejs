@@ -6,6 +6,13 @@ use App\Tests\Common\PantherToolsAbstract;
 
 class LoginPhpControllerTest extends PantherToolsAbstract
 {
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->currentProfileIdx = 1;
+    }
+
     /**
      * @group git-pre-push
      */
@@ -35,13 +42,14 @@ class LoginPhpControllerTest extends PantherToolsAbstract
         $this->assertEquals('Invalid credentials.', $crawler->filter('div.alert.alert-danger')->text());
         $this->assertContains($uri, $client->getCurrentURL());
 
+        $user = $this->profiles[$this->currentProfileIdx];
         $inputUserName = $crawler->filter('form #username')->getElement(0);
         $inputUserName->clear();
-        $inputUserName->sendKeys('test_php');
+        $inputUserName->sendKeys($user['login']);
 
         $inputPwd = $crawler->filter('form #password')->getElement(0);
         $inputPwd->clear();
-        $inputPwd->sendKeys('test');
+        $inputPwd->sendKeys($user['pwd']);
 
         $form = $crawler->selectButton('login')->form();
         $crawler = $client->submit($form);

@@ -33,7 +33,7 @@ class LoginJsonTest extends ToolsAbstract
         $this->assertEquals(401, $client->getResponse()->getStatusCode(), $errMsg);
         $this->assertEquals(["error" => "Authentication Required", ], json_decode($client->getResponse()->getContent(), true), $errMsg);
 
-        $client->request('POST', $uriLogin, [], [], $headers, json_encode(['login_username' => 15, 'login_password' => $this->testPwd,]));
+        $client->request('POST', $uriLogin, [], [], $headers, json_encode(['login_username' => 15, 'login_password' => 'nopwd',]));
         $this->assertEquals(403, $client->getResponse()->getStatusCode(), $errMsg);
         $this->assertEquals(["error" => "_csrf_token mandatory", "code" => 420, ], json_decode($client->getResponse()->getContent(), true), $errMsg);
 
@@ -41,15 +41,16 @@ class LoginJsonTest extends ToolsAbstract
         $tokenRaw = $client->getResponse()->getContent();
         $token = json_decode($tokenRaw);
 
-        $client->request('POST', $uriLogin, [], [], $headers, json_encode(['login_username' => 15, 'login_password' => $this->testPwd, '_csrf_token' => 'toto',]));
+        $client->request('POST', $uriLogin, [], [], $headers, json_encode(['login_username' => 15, 'login_password' => 'nopwd', '_csrf_token' => 'toto',]));
         $this->assertEquals(403, $client->getResponse()->getStatusCode(), $errMsg);
         $this->assertEquals(["error" => "Invalid CSRF token.", "code" => 423, ], json_decode($client->getResponse()->getContent(), true), $errMsg);
 
-        $client->request('POST', $uriLogin, [], [], $headers, json_encode(['login_username' => 15, 'login_password' => $this->testPwd, '_csrf_token' => $token,]));
+        $client->request('POST', $uriLogin, [], [], $headers, json_encode(['login_username' => 15, 'login_password' => 'nopwd', '_csrf_token' => $token,]));
         $this->assertEquals(403, $client->getResponse()->getStatusCode(), $errMsg);
         $this->assertEquals(["error" => "Forbidden", "code" => 403, ], json_decode($client->getResponse()->getContent(), true), $errMsg);
 
-        $client->request('POST', $uriLogin, [], [], $headers, json_encode(['login_username' => $this->testLogin, 'login_password' => $this->testPwd, '_csrf_token' => $token,]));
+        $user = $this->profiles[$this->currentProfileIdx];
+        $client->request('POST', $uriLogin, [], [], $headers, json_encode(['login_username' => $user['login'], 'login_password' => $user['pwd'], '_csrf_token' => $token,]));
         $this->assertEquals(200, $client->getResponse()->getStatusCode(), $errMsg);
         $result =json_decode($client->getResponse()->getContent(), true);
         $this->assertArrayHasKey('isLoggedIn', $result, $errMsg);

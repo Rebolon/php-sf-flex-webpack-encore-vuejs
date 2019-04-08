@@ -21,12 +21,13 @@ abstract class ApiAbstract extends ToolsAbstract
     /**
      * @param Client $client
      * @param $uri
-     * @param array $headers
      * @return Crawler
      */
     protected function doLoginApi(Client $client, $uri)
     {
         $headers = $this->headers;
+
+        $user = $this->profiles[$this->currentProfileIdx];
 
         $crawler = $client->request(
             'POST',
@@ -35,8 +36,9 @@ abstract class ApiAbstract extends ToolsAbstract
             [],
             $headers,
             json_encode([
-                $client->getKernel()->getContainer()->getParameter('login_username_path') => $this->testLogin,
-                $client->getKernel()->getContainer()->getParameter('login_password_path') => $this->testPwd,])
+                $client->getKernel()->getContainer()->getParameter('login_username_path') => $user['login'],
+                $client->getKernel()->getContainer()->getParameter('login_password_path') => $user['pwd'],
+            ])
         );
 
         return $crawler;
@@ -201,7 +203,12 @@ abstract class ApiAbstract extends ToolsAbstract
             }
 
             $this->assertObjectHasAttribute($prop, $json, print_r($json, true));
-            $this->assertNotEmpty($json->$prop);
+
+            if (in_array($prop, $schemas['required'])) {
+                $this->assertNotEmpty($json->$prop);
+            }
+
+            // @todo it might be possible to do type checking coz in $ref i can know if prop is integer, string...
         }
     }
 }
