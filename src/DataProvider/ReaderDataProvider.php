@@ -72,7 +72,7 @@ class ReaderDataProvider implements ItemDataProviderInterface, CollectionDataPro
          * @todo manage extensions sort, search, pagination, at least
          */
 
-        foreach ($this->collectionExtensions as $extension) {
+        /*foreach ($this->collectionExtensions as $extension) {
             if (in_array(\get_class($extension), [
                 EagerLoadingExtension::class, FilterEagerLoadingExtension::class,
             ])) {
@@ -80,12 +80,12 @@ class ReaderDataProvider implements ItemDataProviderInterface, CollectionDataPro
             }
             echo \get_class($extension).PHP_EOL;
             $extension->applyToCollection($qb, $queryNameGenerator, $resourceClass, $operationName, $context);
-/*            if ($extension instanceof QueryResultCollectionExtensionInterface
+            if ($extension instanceof QueryResultCollectionExtensionInterface
                 && $extension->supportsResult($resourceClass, $operationName, $context)) {
-//                $items = $extension->getResult($qb, $resourceClass, $operationName, $context);
+                $items = $extension->getResult($qb, $resourceClass, $operationName, $context);
             }
-*/        }
-die();
+        }*/
+
         return $items;
     }
 

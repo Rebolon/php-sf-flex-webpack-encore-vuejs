@@ -36,7 +36,7 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
  *     }
  * )
  * @ ApiFilter(OrderFilter::class, properties={"id", "lastname"})
- * @ApiFilter(SearchFilter::class, properties={"id": "exact", "lastname": "istart", "firstname": "istart"})
+ * @ ApiFilter(SearchFilter::class, properties={"id": "exact", "lastname": "istart", "firstname": "istart"})
  */
 class Reader implements LibraryInterface
 {

@@ -8,10 +8,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @todo would be interesting to add cache here (seems to need a varnish server)
+ *     cacheHeaders={"max_age"=3600, "shared_max_age"=7200}
+ *
  * @ApiResource(
  *     iri="http://schema.org/Role",
  *     attributes={"access_control"="is_granted('ROLE_USER')"},
- *     cacheHeaders={"max_age"=3600, "shared_max_age"=7200},
  *     collectionOperations={
  *          "get"={"method"="GET"}
  *     },

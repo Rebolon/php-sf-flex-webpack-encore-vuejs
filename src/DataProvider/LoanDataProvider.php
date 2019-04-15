@@ -69,13 +69,13 @@ class LoanDataProvider implements ItemDataProviderInterface, CollectionDataProvi
          * @todo manage extensions sort, search, pagination, at least
          */
 
-        foreach ($this->collectionExtensions as $extension) {
+        /*foreach ($this->collectionExtensions as $extension) {
             $extension->applyToCollection($qb, $queryNameGenerator, $resourceClass, $operationName, $context);
             if ($extension instanceof QueryResultCollectionExtensionInterface
                 && $extension->supportsResult($resourceClass, $operationName, $context)) {
                 $items = $extension->getResult($qb, $resourceClass, $operationName, $context);
             }
-        }
+        }*/
 
         return $items;
     }
