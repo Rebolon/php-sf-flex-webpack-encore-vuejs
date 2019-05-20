@@ -2,7 +2,7 @@
     "type": "project",
     "license": "proprietary",
     "require": {
-        "php": "^7.1",
+        "php": "^7.2",
         "ext-curl": "*",
         "ext-json": "*",
         "ext-pdo_sqlite": "*",
@@ -15,7 +15,7 @@
         "sensio/framework-extra-bundle": "^5.2.4",
         "symfony/console": "~4.1",
         "symfony/framework-bundle": "~4.1",
-        "symfony/http-client": "^4.3@dev",
+        "symfony/http-client": "~4.1",
         "symfony/monolog-bundle": "^3.3.0",
         "symfony/profiler-pack": "~1.0",
         "symfony/webpack-encore-bundle": "^1.2",

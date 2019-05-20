@@ -52,5 +52,4 @@ class PingDataProvider implements ItemDataProviderInterface, CollectionDataProvi
     {
         return $this->fixtures;
     }
-
 }

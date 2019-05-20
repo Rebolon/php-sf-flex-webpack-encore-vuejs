@@ -86,7 +86,7 @@ class LoginJsonController extends AbstractController
      *     name="demo_secured_page_json_is_logged_in",
      *     defaults={"_format"="json"},
      *     methods={"GET", "POST"}
-     *     )
+     * )
      *
      * @return Response
      */

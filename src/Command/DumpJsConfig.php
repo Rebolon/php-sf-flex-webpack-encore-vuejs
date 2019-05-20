@@ -10,6 +10,10 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Yaml\Yaml;
+use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class DumpJsConfig extends Command
 {
@@ -67,7 +71,7 @@ class DumpJsConfig extends Command
      * @param string $loginPasswordPath
      * @param string $tokenJwtBearer
      * @param string $kernelProjectDir
-     * @param \Twig_Environment $twig
+     * @param Environment $twig
      * @param RouterInterface $router
      */
     public function __construct(
@@ -77,7 +81,7 @@ class DumpJsConfig extends Command
         string $loginPasswordPath,
         string $tokenJwtBearer,
         string $kernelProjectDir,
-        \Twig_Environment $twig,
+        Environment $twig,
         RouterInterface $router
     ) {
         parent::__construct();
@@ -110,13 +114,11 @@ class DumpJsConfig extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int|null|void
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
+     * @throws SyntaxError
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $env = $this->getEnv('APP_ENV');
+        $env = $this->getEnv();
         $host = $input->getArgument(self::ARG_HOST);
         $port = $input->getArgument(self::ARG_PORT);
         $quasarStyle = $input->getArgument(self::ARG_QUASAR_STYLE);
@@ -260,9 +262,9 @@ class DumpJsConfig extends Command
      * @param $quasarStyle
      * @param $apiPlatform
      * @return string
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     protected function render($env, $host, $port, $quasarStyle, $apiPlatform): string
     {

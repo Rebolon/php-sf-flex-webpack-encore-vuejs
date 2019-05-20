@@ -48,9 +48,12 @@ class LoginJwtController extends AbstractController
      * The route that generate token for a couple login/password
      * It works with Basic HTTP auth or with formData using login/password where path are store in parameters: login_username_path/login_password_path
      *
+     * @deprecated LexiKJWT Bundle should be used in another way without a dedicated controller but using json_login security + success/faliure handlers     *
+     *
      * @Route("/demo/security/login/jwt/tokens",
      *     defaults={"_format"="json"},
-     *     methods={"POST"})
+     *     methods={"POST"}
+     * )
      *
      * @param Request $request
      * @param InMemoryUserProvider $provider
@@ -107,7 +110,7 @@ class LoginJwtController extends AbstractController
      *     name="demo_secured_page_jwt_is_logged_in",
      *     defaults={"_format"="json"},
      *     methods={"GET"}
-     *     )
+     * )
      *
      * @param Request $request
      * @param JWTEncoderInterface $jwtEncoder

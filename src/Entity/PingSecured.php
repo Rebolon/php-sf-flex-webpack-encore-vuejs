@@ -10,52 +10,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     attributes={"access_control"="is_granted('ROLE_USER')", "status_code"=403},
  *     itemOperations={
- *         "get"={"method"="GET"}
+ *         "get"={"method"="GET", "access_control_message"="Only authenticated users can access this endpoint."}
  *     },
  *     collectionOperations={
- *          "get"={"method"="GET"}
+ *          "get"={"method"="GET", "access_control_message"="Only authenticated users can access this endpoint."}
  *     }
  * )
  * @package App\Entity\PingSecured
  */
-class PingSecured
+class PingSecured extends Ping
 {
-    /**
-     * @Assert\Uuid()
-     * @ApiProperty(identifier=true)
-     * @var int
-     */
-    protected $id;
-
-    /**
-     * @var string
-     */
-    protected $pong = 'pong';
-
-    /**
-     * @return int
-     */
-    public function getId(): int
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     * @return self
-     */
-    public function setId(int $id): self
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function getPong()
-    {
-        return $this->pong;
-    }
 }

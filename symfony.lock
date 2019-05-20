@@ -362,6 +362,9 @@
     "symfony/http-client": {
         "version": "4.3-dev"
     },
+    "symfony/http-client": {
+        "version": "v4.3.0-beta1"
+    },
     "symfony/http-foundation": {
         "version": "v4.2.5"
     },
@@ -433,6 +436,9 @@
     },
     "symfony/polyfill-php73": {
         "version": "1.11-dev"
+    },
+    "symfony/polyfill-php73": {
+        "version": "v1.11.0"
     },
     "symfony/polyfill-util": {
         "version": "v1.11.0"
@@ -547,6 +553,9 @@
     },
     "symfony/web-link": {
         "version": "v4.2.4"
+    },
+    "symfony/web-link": {
+        "version": "v4.2.8"
     },
     "symfony/web-profiler-bundle": {
         "version": "3.3",

@@ -68,7 +68,7 @@ class LoginController extends AbstractController
      *     name="demo_secured_page_standard_is_logged_in",
      *     defaults={"_format"="json"},
      *     methods={"GET", "POST"}
-     *     )
+     * )
      */
     public function isLoggedIn()
     {

@@ -9,10 +9,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  * Class Ping
  * @ApiResource(
  *     itemOperations={
- *         "get"={"method"="GET"}
+ *         "get"
  *     },
  *     collectionOperations={
- *          "get"={"method"="GET"}
+ *          "get"
  *     }
  * )
  * @package App\Entity\Ping
@@ -29,7 +29,7 @@ class Ping
     /**
      * @var string
      */
-    protected $pong = 'pong';
+    protected $pong = 'ping';
 
     /**
      * @return int

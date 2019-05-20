@@ -204,7 +204,8 @@ abstract class ApiAbstract extends ToolsAbstract
 
             $this->assertObjectHasAttribute($prop, $json, print_r($json, true));
 
-            if (in_array($prop, $schemas['required'])) {
+            if (array_key_exists('required', $schemas)
+                && in_array($prop, $schemas['required'])) {
                 $this->assertNotEmpty($json->$prop);
             }
 

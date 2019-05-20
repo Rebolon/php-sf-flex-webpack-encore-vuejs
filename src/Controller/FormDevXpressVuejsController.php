@@ -13,8 +13,7 @@ class FormDevXpressVuejsController extends AbstractController
      *     "/demo/form/devxpress-vuejs/{routeName}",
      *     requirements={"routeName"=".*"},
      *     defaults={"routeName"="home"}, methods={"GET"}
-     *     )
-     * @Cache(maxage="2 weeks")
+     * )
      */
     public function index()
     {
