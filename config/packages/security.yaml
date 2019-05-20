@@ -60,6 +60,7 @@ security:
                 path:   demo_login_json_logout
                 target: index
                 invalidate_session: true
+
         # for application built almost fully by PHP SF
         security_main:
             pattern: ^/demo/security/login/standard

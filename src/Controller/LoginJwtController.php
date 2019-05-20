@@ -5,8 +5,7 @@ namespace App\Controller;
 use App\Security\JwtTokenTools;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTDecodeFailureException;
 use Psr\Log\LoggerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,14 +14,13 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\InMemoryUserProvider;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 
-class LoginJwtController extends Controller
+class LoginJwtController extends AbstractController
 {
     /**
      * Try to test this security when the one on the bottom works Security("is_granted('IS_AUTHENTICATED_FULLY')")
      *
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     * @Route("/demo/security/login/jwt/secured", name="demo_secured_page_jwt")
-     * @Method({"GET"})
+     * @Route("/demo/security/login/jwt/secured", name="demo_secured_page_jwt", methods={"GET"})
      */
     public function index()
     {
@@ -33,8 +31,7 @@ class LoginJwtController extends Controller
 
     /**
      * The route that displays the JS form and will display the token
-     * @Route("/demo/security/login/jwt/frontend", name="demo_login_jwt")
-     * @Method({"GET"})
+     * @Route("/demo/security/login/jwt/frontend", name="demo_login_jwt", methods={"GET"})
      */
     public function form()
     {
@@ -45,9 +42,12 @@ class LoginJwtController extends Controller
      * The route that generate token for a couple login/password
      * It works with Basic HTTP auth or with formData using login/password where path are store in parameters: login_username_path/login_password_path
      *
+     * @deprecated LexiKJWT Bundle should be used in another way without a dedicated controller but using json_login security + success/faliure handlers     *
+     *
      * @Route("/demo/security/login/jwt/tokens",
-     *     defaults={"_format"="json"})
-     * @Method({"POST"})
+     *     defaults={"_format"="json"},
+     *     methods={"POST"}
+     * )
      *
      * @param Request $request
      * @param InMemoryUserProvider $provider
@@ -64,8 +64,8 @@ class LoginJwtController extends Controller
         JWTEncoderInterface $encoder,
         UserPasswordEncoderInterface $passwordEncoder,
         LoggerInterface $logger,
-        JwtTokenTools $tokenTool)
-    {
+        JwtTokenTools $tokenTool
+    ) {
         $username = $request->getUser() ?: $request->request->get($this->getParameter('login_username_path'));
         $password = $request->getPassword() ?: $request->request->get($this->getParameter('login_password_path'));
 
@@ -102,9 +102,9 @@ class LoginJwtController extends Controller
      * @Route(
      *     "/demo/security/login/jwt/isloggedin",
      *     name="demo_secured_page_jwt_is_logged_in",
-     *     defaults={"_format"="json"}
-     *     )
-     * @Method({"GET"})
+     *     defaults={"_format"="json"},
+     *     methods={"GET"}
+     * )
      *
      * @param Request $request
      * @param JWTEncoderInterface $jwtEncoder

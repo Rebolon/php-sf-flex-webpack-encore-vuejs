@@ -2,15 +2,15 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DefaultController extends Controller
+class DefaultController extends AbstractController
 {
     /**
-     * @Route(path="/")
+     * @Route(path="/", methods={"GET"})
      * @param Request $request
      * @return Response
      */
@@ -25,7 +25,7 @@ class DefaultController extends Controller
         $demoRoutes = [];
         $demoRoutes['Basic: Simple controller'] = $router->generate('simple');
         $demoRoutes['Basic: Hello controller with twig'] = $router->generate('app_hello_world', ['name' => 'world', ]);
-        $demoRoutes['Basic: HttpPlug demo'] = $router->generate('app_httpplug_call');
+        $demoRoutes['Basic: HttpPlug demo'] = $router->generate('app_http_call');
 
         $demoRoutes['Login: Symfony secured page with form_login'] = $router->generate('demo_secured_page_standard');
         $demoRoutes['Login: Vuejs secured page with json_login'] = $router->generate('demo_login_json_check'); // if i go to demo_secured_page_json i will just get a json string !!! user won't know how to go to the form uri (i may add the uri in the response, but if i link to the form and the user is already logged, it will then be redirected to the secured page)

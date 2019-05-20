@@ -3,7 +3,6 @@ namespace App\Action;
 
 use App\Entity\Library\Book;
 use Doctrine\ORM\EntityManagerInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -51,9 +50,9 @@ class BookSpecial
      * @Route(
      *     name="book_special_sample1",
      *     path="/api/books/{id}/special_1",
-     *     defaults={"_api_resource_class"=Book::class, "_api_item_operation_name"="special_1"}
+     *     defaults={"_api_resource_class"=Book::class, "_api_item_operation_name"="special_1"},
+     *     methods={"GET"}
      * )
-     * @Method("GET")
      *
      * @param Book $data
      * @return Book
@@ -74,9 +73,9 @@ class BookSpecial
      * @Route(
      *     name="book_special_sample2",
      *     path="/api/books/{id}/special_2",
-     *     defaults={"_api_resource_class"=Book::class, "_api_item_operation_name"="special_2"}
+     *     defaults={"_api_resource_class"=Book::class, "_api_item_operation_name"="special_2"},
+     *     methods={"GET"}
      * )
-     * @Method("GET")
      *
      * @param Book $data
      * @return JsonResponse
@@ -122,13 +121,13 @@ class BookSpecial
      *
      * @Route(
      *     name="book_special_sample3",
-     *     path="/api/booksiu/special_3"
+     *     path="/api/booksiu/special_3",
+     *     methods={"POST"}
      * )
      * @ParamConverter(name="book", converter="book")
-     * @Method("POST")
      *
      * @param Book $book
-     * @return JsonResponse
+     * @return JsonResponse|Response
      */
     public function special3(Book $book)
     {

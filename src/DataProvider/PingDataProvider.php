@@ -1,7 +1,6 @@
 <?php
 namespace App\DataProvider;
 
-
 use ApiPlatform\Core\DataProvider\CollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
@@ -24,12 +23,14 @@ class PingDataProvider implements ItemDataProviderInterface, CollectionDataProvi
 
     public function getCollection(string $resourceClass, string $operationName = null, array $context = [])
     {
-        $pongOne = new Ping();
-        $pongOne->setId(1);
-        $pongTwo = new Ping();
-        $pongTwo->setId(2);
+        $pongs = [];
+        for ($i = 0; $i < 3; $i++) {
+            $ping = new Ping();
+            $ping->setId($i);
 
-        return [$pongOne, $pongTwo];
+            $pongs[] = $ping;
+        }
+
+        return $pongs;
     }
-
 }

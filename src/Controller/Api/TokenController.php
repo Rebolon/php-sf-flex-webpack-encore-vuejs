@@ -17,7 +17,7 @@ class TokenController extends AbstractController
      *
      * @Route("/token", name="token")
      * @param Request $request
-     * @param \App\Security\CsrfToken $csrfTokenManager
+     * @param CsrfToken $csrfTokenManager
      * @return JsonResponse
      */
     public function token(Request $request, CsrfToken $csrfTokenManager)
@@ -40,7 +40,7 @@ class TokenController extends AbstractController
     /**
      * @Route("/token_check", name="token_check")
      * @param Request $request
-     * @param \App\Security\CsrfToken $csrfTokenManager
+     * @param CsrfToken $csrfTokenManager
      * @return Response
      */
     public function tokenCheck(Request $request, CsrfToken $csrfTokenManager)

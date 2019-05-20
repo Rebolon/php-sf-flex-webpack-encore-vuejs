@@ -11,9 +11,6 @@
             "ref": "b50f8aa321cc40c380dda7605aa5cef66f476802"
         }
     },
-    "clue/stream-filter": {
-        "version": "v1.4.0"
-    },
     "composer/ca-bundle": {
         "version": "1.1.0"
     },
@@ -113,6 +110,9 @@
     "facebook/webdriver": {
         "version": "1.6.0"
     },
+    "fig/link-util": {
+        "version": "1.0.0"
+    },
     "friendsofphp/php-cs-fixer": {
         "version": "2.2",
         "recipe": {
@@ -121,9 +121,6 @@
             "version": "2.2",
             "ref": "bb31a3bbec00a8fc8aa1c9fbf9b0ef9fc492f93d"
         }
-    },
-    "guzzlehttp/psr7": {
-        "version": "1.4.2"
     },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
@@ -170,48 +167,6 @@
     "php-cs-fixer/diff": {
         "version": "v1.2.0"
     },
-    "php-http/cache-plugin": {
-        "version": "v1.5.0"
-    },
-    "php-http/client-common": {
-        "version": "1.7.0"
-    },
-    "php-http/curl-client": {
-        "version": "v1.7.0"
-    },
-    "php-http/discovery": {
-        "version": "1.3.0"
-    },
-    "php-http/httplug": {
-        "version": "v1.1.0"
-    },
-    "php-http/httplug-bundle": {
-        "version": "1.6",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "1.6",
-            "ref": "4655962c64e2de96c418caf576c57215711c7877"
-        }
-    },
-    "php-http/httplug-pack": {
-        "version": "1.0.0"
-    },
-    "php-http/logger-plugin": {
-        "version": "v1.0.0"
-    },
-    "php-http/message": {
-        "version": "1.6.0"
-    },
-    "php-http/message-factory": {
-        "version": "v1.0.2"
-    },
-    "php-http/promise": {
-        "version": "v1.0.0"
-    },
-    "php-http/stopwatch-plugin": {
-        "version": "1.1.0"
-    },
     "phpdocumentor/reflection-common": {
         "version": "1.0.1"
     },
@@ -227,17 +182,14 @@
     "psr/container": {
         "version": "1.0.0"
     },
-    "psr/http-message": {
-        "version": "1.0.1"
+    "psr/link": {
+        "version": "1.0.0"
     },
     "psr/log": {
         "version": "1.0.2"
     },
     "psr/simple-cache": {
         "version": "1.0.0"
-    },
-    "ralouphie/getallheaders": {
-        "version": "2.0.5"
     },
     "rebolon/api-json-param-converter": {
         "version": "dev-master"
@@ -341,6 +293,9 @@
             "ref": "305b268e55e75059f20ec9827a8fd09a35c59866"
         }
     },
+    "symfony/http-client": {
+        "version": "v4.3.0-beta1"
+    },
     "symfony/http-foundation": {
         "version": "v3.3.13"
     },
@@ -397,6 +352,9 @@
     },
     "symfony/polyfill-php72": {
         "version": "v1.6.0"
+    },
+    "symfony/polyfill-php73": {
+        "version": "v1.11.0"
     },
     "symfony/polyfill-util": {
         "version": "v1.7.0"
@@ -484,6 +442,9 @@
     },
     "symfony/var-exporter": {
         "version": "v4.2.1"
+    },
+    "symfony/web-link": {
+        "version": "v4.2.8"
     },
     "symfony/web-profiler-bundle": {
         "version": "3.3",

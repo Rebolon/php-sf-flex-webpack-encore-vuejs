@@ -2,15 +2,17 @@
 
 namespace App\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class FormDevXpressVuejsController extends Controller
+class FormDevXpressVuejsController extends AbstractController
 {
     /**
-     * @Route("/demo/form/devxpress-vuejs/{routeName}", requirements={"routeName"=".*"}, defaults={"routeName"="home"})
-     * @Method({"GET"})
+     * @Route(
+     *     "/demo/form/devxpress-vuejs/{routeName}",
+     *     requirements={"routeName"=".*"},
+     *     defaults={"routeName"="home"}, methods={"GET"}
+     * )
      */
     public function index()
     {

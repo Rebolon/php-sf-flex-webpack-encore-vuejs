@@ -1,7 +1,7 @@
 <?php
 namespace App\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -10,8 +10,12 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Yaml\Yaml;
+use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
-class DumpJsConfig extends ContainerAwareCommand
+class DumpJsConfig extends Command
 {
     const ARG_HOST = 'host';
 
@@ -66,8 +70,9 @@ class DumpJsConfig extends ContainerAwareCommand
      * @param string $loginUsernamePath
      * @param string $loginPasswordPath
      * @param string $tokenJwtBearer
-     * @param \Twig_Environment $twig
+     * @param Environment $twig
      * @param RouterInterface $router
+     * @param string $kernelProjectDir
      */
     public function __construct(
         string $csrfTokenParameter,
@@ -75,9 +80,10 @@ class DumpJsConfig extends ContainerAwareCommand
         string $loginUsernamePath,
         string $loginPasswordPath,
         string $tokenJwtBearer,
-        \Twig_Environment $twig,
-        RouterInterface $router)
-    {
+        Environment $twig,
+        RouterInterface $router,
+        string $kernelProjectDir
+    ) {
         parent::__construct();
 
         $this->twig = $twig;
@@ -87,6 +93,7 @@ class DumpJsConfig extends ContainerAwareCommand
         $this->loginUsernamePath = $loginUsernamePath;
         $this->loginPasswordPath = $loginPasswordPath;
         $this->tokenJwtBearer = $tokenJwtBearer;
+        $this->rootDir = $kernelProjectDir;
     }
 
     /**
@@ -107,13 +114,11 @@ class DumpJsConfig extends ContainerAwareCommand
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int|null|void
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
+     * @throws SyntaxError
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $env = $this->getEnv('APP_ENV');
+        $env = $this->getEnv();
         $host = $input->getArgument(self::ARG_HOST);
         $port = $input->getArgument(self::ARG_PORT);
         $quasarStyle = $input->getArgument(self::ARG_QUASAR_STYLE);
@@ -140,7 +145,7 @@ class DumpJsConfig extends ContainerAwareCommand
         try {
             $missingKeys = [];
             $mandatoryKeys = ['items_per_page', 'client_items_per_page', 'items_per_page_parameter_name', 'maximum_items_per_page', ];
-            $configDir = $this->getContainer()->get('kernel')->getRootDir() . '/../config/';
+            $configDir = $this->rootDir . '/config/';
             $values = Yaml::parseFile($configDir . 'packages/api_platform.yaml');
             $config = $values['api_platform'];
 
@@ -226,7 +231,7 @@ class DumpJsConfig extends ContainerAwareCommand
      */
     protected function displayJsConfigArguments(OutputInterface $output, $apiPlatform, $host, $port, $quasarStyle): void
     {
-        $apiPlatformOutput = function() use ($apiPlatform) {
+        $apiPlatformOutput = function () use ($apiPlatform) {
             $output = [];
             foreach ($apiPlatform as $key => $value) {
                 $output[] = $key . ': ' . $value;
@@ -251,9 +256,9 @@ class DumpJsConfig extends ContainerAwareCommand
      * @param $quasarStyle
      * @param $apiPlatform
      * @return string
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     protected function render($env, $host, $port, $quasarStyle, $apiPlatform): string
     {
@@ -298,7 +303,7 @@ class DumpJsConfig extends ContainerAwareCommand
     protected function writeJsConfigFile(InputInterface $input, OutputInterface $output, $content): void
     {
         $helper = $this->getHelper('question');
-        $projectDir = $this->getContainer()->get('kernel')->getRootDir() . '/..';
+        $projectDir = $this->rootDir;
         $configFilepath = '/assets/js/lib/config.js';
         $filepath = $projectDir . $configFilepath;
 

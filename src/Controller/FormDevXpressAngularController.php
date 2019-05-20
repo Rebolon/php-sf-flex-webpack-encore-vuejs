@@ -4,18 +4,15 @@ namespace App\Controller;
 
 use App\Tools\AngularCli;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Yaml\Yaml;
 
-class FormDevXpressAngularController extends Controller
+class FormDevXpressAngularController extends AbstractController
 {
     /**
      * @var string $kernelProjectDir
-     * @Route("/demo/form/devxpress-angular/{ngRouteName}", requirements={"ngRouteName"=".*"}, defaults={"ngRouteName"="home"})
-     * @Method({"GET"})
+     * @Route("/demo/form/devxpress-angular/{ngRouteName}", requirements={"ngRouteName"=".*"}, defaults={"ngRouteName"="home"}, methods={"GET"})
      * @Cache(maxage="2 weeks")
      * @return Response
      */
