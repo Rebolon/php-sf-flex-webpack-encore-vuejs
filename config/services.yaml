@@ -11,6 +11,8 @@ parameters:
     api_platform_prefix: '/api'
     token_jwt_ttl: 3600
     token_jwt_bearer: 'Bearer'
+    # fallback if no VARNISH_URL env defined
+    env(VARNISH_URL): ''
 
 services:
     # default configuration for services in *this* file
@@ -61,6 +63,17 @@ services:
         arguments: [ '@App\Swagger\SwaggerDecorator.inner' ]
         autoconfigure: false
 
+    # to overload tokenExtractor with specific Bearer, do this:
+    lexik_jwt_authentication.extractor.authorization_header_extractor:
+        class: Lexik\Bundle\JWTAuthenticationBundle\TokenExtractor\AuthorizationHeaderTokenExtractor
+        arguments:
+            - '%token_jwt_bearer%'
+            - 'Authorization'
+
+    Symfony\Contracts\HttpClient\HttpClientInterface:
+        factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
+        public: true
+
     App\DataFixtures\ConnectionFixtures:
         public: true
         arguments:
@@ -110,4 +123,23 @@ services:
     Symfony\Component\Security\Core\User\InMemoryUserProvider:
         alias: security.user.provider.concrete.in_memory
 
-    App\DataProvider\PingDataProvider: ~
+    App\DataProvider\TagDataProvider:
+        arguments:
+            - '@Doctrine\Common\Persistence\ManagerRegistry'
+            - '@App\Api\Config'
+            - !tagged api_platform.doctrine.orm.query_extension.item
+            - !tagged api_platform.doctrine.orm.query_extension.collection
+
+    App\DataProvider\LoanDataProvider:
+        arguments:
+            - '@Doctrine\Common\Persistence\ManagerRegistry'
+            - '@App\Api\Config'
+            - !tagged api_platform.doctrine.orm.query_extension.item
+            - !tagged api_platform.doctrine.orm.query_extension.collection
+
+    App\DataProvider\ReaderDataProvider:
+        arguments:
+            - '@Doctrine\Common\Persistence\ManagerRegistry'
+            - '@App\Api\Config'
+            - !tagged api_platform.doctrine.orm.query_extension.item
+            - !tagged api_platform.doctrine.orm.query_extension.collection

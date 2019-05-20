@@ -2,13 +2,17 @@
 
 namespace App\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
 class QuasarController extends AbstractController
 {
     /**
-     * @Route("/demo/quasar", methods={"GET"})
+     * @Route(
+     *     "/demo/quasar",
+     *     methods={"GET"})
+     * @Cache(maxage="2 weeks")
      */
     public function index()
     {

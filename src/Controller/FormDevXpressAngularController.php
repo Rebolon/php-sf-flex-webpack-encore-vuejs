@@ -10,11 +10,18 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class FormDevXpressAngularController extends AbstractController
 {
+
     /**
-     * @var string $kernelProjectDir
-     * @Route("/demo/form/devxpress-angular/{ngRouteName}", requirements={"ngRouteName"=".*"}, defaults={"ngRouteName"="home"}, methods={"GET"})
+     * @Route(
+     *     "/demo/form/devxpress-angular/{ngRouteName}",
+     *     requirements={"ngRouteName"=".*"},
+     *     defaults={"ngRouteName"="home"},
+     *     methods={"GET"}
+     *     )
      * @Cache(maxage="2 weeks")
      * @return Response
+     * @var string $kernelProjectDir
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function index(string $kernelProjectDir)
     {

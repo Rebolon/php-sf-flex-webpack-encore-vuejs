@@ -29,19 +29,16 @@ security:
             pattern: ^/(demo/security/login/jwt|demo/form|api)
             anonymous: ~
             stateless:  true
-
             guard:
                 authenticators:
-                    - App\Security\JwtTokenAuthenticator
+                    - lexik_jwt_authentication.jwt_token_authenticator
 
         # like security_jwt but statefull
         security_json:
             pattern: ^/(demo/security/login/json|token)
             anonymous: ~
-
             #share context with other firewalls (but needs to be statefull so don't use it with sull SPA)
             context: statefull_security
-
             # this guard solve this issue: https://github.com/symfony/symfony/issues/25806
             guard:
                 authenticators:

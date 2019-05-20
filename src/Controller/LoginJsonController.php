@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Security\UserInfo;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,7 +18,12 @@ class LoginJsonController extends AbstractController
      * Try to test this security when the one on the bottom works Security("is_granted('IS_AUTHENTICATED_FULLY')")
      *
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     * @Route("/demo/security/login/json/secured", name="demo_secured_page_json", methods={"GET"})
+     * @Route(
+     *     "/demo/security/login/json/secured",
+     *     name="demo_secured_page_json",
+     *     methods={"GET"}
+     *     )
+     * @Cache(maxage="2 weeks")
      *
      * @return Response
      */
@@ -30,7 +36,11 @@ class LoginJsonController extends AbstractController
 
     /**
      * The route that displays the JS form
-     * @Route("/demo/security/login/json/frontend", name="demo_login_json", methods={"GET"})
+     * @Route(
+     *     "/demo/security/login/json/frontend",
+     *     name="demo_login_json",
+     *     methods={"GET"}
+     *     )
      *
      * @return Response
      */
@@ -43,7 +53,10 @@ class LoginJsonController extends AbstractController
      * New Json authentification system from Symfony 3.3
      * It relies on App\Security\ApiKeyAuthenticator for CSRF checks
      *
-     * @Route("/demo/security/login/json/authenticate", name="demo_login_json_check")
+     * @Route(
+     *     "/demo/security/login/json/authenticate",
+     *     name="demo_login_json_check"
+     *     )
      *
      * @var RouterInterface $router
      * @return Response

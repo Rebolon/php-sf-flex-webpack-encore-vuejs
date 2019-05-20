@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -17,7 +18,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     iri="http://schema.org/Series",
  *     attributes={"access_control"="is_granted('ROLE_USER')"}
  * )
- * @ApiFilter(OrderFilter::class, properties={"id", "name"}, arguments={"orderParameterName"="order"})
+ * @ApiFilter(OrderFilter::class, properties={"id", "name"})
  *
  * @ORM\Entity
  */
@@ -29,6 +30,8 @@ class Serie implements LibraryInterface
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Assert\Uuid()
      */
     private $id;
 
@@ -50,6 +53,7 @@ class Serie implements LibraryInterface
      *      iri="http://pending.schema.org/ComicStory"
      * )
      * @ApiSubresource(maxDepth=1)
+     * @MaxDepth(1)
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\Book", mappedBy="serie", orphanRemoval=true)
      */
@@ -65,7 +69,7 @@ class Serie implements LibraryInterface
 
     /**
      * id can be null until flush is done
-     * @return int
+     * @return int|null
      */
     public function getId(): ?int
     {
@@ -74,9 +78,9 @@ class Serie implements LibraryInterface
 
     /**
      * @param mixed $id
-     * @return Serie
+     * @return self
      */
-    public function setId($id): Serie
+    public function setId($id): self
     {
         $this->id = $id;
 
@@ -93,9 +97,9 @@ class Serie implements LibraryInterface
 
     /**
      * @param mixed $name
-     * @return Serie
+     * @return self
      */
-    public function setName($name): Serie
+    public function setName($name): self
     {
         $this->name = $name;
 
@@ -118,6 +122,6 @@ class Serie implements LibraryInterface
      */
     public function __toString(): string
     {
-        return $this->getName();
+        return (string) $this->getName();
     }
 }

@@ -5,14 +5,17 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
  *     attributes={"access_control"="is_granted('ROLE_USER')"}
  * )
- * @ApiFilter(OrderFilter::class, properties={"id", "book", "author"}, arguments={"orderParameterName"="order"})
+ * @ApiFilter(OrderFilter::class, properties={"id", "book", "author"})
  *
  * @ORM\Entity
  * @ORM\Table(name="project_book_creation")
@@ -25,6 +28,10 @@ class ProjectBookCreation implements LibraryInterface
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Assert\Uuid()
+     *
+     * @var int
      */
     private $id;
 
@@ -34,6 +41,8 @@ class ProjectBookCreation implements LibraryInterface
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Library\Job", cascade={"persist"})
      * @ORM\JoinColumn(name="job_id", referencedColumnName="id")
+     *
+     * @var Job
      */
     private $role;
 
@@ -45,11 +54,14 @@ class ProjectBookCreation implements LibraryInterface
      *     cascade={"remove"}
      * )
      * @ORM\JoinColumn(name="book_id", referencedColumnName="id")
+     *
+     * @var Book
      */
     private $book;
 
     /**
      * @ApiSubresource(maxDepth=1)
+     * @MaxDepth(1)
      * @Groups({"book_detail_read", "book_detail_write"})
      *
      * @ORM\ManyToOne(
@@ -59,13 +71,15 @@ class ProjectBookCreation implements LibraryInterface
      *     cascade={"persist", "remove"}
      * )
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
+     *
+     * @var Author
      */
     private $author;
 
     /**
      * mandatory for api-platform to get a valid IRI
      *
-     * @return int
+     * @return int|null
      */
     public function getId(): ?int
     {
@@ -74,9 +88,9 @@ class ProjectBookCreation implements LibraryInterface
 
     /**
      * @param mixed $id
-     * @return ProjectBookCreation
+     * @return self
      */
-    public function setId($id): ProjectBookCreation
+    public function setId($id): self
     {
         $this->id = $id;
 
@@ -93,9 +107,9 @@ class ProjectBookCreation implements LibraryInterface
 
     /**
      * @param Job $role
-     * @return ProjectBookCreation
+     * @return self
      */
-    public function setRole(Job $role): ProjectBookCreation
+    public function setRole(Job $role): self
     {
         $this->role = $role;
 
@@ -103,7 +117,7 @@ class ProjectBookCreation implements LibraryInterface
     }
 
     /**
-     * @return Book
+     * @return Book|null
      */
     public function getBook(): ?Book
     {
@@ -112,9 +126,9 @@ class ProjectBookCreation implements LibraryInterface
 
     /**
      * @param Book $book
-     * @return $this
+     * @return self
      */
-    public function setBook(Book $book): ProjectBookCreation
+    public function setBook(Book $book): self
     {
         $this->book = $book;
 
@@ -122,18 +136,18 @@ class ProjectBookCreation implements LibraryInterface
     }
 
     /**
-     * @return Author
+     * @return Author|null
      */
-    public function getAuthor(): Author
+    public function getAuthor(): ?Author
     {
         return $this->author;
     }
 
     /**
      * @param Author $author
-     * @return $this
+     * @return self
      */
-    public function setAuthor(Author $author): ProjectBookCreation
+    public function setAuthor(Author $author): self
     {
         $this->author = $author;
 

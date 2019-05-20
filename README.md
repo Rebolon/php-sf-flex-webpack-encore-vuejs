@@ -1,13 +1,12 @@
 # Symfony sample
 
 <p align="center">
-
   [![Build Status](https://travis-ci.org/Rebolon/php-sf-flex-webpack-encore-vuejs.png?branch=master)](https://travis-ci.org/Rebolon/php-sf-flex-webpack-encore-vuejs)
   [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Rebolon/php-sf-flex-webpack-encore-vuejs/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Rebolon/php-sf-flex-webpack-encore-vuejs/badges/quality-score.png?b=master)
   [![DeepScan grade](https://deepscan.io/api/teams/2301/projects/3192/branches/26485/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=2301&pid=3192&bid=26485)
   [![Known Vulnerabilities](https://snyk.io/test/github/rebolon/php-sf-flex-webpack-encore-vuejs/badge.svg?targetFile=package.json)](https://snyk.io/test/github/rebolon/php-sf-flex-webpack-encore-vuejs?targetFile=package.json)
   [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FRebolon%2Fphp-sf-flex-webpack-encore-vuejs.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FRebolon%2Fphp-sf-flex-webpack-encore-vuejs?ref=badge_shield)
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FRebolon%2Fphp-sf-flex-webpack-encore-vuejs.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FRebolon%2Fphp-sf-flex-webpack-encore-vuejs?ref=badge_shield)
+  [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FRebolon%2Fphp-sf-flex-webpack-encore-vuejs.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FRebolon%2Fphp-sf-flex-webpack-encore-vuejs?ref=badge_shield)
 </p>
 
 ## requirements
@@ -131,12 +130,12 @@ For [Angular](https://angular.io/) (v5), i decided to do quite different way:
 ## run
 
 * clone the project like this `git clone git@github.com:Rebolon/php-sf-flex-webpack-encore-vuejs.git` and go into this directory
-* install the project with `npm run init-project` (or init-project:win for windows system) which will launch :
+* install the project with `npm run init-project` (or init-project:w for windows system) which will launch :
   1. copy the env file (or set them on your system) : `cp .env.dist .env`
   2. php dependancies installation: `composer install`
   3. nodejs tooling installation (and angular deps): `npm install && cd assets/js/form-devxpress-angular && npm install`
   4. assets generation: `npm run dev`
-  5. db init: `php bin/console doctrine:database:create` & `doctrine:schema:create` & `doctrine:fixtures:load`
+  5. db init: `php bin/console doctrine:database:create` & `php bin/console doctrine:schema:create` & `php bin/console doctrine:fixtures:load`
      * it creates the physical database from the `config/packages/doctrine.yaml` file
      * it builds the schema based on `src/Entity/*` files
      * it load fixtures based on a db sample built with `calibre` software plus a plugin that export data to sqlite format. An alternative to this would have been to use https://github.com/hautelook/AliceBundle and build yaml fixtures, but i already had an sqlite db so i didn't need this :-)
@@ -146,8 +145,8 @@ For [Angular](https://angular.io/) (v5), i decided to do quite different way:
 * Run your application with php built-in server:
   1. Change to the project directory
   2. Execute the `npm run build` that will build assets and watch for angular app change
-  3. Execute the `npm run dev-server-hot` (or dev-server-hot:win for windows system) command to start the asset server that will build your assets for vue and react and your manifest.json and serve the assets with hot module replacement when you do a modification on a vuejs file
-  4. Execute the `npm run sf-dev` (or sf-dev:win for windows system) command;
+  3. Execute the `npm run dev-server-hot` (or dev-server-hot:w for windows system) command to start the asset server that will build your assets for vue and react and your manifest.json and serve the assets with hot module replacement when you do a modification on a vuejs file
+  4. Execute the `npm run sf-dev` (or sf-dev:w for windows system) command;
   5. Browse to the http://localhost:80/ URL.
 
      * Run composer require symfony/web-server-bundle for a better web server.

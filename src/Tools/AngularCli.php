@@ -47,6 +47,11 @@ class AngularCli
             if ($iteration->isFile()) {
                 // improve this using array_* functions
                 foreach ($ngFiles['js'] as $jsKey => $jsNgFile) {
+                    // prevent source map files
+                    if ($iteration->getExtension() !== 'js') {
+                        continue;
+                    }
+
                     if (strpos($iteration->getBasename(), $jsKey) !== false) {
                         $ngFiles['js'][$jsKey] = $ngBuildDirFromPublic.$iteration->getBasename();
                         continue;

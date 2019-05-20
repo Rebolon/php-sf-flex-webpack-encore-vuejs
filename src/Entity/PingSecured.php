@@ -1,17 +1,19 @@
 <?php
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Class PingSecured
+ * Class Ping
  * @ApiResource(
- *     attributes={"access_control"="is_granted('ROLE_USER', 'ROLE_API_READ')"},
+ *     attributes={"access_control"="is_granted('ROLE_USER')", "status_code"=403},
  *     itemOperations={
- *         "get"={"access_control"="is_granted('ROLE_USER', 'ROLE_API_READ')", "access_control_message"="Only authenticated users can access this endpoint."}
+ *         "get"={"method"="GET", "access_control_message"="Only authenticated users can access this endpoint."}
  *     },
  *     collectionOperations={
- *         "get"={"access_control"="is_granted('ROLE_USER', 'ROLE_API_READ')", "access_control_message"="Only authenticated users can access this endpoint."}
+ *          "get"={"method"="GET", "access_control_message"="Only authenticated users can access this endpoint."}
  *     }
  * )
  * @package App\Entity\PingSecured

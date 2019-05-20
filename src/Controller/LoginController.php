@@ -16,7 +16,11 @@ class LoginController extends AbstractController
      * Try to test this security when the one on the bottom works Security("is_granted('IS_AUTHENTICATED_FULLY')")
      *
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     * @Route("/demo/security/login/standard/secured", name="demo_secured_page_standard", methods={"GET"})
+     * @Route(
+     *     "/demo/security/login/standard/secured",
+     *     name="demo_secured_page_standard",
+     *     methods={"GET"}
+     *     )
      */
     public function index()
     {

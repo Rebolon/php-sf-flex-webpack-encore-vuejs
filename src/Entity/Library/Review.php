@@ -7,25 +7,35 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use App\Entity\LoggerTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
+use \DateTime;
 
 /**
  * @ApiResource(
  *     iri="http://schema.org/Review",
  *     attributes={"access_control"="is_granted('ROLE_USER')"}
  * )
- * @ApiFilter(OrderFilter::class, properties={"id", "rating", "username", "publicationDate", "book"}, arguments={"orderParameterName"="order"})
+ * @ApiFilter(OrderFilter::class, properties={"id", "rating", "username", "publicationDate", "book"})
  * @ApiFilter(DateFilter::class, properties={"publication_date"})
  *
  * @ORM\Entity
  */
 class Review implements LibraryInterface
 {
+    use LoggerTrait;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Assert\Uuid()
+     *
+     * @var int
      */
     private $id;
 
@@ -38,6 +48,8 @@ class Review implements LibraryInterface
      *
      * @Assert\NotBlank()
      * @Assert\Range(min="0", max="5")
+     *
+     * @var int
      */
     private $rating;
 
@@ -47,10 +59,14 @@ class Review implements LibraryInterface
      * )
      *
      * @ORM\Column(type="text", nullable=true)
+     *
+     * @var string
      */
     private $body;
 
     /**
+     * @todo change username by user and map ManyToOne on Reader => only user that has read the book can set a review ;-)
+     *
      * @ApiProperty(
      *     iri="http://schema.org/givenName"
      * )
@@ -58,6 +74,8 @@ class Review implements LibraryInterface
      * @ORM\Column(type="string", length=512, nullable=true)
      *
      * @Assert\Length(max="512")
+     *
+     * @var string
      */
     private $username;
 
@@ -70,6 +88,8 @@ class Review implements LibraryInterface
      *
      * @Assert\NotBlank()
      * @Assert\DateTime()
+     *
+     * @var DateTime
      */
     private $publicationDate;
 
@@ -78,15 +98,27 @@ class Review implements LibraryInterface
      *     iri="http://bib.schema.org/ComicStory"
      * )
      * @ApiSubresource(maxDepth=1)
+     * @MaxDepth(1)
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Library\Book", inversedBy="reviews")
      * @ORM\JoinColumn(name="book_id", referencedColumnName="id", onDelete="CASCADE")
+     *
+     * @var Book
      */
     private $book;
 
     /**
+     * ProjectBookEdition constructor.
+     * @param LoggerInterface $logger
+     */
+    public function __construct(LoggerInterface $logger)
+    {
+        $this->setLogger($logger);
+    }
+
+    /**
      * id can be null until flush is done
-     * @return int
+     * @return int|null
      */
     public function getId(): ?int
     {
@@ -95,9 +127,9 @@ class Review implements LibraryInterface
 
     /**
      * @param mixed $id
-     * @return Review
+     * @return self
      */
-    public function setId($id): Review
+    public function setId($id): self
     {
         $this->id = $id;
 
@@ -105,7 +137,7 @@ class Review implements LibraryInterface
     }
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getRating(): ?int
     {
@@ -114,9 +146,9 @@ class Review implements LibraryInterface
 
     /**
      * @param mixed $rating
-     * @return Review
+     * @return self
      */
-    public function setRating($rating): Review
+    public function setRating($rating): self
     {
         $this->rating = $rating;
 
@@ -124,7 +156,7 @@ class Review implements LibraryInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getBody(): ?string
     {
@@ -133,9 +165,9 @@ class Review implements LibraryInterface
 
     /**
      * @param mixed $body
-     * @return Review
+     * @return self
      */
-    public function setBody($body): Review
+    public function setBody($body): self
     {
         $this->body = $body;
 
@@ -143,7 +175,7 @@ class Review implements LibraryInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getUsername(): ?string
     {
@@ -152,9 +184,9 @@ class Review implements LibraryInterface
 
     /**
      * @param mixed $username
-     * @return Review
+     * @return self
      */
-    public function setUsername($username): Review
+    public function setUsername($username): self
     {
         $this->username = $username;
 
@@ -162,26 +194,46 @@ class Review implements LibraryInterface
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime|null
      */
-    public function getPublicationDate(): ?\DateTime
+    public function getPublicationDate(): ?DateTime
     {
         return $this->publicationDate;
     }
 
     /**
-     * @param mixed $publicationDate
-     * @return Review
+     * @param DateTime|string $publicationDate
+     * @return self
      */
-    public function setPublicationDate($publicationDate): Review
+    public function setPublicationDate($publicationDate): self
     {
+        // @todo mutualize this code
+        if (is_string($publicationDate)) {
+            $dateString = $publicationDate;
+            try {
+                if (preg_match('/\d*/', $publicationDate)) {
+                    $dateTime = new DateTime();
+                    $publicationDate = $dateTime->setTimestamp((int) $publicationDate);
+                } else {
+                    $publicationDate = new DateTime($publicationDate);
+                }
+            } catch (\Exception $e) {
+                $this->logger->warning(sprintf('Wrong input for publicationDate, %s', $dateString));
+            }
+        } elseif (!($publicationDate instanceof DateTime)) {
+            $this->logger->warning(sprintf(
+                'Wrong input for publicationDate, should be \DateTime or valid date string or unixTimestamp, %s',
+                is_object($publicationDate) ? $publicationDate->__toString() : $publicationDate
+            ));
+        }
+
         $this->publicationDate = $publicationDate;
 
         return $this;
     }
 
     /**
-     * @return Book
+     * @return Book|null
      */
     public function getBook(): ?Book
     {
@@ -192,9 +244,9 @@ class Review implements LibraryInterface
      * Mandatory for EasyAdminBundle (if i don't want to do custom dev)
      *
      * @param Book $book
-     * @return Review
+     * @return self
      */
-    public function setBook(Book $book): Review
+    public function setBook(Book $book): self
     {
         $this->book = $book;
 

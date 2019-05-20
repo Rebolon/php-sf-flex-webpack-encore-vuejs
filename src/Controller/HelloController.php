@@ -10,7 +10,12 @@ class HelloController extends AbstractController
 {
     /**
      * @Cache(expires="+1 hour")
-     * @Route("/demo/hello/{name}", requirements={"name": "\w*"}, defaults={"name": "world"}, methods={"GET"})
+     * @Route(
+     *     "/demo/hello/{name}",
+     *     requirements={"name": "\w*"},
+     *     defaults={"name": "world"},
+     *     methods={"GET"}
+     *     )
      *
      * @param $name
      *

@@ -2,11 +2,10 @@
 namespace App\Command;
 
 use App\Security\JwtTokenTools;
-use Http\Client\HttpAsyncClient;
-use Http\Message\MessageFactory;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -15,7 +14,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\InMemoryUserProvider;
 use Symfony\Component\Yaml\Yaml;
 
-class GetJwtToken extends ContainerAwareCommand
+class GetJwtToken extends Command
 {
     /**
      * @var JWTEncoderInterface
@@ -51,6 +50,10 @@ class GetJwtToken extends ContainerAwareCommand
 	 * @var string
 	 */
 	protected $tokenJwtBearer;
+	/**
+	 * @var string
+	 */
+	protected $rootDir;
 
     /**
      * GetJwtToken constructor.
@@ -59,8 +62,9 @@ class GetJwtToken extends ContainerAwareCommand
      * @param JWTEncoderInterface $encoder
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param JwtTokenTools $tokenTools
-     * @param string $tokenJwtTtl
+     * @param int $tokenJwtTtl
      * @param string $tokenJwtBearer
+     * @param string $kernelProjectDir
      */
     public function __construct(
         LoggerInterface $logger,
@@ -68,9 +72,10 @@ class GetJwtToken extends ContainerAwareCommand
         JWTEncoderInterface $encoder,
         UserPasswordEncoderInterface $passwordEncoder,
         JwtTokenTools $tokenTools,
-        string $tokenJwtTtl,
-        string $tokenJwtBearer)
-    {
+        int $tokenJwtTtl,
+        string $tokenJwtBearer,
+        string $kernelProjectDir
+    ) {
         $this->logger = $logger;
         $this->provider = $provider;
         $this->encoder = $encoder;
@@ -78,6 +83,7 @@ class GetJwtToken extends ContainerAwareCommand
         $this->tokenTools = $tokenTools;
         $this->tokenJwtTtl = (int) $tokenJwtTtl;
         $this->tokenJwtBearer = $tokenJwtBearer;
+        $this->rootDir = $kernelProjectDir;
 
         parent::__construct();
     }
@@ -136,7 +142,7 @@ class GetJwtToken extends ContainerAwareCommand
      */
     protected function loadSecurityConfig(): array
     {
-        $configDir = $this->getContainer()->get('kernel')->getRootDir() . '/../config/';
+        $configDir = $this->rootDir . '/config/';
         $values = Yaml::parseFile($configDir . 'packages/security.yaml');
         $config = $values['security'];
 

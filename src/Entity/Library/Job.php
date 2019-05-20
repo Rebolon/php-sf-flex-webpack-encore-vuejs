@@ -8,9 +8,18 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @todo would be interesting to add cache here (seems to need a varnish server)
+ *     cacheHeaders={"max_age"=3600, "shared_max_age"=7200}
+ *
  * @ApiResource(
  *     iri="http://schema.org/Role",
- *     attributes={"access_control"="is_granted('ROLE_USER')"}
+ *     attributes={"access_control"="is_granted('ROLE_USER')"},
+ *     collectionOperations={
+ *          "get"={"method"="GET"}
+ *     },
+ *     itemOperations={
+ *         "get"={"method"="GET"}
+ *     }
  * )
  *
  * @ORM\Entity
@@ -23,6 +32,10 @@ class Job implements LibraryInterface
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Assert\Uuid()
+     *
+     * @var int
      */
     private $id;
 
@@ -36,12 +49,14 @@ class Job implements LibraryInterface
      *
      * @Assert\NotBlank()
      * @Assert\Length(max="256")
+     *
+     * @var string
      */
     private $translationKey;
 
     /**
      * id can be null until flush is done
-     * @return int
+     * @return int|null
      */
     public function getId(): ?int
     {
@@ -50,9 +65,9 @@ class Job implements LibraryInterface
 
     /**
      * @param mixed $id
-     * @return Job
+     * @return self
      */
-    public function setId($id): Job
+    public function setId($id): self
     {
         $this->id = $id;
 
@@ -60,7 +75,7 @@ class Job implements LibraryInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getTranslationKey(): ?string
     {
@@ -69,9 +84,9 @@ class Job implements LibraryInterface
 
     /**
      * @param mixed $translationKey
-     * @return Job
+     * @return self
      */
-    public function setTranslationKey($translationKey): Job
+    public function setTranslationKey($translationKey): self
     {
         $this->translationKey = $translationKey;
 
@@ -86,6 +101,6 @@ class Job implements LibraryInterface
      */
     public function __toString(): string
     {
-        return $this->getTranslationKey() ? $this->getTranslationKey() : '';
+        return (string) $this->getTranslationKey();
     }
 }

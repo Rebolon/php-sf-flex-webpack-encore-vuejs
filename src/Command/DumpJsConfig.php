@@ -70,9 +70,9 @@ class DumpJsConfig extends Command
      * @param string $loginUsernamePath
      * @param string $loginPasswordPath
      * @param string $tokenJwtBearer
+     * @param string $kernelProjectDir
      * @param Environment $twig
      * @param RouterInterface $router
-     * @param string $kernelProjectDir
      */
     public function __construct(
         string $csrfTokenParameter,
@@ -80,9 +80,9 @@ class DumpJsConfig extends Command
         string $loginUsernamePath,
         string $loginPasswordPath,
         string $tokenJwtBearer,
+        string $kernelProjectDir,
         Environment $twig,
-        RouterInterface $router,
-        string $kernelProjectDir
+        RouterInterface $router
     ) {
         parent::__construct();
 
@@ -144,7 +144,7 @@ class DumpJsConfig extends Command
     {
         try {
             $missingKeys = [];
-            $mandatoryKeys = ['items_per_page', 'client_items_per_page', 'items_per_page_parameter_name', 'maximum_items_per_page', ];
+            $mandatoryKeys = ['items_per_page', 'client_items_per_page', 'items_per_page_parameter_name', 'maximum_items_per_page', 'page_parameter_name'];
             $configDir = $this->rootDir . '/config/';
             $values = Yaml::parseFile($configDir . 'packages/api_platform.yaml');
             $config = $values['api_platform'];
@@ -159,6 +159,12 @@ class DumpJsConfig extends Command
                 }
 
                 $missingKeys[] = $key;
+            }
+
+            if (!array_key_exists('order_parameter_name', $config['collection'])) {
+                $missingKeys[] = 'order_parameter_name';
+            } else { // maybe a bad idea to move the node into pagination, it was originally because in js config file i did only one apiConfig var with only simple entries and not complex object => may need to refactor this later
+                $config['collection']['pagination']['order_parameter_name'] = $config['collection']['order_parameter_name'];
             }
 
             if (count($missingKeys)) {

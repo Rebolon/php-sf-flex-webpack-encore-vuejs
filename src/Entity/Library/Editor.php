@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,8 +18,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     iri="http://schema.org/publisher",
  *     attributes={"access_control"="is_granted('ROLE_USER')"}
  * )
- * @ApiFilter(OrderFilter::class, properties={"id", "name"}, arguments={"orderParameterName"="order"})
+ * @ApiFilter(OrderFilter::class, properties={"id", "name"})
  * @ApiFilter(SearchFilter::class, properties={"id": "exact", "name": "istart"})
+ * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false}))
  *
  * @ORM\Entity
  */
@@ -30,6 +32,10 @@ class Editor implements LibraryInterface
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Assert\Uuid()
+     *
+     * @var int
      */
     private $id;
 
@@ -43,11 +49,15 @@ class Editor implements LibraryInterface
      *
      * @Assert\NotBlank()
      * @Assert\Length(max="512")
+     *
+     * @var string
      */
     private $name;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookEdition", mappedBy="editor")
+     *
+     * @var Collection|ProjectBookEdition[]
      */
     private $books;
 
@@ -61,7 +71,7 @@ class Editor implements LibraryInterface
 
     /**
      * id can be null until flush is done
-     * @return int
+     * @return int|null
      */
     public function getId(): ?int
     {
@@ -70,9 +80,9 @@ class Editor implements LibraryInterface
 
     /**
      * @param mixed $id
-     * @return Editor
+     * @return self
      */
-    public function setId($id): Editor
+    public function setId($id): self
     {
         $this->id = $id;
 
@@ -80,7 +90,7 @@ class Editor implements LibraryInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getName(): ?string
     {
@@ -89,9 +99,9 @@ class Editor implements LibraryInterface
 
     /**
      * @param mixed $name
-     * @return Editor
+     * @return self
      */
-    public function setName($name): Editor
+    public function setName($name): self
     {
         $this->name = $name;
 
@@ -102,7 +112,7 @@ class Editor implements LibraryInterface
      * @todo the content of the methods + the route mapping for the api
      * Return the list of Books for all projects book edition of this editor
      *
-     * @return Collection
+     * @return Collection|ProjectBookEdition[]
      */
     public function getBooks(): Collection
     {
@@ -118,6 +128,6 @@ class Editor implements LibraryInterface
      */
     public function __toString(): string
     {
-        return $this->getName() ? $this->getName() : '';
+        return (string) $this->getName();
     }
 }

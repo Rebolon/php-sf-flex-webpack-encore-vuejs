@@ -20,7 +20,10 @@ class LoginJwtController extends AbstractController
      * Try to test this security when the one on the bottom works Security("is_granted('IS_AUTHENTICATED_FULLY')")
      *
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     * @Route("/demo/security/login/jwt/secured", name="demo_secured_page_jwt", methods={"GET"})
+     * @Route(
+     *     "/demo/security/login/jwt/secured",
+     *     name="demo_secured_page_jwt",
+     *     methods={"GET"})
      */
     public function index()
     {
@@ -31,7 +34,10 @@ class LoginJwtController extends AbstractController
 
     /**
      * The route that displays the JS form and will display the token
-     * @Route("/demo/security/login/jwt/frontend", name="demo_login_jwt", methods={"GET"})
+     * @Route(
+     *     "/demo/security/login/jwt/frontend",
+     *     name="demo_login_jwt",
+     *     methods={"GET"})
      */
     public function form()
     {
