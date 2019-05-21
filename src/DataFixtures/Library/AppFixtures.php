@@ -6,12 +6,16 @@ use App\Entity\Library\Author;
 use App\Entity\Library\Book;
 use App\Entity\Library\Editor;
 use App\Entity\Library\Job;
+use App\Entity\Library\Loan;
 use App\Entity\Library\Reader;
 use App\Entity\Library\Serie;
 use App\Entity\Library\Tag;
+use DateInterval;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\DBAL\Connection;
+use Exception;
 use \PDO;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -54,10 +58,13 @@ class AppFixtures extends Fixture
     /**
      * @param ObjectManager $manager
      * @throws \Doctrine\DBAL\DBALException
-     * @throws \Exception
+     * @throws Exception
      */
     public function load(ObjectManager $manager)
     {
+        // init some vars
+        $loans = [];
+
         // add job (indexed are 0->writer, 1->cartoonist, 2->color)
         foreach (['writer', 'cartoonist', 'color', ] as $jobTitle) {
             $job = (new Job())
@@ -71,9 +78,20 @@ class AppFixtures extends Fixture
         $dbh = $this->dbCon;
 
         // add main reader
-        $reader = new Reader($this->logger);
-        $reader->setFirstname('John')
+        $readers[] = new Reader($this->logger);
+        $readers[0]->setFirstname('John')
             ->setLastname('Doe');
+
+        // add extra readers
+        foreach ([
+            ['fname' => 'Jane', 'lname' => 'Smith', ],
+            ['fname' => 'Antony', 'lname' => 'Durand', ],
+         ] as $newReader) {
+            $readers[] = new Reader($this->logger);
+            $readers[count($readers)-1]
+                ->setFirstname($newReader['fname'])
+                ->setLastname($newReader['lname']);
+        }
 
         // add books && author && editor
         $qry = 'SELECT t.* FROM books t ';
@@ -84,7 +102,7 @@ class AppFixtures extends Fixture
         }
 
         $q = $dbh->query($qry);
-        foreach ($q->fetchAll() as $row) {
+        foreach ($q->fetchAll() as $idx => $row) {
             try {
                 $book = new Book($this->logger);
                 $book->setTitle($row['title']);
@@ -97,21 +115,29 @@ class AppFixtures extends Fixture
                 $this->addAuthor($row, $book, $dbh, $manager);
                 $this->addEditor($row, $book, $dbh, $manager);
 
-                $reader->addMyLibrary($book);
+                $loans = $this->attachReadersAndLoans($readers, $book, $idx, $loans);
 
                 $manager->persist($book);
 
                 $manager->flush();
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 throw $e;
             }
         }
 
         try {
-            $manager->persist($reader);
+            foreach ($readers as $reader) {
+                $manager->persist($reader);
 
-            $manager->flush();
-        } catch (\Exception $e) {
+                $manager->flush();
+            }
+
+            foreach ($loans as $loan) {
+                $manager->persist($loan);
+
+                $manager->flush();
+            }
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -238,7 +264,7 @@ SQL
                     ->findOneBy(['name' => $row['name']]);
             }
 
-            $dateTime = new \DateTime($bookFixture['pubdate']);
+            $dateTime = new DateTime($bookFixture['pubdate']);
             $book->addEditor($editor, $dateTime, $bookFixture['isbn']);
         }
     }
@@ -350,5 +376,66 @@ SQL
             $job = $this->cache['jobs'][0];
         }
         $book->addAuthor($author, $job);
+    }
+
+    /**
+     * @param Reader[]|array $readers
+     * @param Book $book
+     * @param $idx
+     * @return Loan|array
+     * @throws Exception
+     */
+    protected function attachReadersAndLoans($readers, Book $book, $idx, $loans)
+    {
+        $readers[0]->addMyLibrary($book);
+
+        if ($idx === 0) {
+            $readers[1]->addMyLibrary($book);
+            $readers[2]->addMyLibrary($book);
+        }
+
+        // an ended loan from reader 0 to 1
+        if ($idx === 1) {
+            $readers[1]->addMyLibrary($book);
+
+            $startLoan = new DateTime();
+            $startLoan->setDate(2019, 1, 2);
+            $endLoan = clone($startLoan)->add(new DateInterval('P40D'));
+
+            $loans[] = new Loan();
+            $loans[0]->setBook($book)
+                ->setOwner($readers[0])
+                ->setLoaner($readers[1])
+                ->setStartLoan($startLoan)
+                ->setEndLoan($endLoan);
+        }
+
+        // an ended loan from 1 to 2
+        if ($idx === 2) {
+            $readers[1]->addMyLibrary($book);
+
+            $startLoan = new DateTime();
+            $startLoan->setDate(2019, 2, 10);
+            $endLoan = clone($startLoan)->add(new DateInterval('P33D'));
+            $loans[] = new Loan();
+            $loans[1]->setBook($book)
+                ->setOwner($readers[1])
+                ->setLoaner($readers[2])
+                ->setStartLoan($startLoan)
+                ->setEndLoan($endLoan);
+        }
+
+        // a pending loan
+        if ($idx === 3) {
+            $startLoan = new DateTime();
+            $startLoan->setDate(2019, 3, 22);
+            $loans[] = new Loan();
+            $loans[1]->setBook($book)
+                ->setOwner($readers[0])
+                ->setLoaner($readers[1])
+                ->setStartLoan($startLoan);
+        }
+
+        return $loans;
     }
 }

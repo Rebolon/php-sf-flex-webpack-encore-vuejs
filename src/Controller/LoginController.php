@@ -39,8 +39,11 @@ class LoginController extends AbstractController
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function loginStandard(AuthenticationUtils $authUtils, CsrfTokenManagerInterface $tokenManager)
-    {
+    public function loginStandard(
+        AuthenticationUtils $authUtils,
+        CsrfTokenManagerInterface $tokenManager,
+        string $csrfTokenId
+    ) {
         // get the login error if there is one
         $error = $authUtils->getLastAuthenticationError();
 
@@ -48,9 +51,8 @@ class LoginController extends AbstractController
         $lastUsername = $authUtils->getLastUsername();
 
         // token for csrf protection (no need to check validity from request coz it's up to Symfony to do this with
-        // internal mecanisms
-        $tokenId = $this->getParameter('csrf_token_id');
-        $token = $tokenManager->getToken($tokenId);
+        // internal mecanisms)
+        $token = $tokenManager->getToken($csrfTokenId);
 
         return $this->render('login/login.html.twig', [
             'last_username' => $lastUsername,

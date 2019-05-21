@@ -20,11 +20,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     iri="http://schema.org/Tags",
  *     attributes={
  *          "normalization_context"={
- *              "groups"={"book_detail_read"},
+ *              "groups"={"book_detail_read", "tag_detail_read"},
  *              "enable_max_depth"=true
  *          },
  *          "denormalization_context"={
- *              "groups"={"book_detail_write"}
+ *              "groups"={"book_detail_write", "tag_detail_write"}
  *          }
  *     }
  * )
@@ -37,7 +37,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Tag implements LibraryInterface
 {
     /**
-     * @Groups("book_detail_read")
+     * @Groups({"book_detail_read", "tag_detail_read"})
      *
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -49,7 +49,7 @@ class Tag implements LibraryInterface
 
     /**
      * @ApiProperty()
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @Groups({"book_detail_read", "tag_detail_read", "book_detail_write"})
      *
      * @ORM\Column(type="string", length=512, nullable=false)
      *
@@ -63,9 +63,9 @@ class Tag implements LibraryInterface
      *      iri="http://pending.schema.org/ComicStory"
      * )
      * @ApiSubresource(maxDepth=1)
-     * @MaxDepth(1) // i force MaxDepth here because the above code doesn't seems to be used as expected (a mis comprehension on my side)
+     * @MaxDepth(1)
      * // If i want detail on books node instead of just IRI i need to set the group used in normalization context
-     * @Groups({"book_detail_read"})
+     * @Groups({"tag_detail_read"})
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Library\Book", mappedBy="tags", orphanRemoval=false)
      */

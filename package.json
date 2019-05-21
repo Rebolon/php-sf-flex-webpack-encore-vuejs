@@ -13,8 +13,8 @@
         "quasar_style": "mat"
     },
     "scripts": {
-        "init-project": "[ -f .env ] && echo '.env file already exists' || cp .env.dist .env && cp phpunit.xml.dist phpunit.xml && composer install && npm install && npm run db-init && npm run dump-js-config && cd assets/js/form-devxpress-angular/ && npm install && cd ../../../ && npm run dev",
-        "init-project:w": "cp .env.dist .env && cp phpunit.xml.dist phpunit.xml && composer install && npm install && npm run db-init:w && npm run dump-js-config:w && cd assets/js/form-devxpress-angular/ && npm install && cd ../../../ && npm run dev:w && cd vendor/bin/.phpunit/phpunit* && composer install && cd ../../../../",
+        "init-project": "[ -f .env ] && echo '.env file already exists' || cp .env.dist .env && cp phpunit.xml.dist phpunit.xml && composer install && npm install && npm run db-init && npm run dump-js-config && cd assets/js/form-devxpress-angular/ && npm install && cd ../../../ && npm run dev && php bin/console assets:install --symlink",
+        "init-project:w": "cp .env.dist .env && cp phpunit.xml.dist phpunit.xml && composer install && npm install && npm run db-init:w && npm run dump-js-config:w && cd assets/js/form-devxpress-angular/ && npm install && cd ../../../ && npm run dev:w && cd vendor/bin/.phpunit/phpunit* && composer install && cd ../../../../ && php bin/console assets:install --symlink",
         "db-init": "$npm_package_config_php bin/console doctrine:database:create && $npm_package_config_php bin/console doctrine:schema:create && $npm_package_config_php bin/console doctrine:fixtures:load -n",
         "db-init:w": "%npm_package_config_php% bin/console doctrine:database:create && %npm_package_config_php% bin/console doctrine:schema:create && %npm_package_config_php% bin/console doctrine:fixtures:load -n",
         "jwt-init": "echo 'Use the same passphrase that is your .env file' && mkdir -p config/jwt && npm run jwt-generation && npm run jwt-generation-test",
@@ -32,7 +32,7 @@
         "dev-server-hot": "./node_modules/.bin/encore dev-server --hot --port $npm_package_config_server_port_asset",
         "dev-server-hot:w": ".\\node_modules\\.bin\\encore dev-server --hot --port %npm_package_config_server_port_asset%",
         "dev": "./node_modules/.bin/encore dev && cd assets/js/form-devxpress-angular/ && node_modules/.bin/ng build --extract-css",
-        "dev:win": ".\\node_modules\\.bin\\encore dev && cd assets/js/form-devxpress-angular/ && node_modules\\.bin\\ng build --extract-css",
+        "dev:w": ".\\node_modules\\.bin\\encore dev && cd assets/js/form-devxpress-angular/ && node_modules\\.bin\\ng build --extract-css",
         "watch": "./node_modules/.bin/encore dev --watch && cd assets/js/form-devxpress-angular/ && node_modules/.bin/ng build --watch --extract-css",
         "watch:w": "START /B .\\node_modules\\.bin\\encore dev --watch && cd assets/js/form-devxpress-angular/ && node_modules\\.bin\\ng build --watch --extract-css",
         "build": "./node_modules/.bin/encore production && cd assets/js/form-devxpress-angular/ && node_modules/.bin/ng build --prod --aot --build-optimizer  --vendor-chunk --common-chunk --lazyModules --optimization=true --extract-css --base-href dist-ng/devxpress --progress --stats-json",

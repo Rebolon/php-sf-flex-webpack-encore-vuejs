@@ -36,7 +36,6 @@ class ProjectBookCreation implements LibraryInterface
     private $id;
 
     /**
-     * @ApiSubresource()
      * @Groups({"book_detail_read", "book_detail_write"})
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Library\Job", cascade={"persist"})
@@ -60,7 +59,6 @@ class ProjectBookCreation implements LibraryInterface
     private $book;
 
     /**
-     * @ApiSubresource(maxDepth=1)
      * @MaxDepth(1)
      * @Groups({"book_detail_read", "book_detail_write"})
      *

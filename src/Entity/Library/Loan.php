@@ -25,7 +25,7 @@ class Loan implements LibraryInterface
      *
      * @var int
      */
-    private $id;
+    protected $id;
 
     /**
      * @ORM\OneToOne(
@@ -37,7 +37,7 @@ class Loan implements LibraryInterface
      *
      * @var Book
      */
-    private $book;
+    protected $book;
 
     /**
      * @Groups({"user_read", "loan_read", "loan_write"})
@@ -52,7 +52,7 @@ class Loan implements LibraryInterface
      *
      * @var Reader
      */
-    private $owner;
+    protected $owner;
 
     /**
      * @Groups({"user_read", "loan_read", "loan_write"})
@@ -67,7 +67,7 @@ class Loan implements LibraryInterface
      *
      * @var Reader
      */
-    private $loaner;
+    protected $loaner;
 
     /**
      * @Groups({"user_read", "loan_read", "loan_write"})
@@ -78,7 +78,7 @@ class Loan implements LibraryInterface
      *
      * @var DateTime
      */
-    private $startLoan;
+    protected $startLoan;
 
     /**
      * @Groups({"user_read", "loan_read", "loan_write"})
@@ -90,7 +90,7 @@ class Loan implements LibraryInterface
      *
      * @var DateTime
      */
-    private $endLoan;
+    protected $endLoan;
 
     /**
      * Loan constructor.

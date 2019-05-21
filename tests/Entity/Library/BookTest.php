@@ -137,7 +137,8 @@ class BookTest extends ToolsAbstract
         return $authors;
     }
 
-    protected function getAuthor($id, $firstname, $lastname) {
+    protected function getAuthor($id, $firstname, $lastname)
+    {
         $author = new Author();
 
         $author
@@ -148,7 +149,8 @@ class BookTest extends ToolsAbstract
         return $author;
     }
 
-    protected function getJob($id, $key) {
+    protected function getJob($id, $key)
+    {
         $job = new Job();
 
         $job
@@ -158,7 +160,8 @@ class BookTest extends ToolsAbstract
         return $job;
     }
 
-    protected function getProjectCreation($id, $author, $job, $book) {
+    protected function getProjectCreation($id, $author, $job, $book)
+    {
         $project = new ProjectBookCreation();
 
         $project

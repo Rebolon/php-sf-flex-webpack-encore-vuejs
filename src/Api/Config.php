@@ -88,6 +88,21 @@ class Config
     }
 
     /**
+     * @param null $resourceAnnotation
+     * @return bool
+     */
+    public function hasPaginationEnabled($resourceAnnotation = null): bool
+    {
+        $enabledGlobally = isset($this->apiPlatformConfig['collection']['pagination']['enabled']) ? $this->apiPlatformConfig['collection']['pagination']['enabled'] : true;
+
+        $enabledLocally = isset($resourceAnnotation->attributes)
+            && array_key_exists('pagination_enabled', $resourceAnnotation->attributes) ?
+            $resourceAnnotation->attributes['pagination_enabled'] : true;
+
+        return $enabledGlobally && $enabledLocally;
+    }
+
+    /**
      * @return string
      */
     public function getNameParameterPaginationItemsPerPage(): string

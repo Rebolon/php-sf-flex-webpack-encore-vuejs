@@ -48,21 +48,24 @@ class LoginJwtController extends AbstractController
      * The route that generate token for a couple login/password
      * It works with Basic HTTP auth or with formData using login/password where path are store in parameters: login_username_path/login_password_path
      *
-     * @deprecated LexiKJWT Bundle should be used in another way without a dedicated controller but using json_login security + success/faliure handlers     *
-     *
-     * @Route("/demo/security/login/jwt/tokens",
-     *     defaults={"_format"="json"},
-     *     methods={"POST"}
-     * )
-     *
      * @param Request $request
      * @param InMemoryUserProvider $provider
      * @param JWTEncoderInterface $encoder
      * @param UserPasswordEncoderInterface $passwordEncoder
      * @param LoggerInterface $logger
      * @param JwtTokenTools $tokenTool
+     * @param string $loginUsernamePath
+     * @param string $loginPasswordPath
+     * @param string $tokenJwtBearer
+     * @param string $tokenJwtTtl
      * @return JsonResponse
      * @throws \Exception
+     * @deprecated LexiKJWT Bundle should be used in another way without a dedicated controller but using json_login security + success/faliure handlers     *
+     *
+     * @Route("/demo/security/login/jwt/tokens",
+     *     defaults={"_format"="json"},
+     *     methods={"POST"}
+     * )
      */
     public function newToken(
         Request $request,
@@ -70,16 +73,20 @@ class LoginJwtController extends AbstractController
         JWTEncoderInterface $encoder,
         UserPasswordEncoderInterface $passwordEncoder,
         LoggerInterface $logger,
-        JwtTokenTools $tokenTool
+        JwtTokenTools $tokenTool,
+        string $loginUsernamePath,
+        string $loginPasswordPath,
+        string $tokenJwtBearer,
+        string $tokenJwtTtl
     ) {
-        $username = $request->getUser() ?: $request->request->get($this->getParameter('login_username_path'));
-        $password = $request->getPassword() ?: $request->request->get($this->getParameter('login_password_path'));
+        $username = $request->getUser() ?: $request->request->get($loginUsernamePath);
+        $password = $request->getPassword() ?: $request->request->get($loginPasswordPath);
 
         if (!$username) {
             $json = json_decode($request->getContent(), true);
             if (!json_last_error()) {
-                $username = $json[$this->getParameter('login_username_path')];
-                $password = $json[$this->getParameter('login_password_path')];
+                $username = $json[$loginUsernamePath];
+                $password = $json[$loginPasswordPath];
             }
         }
 
@@ -87,13 +94,13 @@ class LoginJwtController extends AbstractController
             $provider,
             $encoder,
             $passwordEncoder,
-            $this->getParameter('token_jwt_ttl'),
+            $tokenJwtTtl,
             $username,
             $password,
             $logger
         );
 
-        return new JsonResponse(['token' => $this->getParameter('token_jwt_bearer') . ' ' . $token]);
+        return new JsonResponse(['token' => $tokenJwtBearer . ' ' . $token]);
     }
 
     /**

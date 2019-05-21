@@ -65,7 +65,7 @@ class Book implements LibraryInterface
      *
      * @var int
      */
-    private $id;
+    protected $id;
 
     /**
      * @ApiProperty(
@@ -80,7 +80,7 @@ class Book implements LibraryInterface
      *
      * @var string
      */
-    private $title;
+    protected $title;
 
     /**
      * @ApiProperty(
@@ -92,7 +92,7 @@ class Book implements LibraryInterface
      *
      * @var string
      */
-    private $description;
+    protected $description;
 
     /**
      * @ApiProperty(
@@ -111,7 +111,7 @@ class Book implements LibraryInterface
      *
      * @var int
      */
-    private $indexInSerie;
+    protected $indexInSerie;
 
     /**
      * @var Collection|ProjectBookEdition[]
@@ -125,7 +125,7 @@ class Book implements LibraryInterface
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\Review", mappedBy="book", orphanRemoval=true)
      */
-    private $reviews;
+    protected $reviews;
 
     /**
      * @var Collection|ProjectBookCreation[]
@@ -136,7 +136,7 @@ class Book implements LibraryInterface
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookCreation", mappedBy="book", cascade={"persist", "remove"})
      */
-    private $authors;
+    protected $authors;
 
     /**
      * @var Collection|ProjectBookEdition[]
@@ -147,7 +147,7 @@ class Book implements LibraryInterface
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookEdition", mappedBy="book", cascade={"persist", "remove"})
      */
-    private $editors;
+    protected $editors;
 
     /**
      * @ApiSubresource(maxDepth=1)
@@ -159,10 +159,10 @@ class Book implements LibraryInterface
      *
      * @var Serie
      */
-    private $serie;
+    protected $serie;
 
     /**
-     * @ApiSubresource(maxDepth=1)
+     * @ ApiSubresource(maxDepth=1)
      * @MaxDepth(1)
      * @Groups({"book_detail_read", "book_detail_write"})
      *
@@ -170,7 +170,7 @@ class Book implements LibraryInterface
      *
      * @var Collection|Tag[]
      */
-    private $tags;
+    protected $tags;
 
     /**
      * Book constructor.
