@@ -33,7 +33,7 @@ class Serie implements LibraryInterface
      *
      * @Assert\Uuid()
      */
-    private $id;
+    protected $id;
 
     /**
      * @ApiProperty(
@@ -46,7 +46,7 @@ class Serie implements LibraryInterface
      * @Assert\NotBlank()
      * @Assert\Length(max="512")
      */
-    private $name;
+    protected $name;
 
     /**
      * @ApiProperty(
@@ -57,7 +57,7 @@ class Serie implements LibraryInterface
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\Book", mappedBy="serie", orphanRemoval=true)
      */
-    private $books;
+    protected $books;
 
     /**
      * Serie constructor.

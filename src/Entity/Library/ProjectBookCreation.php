@@ -7,6 +7,7 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -33,7 +34,7 @@ class ProjectBookCreation implements LibraryInterface
      *
      * @var int
      */
-    private $id;
+    protected $id;
 
     /**
      * @Groups({"book_detail_read", "book_detail_write"})
@@ -43,7 +44,7 @@ class ProjectBookCreation implements LibraryInterface
      *
      * @var Job
      */
-    private $role;
+    protected $role;
 
     /**
      * @ORM\ManyToOne(
@@ -56,7 +57,7 @@ class ProjectBookCreation implements LibraryInterface
      *
      * @var Book
      */
-    private $book;
+    protected $book;
 
     /**
      * @MaxDepth(1)
@@ -72,7 +73,14 @@ class ProjectBookCreation implements LibraryInterface
      *
      * @var Author
      */
-    private $author;
+    protected $author;
+
+    /**
+     * ProjectBookCreation constructor.
+     */
+    public function __construct()
+    {
+    }
 
     /**
      * mandatory for api-platform to get a valid IRI

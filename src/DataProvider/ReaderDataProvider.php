@@ -50,7 +50,7 @@ class ReaderDataProvider implements ItemDataProviderInterface, CollectionDataPro
 
     public function getItem(string $resourceClass, $id, string $operationName = null, array $context = [])
     {
-        $em = $this->managerRegistry->getRepository(\App\Entity\Library\Reader::class);
+        $em = $this->managerRegistry->getRepository(OrmEntityReader::class);
 
         /**
          * @todo find a way to retreive only props specified in uri if they exists => Extensions might have helped us but they works only if entity are both orm & apiPlatform
@@ -64,7 +64,7 @@ class ReaderDataProvider implements ItemDataProviderInterface, CollectionDataPro
     public function getCollection(string $resourceClass, string $operationName = null, array $context = [])
     {
         $items = [];
-        $em = $this->managerRegistry->getRepository(\App\Entity\Library\Reader::class);
+        $em = $this->managerRegistry->getRepository(OrmEntityReader::class);
         $qb = $em->createQueryBuilder('r');
         $queryNameGenerator = new QueryNameGenerator();
 

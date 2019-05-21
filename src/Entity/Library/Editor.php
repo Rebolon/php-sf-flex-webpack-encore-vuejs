@@ -37,7 +37,7 @@ class Editor implements LibraryInterface
      *
      * @var int
      */
-    private $id;
+    protected $id;
 
     /**
      * @ApiProperty(
@@ -52,14 +52,14 @@ class Editor implements LibraryInterface
      *
      * @var string
      */
-    private $name;
+    protected $name;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookEdition", mappedBy="editor")
      *
      * @var Collection|ProjectBookEdition[]
      */
-    private $books;
+    protected $books;
 
     /**
      * Editor constructor.

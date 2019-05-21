@@ -2,21 +2,18 @@
 namespace App\Entity\Library;
 
 use ApiPlatform\Core\Exception\InvalidArgumentException;
-use App\Entity\LoggerTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass="\App\Repository\Library\ReaderRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Library\ReaderRepository")
  */
 class Reader implements LibraryInterface
 {
-    use LoggerTrait;
-
     /**
      * @Groups({"reader_read"})
      *
@@ -56,6 +53,7 @@ class Reader implements LibraryInterface
      * different edition ! For instance i keep this implementation for the sample but i might improve this in future
      *
      * @Groups({"reader_read", "reader_write"})
+     * @MaxDepth(1)
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Library\Book")
      *
@@ -66,6 +64,9 @@ class Reader implements LibraryInterface
     /**
      * List of book a reader has borrowed to another reader
      *
+     * @Groups({"reader_read", "reader_write"})
+     * @MaxDepth(1)
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\Loan", mappedBy="loaner")
      * @var Collection|Loan[]
      */
@@ -74,6 +75,9 @@ class Reader implements LibraryInterface
     /**
      * List of book a reader has borrowed from another reader
      *
+     * @Groups({"reader_read", "reader_write"})
+     * @MaxDepth(1)
+     *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\Loan", mappedBy="borrower")
      * @var Collection|Loan[]
      */
@@ -81,12 +85,9 @@ class Reader implements LibraryInterface
 
     /**
      * Book constructor.
-     * @param LoggerInterface $logger
      */
-    public function __construct(LoggerInterface $logger)
+    public function __construct()
     {
-        $this->setLogger($logger);
-
         $this->myLibrary = new ArrayCollection();
         $this->loans = new ArrayCollection();
         $this->borrows = new ArrayCollection();
@@ -246,6 +247,8 @@ class Reader implements LibraryInterface
             return $this;
         }
 
+        // @todo check if the book of the owner is available or already borrowed by someone: throw an exception to explain that it must be returned before it can be loaned again
+
         $this->loans->add($loan);
 
         return $this;
@@ -287,6 +290,9 @@ class Reader implements LibraryInterface
         if ($this->borrows->contains($loan)) {
             return $this;
         }
+
+        // @todo check if the book of the owner is available or already borrowed by someone: throw an exception to explain that it must be returned before it can be loaned again
+        $this->
 
         $this->borrows->add($loan);
 

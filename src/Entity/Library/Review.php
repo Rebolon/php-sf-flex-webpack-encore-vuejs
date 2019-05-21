@@ -7,9 +7,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
-use App\Entity\LoggerTrait;
 use Doctrine\ORM\Mapping as ORM;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 use \DateTime;
@@ -26,8 +24,6 @@ use \DateTime;
  */
 class Review implements LibraryInterface
 {
-    use LoggerTrait;
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -37,7 +33,7 @@ class Review implements LibraryInterface
      *
      * @var int
      */
-    private $id;
+    protected $id;
 
     /**
      * @ApiProperty(
@@ -51,7 +47,7 @@ class Review implements LibraryInterface
      *
      * @var int
      */
-    private $rating;
+    protected $rating;
 
     /**
      * @ApiProperty(
@@ -62,7 +58,7 @@ class Review implements LibraryInterface
      *
      * @var string
      */
-    private $body;
+    protected $body;
 
     /**
      * @todo change username by user and map ManyToOne on Reader => only user that has read the book can set a review ;-)
@@ -77,7 +73,7 @@ class Review implements LibraryInterface
      *
      * @var string
      */
-    private $username;
+    protected $username;
 
     /**
      * @ApiProperty(
@@ -91,7 +87,7 @@ class Review implements LibraryInterface
      *
      * @var DateTime
      */
-    private $publicationDate;
+    protected $publicationDate;
 
     /**
      * @ApiProperty(
@@ -105,15 +101,13 @@ class Review implements LibraryInterface
      *
      * @var Book
      */
-    private $book;
+    protected $book;
 
     /**
      * ProjectBookEdition constructor.
-     * @param LoggerInterface $logger
      */
-    public function __construct(LoggerInterface $logger)
+    public function __construct()
     {
-        $this->setLogger($logger);
     }
 
     /**

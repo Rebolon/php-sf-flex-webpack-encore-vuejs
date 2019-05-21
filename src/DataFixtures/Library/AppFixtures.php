@@ -78,7 +78,7 @@ class AppFixtures extends Fixture
         $dbh = $this->dbCon;
 
         // add main reader
-        $readers[] = new Reader($this->logger);
+        $readers[] = new Reader();
         $readers[0]->setFirstname('John')
             ->setLastname('Doe');
 
@@ -87,7 +87,7 @@ class AppFixtures extends Fixture
             ['fname' => 'Jane', 'lname' => 'Smith', ],
             ['fname' => 'Antony', 'lname' => 'Durand', ],
          ] as $newReader) {
-            $readers[] = new Reader($this->logger);
+            $readers[] = new Reader();
             $readers[count($readers)-1]
                 ->setFirstname($newReader['fname'])
                 ->setLastname($newReader['lname']);
@@ -104,7 +104,7 @@ class AppFixtures extends Fixture
         $q = $dbh->query($qry);
         foreach ($q->fetchAll() as $idx => $row) {
             try {
-                $book = new Book($this->logger);
+                $book = new Book();
                 $book->setTitle($row['title']);
 
                 $this->addSerie($row, $book, $dbh, $manager);

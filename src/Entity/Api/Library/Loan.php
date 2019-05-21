@@ -11,7 +11,7 @@ use \DateTime;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 
 /**
- * @ApiResource(
+ * @ ApiResource(
  *     attributes={
  *          "access_control"="is_granted('ROLE_USER')",
  *          "normalization_context"={
@@ -30,7 +30,7 @@ class Loan implements LibraryInterface
      * @Groups({"user_read", "loan_read"})
      * @var int
      */
-    private $id;
+    protected $id;
 
     /**
      * @ApiSubresource(maxDepth=1)
@@ -38,7 +38,7 @@ class Loan implements LibraryInterface
      * @Groups({"user_read", "loan_read", "loan_write"})
      * @var Book
      */
-    private $book;
+    protected $book;
 
     /**
      * The reader that borrow the books
@@ -48,7 +48,7 @@ class Loan implements LibraryInterface
      * @Groups({"user_read", "loan_read", "loan_write"})
      * @var Reader
      */
-    private $borrower;
+    protected $borrower;
 
     /**
      * The reader that loan the books (the owner in fact)
@@ -58,19 +58,19 @@ class Loan implements LibraryInterface
      * @Groups({"user_read", "loan_read", "loan_write"})
      * @var Reader
      */
-    private $loaner;
+    protected $loaner;
 
     /**
      * @Groups({"user_read", "loan_read", "loan_write"})
      * @var DateTime|null
      */
-    private $startLoan;
+    protected $startLoan;
 
     /**
      * @Groups({"user_read", "loan_read", "loan_write"})
      * @var DateTime|null
      */
-    private $endLoan;
+    protected $endLoan;
 
     /**
      * mandatory for api-platform to get a valid IRI

@@ -6,9 +6,7 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
-use App\Entity\LoggerTrait;
 use Doctrine\ORM\Mapping as ORM;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use DateTime;
@@ -25,8 +23,6 @@ use DateTime;
  */
 class ProjectBookEdition implements LibraryInterface
 {
-    use LoggerTrait;
-
     /**
      * @Groups("book_detail_read")
      *
@@ -38,7 +34,7 @@ class ProjectBookEdition implements LibraryInterface
      *
      * @var int
      */
-    private $id;
+    protected $id;
 
     /**
      * @Groups({"book_detail_read", "book_detail_write"})
@@ -49,7 +45,7 @@ class ProjectBookEdition implements LibraryInterface
      *
      * @var DateTime
      */
-    private $publicationDate;
+    protected $publicationDate;
 
     /**
      * @Groups({"book_detail_read", "book_detail_write"})
@@ -60,7 +56,7 @@ class ProjectBookEdition implements LibraryInterface
      *
      * @var string
      */
-    private $collection;
+    protected $collection;
 
     /**
      * @ApiProperty(
@@ -74,7 +70,7 @@ class ProjectBookEdition implements LibraryInterface
      *
      * @var string
      */
-    private $isbn;
+    protected $isbn;
 
     /**
      * @Groups({"book_detail_read", "book_detail_write"})
@@ -89,7 +85,7 @@ class ProjectBookEdition implements LibraryInterface
      *
      * @var Editor
      */
-    private $editor;
+    protected $editor;
 
     /**
      * @ORM\ManyToOne(
@@ -102,15 +98,13 @@ class ProjectBookEdition implements LibraryInterface
      *
      * @var Book
      */
-    private $book;
+    protected $book;
 
     /**
      * ProjectBookEdition constructor.
-     * @param LoggerInterface $logger
      */
-    public function __construct(LoggerInterface $logger)
+    public function __construct()
     {
-        $this->setLogger($logger);
     }
 
     /**

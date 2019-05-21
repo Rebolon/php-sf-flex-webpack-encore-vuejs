@@ -7,12 +7,11 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Exception\InvalidArgumentException;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
-use App\Entity\LoggerTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -49,8 +48,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Book implements LibraryInterface
 {
-    use LoggerTrait;
-
     /**
      * @ApiProperty(
      *     iri="http://schema.org/identifier"
@@ -173,7 +170,9 @@ class Book implements LibraryInterface
     protected $tags;
 
     /**
-     * @ApiSubresource(maxDepth=1)
+     * @todo ApiSubResource annotation make the app crash: An exception has been thrown during the rendering of a template ("Resource "App\Entity\Library\Loan" not found in . (which is being imported from "/dev/projects/php-sf-flex-webpack-encore-vuejs/config/routes/api_platform.yaml"). Make sure there is a loader supporting the "api_platform" type.").
+     * @ ApiSubresource(maxDepth=1)
+     *
      * @MaxDepth(1)
      * @Groups({"book_detail_read", "book_detail_write"})
      *
@@ -185,12 +184,9 @@ class Book implements LibraryInterface
 
     /**
      * Book constructor.
-     * @param LoggerInterface $logger
      */
-    public function __construct(LoggerInterface $logger)
+    public function __construct()
     {
-        $this->setLogger($logger);
-
         $this->reviews = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->authors = new ArrayCollection();
@@ -547,6 +543,47 @@ class Book implements LibraryInterface
         }
 
         return false;
+    }
+
+    /**
+     * @return Loan[]|Collection
+     */
+    public function getLoans()
+    {
+        return $this->loans;
+    }
+
+    /**
+     * @param Loan[]|Collection $loans
+     */
+    public function setLoans($loans): void
+    {
+        $this->loans = $loans;
+    }
+
+    /**
+     * @param Loan $loan
+     * @return $this
+     */
+    public function addLoan(Loan $loan)
+    {
+        if (!$loan->getBook()) {
+            $loan->setBook($this);
+        }
+
+        if ($loan->getBook() !== $this) {
+            throw new InvalidArgumentException('A book can be added to its loan list only if he is the book in the Loan object');
+        }
+
+        if ($this->loans->contains($loan)) {
+            return $this;
+        }
+
+        // @todo check if the book of the owner is available or already borrowed by someone: throw an exception to explain that it must be returned before it can be loaned again
+
+        $this->loans->add($loan);
+
+        return $this;
     }
 
     /**

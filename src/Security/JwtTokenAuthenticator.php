@@ -21,17 +21,17 @@ class JwtTokenAuthenticator extends AbstractGuardAuthenticator
     /**
      * @var JWTEncoderInterface
      */
-    private $jwtEncoder;
+    protected $jwtEncoder;
 
     /**
      * @var InMemoryUserProvider
      */
-    private $userProvider;
+    protected $userProvider;
 
     /**
      * @var string
      */
-    private $tokenJwtBearer;
+    protected $tokenJwtBearer;
 
     public function __construct(JWTEncoderInterface $jwtEncoder, InMemoryUserProvider $userProvider, string $tokenJwtBearer)
     {

@@ -133,14 +133,16 @@ trait TestCase
         $this->currentProfileIdx = 0;
 
         $kernel = static::bootKernel();
-        $this->client = self::createClient();
+        if (method_exists($this, 'createClient')) {
+            $this->client = self::createClient();
+        }
 
         // mock useless class
         $this->logger = $this->createMock('\Psr\Log\LoggerInterface');
 
         // reuse service
-        $this->dbCon = $this->client->getContainer()->get('database_connection');
-        $this->em = $this->client->getContainer()->get('doctrine.orm.entity_manager');
+        $this->dbCon = $kernel->getContainer()->get('database_connection');
+        $this->em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
     }
 
 

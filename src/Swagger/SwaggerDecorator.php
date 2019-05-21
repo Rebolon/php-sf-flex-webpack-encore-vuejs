@@ -6,7 +6,7 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 final class SwaggerDecorator implements NormalizerInterface
 {
-    private $decorated;
+    protected $decorated;
 
     public function __construct(NormalizerInterface $decorated)
     {

@@ -19,19 +19,19 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
  *     iri="http://bib.schema.org/user",
  *     collectionOperations={
  *          "get"={"method"="GET", "access_control"="is_granted('IS_AUTHENTICATED_ANONYMOUSLY')"},
- *          "post"={"method"="POST", "access_control"="is_granted('ROLE_ADMIN')", "access_control_message"="Only admin users can add users."}
+ *          "post"={"method"="POST", "access_control"="is_granted('ROLE_ADMIN', 'ROLE_USER')", "access_control_message"="Only admin users can add users, or the user himself for their own informations."}
  *     },
  *     itemOperations={
  *         "get"={"method"="GET"},
- *         "put"={"method"="PUT", "access_control"="is_granted('ROLE_ADMIN')", "access_control_message"="Only admin users can modify users."},
- *         "delete"={"method"="delete", "access_control"="is_granted('ROLE_ADMIN')", "access_control_message"="Only admin users can delete users."}
+ *         "put"={"method"="PUT", "access_control"="is_granted('ROLE_ADMIN', 'ROLE_USER')", "access_control_message"="Only admin users can modify users, or the user himself for their own informations."},
+ *         "delete"={"method"="delete", "access_control"="is_granted('ROLE_ADMIN', 'ROLE_USER')", "access_control_message"="Only admin users can delete users, or the user himself for his own informations."}
  *     },
  *     attributes={
  *          "normalization_context"={
- *              "groups"={"reader_read", "loan_read"}
+ *              "groups"={"reader_read"}
  *          },
  *          "denormalization_context"={
- *              "groups"={"reader_write", "loan_read"}
+ *              "groups"={"reader_write"}
  *          }
  *     }
  * )
@@ -42,12 +42,13 @@ class Reader implements LibraryInterface
 {
     /**
      * @ApiProperty(
+     *     identifier=true,
      *     iri="http://schema.org/identifier"
      * )
      * @Groups({"reader_read"})
      * @var int
      */
-    private $id;
+    protected $id;
 
     /**
      * @ApiProperty(
@@ -56,7 +57,7 @@ class Reader implements LibraryInterface
      * @Groups({"reader_read", "reader_write"})
      * @var string
      */
-    private $lastname;
+    protected $lastname;
 
     /**
      * @ApiProperty(
@@ -65,20 +66,20 @@ class Reader implements LibraryInterface
      * @Groups({"reader_read", "reader_write"})
      * @var string
      */
-    private $firstname;
+    protected $firstname;
 
     /**
      * @todo it may not be a list of books but a list of projectEdition coz you may get a book more than once but in
      * different edition ! For instance i keep this implementation for the sample but i might improve this in future
      *
-     * @ApiProperty()
-     * @ApiSubresource(maxDepth=1)
+     * @ ApiProperty()
+     * @ ApiSubresource(maxDepth=1)
      * @MaxDepth(1)
      * @Groups({"reader_read", "reader_write"})
      *
      * @var Book[]|Collection
      */
-    private $myLibrary;
+    //protected $myLibrary;
 
     /**
      * Reader constructor.

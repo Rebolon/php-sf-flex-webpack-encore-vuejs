@@ -37,7 +37,7 @@ class Job implements LibraryInterface
      *
      * @var int
      */
-    private $id;
+    protected $id;
 
     /**
      * @ApiProperty(
@@ -52,7 +52,14 @@ class Job implements LibraryInterface
      *
      * @var string
      */
-    private $translationKey;
+    protected $translationKey;
+
+    /**
+     * Job constructor.
+     */
+    public function __construct()
+    {
+    }
 
     /**
      * id can be null until flush is done

@@ -45,7 +45,7 @@ class Tag implements LibraryInterface
      *
      * @Assert\Uuid()
      */
-    private $id;
+    protected $id;
 
     /**
      * @ApiProperty()
@@ -56,7 +56,7 @@ class Tag implements LibraryInterface
      * @Assert\NotBlank()
      * @Assert\Length(max="512")
      */
-    private $name;
+    protected $name;
 
     /**
      * @ApiProperty(
@@ -69,7 +69,7 @@ class Tag implements LibraryInterface
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Library\Book", mappedBy="tags", orphanRemoval=false)
      */
-    private $books;
+    protected $books;
 
     /**
      * Tag constructor.

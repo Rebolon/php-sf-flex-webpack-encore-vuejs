@@ -54,7 +54,7 @@ class TagDataProvider implements ItemDataProviderInterface, CollectionDataProvid
     }
 
     public function getCollection(string $resourceClass, string $operationName = null, array $context = [])
-    {
+    {die('toto');
         $tags = [];
         $em = $this->managerRegistry->getRepository(Tag::class);
         $qb = $em->createQueryBuilder('t');

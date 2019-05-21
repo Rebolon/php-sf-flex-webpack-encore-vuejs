@@ -4,18 +4,20 @@ namespace App\Entity\Library;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 use \DateTime;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="App\Repository\Library\LoanRepository")
  * @ORM\Table()
  */
 class Loan implements LibraryInterface
 {
     /**
-     * @Groups({"user_read", "loan_read"})
+     * @Groups({"book_detail_read", "reader_read", "loan_read"})
      *
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -28,6 +30,9 @@ class Loan implements LibraryInterface
     protected $id;
 
     /**
+     * @Groups({"reader_read", "loan_read"})
+     * @MaxDepth(1)
+     *
      * @ORM\ManyToOne(
      *     targetEntity="App\Entity\Library\Book",
      *     inversedBy="loans",
@@ -43,7 +48,8 @@ class Loan implements LibraryInterface
     /**
      * The reader that borrow the books
      *
-     * @Groups({"user_read", "loan_read", "loan_write"})
+     * @Groups({"loan_read", "loan_write"})
+     * @MaxDepth(1)
      *
      * @ORM\ManyToOne(
      *     targetEntity="App\Entity\Library\Reader",
@@ -61,7 +67,8 @@ class Loan implements LibraryInterface
     /**
      * The reader that loan the books (the owner in fact)
      *
-     * @Groups({"user_read", "loan_read", "loan_write"})
+     * @Groups({"loan_read", "loan_write"})
+     * @MaxDepth(1)
      *
      * @ORM\ManyToOne(
      *     targetEntity="App\Entity\Library\Reader",
@@ -77,7 +84,7 @@ class Loan implements LibraryInterface
     protected $loaner;
 
     /**
-     * @Groups({"user_read", "loan_read", "loan_write"})
+     * @Groups({"reader_read", "loan_read", "loan_write"})
      *
      * @ORM\Column(type="datetime", nullable=false, options={"default":"now()"}, name="start_loan")
      *
@@ -89,7 +96,7 @@ class Loan implements LibraryInterface
     protected $startLoan;
 
     /**
-     * @Groups({"user_read", "loan_read", "loan_write"})
+     * @Groups({"reader_read", "loan_read", "loan_write"})
      *
      * @ORM\Column(type="datetime", nullable=true, name="end_loan")
      *
@@ -102,7 +109,8 @@ class Loan implements LibraryInterface
 
     /**
      * Loan constructor.
-     * @throws \Exception
+     *
+     * @throws Exception
      */
     public function __construct()
     {

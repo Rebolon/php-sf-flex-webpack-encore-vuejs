@@ -39,7 +39,7 @@ class Author implements LibraryInterface
      *
      * @var int
      */
-    private $id;
+    protected $id;
 
     /**
      * @ApiProperty (
@@ -53,7 +53,7 @@ class Author implements LibraryInterface
      *
      * @var string
      */
-    private $firstname;
+    protected $firstname;
 
     /**
      * @ApiProperty (
@@ -65,14 +65,14 @@ class Author implements LibraryInterface
      *
      * @var string
      */
-    private $lastname;
+    protected $lastname;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookCreation", mappedBy="author")
      *
      * @var Collection|ProjectBookCreation[]
      */
-    private $books;
+    protected $books;
 
     /**
      * Author constructor.
