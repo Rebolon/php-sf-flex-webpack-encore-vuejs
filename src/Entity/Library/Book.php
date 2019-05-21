@@ -173,6 +173,17 @@ class Book implements LibraryInterface
     protected $tags;
 
     /**
+     * @ApiSubresource(maxDepth=1)
+     * @MaxDepth(1)
+     * @Groups({"book_detail_read", "book_detail_write"})
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Library\Loan", mappedBy="books")
+     *
+     * @var Collection|Loan[]
+     */
+    protected $loans;
+
+    /**
      * Book constructor.
      * @param LoggerInterface $logger
      */

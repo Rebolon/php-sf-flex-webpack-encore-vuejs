@@ -41,14 +41,18 @@ class Loan implements LibraryInterface
     private $book;
 
     /**
+     * The reader that borrow the books
+     *
      * @ApiSubresource(maxDepth=1)
      * @MaxDepth(1)
      * @Groups({"user_read", "loan_read", "loan_write"})
      * @var Reader
      */
-    private $owner;
+    private $borrower;
 
     /**
+     * The reader that loan the books (the owner in fact)
+     *
      * @ApiSubresource(maxDepth=1)
      * @MaxDepth(1)
      * @Groups({"user_read", "loan_read", "loan_write"})
@@ -111,18 +115,18 @@ class Loan implements LibraryInterface
     /**
      * @return Reader
      */
-    public function getOwner(): Reader
+    public function getBorrower(): Reader
     {
-        return $this->owner;
+        return $this->borrower;
     }
 
     /**
      * @param Reader $reader
      * @return self
      */
-    public function setOwner(Reader $reader): self
+    public function setBorrower(Reader $reader): self
     {
-        $this->owner = $reader;
+        $this->borrower = $reader;
 
         return $this;
     }

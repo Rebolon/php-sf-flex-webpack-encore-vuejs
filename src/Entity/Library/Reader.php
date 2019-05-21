@@ -1,6 +1,7 @@
 <?php
 namespace App\Entity\Library;
 
+use ApiPlatform\Core\Exception\InvalidArgumentException;
 use App\Entity\LoggerTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -27,7 +28,7 @@ class Reader implements LibraryInterface
      *
      * @var int
      */
-    private $id;
+    protected $id;
 
     /**
      * @Groups({"reader_read", "reader_write"})
@@ -39,7 +40,7 @@ class Reader implements LibraryInterface
      *
      * @var string
      */
-    private $lastname;
+    protected $lastname;
 
     /**
      * @Groups({"reader_read", "reader_write"})
@@ -48,7 +49,7 @@ class Reader implements LibraryInterface
      *
      * @var string
      */
-    private $firstname;
+    protected $firstname;
 
     /**
      * @todo it may not be a list of books but a list of projectEdition coz you may get a book more than once but in
@@ -60,7 +61,23 @@ class Reader implements LibraryInterface
      *
      * @var Collection|Book[]
      */
-    private $myLibrary;
+    protected $myLibrary;
+
+    /**
+     * List of book a reader has borrowed to another reader
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Library\Loan", mappedBy="loaner")
+     * @var Collection|Loan[]
+     */
+    protected $loans;
+
+    /**
+     * List of book a reader has borrowed from another reader
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Library\Loan", mappedBy="borrower")
+     * @var Collection|Loan[]
+     */
+    protected $borrows;
 
     /**
      * Book constructor.
@@ -71,6 +88,8 @@ class Reader implements LibraryInterface
         $this->setLogger($logger);
 
         $this->myLibrary = new ArrayCollection();
+        $this->loans = new ArrayCollection();
+        $this->borrows = new ArrayCollection();
     }
 
     /**
@@ -188,6 +207,90 @@ class Reader implements LibraryInterface
         }
 
         return false;
+    }
+
+    /**
+     * @return Loan[]|Collection
+     */
+    public function getLoans()
+    {
+        return $this->loans;
+    }
+
+    /**
+     * @param Loan[]|Collection $loans
+     * @return Reader
+     */
+    public function setLoans($loans): self
+    {
+        $this->loans = $loans;
+
+        return $this;
+    }
+
+    /**
+     * @param Loan $loan
+     * @return $this
+     */
+    public function addLoan(Loan $loan)
+    {
+        if (!$loan->getLoaner()) {
+            $loan->setLoaner($this);
+        }
+
+        if ($loan->getLoaner() !== $this) {
+            throw new InvalidArgumentException('A reader can add a book to his loan list only if he is the loaner in the Loan object');
+        }
+
+        if ($this->loans->contains($loan)) {
+            return $this;
+        }
+
+        $this->loans->add($loan);
+
+        return $this;
+    }
+
+    /**
+     * @return Loan[]|Collection
+     */
+    public function getBorrows()
+    {
+        return $this->borrows;
+    }
+
+    /**
+     * @param Loan[]|Collection $borrows
+     * @return Reader
+     */
+    public function setBorrows($borrows): self
+    {
+        $this->borrows = $borrows;
+
+        return $this;
+    }
+
+    /**
+     * @param Loan $loan
+     * @return $this
+     */
+    public function addBorrow(Loan $loan)
+    {
+        if (!$loan->getBorrower()) {
+            $loan->setBorrower($this);
+        }
+
+        if ($loan->getBorrower() !== $this) {
+            throw new InvalidArgumentException('A reader can add a book to his borrow list only if he is the borrower in the Loan object');
+        }
+
+        if ($this->borrows->contains($loan)) {
+            return $this;
+        }
+
+        $this->borrows->add($loan);
+
+        return $this;
     }
 
     /**

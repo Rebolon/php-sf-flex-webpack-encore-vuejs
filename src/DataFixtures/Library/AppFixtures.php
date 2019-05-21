@@ -106,19 +106,15 @@ class AppFixtures extends Fixture
             try {
                 $book = new Book($this->logger);
                 $book->setTitle($row['title']);
+
                 $this->addSerie($row, $book, $dbh, $manager);
                 $this->addTags($row, $book, $dbh, $manager);
-
-                // @todo does this persist mandatory ?
-                $manager->persist($book);
-
                 $this->addAuthor($row, $book, $dbh, $manager);
                 $this->addEditor($row, $book, $dbh, $manager);
 
                 $loans = $this->attachReadersAndLoans($readers, $book, $idx, $loans);
 
                 $manager->persist($book);
-
                 $manager->flush();
             } catch (Exception $e) {
                 throw $e;
@@ -128,13 +124,11 @@ class AppFixtures extends Fixture
         try {
             foreach ($readers as $reader) {
                 $manager->persist($reader);
-
                 $manager->flush();
             }
 
             foreach ($loans as $loan) {
                 $manager->persist($loan);
-
                 $manager->flush();
             }
         } catch (Exception $e) {
@@ -400,14 +394,17 @@ SQL
 
             $startLoan = new DateTime();
             $startLoan->setDate(2019, 1, 2);
-            $endLoan = clone($startLoan)->add(new DateInterval('P40D'));
+            $endLoan = clone $startLoan;
+            $endLoan->add(new DateInterval('P40D'));
 
-            $loans[] = new Loan();
-            $loans[0]->setBook($book)
-                ->setOwner($readers[0])
-                ->setLoaner($readers[1])
+            $loan = new Loan();
+            $loan->setBook($book)
+                ->setLoaner($readers[0])
+                ->setBorrower($readers[1])
                 ->setStartLoan($startLoan)
                 ->setEndLoan($endLoan);
+
+            $loans[] = $loan;
         }
 
         // an ended loan from 1 to 2
@@ -416,24 +413,31 @@ SQL
 
             $startLoan = new DateTime();
             $startLoan->setDate(2019, 2, 10);
-            $endLoan = clone($startLoan)->add(new DateInterval('P33D'));
-            $loans[] = new Loan();
-            $loans[1]->setBook($book)
-                ->setOwner($readers[1])
-                ->setLoaner($readers[2])
+            $endLoan = clone $startLoan;
+            $endLoan->add(new DateInterval('P33D'));
+
+            $loan = new Loan();
+            $loan->setBook($book)
+                ->setLoaner($readers[1])
+                ->setBorrower($readers[2])
                 ->setStartLoan($startLoan)
                 ->setEndLoan($endLoan);
+
+            $loans[] = $loan;
         }
 
         // a pending loan
         if ($idx === 3) {
             $startLoan = new DateTime();
             $startLoan->setDate(2019, 3, 22);
-            $loans[] = new Loan();
-            $loans[1]->setBook($book)
-                ->setOwner($readers[0])
-                ->setLoaner($readers[1])
+
+            $loan = new Loan();
+            $loan->setBook($book)
+                ->setLoaner($readers[0])
+                ->setBorrower($readers[1])
                 ->setStartLoan($startLoan);
+
+            $loans[] = $loan;
         }
 
         return $loans;

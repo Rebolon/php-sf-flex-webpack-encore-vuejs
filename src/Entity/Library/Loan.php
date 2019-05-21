@@ -28,8 +28,9 @@ class Loan implements LibraryInterface
     protected $id;
 
     /**
-     * @ORM\OneToOne(
+     * @ORM\ManyToOne(
      *     targetEntity="App\Entity\Library\Book",
+     *     inversedBy="loans",
      *     fetch="EAGER",
      *     cascade={"remove"}
      * )
@@ -40,25 +41,31 @@ class Loan implements LibraryInterface
     protected $book;
 
     /**
+     * The reader that borrow the books
+     *
      * @Groups({"user_read", "loan_read", "loan_write"})
      *
-     * @ORM\OneToOne(
+     * @ORM\ManyToOne(
      *     targetEntity="App\Entity\Library\Reader",
+     *     inversedBy="borrows",
      *     fetch="EAGER"
      * )
-     * @ORM\JoinColumn(name="owner_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="borrower_id", referencedColumnName="id")
      *
      * @Assert\NotBlank()
      *
      * @var Reader
      */
-    protected $owner;
+    protected $borrower;
 
     /**
+     * The reader that loan the books (the owner in fact)
+     *
      * @Groups({"user_read", "loan_read", "loan_write"})
      *
-     * @ORM\OneToOne(
+     * @ORM\ManyToOne(
      *     targetEntity="App\Entity\Library\Reader",
+     *     inversedBy="loans",
      *     fetch="EAGER"
      * )
      * @ORM\JoinColumn(name="loaner_id", referencedColumnName="id")
@@ -72,9 +79,10 @@ class Loan implements LibraryInterface
     /**
      * @Groups({"user_read", "loan_read", "loan_write"})
      *
-     * @ORM\Column(type="date", nullable=false, options={"default":"now()"}, name="start_loan")
+     * @ORM\Column(type="datetime", nullable=false, options={"default":"now()"}, name="start_loan")
      *
      * @Assert\DateTime()
+     * @Assert\NotBlank()
      *
      * @var DateTime
      */
@@ -83,7 +91,7 @@ class Loan implements LibraryInterface
     /**
      * @Groups({"user_read", "loan_read", "loan_write"})
      *
-     * @ORM\Column(type="date", nullable=true, name="end_loan")
+     * @ORM\Column(type="datetime", nullable=true, name="end_loan")
      *
      * @Assert\DateTime()
      * @Assert\Blank()
@@ -144,18 +152,18 @@ class Loan implements LibraryInterface
     /**
      * @return Reader
      */
-    public function getOwner(): Reader
+    public function getBorrower(): Reader
     {
-        return $this->owner;
+        return $this->borrower;
     }
 
     /**
      * @param Reader $reader
      * @return self
      */
-    public function setOwner(Reader $reader): self
+    public function setBorrower(Reader $reader): self
     {
-        $this->owner = $reader;
+        $this->borrower = $reader;
 
         return $this;
     }
@@ -225,9 +233,9 @@ class Loan implements LibraryInterface
      */
     public function __toString(): string
     {
-        return $this->getOwner()->__toString() . ' loan ' . $this->getBook()->getTitle() . ' to '
+        return $this->getBorrower()->__toString() . ' borrow ' . $this->getBook()->getTitle() . ' from '
             . $this->getLoaner()->__toString() . ' at ' . $this->getStartLoan()->format('d/m/Y')
             . ($this->getEndLoan() ? ' and has been returned on ' . $this->getStartLoan()->format('d/m/Y')
-                : ' and has not been returned');
+                : ' and has not been returned yet');
     }
 }
