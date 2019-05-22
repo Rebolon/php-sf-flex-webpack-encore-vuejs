@@ -10,6 +10,12 @@ use App\Api\Config;
 use App\Entity\Library\Tag;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
+/**
+ * It override the default ApiPlatform system from classes that implement ORM and ApiResource annotations
+ *
+ * Class TagDataProvider
+ * @package App\DataProvider
+ */
 class TagDataProvider implements ItemDataProviderInterface, CollectionDataProviderInterface, RestrictedDataProviderInterface
 {
     /**
@@ -54,7 +60,7 @@ class TagDataProvider implements ItemDataProviderInterface, CollectionDataProvid
     }
 
     public function getCollection(string $resourceClass, string $operationName = null, array $context = [])
-    {die('toto');
+    {
         $tags = [];
         $em = $this->managerRegistry->getRepository(Tag::class);
         $qb = $em->createQueryBuilder('t');

@@ -10,8 +10,11 @@ use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Api\Config;
 use App\Entity\Api\Library\Reader;
+use App\Entity\Library\Book;
 use App\Entity\Library\Reader as OrmEntityReader;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use stdClass;
 
 class ReaderDataProvider implements ItemDataProviderInterface, CollectionDataProviderInterface, RestrictedDataProviderInterface
 {
@@ -57,6 +60,15 @@ class ReaderDataProvider implements ItemDataProviderInterface, CollectionDataPro
          */
 
         $item = $em->find($id);
+
+        /*$books = new ArrayCollection();
+        foreach ($item->getBooks() as $book) {
+            $bb = new Book();
+            $bb->setId($book->getId());
+            $books[] = $bb;
+        }
+
+        $item->setBooks($books);*/
 
         return $item;
     }

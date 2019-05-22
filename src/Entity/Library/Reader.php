@@ -59,7 +59,7 @@ class Reader implements LibraryInterface
      *
      * @var Collection|Book[]
      */
-    protected $myLibrary;
+    protected $books;
 
     /**
      * List of book a reader has borrowed to another reader
@@ -88,7 +88,7 @@ class Reader implements LibraryInterface
      */
     public function __construct()
     {
-        $this->myLibrary = new ArrayCollection();
+        $this->books = new ArrayCollection();
         $this->loans = new ArrayCollection();
         $this->borrows = new ArrayCollection();
     }
@@ -155,18 +155,18 @@ class Reader implements LibraryInterface
     /**
      * @return Collection|Book[]
      */
-    public function getMyLibrary(): Collection
+    public function getBooks(): Collection
     {
-        return $this->myLibrary;
+        return $this->books;
     }
 
     /**
      * @param ArrayCollection $aLibrary
      * @return self
      */
-    public function setMyLibrary(ArrayCollection $aLibrary): self
+    public function setBooks(ArrayCollection $aLibrary): self
     {
-        $this->myLibrary = $aLibrary;
+        $this->books = $aLibrary;
 
         return $this;
     }
@@ -175,13 +175,13 @@ class Reader implements LibraryInterface
      * @param Book $book
      * @return self
      */
-    public function addMyLibrary(Book $book): self
+    public function addBook(Book $book): self
     {
-        if ($this->hasBookInMyLibrary($book)) {
+        if ($this->hasBookInBooks($book)) {
             return $this;
         }
 
-        $this->myLibrary[] = $book;
+        $this->books[] = $book;
 
         return $this;
     }
@@ -190,10 +190,10 @@ class Reader implements LibraryInterface
      * @param Book $book
      * @return bool
      */
-    protected function hasBookInMyLibrary(Book $book): bool
+    protected function hasBookInBooks(Book $book): bool
     {
         // @todo check performance: it may be better to do a DQL to check instead of doctrine call to properties that may do new DB call
-        foreach ($this->myLibrary as $bookIAlreadyGet) {
+        foreach ($this->books as $bookIAlreadyGet) {
             if (
                 (
                     (!is_null($book->getId())

@@ -7,8 +7,10 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Exception\InvalidArgumentException;
 use App\Entity\Library\Book;
 use App\Entity\Library\LibraryInterface;
+use App\Entity\Library\Loan;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -72,21 +74,29 @@ class Reader implements LibraryInterface
      * @todo it may not be a list of books but a list of projectEdition coz you may get a book more than once but in
      * different edition ! For instance i keep this implementation for the sample but i might improve this in future
      *
-     * @ ApiProperty()
-     * @ ApiSubresource(maxDepth=1)
+     * @ApiSubresource(maxDepth=1)
      * @MaxDepth(1)
      * @Groups({"reader_read", "reader_write"})
      *
      * @var Book[]|Collection
      */
-    //protected $myLibrary;
+    protected $books;
+
+    /**
+     * @ApiSubresource(maxDepth=1)
+     * @MaxDepth(1)
+     * @Groups({"reader_read"})
+     *
+     * @var Loan[]|Collection
+     */
+    protected $loans;
 
     /**
      * Reader constructor.
      */
     public function __construct()
     {
-        $this->myLibrary = new ArrayCollection();
+        $this->books = new ArrayCollection();
     }
 
     /**
@@ -151,18 +161,18 @@ class Reader implements LibraryInterface
     /**
      * @return Book[]|Collection
      */
-    public function getMyLibrary(): Collection
+    public function getBooks(): Collection
     {
-        return $this->myLibrary;
+        return $this->books;
     }
 
     /**
      * @param Collection $aLibrary
      * @return self
      */
-    public function setTags(Collection $aLibrary): self
+    public function setBooks(Collection $aLibrary): self
     {
-        $this->myLibrary = $aLibrary;
+        $this->books = $aLibrary;
 
         return $this;
     }
@@ -171,13 +181,14 @@ class Reader implements LibraryInterface
      * @param Book $book
      * @return self
      */
-    public function addMyLibrary(Book $book): self
+    public function addBook(Book $book): self
     {
-        if ($this->hasBookInMyLibrary($book)) {
+        if ($this->books->contains($book)
+            || $this->hasBookInBooks($book)) {
             return $this;
         }
 
-        $this->myLibrary[] = $book;
+        $this->books->add($book);
 
         return $this;
     }
@@ -186,9 +197,9 @@ class Reader implements LibraryInterface
      * @param Book $book
      * @return bool
      */
-    protected function hasBookInMyLibrary(Book $book): bool
+    protected function hasBookInBooks(Book $book): bool
     {
-        foreach ($this->myLibrary as $bookIAlreadyGet) {
+        foreach ($this->books as $bookIAlreadyGet) {
             if (
                 (
                     (!is_null($book->getId())
@@ -203,5 +214,56 @@ class Reader implements LibraryInterface
         }
 
         return false;
+    }
+
+    /**
+     * @return Loan[]|Collection
+     */
+    public function getLoans()
+    {
+        return $this->loans;
+    }
+
+    /**
+     * @param Loan[]|Collection $loans
+     * @return Reader
+     */
+    public function setLoans($loans)
+    {
+        $this->loans = $loans;
+
+        return $this;
+    }
+
+    /**
+     * @param Loan $loan
+     * @return $this
+     */
+    public function addLoan(Loan $loan)
+    {
+        if ($loan->getLoaner() !== $this
+                && $loan->getBorrower() !== $this
+        ) {
+            throw new InvalidArgumentException('A loan can be added to reader s loan list only if he is the loaner or the borrower in the Loan object');
+        }
+
+        if (!$loan->getBook()) {
+            throw new InvalidArgumentException('A loan can be added to reader s loan list only if the book is in the Loan object');
+        }
+
+        if ($loan->getLoaner() === $this
+        && !$this->books->contains($loan->getBook())) {
+            throw new InvalidArgumentException('A loan can be added to reader s loan list only if the book exists in the reader s books collection');
+        }
+
+        if ($this->loans->contains($loan)) {
+            return $this;
+        }
+
+        // @todo check if the book of the owner is available or already borrowed by someone: throw an exception to explain that it must be returned before it can be loaned again
+
+        $this->loans->add($loan);
+
+        return $this;
     }
 }
