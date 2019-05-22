@@ -1,6 +1,12 @@
 <?php
 namespace App\Entity\Library;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Exception\InvalidArgumentException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -10,11 +16,39 @@ use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @ApiResource(
+ *     iri="http://bib.schema.org/user",
+ *     collectionOperations={
+ *          "get"={"method"="GET", "access_control"="is_granted('IS_AUTHENTICATED_ANONYMOUSLY')"},
+ *          "post"={"method"="POST", "access_control"="is_granted('ROLE_ADMIN', 'ROLE_USER')", "access_control_message"="Only admin users can add users, or the user himself for their own informations."}
+ *     },
+ *     itemOperations={
+ *         "get"={"method"="GET"},
+ *         "put"={"method"="PUT", "access_control"="is_granted('ROLE_ADMIN', 'ROLE_USER')", "access_control_message"="Only admin users can modify users, or the user himself for their own informations."},
+ *         "delete"={"method"="delete", "access_control"="is_granted('ROLE_ADMIN', 'ROLE_USER')", "access_control_message"="Only admin users can delete users, or the user himself for his own informations."}
+ *     },
+ *     attributes={
+ *          "normalization_context"={
+ *              "groups"={"reader_read"}
+ *          },
+ *          "denormalization_context"={
+ *              "groups"={"reader_write"}
+ *          }
+ *     }
+ * )
+ * @ApiFilter(OrderFilter::class, properties={"id", "lastname"})
+ * @ApiFilter(SearchFilter::class, properties={"id": "exact", "lastname": "istart", "firstname": "istart"})
+ *
  * @ORM\Entity(repositoryClass="App\Repository\Library\ReaderRepository")
  */
 class Reader implements LibraryInterface
 {
     /**
+     * @ApiProperty(
+     *     identifier=true,
+     *     iri="http://schema.org/identifier"
+     * )
+     *
      * @Groups({"reader_read"})
      *
      * @ORM\Id
@@ -28,6 +62,10 @@ class Reader implements LibraryInterface
     protected $id;
 
     /**
+     * @ApiProperty(
+     *     iri="http://schema.org/familyname"
+     * )
+     *
      * @Groups({"reader_read", "reader_write"})
      *
      * @ORM\Column(type="string", length=255, nullable=false)
@@ -40,9 +78,15 @@ class Reader implements LibraryInterface
     protected $lastname;
 
     /**
+     * @ApiProperty(
+     *     iri="http://schema.org/givenName"
+     * )
+     *
      * @Groups({"reader_read", "reader_write"})
      *
      * @ORM\Column(type="text", nullable=true)
+     *
+     * @Assert\Length(max="255")
      *
      * @var string
      */
@@ -51,6 +95,8 @@ class Reader implements LibraryInterface
     /**
      * @todo it may not be a list of books but a list of projectEdition coz you may get a book more than once but in
      * different edition ! For instance i keep this implementation for the sample but i might improve this in future
+     *
+     * @ApiSubresource(maxDepth=1)
      *
      * @Groups({"reader_read", "reader_write"})
      * @MaxDepth(1)
@@ -64,7 +110,9 @@ class Reader implements LibraryInterface
     /**
      * List of book a reader has borrowed to another reader
      *
-     * @Groups({"reader_read", "reader_write"})
+     * @ApiSubresource(maxDepth=1)
+     *
+     * @Groups({"reader_read"})
      * @MaxDepth(1)
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\Loan", mappedBy="loaner")
@@ -75,7 +123,9 @@ class Reader implements LibraryInterface
     /**
      * List of book a reader has borrowed from another reader
      *
-     * @Groups({"reader_read", "reader_write"})
+     * @ApiSubresource(maxDepth=1)
+     *
+     * @Groups({"reader_read"})
      * @MaxDepth(1)
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\Loan", mappedBy="borrower")
@@ -126,7 +176,7 @@ class Reader implements LibraryInterface
      * @param string $lastname
      * @return self
      */
-    public function setLastname($lastname): self
+    public function setLastname(?string $lastname): self
     {
         $this->lastname = $lastname;
 
@@ -145,7 +195,7 @@ class Reader implements LibraryInterface
      * @param mixed $firstname
      * @return self
      */
-    public function setFirstname($firstname): self
+    public function setFirstname(?string $firstname): self
     {
         $this->firstname = $firstname;
 
@@ -177,22 +227,26 @@ class Reader implements LibraryInterface
      */
     public function addBook(Book $book): self
     {
-        if ($this->hasBookInBooks($book)) {
+        if ($this->books->contains($book)
+            || $this->hasBookInBooks($book)) {
             return $this;
         }
 
-        $this->books[] = $book;
+        $this->books->add($book);
 
         return $this;
     }
 
     /**
+     * @todo move into a DTO, this is domain code
+     *
      * @param Book $book
      * @return bool
      */
     protected function hasBookInBooks(Book $book): bool
     {
         // @todo check performance: it may be better to do a DQL to check instead of doctrine call to properties that may do new DB call
+        // but in that case it must be moved into into repository and a DTO must controlle the workflow
         foreach ($this->books as $bookIAlreadyGet) {
             if (
                 (
@@ -230,6 +284,8 @@ class Reader implements LibraryInterface
     }
 
     /**
+     * @todo a large part of the code below should be moved into DTO
+     *
      * @param Loan $loan
      * @return $this
      */
@@ -240,7 +296,15 @@ class Reader implements LibraryInterface
         }
 
         if ($loan->getLoaner() !== $this) {
-            throw new InvalidArgumentException('A reader can add a book to his loan list only if he is the loaner in the Loan object');
+            throw new InvalidArgumentException('A loan can be added to reader s loan list only if he is the loaner in the Loan object');
+        }
+
+        if (!$loan->getBook()) {
+            throw new InvalidArgumentException('A loan can be added to reader s loan list only if the book is in the Loan object');
+        }
+
+        if (!$this->books->contains($loan->getBook())) {
+            throw new InvalidArgumentException('A loan can be added to reader s loan list only if the book exists in the reader s books collection');
         }
 
         if ($this->loans->contains($loan)) {
@@ -274,6 +338,8 @@ class Reader implements LibraryInterface
     }
 
     /**
+     * @todo a large part of the code below should be moved into DTO
+     *
      * @param Loan $loan
      * @return $this
      */
@@ -283,8 +349,13 @@ class Reader implements LibraryInterface
             $loan->setBorrower($this);
         }
 
-        if ($loan->getBorrower() !== $this) {
-            throw new InvalidArgumentException('A reader can add a book to his borrow list only if he is the borrower in the Loan object');
+        if ($loan->getBorrower() !== $this
+        ) {
+            throw new InvalidArgumentException('A borrow can be added to reader s borrow list only if he is the borrower in the Loan object');
+        }
+
+        if (!$loan->getBook()) {
+            throw new InvalidArgumentException('A borrow be added to reader s borrow list only if the book is in the Loan object');
         }
 
         if ($this->borrows->contains($loan)) {
@@ -292,11 +363,8 @@ class Reader implements LibraryInterface
         }
 
         // @todo check if the book of the owner is available or already borrowed by someone: throw an exception to explain that it must be returned before it can be loaned again
-        $this->
 
         $this->borrows->add($loan);
-
-        return $this;
     }
 
     /**

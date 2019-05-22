@@ -52,7 +52,7 @@ class Book implements LibraryInterface
      * @ApiProperty(
      *     iri="http://schema.org/identifier"
      * )
-     * @Groups({"book_detail_read"})
+     * @Groups({"book_detail_read", "reader_read"})
      *
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -68,7 +68,7 @@ class Book implements LibraryInterface
      * @ApiProperty(
      *     iri="http://schema.org/headline"
      * )
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @Groups({"book_detail_read", "book_detail_write", "reader_read"})
      *
      * @ORM\Column(type="string", length=255, nullable=false)
      *
@@ -83,7 +83,7 @@ class Book implements LibraryInterface
      * @ApiProperty(
      *     iri="http://schema.org/description"
      * )
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @Groups({"book_detail_read", "book_detail_write", "reader_read"})
      *
      * @ORM\Column(type="text", nullable=true)
      *
@@ -100,7 +100,7 @@ class Book implements LibraryInterface
      *         }
      *     }
      * )
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @Groups({"book_detail_read", "book_detail_write", "reader_read"})
      *
      * @ORM\Column(type="integer", nullable=true, name="index_in_serie")
      *
@@ -129,7 +129,7 @@ class Book implements LibraryInterface
      *
      * @ApiSubresource(maxDepth=1)
      * @MaxDepth(1)
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @Groups({"book_detail_read", "book_detail_write", "reader_read"})
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookCreation", mappedBy="book", cascade={"persist", "remove"})
      */
@@ -140,7 +140,7 @@ class Book implements LibraryInterface
      *
      * @ApiSubresource(maxDepth=1)
      * @MaxDepth(1)
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @Groups({"book_detail_read", "book_detail_write", "reader_read"})
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookEdition", mappedBy="book", cascade={"persist", "remove"})
      */
@@ -149,7 +149,7 @@ class Book implements LibraryInterface
     /**
      * @ApiSubresource(maxDepth=1)
      * @MaxDepth(1)
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @Groups({"book_detail_read", "book_detail_write", "reader_read"})
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Library\Serie", inversedBy="books", cascade={"persist"})
      * @ORM\JoinColumn(name="serie_id", referencedColumnName="id")
@@ -161,7 +161,7 @@ class Book implements LibraryInterface
     /**
      * @ ApiSubresource(maxDepth=1)
      * @MaxDepth(1)
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @Groups({"book_detail_read", "book_detail_write", "reader_read"})
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Library\Tag", inversedBy="books", cascade={"persist"})
      *
@@ -171,12 +171,12 @@ class Book implements LibraryInterface
 
     /**
      * @todo ApiSubResource annotation make the app crash: An exception has been thrown during the rendering of a template ("Resource "App\Entity\Library\Loan" not found in . (which is being imported from "/dev/projects/php-sf-flex-webpack-encore-vuejs/config/routes/api_platform.yaml"). Make sure there is a loader supporting the "api_platform" type.").
-     * @ ApiSubresource(maxDepth=1)
+     * @ApiSubresource(maxDepth=1)
      *
      * @MaxDepth(1)
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @Groups({"reader_read"})
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\Library\Loan", mappedBy="books")
+     * @ORM\OneToMany(targetEntity="App\Entity\Library\Loan", mappedBy="book")
      *
      * @var Collection|Loan[]
      */
