@@ -136,6 +136,18 @@
 					{
 						"key": "XDEBUG_SESSION_START",
 						"value": "1",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
 						"type": "text"
 					}
 				],
@@ -144,7 +156,7 @@
 					"raw": "{{login_api_body}}"
 				},
 				"url": {
-					"raw": "{{host}}/demo/security/login/jwt/tokens?",
+					"raw": "{{host}}/demo/security/login/jwt/authenticate?",
 					"host": [
 						"{{host}}"
 					],
@@ -153,7 +165,7 @@
 						"security",
 						"login",
 						"jwt",
-						"tokens"
+						"authenticate"
 					],
 					"query": [
 						{
@@ -526,6 +538,13 @@
 					"path": [
 						"api",
 						"readers"
+					],
+					"query": [
+						{
+							"key": "XDEBUG_SESSION_START",
+							"value": "1",
+							"disabled": true
+						}
 					]
 				}
 			},
