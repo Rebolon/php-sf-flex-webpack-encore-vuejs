@@ -278,7 +278,7 @@ class DumpJsConfig extends Command
             'loginPasswordPath' => $this->loginPasswordPath,
             'tokenJwtBearer' => $this->tokenJwtBearer,
             'uriLoginJson' => $this->router->generate('demo_login_json_check'),
-            'uriLoginJwt' => $this->router->generate('app_loginjwt_newtoken'),
+            'uriLoginJwt' => $this->router->generate('api_login_check'),
             'uriIsLoggedInJson' => $this->router->generate('demo_secured_page_json_is_logged_in'),
             'uriIsLoggedInJwt' => $this->router->generate('demo_secured_page_jwt_is_logged_in'),
             'quasarStyle' => $quasarStyle,

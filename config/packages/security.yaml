@@ -25,6 +25,18 @@ security:
             security: false
 
         # for application with a lot of JS and that are stateless
+        login_jwt:
+            pattern:  ^/demo/security/login/jwt/authenticate
+            stateless: true
+            anonymous: true
+            json_login:
+                check_path:               api_login_check
+                success_handler:          lexik_jwt_authentication.handler.authentication_success
+                failure_handler:          lexik_jwt_authentication.handler.authentication_failure
+                username_path:            "%login_username_path%"
+                password_path:            "%login_password_path%"
+
+        # it could be merged with previous firewall taking care of pattern
         security_jwt:
             pattern: ^/(demo/security/login/jwt|demo/form|api)
             anonymous: ~

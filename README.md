@@ -44,6 +44,7 @@ Then some php controllers has been created on following routes :
  * /demo/hello/:name : HelloController with route config in annotations and twig template
  * /demo/http : HttpController to show how to call external API from your controller
  * /demo/login/standard/secured : LoginController for standard login by Symfony
+ * /demo/login/jwt/authenticate : Lexik Jwt bundle entry point to process the login check **Don't forget the header Content-type: application/json** or the application will always return this error **no controller found for /api/login_check**
  * /demo/login/json/authenticate : LoginJsonController for json login with JS applications but in stateful context
  * /demo/login/jwt/frontend: LoginJwtController for jwt login with JS applications in a stateless context
  * /demo/vuejs : VuejsController with route config in annotations and VueJS app with specific js/css import

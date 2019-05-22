@@ -9,6 +9,9 @@ simple:
         - "GET"
 
 # SECURITY
+# firewall JWT
+api_login_check:
+    path: /demo/security/login/jwt/authenticate
 # firewall JSON: do not uncomment ! if you do and replace the path in the security.yaml by the name of the route, it will fail !
 # @todo: open an issue on Symfony to see if the behaviour is 'expected'
 #demo_login_json_check:

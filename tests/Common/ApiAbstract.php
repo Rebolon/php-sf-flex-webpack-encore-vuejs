@@ -62,7 +62,7 @@ abstract class ApiAbstract extends ToolsAbstract
      */
     protected function doLoginJwt(Client $client)
     {
-        $uri = $this->router->generate('app_loginjwt_newtoken', [], Router::NETWORK_PATH);
+        $uri = $this->router->generate('api_login_check', [], Router::NETWORK_PATH);
 
         $this->doLoginApi($client, $uri);
         $tokenRaw = $client->getResponse()->getContent();

@@ -19,7 +19,7 @@ class LoginJwtTest extends ToolsAbstract
         $client = $this->getClient();
         $router = $this->getRouter();
         $uriSecured = $router->generate('demo_secured_page_jwt', []);
-        $uriLogin = $router->generate('app_loginjwt_newtoken', []);
+        $uriLogin = $router->generate('api_login_check', []);
         $errMsg = sprintf("route: %s", $uriSecured);
         $headers = [
             'ACCEPT' => 'application/json',
