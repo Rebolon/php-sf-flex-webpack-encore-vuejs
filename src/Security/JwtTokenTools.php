@@ -20,7 +20,7 @@ class JwtTokenTools
      * @param int $tokenJwtTtl
      * @param $username
      * @param $password
-     * @param LoggerInterface|null $logger
+     * @param LoggerInterface $logger
      * @return string
      * @throws \Exception
      */
@@ -31,7 +31,7 @@ class JwtTokenTools
         int $tokenJwtTtl,
         $username,
         $password,
-        LoggerInterface $logger = null
+        LoggerInterface $logger
     ): string {
         try {
             $user = $provider->loadUserByUsername($username);
@@ -51,15 +51,11 @@ class JwtTokenTools
             return $token;
         } catch (UsernameNotFoundException $e) {
             $msg = sprintf('Exception: UsernameNotFoundException: %s', $e->getMessage());
-            if ($logger) {
-                $logger->alert($msg);
-            }
+            $logger->alert($msg);
 
             throw new NotFoundHttpException($msg);
         } catch (\Exception $e) {
-            if ($logger) {
-                $logger->alert(sprintf('Exception: \Exception: %s', $e->getMessage()));
-            }
+            $logger->alert(sprintf('Exception: \Exception: %s', $e->getMessage()));
 
             throw $e;
         }

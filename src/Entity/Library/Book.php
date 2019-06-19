@@ -453,7 +453,7 @@ class Book implements LibraryInterface
      */
     public function addEditor(Editor $editor, \DateTime $date, $isbn = null, $collection = null): self
     {
-        $project = (new ProjectBookEdition($this->logger))
+        $project = (new ProjectBookEdition())
             ->setBook($this)
             ->setEditor($editor)
             ->setPublicationDate($date)

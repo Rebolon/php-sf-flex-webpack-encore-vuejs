@@ -50,12 +50,17 @@
                     <div class="card-body">
                         <p class="card-text">Here is the model used for this demo. There is differents relations type:</p>
                         <ul>
-                            <li>Books -> Serie: OnoToMany</li>
-                            <li>Books -> Reviews: OnoToMany</li>
-                            <li>Books -> Authors: ManyToMany throught ProjectBookCreation join table that contains extra fields (so it's OneToMany between Book and ProjectBookCreation, and OneToMany between Editors and ProjectBookCreation</li>
-                            <li>Books -> Editors: same as Authors but with ProjectBookEdition</li>
-                            <li>Books -> Tags: ManyToMany auto managed with Doctrine</li>
+                            <li>Books -> Serie: OneToMany - <details>a book can be in a serie, a serie may have many books</details></li>
+                            <li>Books -> Reviews: OneToMany - <details>one book can have many reviews, a review is for only one book</details></li>
+                            <li>Books -> Authors: ManyToMany through ProjectBookCreation join table that contains extra fields (so it's OneToMany between Book and ProjectBookCreation, and OneToMany between Editors and ProjectBookCreation - <details>a book can have many authors, an author can write/draw/colorize many books</details></li>
+                            <li>Books -> Editors: same as Authors but with ProjectBookEdition - <details>a book can be published by many editors, an editor can publish many books</details></li>
+                            <li>Books -> Tags: ManyToMany auto managed with Doctrine - <details>a book can have many tags, a tag can be applied to many books</details></li>
+                            <li>Readers -> Books: ManyToMany - <details>a reader can own many books, a book can be owned by only one reader</details></li>
+                            <li>Readers -> Loan: OneToMany - <details>a reader can loan/borrow many books a to/from many readers</details></li>
                         </ul>
+
+                        You may find it strange that Readers and Books is a ManyToMany relatinship. This is just to simplify the sample. In fact in a real library, a book can be owned by only one reader. To do that, i should link Readers to a ProjectBookEdition, and not a simple Book. This is because a Reader may owned a Book in different Edition. So we should also add extra properties like a date_entry and a price per example. So the relation between Readers and Books is more complex than it appears first.<br />
+                        I will certainly improve this in future, but i wanted the sample to be as simple as possible, but not too much to be able to see some complex relations.
                     </div>
                 </div>
             </div>

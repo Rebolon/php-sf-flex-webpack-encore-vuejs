@@ -10,7 +10,8 @@
         "server_port_web": "80",
         "server_port_asset": "8080",
         "test_browser": "chrome:headless,firefox",
-        "quasar_style": "mat"
+        "quasar_style": "mat",
+        "app_version_prefix": "v1.0"
     },
     "scripts": {
         "init-project": "[ -f .env ] && echo '.env file already exists' || cp .env.dist .env && cp phpunit.xml.dist phpunit.xml && composer install && npm install && npm run db-init && npm run dump-js-config && cd assets/js/form-devxpress-angular/ && npm install && cd ../../../ && npm run dev && php bin/console assets:install --symlink",
@@ -42,7 +43,11 @@
         "test-php": "npm run dev && rm -rf var/cache/test && ./vendor/bin/simple-phpunit",
         "test-php:w": "npm run dev:w && rm -rf var/cache/test  && .\\vendor\\bin\\simple-phpunit.bat",
         "test": "npm run dev && npm run test-php && npm run test-karma && cd assets/js/form-devxpress-angular/ && node_modules/.bin/ng test && node_modules/.bin/ng e2e",
-        "test:w": "npm run dev:w && npm run test-php:w && npm run test-karma && cd assets/js/form-devxpress-angular/ && node_modules\\.bin\\ng test && node_modules\\.bin\\ng e2e"
+        "test:w": "npm run dev:w && npm run test-php:w && npm run test-karma && cd assets/js/form-devxpress-angular/ && node_modules\\.bin\\ng test && node_modules\\.bin\\ng e2e",
+        "git-diff": "git log $from..$to --merges --oneline --decorate | sed \"/'master' into/d\" | sed 's/Merge branch //'",
+        "git-diff:w": "git log %from..%to --merges --oneline --decorate | sed \"/'master' into/d\" | sed 's/Merge branch //'",
+        "git-count-commit": "git rev-list HEAD --count",
+        "git-get-version-from-git": "app_version=$(npm run git-count-commit | sed '$!d') && [ $(expr $app_version : '[0-9]*$') -gt 0 ] && app_version=${npm_package_config_app_version_prefix}.${tom_version} && [ -z \"$VERSION_POSTFIX\" ] && echo 'Variable VERSION_POSTFIX not setted' || app_version=$app_version-$VERSION_POSTFIX && app_version_hash=$(git log -n 1 --pretty=format:%H) && npm config set app_version $app_version && npm config set appversion_hash $app_version_hash"
     },
     "dependencies": {
         "@api-platform/admin": "^0.6.2",

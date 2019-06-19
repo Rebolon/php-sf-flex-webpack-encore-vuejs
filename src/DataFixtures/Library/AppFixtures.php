@@ -17,7 +17,6 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\DBAL\Connection;
 use Exception;
 use \PDO;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\KernelInterface;
 
 class AppFixtures extends Fixture
@@ -38,21 +37,14 @@ class AppFixtures extends Fixture
     protected $env;
 
     /**
-     * @var LoggerInterface
-     */
-    protected $logger;
-
-    /**
      * AppFixtures constructor.
      * @param ConnectionFixtures $dbCon
      * @param KernelInterface $kernel
-     * @param LoggerInterface $logger
      */
-    public function __construct(ConnectionFixtures $dbCon, KernelInterface $kernel, LoggerInterface $logger)
+    public function __construct(ConnectionFixtures $dbCon, KernelInterface $kernel)
     {
         $this->env = $kernel->getEnvironment();
         $this->dbCon = $dbCon->get();
-        $this->logger = $logger;
     }
 
     /**

@@ -44,16 +44,17 @@ class GetJwtToken extends Command
     /**
      * @var int
      */
-	protected $tokenJwtTtl;
+    protected $tokenJwtTtl;
 
-	/**
-	 * @var string
-	 */
-	protected $tokenJwtBearer;
-	/**
-	 * @var string
-	 */
-	protected $rootDir;
+    /**
+     * @var string
+     */
+    protected $tokenJwtBearer;
+
+    /**
+     * @var string
+     */
+    protected $rootDir;
 
     /**
      * GetJwtToken constructor.

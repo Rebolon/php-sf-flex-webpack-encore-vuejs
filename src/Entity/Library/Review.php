@@ -7,7 +7,9 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
+use App\Entity\LoggerTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 use \DateTime;
@@ -24,6 +26,8 @@ use \DateTime;
  */
 class Review implements LibraryInterface
 {
+    use LoggerTrait;
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -105,9 +109,14 @@ class Review implements LibraryInterface
 
     /**
      * ProjectBookEdition constructor.
+     *
+     * @param LoggerInterface $logger
      */
-    public function __construct()
+    public function __construct(?LoggerInterface $logger)
     {
+        if ($logger) {
+            $this->setLogger($logger);
+        }
     }
 
     /**
