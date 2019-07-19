@@ -57,6 +57,7 @@ Encore
     .addEntry('service-worker', './assets/js/lib/service-worker.js')
 
     .addEntry('js/vendor', './assets/js/app.js')
+    .addEntry('js/home', './assets/js/home/app.js')
     .addEntry('js/vuejs', './assets/js/vuejs/app.js')
     .addEntry('js/quasar', './assets/js/quasar/app.js')
     .addEntry('js/login', './assets/js/login/app.js')

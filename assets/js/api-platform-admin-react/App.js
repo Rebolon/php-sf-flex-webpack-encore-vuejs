@@ -1,7 +1,11 @@
-import React, { Component } from 'react'
-import { HydraAdmin, hydraClient, fetchHydra } from '@api-platform/admin'
-import { authClient, initToken } from './authClient'
+import React from 'react'
+import parseHydraDocumentation from '@api-platform/api-doc-parser/lib/hydra/parseHydraDocumentation';
+import { HydraAdmin, hydraClient, fetchHydra as baseFetchHydra } from '@api-platform/admin'
+import { authProvider, initToken } from './authProvider'
 import { host, apiPlatformPrefix } from '../lib/config'
+import { Route, Redirect } from 'react-router-dom';
+
+initToken();
 
 const entrypoint = `//${host}${apiPlatformPrefix}`
 const fetchHeaders = (options) => {
@@ -13,7 +17,7 @@ const fetchHeaders = (options) => {
 
     options.headers.set('Authorization', `${token}`);
 };
-const fetchWithAuth = (url, options = {}) => {
+const fetchHydra = (url, options = {}) => {
     if (!options.headers) options.headers = new Headers({ Accept: 'application/ld+json' });
     fetchHeaders(options)
 
@@ -22,17 +26,38 @@ const fetchWithAuth = (url, options = {}) => {
         url = url.replace(`${apiPlatformPrefix}${apiPlatformPrefix}/`, `${apiPlatformPrefix}/`)
     }
 
-    return fetchHydra(url, options);
+    return baseFetchHydra(url, options);
 };
 
-const restClient = (api) => (hydraClient(api, fetchWithAuth));
+const dataProvider = api => hydraClient(api, fetchHydra);
+const apiDocumentationParser = entrypoint =>
+    parseHydraDocumentation(entrypoint, {
+        headers: new Headers(fetchHeaders),
+    }).then(
+        ({ api }) => ({ api }),
+        result => {
+            debugger
+            const { api, status } = result;
 
-export default class extends Component {
-    componentWillMount() {
-        initToken()
-    }
+            if (status === 401) {
+                return Promise.resolve({
+                    api,
+                    status,
+                    customRoutes: [
+                        <Route path="/" render={() => <Redirect to="/login" />} />,
+                    ],
+                });
+            }
 
-    render() {
-        return <HydraAdmin entrypoint={entrypoint} restClient={restClient} authClient={authClient}/>
-    }
-}
+            return Promise.reject(result);
+        }
+    );
+
+export default () => (
+    <HydraAdmin
+        apiDocumentationParser={apiDocumentationParser}
+        authProvider={authProvider}
+        entrypoint={entrypoint}
+        dataProvider={dataProvider}
+    />
+)

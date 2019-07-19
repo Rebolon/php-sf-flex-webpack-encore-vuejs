@@ -15,9 +15,10 @@ export const initToken = () => {
 }
 
 // @todo mutualize request params coz it's also used in other components in js/login/Login.vue
-export const authClient = (type, params) => {
+export const authProvider = (type, params) => {
     switch (type) {
         case AUTH_LOGIN:
+            console.log('AUTH_LOGIN')
             const { username, password } = params
             const request = new Request(`${login_uri}`, {
                 method: 'POST',
@@ -39,10 +40,12 @@ export const authClient = (type, params) => {
                 console.warn('authClient', 'getToken', err)
             })
         case AUTH_LOGOUT:
+            console.log('AUTH_LOGOUT')
             localStorage.removeItem('token')
             break
 
         case AUTH_ERROR:
+            console.log('AUTH_ERR', params.status)
             if (401 === params.status || 403 === params.status) {
                 localStorage.removeItem('token')
 
@@ -51,9 +54,11 @@ export const authClient = (type, params) => {
             break
 
         case AUTH_CHECK:
+            console.log('AUTH_CHECK')
             return localStorage.getItem('token') ? Promise.resolve() : Promise.reject()
 
         default:
+            console.log('DEFAULT')
             return Promise.resolve()
     }
 }

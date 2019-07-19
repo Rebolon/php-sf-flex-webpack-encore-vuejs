@@ -82,19 +82,22 @@ Security is managed by json_login or JWT with symfony security system.{% endbloc
     </head>
     {# mat is for quasar, dx-* are for devextrem, it should be configurable @todo #}
     <body class="dx-theme-generic dx-theme-generic-typography dx-color-scheme-light mat">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <h1><a href="/"><u>Demo of symfony 4</u></a>
-                <span style="font-size: smaller">with flex,
-                    <span style="font-size: smaller">and webpack/encore,
-                        <span style="font-size: smaller">VueJS,
-                            <span style="font-size: smaller">ApiPlatform,
-                                <span style="font-size: smaller">HttpPlug,...</span>
+        <div class="sticky-top">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <h1><a href="/"><u>Demo of symfony 4</u></a>
+                    <span style="font-size: smaller">with flex,
+                        <span style="font-size: smaller">and webpack/encore,
+                            <span style="font-size: smaller">VueJS,
+                                <span style="font-size: smaller">ApiPlatform,
+                                    <span style="font-size: smaller">HttpPlug,...</span>
+                                </span>
                             </span>
                         </span>
                     </span>
-                </span>
-            </h1>
-        </nav>
+                </h1>
+            </nav>
+            {% block menuPage %}{% endblock %}
+        </div>
         {% block body %}{% endblock %}
 
         {%  if preventParentJs is not defined or not preventParentJs %}

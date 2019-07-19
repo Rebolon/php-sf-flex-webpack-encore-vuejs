@@ -2,7 +2,7 @@ api_platform:
     title: 'My comics library'
     description: '<strong>Demo of an API built with Api-Platform v2 (use REST or GraphQL).</strong>
       <br />My comics library allow to manage your comics collection in a simple way.
-      <br />To use the Api, first get a valid token with this command in a shell <strong>`php bin/console app:new-jwt-token`</strong> and copy paste the last row in the form after clicking on "Authorize" green button, here on the top right corner.
+      <br />To use the Api, first get a valid token with this command in a shell <strong>`php bin/console lexik:jwt:generate-token YOUR_USER`</strong> and copy paste the last row in the form after clicking on "Authorize" green button, here on the top right corner.
       <br /><strong>Take care at the EOL character when you copy/paste the token !!!</strong>
       <br />To login, you have to do this: curl -X POST -H "Content-Type: application/json" {{host}}/api/login/authenticate -d {"login_username":"user_login","login_password":"user_password"}
       <br />Do not forget the Content-Type or the application will refuse to deliver the token because of unknown matching controller'

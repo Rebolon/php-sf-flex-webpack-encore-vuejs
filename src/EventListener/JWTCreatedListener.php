@@ -30,7 +30,10 @@ class JWTCreatedListener
         $user = $event->getUser();
 
         $payload       = $event->getData();
-        $payload['ip'] = $request->getClientIp();
+
+        if ($request) { // in cli mode it will crash
+            $payload['ip'] = $request->getClientIp();
+        }
 
         // add extra user infos
         $payload['username'] = $user->getUsername();

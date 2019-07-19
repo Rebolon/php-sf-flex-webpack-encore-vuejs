@@ -14,6 +14,12 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\InMemoryUserProvider;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Class GetJwtToken
+ * @package App\Command
+ *
+ * @deprecated should use `php bin/console lexik:jwt:generate-token [options]`
+ */
 class GetJwtToken extends Command
 {
     /**
