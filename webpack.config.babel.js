@@ -63,7 +63,7 @@ Encore
     .addEntry('js/login', './assets/js/login/app.js')
     .addEntry('js/form-quasar-vuejs', './assets/js/form-quasar-vuejs/app.js')
     .addEntry('js/form-devxpress-vuejs', './assets/js/form-devxpress-vuejs/app.js')
-    .addEntry('js/api-platform-admin-react', './assets/js/api-platform-admin-react/index.js')
+    .addEntry('js/api-platform-admin-react', './assets/js/api-platform-admin-react/App.js')
 
     // for specific page css (not managed by vue file per example
     .addStyleEntry('css/dx-overload', './assets/css/dx-overload.scss')

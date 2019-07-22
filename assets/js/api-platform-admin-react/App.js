@@ -4,6 +4,8 @@ import { HydraAdmin, hydraClient, fetchHydra as baseFetchHydra } from '@api-plat
 import { authProvider, initToken } from './authProvider'
 import { host, apiPlatformPrefix } from '../lib/config'
 import { Route, Redirect } from 'react-router-dom';
+import './index.css';
+import registerServiceWorker from './registerServiceWorker';
 
 initToken();
 
@@ -53,11 +55,12 @@ const apiDocumentationParser = entrypoint =>
         }
     );
 
-export default () => (
+ReactDOM.render(
     <HydraAdmin
         apiDocumentationParser={apiDocumentationParser}
         authProvider={authProvider}
         entrypoint={entrypoint}
         dataProvider={dataProvider}
-    />
-)
+    />, document.getElementById('root'));
+
+registerServiceWorker();
