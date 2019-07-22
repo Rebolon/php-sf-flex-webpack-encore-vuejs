@@ -1,4 +1,5 @@
 import React from 'react'
+import ReactDOM from 'react-dom';
 import parseHydraDocumentation from '@api-platform/api-doc-parser/lib/hydra/parseHydraDocumentation';
 import { HydraAdmin, hydraClient, fetchHydra as baseFetchHydra } from '@api-platform/admin'
 import { authProvider, initToken } from './authProvider'

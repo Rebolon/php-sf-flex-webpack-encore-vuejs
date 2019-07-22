@@ -373,16 +373,16 @@ SQL
      */
     protected function attachReadersAndLoans($readers, Book $book, $idx, $loans)
     {
-        $readers[0]->addMyLibrary($book);
+        $readers[0]->addBook($book);
 
         if ($idx === 0) {
-            $readers[1]->addMyLibrary($book);
-            $readers[2]->addMyLibrary($book);
+            $readers[1]->addBook($book);
+            $readers[2]->addBook($book);
         }
 
         // an ended loan from reader 0 to 1
         if ($idx === 1) {
-            $readers[1]->addMyLibrary($book);
+            $readers[1]->addBook($book);
 
             $startLoan = new DateTime();
             $startLoan->setDate(2019, 1, 2);
@@ -401,7 +401,7 @@ SQL
 
         // an ended loan from 1 to 2
         if ($idx === 2) {
-            $readers[1]->addMyLibrary($book);
+            $readers[1]->addBook($book);
 
             $startLoan = new DateTime();
             $startLoan->setDate(2019, 2, 10);
