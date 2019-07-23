@@ -32,7 +32,7 @@ Here is how it has been created:
 * composer create-project symfony/skeleton sf-flex-encore-vuejs
 * cd sf-flex-encore-vuejs
 * composer req encore annotations twig api jwt-auth symfony/http-client profiler log doctrine-migrations admin webonyx/graphql-php
-* composer require --dev doctrine/doctrine-fixtures-bundle phpunit/phpunit symfony/dom-crawler symfony/browser-kit symfony/css-selector security-checker roave/security-advisories:dev-master
+* composer require --dev doctrine/doctrine-fixtures-bundle phpunit/phpunit symfony/dom-crawler symfony/browser-kit symfony/css-selector security-checker roave/security-advisories:dev-master symfony/maker-bundle
 * yarn add vue vue-router quasar-framework quasar-extras vuelidate vue-apollo@next graphql apollo-client apollo-link apollo-link-http apollo-link-error apollo-cache-inmemory graphql-tag react react-dom prop-types axios rxjs @devexpress/dx-react-core @devexpress/dx-react-grid
 * yarn add --dev vue-loader vue-template-compiler vue-router react-loader babel-preset-env babel-preset-react sass-loader node-sass bootstrap@4.0.0 jasmine karma karma-jasmine karma-spec-reporter karma-junit-reporter karma-webpack karma-chrome-launcher offline-plugin rxjs-tslint
 * yarn install
@@ -105,6 +105,7 @@ The test_browser section represent all the browsers you want to use with the Pan
 * admin: easy admin component to build quick backend with auto form
 * profiler: for debugging purpose
 * log: a logger for symfony
+* maker-bundle: a bundle that i have not enough used. It will help you to manage your entities, your migrations... it's a must have to work with
 * security-checker: a tool to check known securities vulnerabilities, to use it, run `php bin/console security:check`
 * [roave/security-advisories](https://www.websec.io/2018/03/10/Package-Protection-Roave-SecurityAdvisories.html): a tool that prevent the install of PHP package from composer with known vulnerabilities
 * [phpunit](https://phpunit.de/), crawler, browserkit, css-selector: php/symfony task for testing (@todo ll last 3 should be a recipe)

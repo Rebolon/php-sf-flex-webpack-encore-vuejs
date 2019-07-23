@@ -114,7 +114,7 @@
         "version": "v1.0.1"
     },
     "doctrine/migrations": {
-        "version": "v1.8.1"
+        "version": "v2.1.0"
     },
     "doctrine/orm": {
         "version": "v2.6.3"
@@ -191,6 +191,9 @@
         "files": [
             "./config/packages/nelmio_cors.yaml"
         ]
+    },
+    "nikic/php-parser": {
+        "version": "v4.2.2"
     },
     "ocramius/proxy-manager": {
         "version": "2.1.1"
@@ -360,9 +363,6 @@
         ]
     },
     "symfony/http-client": {
-        "version": "4.3-dev"
-    },
-    "symfony/http-client": {
         "version": "v4.3.0-beta1"
     },
     "symfony/http-foundation": {
@@ -376,6 +376,15 @@
     },
     "symfony/intl": {
         "version": "v4.2.5"
+    },
+    "symfony/maker-bundle": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
+        }
     },
     "symfony/monolog-bridge": {
         "version": "v4.2.5"
@@ -433,9 +442,6 @@
     },
     "symfony/polyfill-php72": {
         "version": "v1.11.0"
-    },
-    "symfony/polyfill-php73": {
-        "version": "1.11-dev"
     },
     "symfony/polyfill-php73": {
         "version": "v1.11.0"
@@ -550,9 +556,6 @@
     },
     "symfony/var-exporter": {
         "version": "v4.2.5"
-    },
-    "symfony/web-link": {
-        "version": "v4.2.4"
     },
     "symfony/web-link": {
         "version": "v4.2.8"
