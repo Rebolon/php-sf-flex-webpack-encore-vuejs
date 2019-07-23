@@ -7,8 +7,8 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Core\Exception\InvalidArgumentException;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
+use ApiPlatform\Core\Exception\InvalidArgumentException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -37,7 +37,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          },
  *          "denormalization_context"={
  *              "groups"={"book_detail_write"}
- *          }
+ *          },
+ *          "pagination_client_enabled"=true
  *     }
  * )
  * @ApiFilter(OrderFilter::class, properties={"id", "title"})

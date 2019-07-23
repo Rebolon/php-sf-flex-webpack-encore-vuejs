@@ -9,7 +9,7 @@ use ApiPlatform\Core\DataProvider\CollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Api\Config;
-use App\Entity\Api\Library\Reader;
+use App\Entity\Library\Reader;
 use App\Entity\Library\Book;
 use App\Entity\Library\Reader as OrmEntityReader;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -48,7 +48,7 @@ class ReaderDataProvider implements ItemDataProviderInterface, CollectionDataPro
 
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
     {
-        return Reader::class === $resourceClass;
+        return OrmEntityReader::class === $resourceClass;
     }
 
     public function getItem(string $resourceClass, $id, string $operationName = null, array $context = [])
@@ -83,20 +83,13 @@ class ReaderDataProvider implements ItemDataProviderInterface, CollectionDataPro
         /**
          * @todo manage extensions sort, search, pagination, at least
          */
-
-        /*foreach ($this->collectionExtensions as $extension) {
-            if (in_array(\get_class($extension), [
-                EagerLoadingExtension::class, FilterEagerLoadingExtension::class,
-            ])) {
-                $resourceClass = OrmEntityReader::class;
-            }
-            echo \get_class($extension).PHP_EOL;
+        foreach ($this->collectionExtensions as $extension) {
             $extension->applyToCollection($qb, $queryNameGenerator, $resourceClass, $operationName, $context);
             if ($extension instanceof QueryResultCollectionExtensionInterface
                 && $extension->supportsResult($resourceClass, $operationName, $context)) {
                 $items = $extension->getResult($qb, $resourceClass, $operationName, $context);
             }
-        }*/
+        }
 
         return $items;
     }

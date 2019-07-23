@@ -17,7 +17,10 @@ use \DateTime;
 /**
  * @ApiResource(
  *     iri="http://schema.org/Review",
- *     attributes={"access_control"="is_granted('ROLE_USER')"}
+ *     attributes={
+ *          "access_control"="is_granted('ROLE_USER')",
+ *          "pagination_client_enabled"=true
+ *      }
  * )
  * @ApiFilter(OrderFilter::class, properties={"id", "rating", "username", "publicationDate", "book"})
  * @ApiFilter(DateFilter::class, properties={"publication_date"})

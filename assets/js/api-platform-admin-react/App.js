@@ -39,7 +39,6 @@ const apiDocumentationParser = entrypoint =>
     }).then(
         ({ api }) => ({ api }),
         result => {
-            debugger
             const { api, status } = result;
 
             if (status === 401) {

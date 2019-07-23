@@ -7,6 +7,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use ApiPlatform\Core\Exception\InvalidArgumentException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -33,11 +34,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          },
  *          "denormalization_context"={
  *              "groups"={"reader_write"}
- *          }
+ *          },
+ *          "pagination_client_enabled"=true
  *     }
  * )
  * @ApiFilter(OrderFilter::class, properties={"id", "lastname"})
  * @ApiFilter(SearchFilter::class, properties={"id": "exact", "lastname": "istart", "firstname": "istart"})
+ * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false}))
  *
  * @ORM\Entity(repositoryClass="App\Repository\Library\ReaderRepository")
  */

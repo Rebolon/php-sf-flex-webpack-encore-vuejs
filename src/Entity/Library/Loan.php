@@ -1,9 +1,13 @@
 <?php
 namespace App\Entity\Library;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -15,6 +19,7 @@ use \DateTime;
  * @ApiResource(
  *     attributes={
  *          "access_control"="is_granted('ROLE_USER')",
+ *          "pagination_client_enabled"=true,
  *          "normalization_context"={
  *              "groups"={"loan_read"}
  *          },
@@ -23,6 +28,10 @@ use \DateTime;
  *          }
  *     }
  * )
+ *
+ * @ApiFilter(OrderFilter::class, properties={"id", "title"})
+ * @ApiFilter(SearchFilter::class, properties={"id": "exact", "title": "istart", "description": "partial", "tags.name"="exact"})
+ * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false}))
  *
  * @ORM\Entity(repositoryClass="App\Repository\Library\LoanRepository")
  * @ORM\Table()

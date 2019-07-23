@@ -18,7 +18,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiResource(
  *     iri="http://schema.org/author",
- *     attributes={"access_control"="is_granted('ROLE_USER')", "status_code"=403}
+ *     attributes={
+ *          "access_control"="is_granted('ROLE_USER')",
+ *          "status_code"=403,
+ *          "pagination_client_enabled"=true,
+ *     }
  * )
  * @ApiFilter(OrderFilter::class, properties={"id", "lastname", "firstname"})
  * @ApiFilter(SearchFilter::class, properties={"id": "exact", "firstname": "istart", "lastname": "istart"})

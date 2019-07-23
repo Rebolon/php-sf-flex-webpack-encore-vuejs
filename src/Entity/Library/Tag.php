@@ -25,7 +25,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *          },
  *          "denormalization_context"={
  *              "groups"={"book_detail_write", "tag_detail_write"}
- *          }
+ *          },
+ *          "pagination_client_enabled"=true
  *     }
  * )
  * @ApiFilter(OrderFilter::class, properties={"id", "name"})

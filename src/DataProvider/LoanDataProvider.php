@@ -7,7 +7,7 @@ use ApiPlatform\Core\DataProvider\CollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Api\Config;
-use App\Entity\Api\Library\Loan;
+use App\Entity\Library\Loan;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
 class LoanDataProvider implements ItemDataProviderInterface, CollectionDataProviderInterface, RestrictedDataProviderInterface
@@ -61,21 +61,20 @@ class LoanDataProvider implements ItemDataProviderInterface, CollectionDataProvi
     public function getCollection(string $resourceClass, string $operationName = null, array $context = [])
     {
         $items = [];
-        $em = $this->managerRegistry->getRepository(\App\Entity\Library\Loan::class);
+        $em = $this->managerRegistry->getRepository(Loan::class);
         $qb = $em->createQueryBuilder('l');
         $queryNameGenerator = new QueryNameGenerator();
 
         /**
          * @todo manage extensions sort, search, pagination, at least
          */
-
-        /*foreach ($this->collectionExtensions as $extension) {
+        foreach ($this->collectionExtensions as $extension) {
             $extension->applyToCollection($qb, $queryNameGenerator, $resourceClass, $operationName, $context);
             if ($extension instanceof QueryResultCollectionExtensionInterface
                 && $extension->supportsResult($resourceClass, $operationName, $context)) {
                 $items = $extension->getResult($qb, $resourceClass, $operationName, $context);
             }
-        }*/
+        }
 
         return $items;
     }
