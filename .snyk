@@ -1,8 +1,35 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.13.3
+version: v1.13.5
 ignore: {}
 # patches apply the minimum changes required to fix a vulnerability
 patch:
+  SNYK-JS-LODASH-450202:
+    - '@api-platform/admin > react-admin > ra-core > redux-form > lodash':
+        patched: '2019-07-09T22:34:47.829Z'
+    - '@api-platform/admin > react-admin > ra-core > lodash':
+        patched: '2019-07-09T22:34:47.829Z'
+    - '@api-platform/admin > react-admin > ra-ui-materialui > react-redux > lodash':
+        patched: '2019-07-09T22:34:47.829Z'
+    - '@api-platform/admin > react-admin > ra-core > redux > lodash':
+        patched: '2019-07-09T22:34:47.829Z'
+    - '@api-platform/admin > react-admin > ra-ui-materialui > redux > lodash':
+        patched: '2019-07-09T22:34:47.829Z'
+    - '@api-platform/admin > react-admin > ra-core > react-redux > lodash':
+        patched: '2019-07-09T22:34:47.829Z'
+    - '@api-platform/admin > react-admin > ra-ui-materialui > lodash':
+        patched: '2019-07-09T22:34:47.829Z'
+    - '@api-platform/admin > react-admin > ra-ui-materialui > redux-form > lodash':
+        patched: '2019-07-09T22:34:47.829Z'
+    - '@api-platform/admin > react-admin > ra-ui-materialui > ra-core > lodash':
+        patched: '2019-07-09T22:34:47.829Z'
+    - '@api-platform/admin > react-admin > ra-ui-materialui > ra-core > redux-form > lodash':
+        patched: '2019-07-09T22:34:47.829Z'
+    - '@api-platform/admin > react-admin > ra-ui-materialui > ra-core > react-redux > lodash':
+        patched: '2019-07-09T22:34:47.829Z'
+    - '@api-platform/admin > react-admin > ra-ui-materialui > ra-core > redux > lodash':
+        patched: '2019-07-09T22:34:47.829Z'
+    - devextreme > turndown > jsdom > request-promise-native > request-promise-core > lodash:
+        patched: '2019-07-09T22:34:47.829Z'
   SNYK-JS-AXIOS-174505:
     - axios:
         patched: '2019-05-07T22:34:45.825Z'
