@@ -251,7 +251,7 @@ But for instance i didn't found any solution to run it finely without --skip-js-
 
 ### Symfony security
 In Symfony i configured different firewalls:
- * *security_js* and *security_php* share the same context so when you are logged on one, you are also logged on the other. I did this because a firewall cannot use both form_login and json_login (or i didn't found the way), and i wnated you to understand the concept of context.
+ * *security_js* and *security_php* share the same context so when you are logged on one, you are also logged on the other. I did this because a firewall cannot use both form_login and json_login (or i didn't found the way), and i wanted you to understand the concept of context.
  * *security_jwt* is for stateless app. You can read the following tutorial to understand [https://knpuniversity.com/screencast/symfony-rest4](https://knpuniversity.com/screencast/symfony-rest4)
 
 If you doesn't need JWT, you can use ApiKey pattern. For this you have to implement the required Authenticator: https://symfony.com/doc/current/security/api_key_authentication.html
