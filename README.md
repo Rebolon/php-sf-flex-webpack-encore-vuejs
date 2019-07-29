@@ -54,8 +54,8 @@ Then some php controllers has been created on following routes :
  * /demo/form/devxpress-vuejs : VueJS demo with DevXpress UI components (Datagrid)
  * /api : access ApiPlatform api doc (you need to be authentified: from POST HTTP call or from the frontend /demo/form if you want to play with it: only book entity is configured to be accessed with ROLE_USER)
  * /api/graphql : access ApiPlatform GraphQL implementation
- * /demo/api-platform-admin-react : the react admin provided by api platform package (more info here [https://api-platform.com/docs/admin/getting-started](https://api-platform.com/docs/admin/getting-started))
- * /admin : use the easy admin bundle to allow a comparison between fullstack PHP and PHP/VueJS
+ * /admin : the react admin provided by api platform package (more info here [https://api-platform.com/docs/admin/getting-started](https://api-platform.com/docs/admin/getting-started)) : take care, we forced version 0.6.2 because 0.6.3 has an issue with authentication
+ * /ezadmin : use the easy admin bundle to allow a comparison between fullstack PHP and PHP/VueJS
 
 And then we followed the [documentation here from api platform](https://api-platform.com/docs/admin/getting-started) to create the Admin React tool. We just proceed to some adjustments:
 
@@ -95,7 +95,7 @@ The test_browser section represent all the browsers you want to use with the Pan
 * [offline-plugin](https://github.com/NekR/offline-plugin): webpack plugin to manage offline assets
 * annotations: use annotations everywhere in your PHP code
 * [twig](https://twig.symfony.com/): symfony template solution, useless if you don't want to render template with symfony, but usefull to be able to use assets twig helper with webpack encore
-* [api](api-platform.com): api-platform to build REST api(instead of fosrestbundle)
+* [api](api-platform.com): api-platform to build REST/GraphQL api (instead of fosrestbundle). For GraphQL you just need one more package from webonyx
 * [react](https://reactjs.org/): js framework used here by api-platform for their react admin component, it's built on top of [https://marmelab.com/admin-on-rest](https://marmelab.com/admin-on-rest)
 * [@devexpress](https://devexpress.github.io): UX components library for Angular, React, VueJS or VanillaJS, with commercial licence and also an open-source free under some conditions
 * symfony/http-client: a cool new library to do http call from http (delivered by Symfony in 2019 !) 
@@ -605,6 +605,7 @@ I wrote some articles on medium to explain some practices setup in this project:
  * https://testcafe-discuss.devexpress.com/t/object-domexceptio-error-when-running-tests/1231
  * https://stackoverflow.com/questions/51042516/how-to-use-graphiql-when-route-are-secured
  * https://github.com/symfony/webpack-encore/issues/256#issuecomment-471601797
+ * https://stackoverflow.com/questions/57184540/react-admin-how-to-use-basic-authentification-in-my-sample-auth-headers-are-w/57217309#57217309
 
 
 ## License

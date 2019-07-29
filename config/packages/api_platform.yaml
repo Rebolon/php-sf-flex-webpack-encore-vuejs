@@ -4,7 +4,8 @@ api_platform:
       <br />My comics library allow to manage your comics collection in a simple way.
       <br />To use the Api, first get a valid token with this command in a shell <strong>`php bin/console lexik:jwt:generate-token YOUR_USER`</strong> and copy paste the last row in the form after clicking on "Authorize" green button, here on the top right corner.
       <br /><strong>Take care at the EOL character when you copy/paste the token !!!</strong>
-      <br />To login, you have to do this: curl -X POST -H "Content-Type: application/json" {{host}}/demo/security/login/jwt/authenticate -d {"login_username":"user_login","login_password":"user_password"}
+      <br />To login in a standard application, you can have a look at the Authentication documentation below in following paths section: \/demo/security/login/jwt/authenticate.
+      <br />Or, if you are too much speed, you can just do this: curl -X POST -H "Content-Type: application/json" {{host}}/demo/security/login/jwt/authenticate -d {"login_username":"user_login","login_password":"user_password"}
       <br />Do not forget the Content-Type or the application will refuse to deliver the token because of unknown matching controller'
     version: '1.0.0'
     mapping:
@@ -30,6 +31,11 @@ api_platform:
         Symfony\Component\Serializer\Exception\ExceptionInterface: 400 # Use a raw status code (recommended)
         ApiPlatform\Core\Exception\InvalidArgumentException: 'HTTP_BAD_REQUEST' # Or a `Symfony\Component\HttpFoundation\Response`'s constant
         ApiPlatform\Core\Exception\ItemNotFoundException: 404
+        Symfony\Component\HttpKernel\Exception\NotFoundHttpException: 404
+        Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException: 403
+        Symfony\Component\Security\Core\Exception\AuthenticationException: 401
+        Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTFailureException: 401
+        Symfony\Component\HttpKernel\Exception\HttpException: 500
 
     # JWT extra info
     swagger:

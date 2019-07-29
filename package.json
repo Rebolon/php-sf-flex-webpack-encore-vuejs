@@ -50,7 +50,7 @@
         "git-get-version-from-git": "app_version=$(npm run git-count-commit | sed '$!d') && [ $(expr $app_version : '[0-9]*$') -gt 0 ] && app_version=${npm_package_config_app_version_prefix}.${tom_version} && [ -z \"$VERSION_POSTFIX\" ] && echo 'Variable VERSION_POSTFIX not setted' || app_version=$app_version-$VERSION_POSTFIX && app_version_hash=$(git log -n 1 --pretty=format:%H) && npm config set app_version $app_version && npm config set appversion_hash $app_version_hash"
     },
     "dependencies": {
-        "@api-platform/admin": "^0.6.3",
+        "@api-platform/admin": "0.6.2",
         "@rebolon/json-reviver": "^0.0.9",
         "apollo-cache-inmemory": "^1.5.1",
         "apollo-client": "^2.5.1",
@@ -62,13 +62,13 @@
         "devextreme-vue": "^18.2.6",
         "graphql": "^14.1.1",
         "graphql-tag": "^2.10.1",
+        "jquery": "^3.4.1",
         "offline-plugin": "^5.0.6",
         "prop-types": "^15.7.2",
         "quasar-extras": "^1.0.3",
         "quasar-framework": "^0.15.15",
         "react": "^16.8.6",
         "react-dom": "^16.8.6",
-        "react-scripts": "^3.0.1",
         "rxjs": "^6.4.0",
         "uglifyjs-webpack-plugin": "^2.1.2",
         "vue": "^2.6.8",
@@ -80,8 +80,10 @@
         "@angular/cli": "^7.3.4",
         "@babel/preset-env": "^7.3.4",
         "@babel/preset-react": "^7.0.0",
-        "@symfony/webpack-encore": "^0.24.0",
+        "@babel/runtime-corejs3": "^7.5.5",
+        "@symfony/webpack-encore": "^0.27.0",
         "bootstrap": "^4.3.1",
+        "core-js": "^3.1.4",
         "create-react-app": "^3.0.1",
         "jasmine": "^3.3.1",
         "karma": "^4.0.1",
@@ -100,7 +102,8 @@
         "stylus-loader": "^3.0.2",
         "ts-loader": "^5.3.3",
         "vue-loader": "^15.7.0",
-        "vue-template-compiler": "^2.6.8"
+        "vue-template-compiler": "^2.6.8",
+        "webpack-notifier": "^1.6.0"
     },
     "browserslist": "> 1%"
 }

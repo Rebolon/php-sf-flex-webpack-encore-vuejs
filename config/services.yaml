@@ -58,9 +58,10 @@ services:
         tags: ['controller.service_arguments']
 
     # to overload the Swagger API documentation with my own decorator: App\Swagger\SwaggerDecorator.php
+    # do not move this into imported file, because all imported files are autowired, even with autowire false
     App\Swagger\SwaggerDecorator:
         decorates: 'api_platform.swagger.normalizer.documentation'
-        arguments: [ '@App\Swagger\SwaggerDecorator.inner' ]
+        arguments: [ '@App\Swagger\SwaggerDecorator.inner', '%login_username_path%', '%login_password_path%' ]
         autoconfigure: false
 
     Symfony\Contracts\HttpClient\HttpClientInterface:

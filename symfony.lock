@@ -1,4 +1,18 @@
 {
+    "api-platform/admin-pack": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "488ebfb0cddd283c16f4d072c6675ae7d7d52eb4"
+        },
+        "files": [
+            "./assets/js/admin.js",
+            "./config/routes/api_platform_admin.yaml",
+            "./templates/admin.html.twig"
+        ]
+    },
     "api-platform/api-pack": {
         "version": "v1.2.0"
     },

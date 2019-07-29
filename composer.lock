@@ -4,8 +4,35 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bad8a52580e22a381b9ffbd05109a80f",
+    "content-hash": "d407f49484179e534ca06910af5a0248",
     "packages": [
+        {
+            "name": "api-platform/admin-pack",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/api-platform/admin-pack.git",
+                "reference": "3a1b11c466a47e01f8ced079ea894468590bdcb2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/api-platform/admin-pack/zipball/3a1b11c466a47e01f8ced079ea894468590bdcb2",
+                "reference": "3a1b11c466a47e01f8ced079ea894468590bdcb2",
+                "shasum": ""
+            },
+            "require": {
+                "api-platform/api-pack": "^1.0",
+                "php": "^7.0",
+                "symfony/webpack-encore-bundle": "^1.0"
+            },
+            "type": "symfony-pack",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A pack for API Platform Admin",
+            "time": "2018-12-08T21:57:49+00:00"
+        },
         {
             "name": "api-platform/api-pack",
             "version": "v1.2.0",

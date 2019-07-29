@@ -116,7 +116,7 @@ class Loan implements LibraryInterface
     /**
      * @Groups({"loan_read", "loan_write"})
      *
-     * @ORM\Column(type="datetime", nullable=false, options={"default":"now()"}, name="start_loan")
+     * @ORM\Column(type="datetime", nullable=false, name="start_loan")
      *
      * @Assert\DateTime()
      * @Assert\NotBlank()
@@ -144,6 +144,7 @@ class Loan implements LibraryInterface
      */
     public function __construct()
     {
+        // default value coz since mid-2018 (don't have exact DBAL version) there is no more default attributes for datetime
         $this->setStartLoan(new DateTime());
     }
 

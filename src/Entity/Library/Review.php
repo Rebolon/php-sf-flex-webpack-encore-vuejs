@@ -87,7 +87,7 @@ class Review implements LibraryInterface
      *     iri="http://schema.org/datePublished"
      * )
      *
-     * @ORM\Column(type="datetime", nullable=false, options={"default":"now()"}, name="publication_date")
+     * @ORM\Column(type="datetime", nullable=false, name="publication_date")
      *
      * @Assert\NotBlank()
      * @Assert\DateTime()
@@ -114,12 +114,16 @@ class Review implements LibraryInterface
      * ProjectBookEdition constructor.
      *
      * @param LoggerInterface $logger
+     * @throws \Exception
      */
     public function __construct(?LoggerInterface $logger)
     {
         if ($logger) {
             $this->setLogger($logger);
         }
+
+        // default value coz since mid-2018 (don't have exact DBAL version) there is no more default attributes for datetime
+        $this->setPublicationDate(new DateTime());
     }
 
     /**

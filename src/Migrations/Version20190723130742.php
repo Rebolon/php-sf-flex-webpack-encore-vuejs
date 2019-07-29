@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20190723064403 extends AbstractMigration
+final class Version20190723130742 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -43,7 +43,7 @@ final class Version20190723064403 extends AbstractMigration
         $this->addSql('DROP INDEX IDX_C5D30D0316A2B381');
         $this->addSql('CREATE TEMPORARY TABLE __temp__loan AS SELECT id, book_id, borrower_id, loaner_id, start_loan, end_loan FROM loan');
         $this->addSql('DROP TABLE loan');
-        $this->addSql('CREATE TABLE loan (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, book_id INTEGER DEFAULT NULL, borrower_id INTEGER DEFAULT NULL, loaner_id INTEGER DEFAULT NULL, start_loan DATETIME DEFAULT \'now()\' NOT NULL, end_loan DATETIME DEFAULT NULL, CONSTRAINT FK_C5D30D0316A2B381 FOREIGN KEY (book_id) REFERENCES book (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_C5D30D0311CE312B FOREIGN KEY (borrower_id) REFERENCES reader (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_C5D30D03434E717A FOREIGN KEY (loaner_id) REFERENCES reader (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE loan (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, book_id INTEGER DEFAULT NULL, borrower_id INTEGER DEFAULT NULL, loaner_id INTEGER DEFAULT NULL, end_loan DATETIME DEFAULT NULL, start_loan DATETIME NOT NULL, CONSTRAINT FK_C5D30D0316A2B381 FOREIGN KEY (book_id) REFERENCES book (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_C5D30D0311CE312B FOREIGN KEY (borrower_id) REFERENCES reader (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_C5D30D03434E717A FOREIGN KEY (loaner_id) REFERENCES reader (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('INSERT INTO loan (id, book_id, borrower_id, loaner_id, start_loan, end_loan) SELECT id, book_id, borrower_id, loaner_id, start_loan, end_loan FROM __temp__loan');
         $this->addSql('DROP TABLE __temp__loan');
         $this->addSql('CREATE INDEX IDX_C5D30D03434E717A ON loan (loaner_id)');
@@ -64,7 +64,7 @@ final class Version20190723064403 extends AbstractMigration
         $this->addSql('DROP INDEX IDX_1116D4EA6995AC4C');
         $this->addSql('CREATE TEMPORARY TABLE __temp__project_book_edition AS SELECT id, editor_id, book_id, publication_date, collection, isbn FROM project_book_edition');
         $this->addSql('DROP TABLE project_book_edition');
-        $this->addSql('CREATE TABLE project_book_edition (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, editor_id INTEGER DEFAULT NULL, book_id INTEGER DEFAULT NULL, publication_date DATE DEFAULT \'now()\', collection VARCHAR(255) DEFAULT NULL COLLATE BINARY, isbn VARCHAR(255) DEFAULT NULL COLLATE BINARY, CONSTRAINT FK_1116D4EA6995AC4C FOREIGN KEY (editor_id) REFERENCES editor (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_1116D4EA16A2B381 FOREIGN KEY (book_id) REFERENCES book (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE project_book_edition (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, editor_id INTEGER DEFAULT NULL, book_id INTEGER DEFAULT NULL, collection VARCHAR(255) DEFAULT NULL COLLATE BINARY, isbn VARCHAR(255) DEFAULT NULL COLLATE BINARY, publication_date DATE DEFAULT NULL, CONSTRAINT FK_1116D4EA6995AC4C FOREIGN KEY (editor_id) REFERENCES editor (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_1116D4EA16A2B381 FOREIGN KEY (book_id) REFERENCES book (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('INSERT INTO project_book_edition (id, editor_id, book_id, publication_date, collection, isbn) SELECT id, editor_id, book_id, publication_date, collection, isbn FROM __temp__project_book_edition');
         $this->addSql('DROP TABLE __temp__project_book_edition');
         $this->addSql('CREATE INDEX IDX_1116D4EA16A2B381 ON project_book_edition (book_id)');
@@ -81,7 +81,7 @@ final class Version20190723064403 extends AbstractMigration
         $this->addSql('DROP INDEX IDX_794381C616A2B381');
         $this->addSql('CREATE TEMPORARY TABLE __temp__review AS SELECT id, book_id, rating, body, username, publication_date FROM review');
         $this->addSql('DROP TABLE review');
-        $this->addSql('CREATE TABLE review (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, book_id INTEGER DEFAULT NULL, rating INTEGER NOT NULL, body CLOB DEFAULT NULL COLLATE BINARY, username VARCHAR(512) DEFAULT NULL COLLATE BINARY, publication_date DATETIME DEFAULT \'now()\' NOT NULL, CONSTRAINT FK_794381C616A2B381 FOREIGN KEY (book_id) REFERENCES book (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE review (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, book_id INTEGER DEFAULT NULL, rating INTEGER NOT NULL, body CLOB DEFAULT NULL COLLATE BINARY, username VARCHAR(512) DEFAULT NULL COLLATE BINARY, publication_date DATETIME NOT NULL, CONSTRAINT FK_794381C616A2B381 FOREIGN KEY (book_id) REFERENCES book (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('INSERT INTO review (id, book_id, rating, body, username, publication_date) SELECT id, book_id, rating, body, username, publication_date FROM __temp__review');
         $this->addSql('DROP TABLE __temp__review');
         $this->addSql('CREATE INDEX IDX_794381C616A2B381 ON review (book_id)');
@@ -113,7 +113,7 @@ final class Version20190723064403 extends AbstractMigration
         $this->addSql('DROP INDEX IDX_C5D30D03434E717A');
         $this->addSql('CREATE TEMPORARY TABLE __temp__loan AS SELECT id, book_id, borrower_id, loaner_id, start_loan, end_loan FROM loan');
         $this->addSql('DROP TABLE loan');
-        $this->addSql('CREATE TABLE loan (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, book_id INTEGER DEFAULT NULL, borrower_id INTEGER DEFAULT NULL, loaner_id INTEGER DEFAULT NULL, start_loan DATETIME DEFAULT \'now()\' NOT NULL, end_loan DATETIME DEFAULT NULL)');
+        $this->addSql('CREATE TABLE loan (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, book_id INTEGER DEFAULT NULL, borrower_id INTEGER DEFAULT NULL, loaner_id INTEGER DEFAULT NULL, end_loan DATETIME DEFAULT NULL, start_loan DATETIME DEFAULT \'now()\' NOT NULL)');
         $this->addSql('INSERT INTO loan (id, book_id, borrower_id, loaner_id, start_loan, end_loan) SELECT id, book_id, borrower_id, loaner_id, start_loan, end_loan FROM __temp__loan');
         $this->addSql('DROP TABLE __temp__loan');
         $this->addSql('CREATE INDEX IDX_C5D30D0316A2B381 ON loan (book_id)');
@@ -134,7 +134,7 @@ final class Version20190723064403 extends AbstractMigration
         $this->addSql('DROP INDEX IDX_1116D4EA16A2B381');
         $this->addSql('CREATE TEMPORARY TABLE __temp__project_book_edition AS SELECT id, editor_id, book_id, publication_date, collection, isbn FROM project_book_edition');
         $this->addSql('DROP TABLE project_book_edition');
-        $this->addSql('CREATE TABLE project_book_edition (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, editor_id INTEGER DEFAULT NULL, book_id INTEGER DEFAULT NULL, publication_date DATE DEFAULT \'now()\', collection VARCHAR(255) DEFAULT NULL, isbn VARCHAR(255) DEFAULT NULL)');
+        $this->addSql('CREATE TABLE project_book_edition (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, editor_id INTEGER DEFAULT NULL, book_id INTEGER DEFAULT NULL, collection VARCHAR(255) DEFAULT NULL, isbn VARCHAR(255) DEFAULT NULL, publication_date DATE DEFAULT \'now()\')');
         $this->addSql('INSERT INTO project_book_edition (id, editor_id, book_id, publication_date, collection, isbn) SELECT id, editor_id, book_id, publication_date, collection, isbn FROM __temp__project_book_edition');
         $this->addSql('DROP TABLE __temp__project_book_edition');
         $this->addSql('CREATE INDEX IDX_1116D4EA6995AC4C ON project_book_edition (editor_id)');

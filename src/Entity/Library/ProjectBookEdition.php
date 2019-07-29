@@ -42,7 +42,7 @@ class ProjectBookEdition implements LibraryInterface
     /**
      * @Groups({"book_detail_read", "book_detail_write"})
      *
-     * @ORM\Column(type="date", nullable=true, options={"default":"now()"}, name="publication_date")
+     * @ORM\Column(type="date", nullable=true, name="publication_date")
      *
      * @Assert\DateTime()
      *
@@ -108,6 +108,8 @@ class ProjectBookEdition implements LibraryInterface
      */
     public function __construct()
     {
+        // default value coz since mid-2018 (don't have exact DBAL version) there is no more default attributes for datetime
+        $this->setPublicationDate(new DateTime());
     }
 
     /**
