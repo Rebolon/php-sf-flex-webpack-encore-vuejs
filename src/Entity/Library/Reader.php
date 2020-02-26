@@ -368,6 +368,8 @@ class Reader implements LibraryInterface
         // @todo check if the book of the owner is available or already borrowed by someone: throw an exception to explain that it must be returned before it can be loaned again
 
         $this->borrows->add($loan);
+
+        return $this;
     }
 
     /**

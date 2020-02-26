@@ -16,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Routing\Router;
  */
 class ApiPlatformDenormalizerTest extends ApiAbstract
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->markTestIncomplete();
         // parent::setUp();
@@ -31,7 +31,7 @@ class ApiPlatformDenormalizerTest extends ApiAbstract
         $client = $this->getClient();
         $router = $this->getRouter();
         // $uri = $router->generate('book_special_sample3', []);
-        // router fails to generate the route so for instance don't loose time and force uri
+        // router fails to generate the route so for instance don't loose time and force uri @todo use the ApiPlatform Router instead, it will work
         $uri = '/api/books';
         $content = JsonBook::$bodyOkForDenormalizer;
         $expected = json_decode($content);
@@ -92,7 +92,7 @@ class ApiPlatformDenormalizerTest extends ApiAbstract
         $client = $this->getClient();
         $router = $this->getRouter();
         // $uri = $router->generate('book_special_sample3', []);
-        // router fails to generate the route so for instance don't loose time and force uri
+        // router fails to generate the route so for instance don't loose time and force uri @todo use the ApiPlatform Router instead, it will work
         $uri = '/api/books';
         $content = JsonBook::$bodyOkWithExistingEntities;
         $expected = json_decode($content);
@@ -145,10 +145,11 @@ class ApiPlatformDenormalizerTest extends ApiAbstract
         $client = $this->getClient();
         $router = $this->getRouter();
         // $uri = $router->generate('book_special_sample3', []);
-        // router fails to generate the route so for instance don't loose time and force uri
+        // router fails to generate the route so for instance don't loose time and force uri @todo use the ApiPlatform Router instead, it will work
         $uri = '/api/books';
         $content = JsonBook::$bodyNoEditor;
-        $expected = json_decode(<<<JSON
+        $expected = json_decode(
+            <<<JSON
 {
   "type": "https:\/\/tools.ietf.org\/html\/rfc2616#section-10",
   "title": "An error occurred",
@@ -159,7 +160,7 @@ class ApiPlatformDenormalizerTest extends ApiAbstract
   }]
 }
 JSON
-);
+        );
 
         $client->request('POST', $uri, [], [], [], $content);
         $response = $client->getResponse();

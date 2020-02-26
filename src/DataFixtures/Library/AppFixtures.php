@@ -13,7 +13,8 @@ use App\Entity\Library\Tag;
 use DateInterval;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\DBAL\DBALException;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\DBAL\Connection;
 use Exception;
 use \PDO;
@@ -49,7 +50,7 @@ class AppFixtures extends Fixture
 
     /**
      * @param ObjectManager $manager
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      * @throws Exception
      */
     public function load(ObjectManager $manager)
@@ -133,7 +134,7 @@ class AppFixtures extends Fixture
      * @param Book $book
      * @param Connection $dbh
      * @param ObjectManager $manager
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     protected function addSerie($bookFixture, Book $book, Connection $dbh, ObjectManager $manager)
     {
@@ -175,7 +176,7 @@ SQL
      * @param Book $book
      * @param Connection $dbh
      * @param ObjectManager $manager
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     protected function addTags($bookFixture, Book $book, Connection $dbh, ObjectManager $manager)
     {
@@ -218,7 +219,8 @@ SQL
      * @param Book $book
      * @param Connection $dbh
      * @param ObjectManager $manager
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
+     * @throws Exception
      */
     protected function addEditor($bookFixture, Book $book, Connection $dbh, ObjectManager $manager)
     {
@@ -260,7 +262,7 @@ SQL
      * @param Book $book
      * @param Connection $dbh
      * @param ObjectManager $manager
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     protected function addAuthor($bookFixture, Book $book, Connection $dbh, ObjectManager $manager)
     {
@@ -289,7 +291,7 @@ SQL
      * @param $bookFixture
      * @param Connection $dbh
      * @return array
-     * @throws \Doctrine\DBAL\DBALException
+     * @throws DBALException
      */
     protected function getAuthorsInfo($bookFixture, Connection $dbh): array
     {
@@ -307,8 +309,8 @@ SQL
         );
         $sth->bindParam('bookId', $bookId, PDO::PARAM_INT);
         $sth->execute();
-        $rows = $sth->fetchAll();
-        return $rows;
+
+        return $sth->fetchAll();
     }
 
     /**
@@ -344,10 +346,10 @@ SQL
         if (2 === count($authorName)) {
             $criterias['lastname'] = $authorName[1];
         }
-        $author = $manager
+
+        return $manager
             ->getRepository('\\App\\Entity\\Library\\Author')
             ->findOneBy($criterias);
-        return $author;
     }
 
     /**
@@ -368,6 +370,7 @@ SQL
      * @param Reader[]|array $readers
      * @param Book $book
      * @param $idx
+     * @param $loans
      * @return Loan|array
      * @throws Exception
      */

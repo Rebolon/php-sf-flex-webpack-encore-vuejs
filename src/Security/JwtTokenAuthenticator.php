@@ -2,8 +2,13 @@
 
 namespace App\Security;
 
+use Exception;
+use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTDecodeFailureException;
+use Lexik\Bundle\JWTAuthenticationBundle\TokenExtractor\AuthorizationHeaderTokenExtractor;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
@@ -12,9 +17,6 @@ use Symfony\Component\Security\Core\User\InMemoryUserProvider;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
-use Symfony\Component\HttpFoundation\Request;
-use Lexik\Bundle\JWTAuthenticationBundle\TokenExtractor\AuthorizationHeaderTokenExtractor;
-use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 
 class JwtTokenAuthenticator extends AbstractGuardAuthenticator
 {
@@ -76,9 +78,8 @@ class JwtTokenAuthenticator extends AbstractGuardAuthenticator
         try {
             $data = $this->jwtEncoder->decode($credentials);
             $username = $data['username'];
-            $user = $this->userProvider->loadUserByUsername($username);
 
-            return $user;
+            return $this->userProvider->loadUserByUsername($username);
         } catch (JWTDecodeFailureException $e) {
             // if you want to, use can use $e->getReason() to find out which of the 3 possible things went wrong
             // and tweak the message accordingly
@@ -88,8 +89,8 @@ class JwtTokenAuthenticator extends AbstractGuardAuthenticator
         } catch (UsernameNotFoundException $e) {
             //
             throw new CustomUserMessageAuthenticationException('Not Found - should not happen');
-        } catch (\Exception $e) {
-            throw new \RuntimeException('Unexpected runtime exception - should not happen', 550, $e);
+        } catch (Exception $e) {
+            throw new RuntimeException('Unexpected runtime exception - should not happen', 550, $e);
         }
     }
 
@@ -110,6 +111,9 @@ class JwtTokenAuthenticator extends AbstractGuardAuthenticator
 
     /**
      * Called when authentication is needed, but it's not sent
+     * @param Request $request
+     * @param AuthenticationException|null $authException
+     * @return JsonResponse
      */
     public function start(Request $request, AuthenticationException $authException = null)
     {

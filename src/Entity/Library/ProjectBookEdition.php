@@ -7,6 +7,8 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\ORMInvalidArgumentException;
+use Exception;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use DateTime;
@@ -157,14 +159,14 @@ class ProjectBookEdition implements LibraryInterface
                 } else {
                     $publicationDate = new DateTime($publicationDate);
                 }
-            } catch (\Exception $e) {
-                $this->logger->warning(sprintf('Wrong input for publicationDate, %s', $dateString));
+            } catch (Exception $e) {
+                throw new ORMInvalidArgumentException(sprintf('Wrong input for publicationDate, %s', $dateString), 500, $e);
             }
         } elseif (!($publicationDate instanceof DateTime)) {
-            $this->logger->warning(sprintf(
+            throw new ORMInvalidArgumentException(sprintf(
                 'Wrong input for publicationDate, should be \DateTime or valid date string or unixTimestamp, %s',
-                is_object($publicationDate) ? $publicationDate->__toString() : $publicationDate
-            ));
+                is_object($publicationDate) ? $publicationDate->format('r') : $publicationDate
+            ), 500);
         }
 
         $this->publicationDate = $publicationDate;

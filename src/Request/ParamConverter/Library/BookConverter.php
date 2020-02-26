@@ -52,7 +52,7 @@ class BookConverter extends ItemAbstractConverter
      * @param ProjectBookCreationConverter $projectBookCreationConverter
      * @param ProjectBookEditionConverter $projectBookEditionConverter
      * @param SerieConverter $serieConverter
-     * @param BookTagConverter $bookTagConverter
+     * @param TagConverter $tagConverter
      * @param LoggerInterface $logger
      */
     public function __construct(
@@ -62,7 +62,7 @@ class BookConverter extends ItemAbstractConverter
         ProjectBookCreationConverter $projectBookCreationConverter,
         ProjectBookEditionConverter $projectBookEditionConverter,
         SerieConverter $serieConverter,
-        //BookTagConverter $bookTagConverter,
+        //TagConverter $tagConverter,
         LoggerInterface $logger
     ) {
         parent::__construct($validator, $serializer, $entityManager);
@@ -70,7 +70,7 @@ class BookConverter extends ItemAbstractConverter
         $this->projectBookCreationConverter = $projectBookCreationConverter;
         $this->projectBookEditionConverter = $projectBookEditionConverter;
         $this->serieConverter = $serieConverter;
-        //$this->bookTagConverter = $bookTagConverter;
+        //$this->tagConverter = $tagConverter;
         $this->constructorParams[] = $logger;
     }
 

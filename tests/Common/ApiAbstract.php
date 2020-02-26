@@ -3,7 +3,9 @@
 namespace App\Tests\Common;
 
 use ApiPlatform\Core\Exception\RuntimeException;
+use stdClass;
 use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\DomCrawler\Crawler;
 use PHPUnit\Util\Printer;
@@ -19,48 +21,47 @@ abstract class ApiAbstract extends ToolsAbstract
     ];
 
     /**
-     * @param Client $client
+     * @param KernelBrowser $client
      * @param $uri
      * @return Crawler
      */
-    protected function doLoginApi(Client $client, $uri)
+    protected function doLoginApi(KernelBrowser $client, $uri)
     {
         $headers = $this->headers;
 
         $user = $this->profiles[$this->currentProfileIdx];
 
-        $crawler = $client->request(
+        return $client->request(
             'POST',
             $uri,
             [],
             [],
             $headers,
             json_encode([
-                $client->getKernel()->getContainer()->getParameter('login_username_path') => $user['login'],
-                $client->getKernel()->getContainer()->getParameter('login_password_path') => $user['pwd'],
+                static::$container->getParameter('login_username_path') => $user['login'],
+                static::$container->getContainer()->getParameter('login_password_path') => $user['pwd'],
             ])
         );
-
-        return $crawler;
     }
 
     /**
-     * @return \stdClass
+     * @param KernelBrowser $client
+     * @return false|string
      */
-    protected function doLoginJson(Client $client)
+    protected function doLoginJson(KernelBrowser $client)
     {
         $uri = $this->router->generate('demo_login_json_check', [], Router::NETWORK_PATH);
 
         $this->doLoginApi($client, $uri);
-        $content = $client->getResponse()->getContent();
 
-        return $content;
+        return $client->getResponse()->getContent();
     }
 
     /**
-     * @return \stdClass with token property
+     * @param KernelBrowser $client
+     * @return stdClass with token property
      */
-    protected function doLoginJwt(Client $client)
+    protected function doLoginJwt(KernelBrowser $client)
     {
         $uri = $this->router->generate('api_login_check', [], Router::NETWORK_PATH);
 
@@ -82,7 +83,7 @@ abstract class ApiAbstract extends ToolsAbstract
             $bearer = $token->token;
         }
 
-        $headers['Authorization'] = $this->client->getKernel()->getContainer()->getParameter('token_jwt_bearer')
+        $headers['Authorization'] = static::$container->getParameter('token_jwt_bearer')
             . ' ' . $bearer;
 
         return $headers;

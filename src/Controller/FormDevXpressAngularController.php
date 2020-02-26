@@ -19,9 +19,8 @@ class FormDevXpressAngularController extends AbstractController
      *     methods={"GET"}
      *     )
      * @Cache(maxage="2 weeks")
-     * @return Response
      * @var string $kernelProjectDir
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function index(string $kernelProjectDir)
     {

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class HelloController extends AbstractController
@@ -19,7 +20,7 @@ class HelloController extends AbstractController
      *
      * @param $name
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function world($name)
     {

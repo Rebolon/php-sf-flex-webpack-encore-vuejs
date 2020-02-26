@@ -16,7 +16,7 @@ class LoginJwtTest extends ToolsAbstract
      */
     public function testLogin()
     {
-        $client = $this->getClient();
+        $client = static::createClient();
         $router = $this->getRouter();
         $uriSecured = $router->generate('demo_secured_page_jwt', []);
         $uriLogin = $router->generate('api_login_check', []);
@@ -25,6 +25,9 @@ class LoginJwtTest extends ToolsAbstract
             'ACCEPT' => 'application/json',
             'CONTENT_TYPE' => 'application/json',
             ];
+        $cbTrim = function ($item): string {
+            return trim($item);
+        };
 
         $client->request('GET', $uriSecured);
         $this->assertEquals(401, $client->getResponse()->getStatusCode(), $errMsg);
@@ -53,12 +56,7 @@ class LoginJwtTest extends ToolsAbstract
 
         $crawler = $client->request('GET', $uriSecured, [], [], $headers);
         $this->assertEquals(200, $client->getResponse()->getStatusCode(), $errMsg);
-        $text = implode(' ', array_map(function ($item) {
-            $trimmed = trim($item);
-            if ($trimmed) {
-                return $trimmed;
-            }
-        }, explode("\n", trim($crawler->filter('body div')->text()))));
+        $text = implode(' ', array_map($cbTrim, explode("\n", trim($crawler->filter('body div')->text()))));
         $this->assertEquals('Hello Test_js You are in', $text, $errMsg);
     }
 }

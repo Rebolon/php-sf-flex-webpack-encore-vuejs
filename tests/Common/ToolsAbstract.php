@@ -2,17 +2,10 @@
 
 namespace App\Tests\Common;
 
-use Psr\Log\LoggerInterface;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\Console\Output\ConsoleOutput;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArrayInput;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DomCrawler\Crawler;
-use Symfony\Component\Routing\RouterInterface;
 
 abstract class ToolsAbstract extends WebTestCase
 {
@@ -21,7 +14,7 @@ abstract class ToolsAbstract extends WebTestCase
     /**
      * @param array $options
      * @param array $server
-     * @return mixed|Client
+     * @return mixed|KernelBrowser
      */
     protected static function createClient(array $options = [], array $server = [])
     {
@@ -36,9 +29,7 @@ abstract class ToolsAbstract extends WebTestCase
             ], $server);
         }
 
-        $client = parent::createClient($options, $server);
-
-        return $client;
+        return parent::createClient($options, $server);
     }
 
     /**
@@ -64,34 +55,18 @@ abstract class ToolsAbstract extends WebTestCase
     }
 
     /**
-     * @return Client;
-     */
-    protected function getClient()
-    {
-        // is it a good idea to use the same client on
-        if (!$this->client) {
-            $this->client = static::createClient();
-            $this->client->followRedirects(true);
-        }
-
-        $this->client->restart();
-
-        return $this->client;
-    }
-
-    /**
-     * @param Client $client
+     * @param KernelBrowser $client
      * @return Crawler
      */
-    protected function doLoginStandard(Client $client)
+    protected function doLoginStandard(KernelBrowser $client)
     {
         $uri = $this->router->generate('demo_login_standard', [], Router::NETWORK_PATH);
         $crawler = $client->request('GET', $uri);
         $user = $this->profiles[$this->currentProfileIdx];
         $buttonCrawlerNode = $crawler->selectButton('login');
         $form = $buttonCrawlerNode->form([
-            $client->getKernel()->getContainer()->getParameter('login_username_path') => $user['login'],
-            $client->getKernel()->getContainer()->getParameter('login_password_path') => $user['pwd'],
+            static::$container->getParameter('login_username_path') => $user['login'],
+            static::$container->getParameter('login_password_path') => $user['pwd'],
         ]);
         $crawler = $client->submit($form);
 

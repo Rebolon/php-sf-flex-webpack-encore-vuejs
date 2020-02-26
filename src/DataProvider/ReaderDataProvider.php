@@ -1,20 +1,14 @@
 <?php
 namespace App\DataProvider;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\EagerLoadingExtension;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\FilterEagerLoadingExtension;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryResultCollectionExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGenerator;
 use ApiPlatform\Core\DataProvider\CollectionDataProviderInterface;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Api\Config;
-use App\Entity\Library\Reader;
-use App\Entity\Library\Book;
 use App\Entity\Library\Reader as OrmEntityReader;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Persistence\ManagerRegistry;
-use stdClass;
 
 class ReaderDataProvider implements ItemDataProviderInterface, CollectionDataProviderInterface, RestrictedDataProviderInterface
 {
@@ -59,8 +53,6 @@ class ReaderDataProvider implements ItemDataProviderInterface, CollectionDataPro
          * @todo find a way to retreive only props specified in uri if they exists => Extensions might have helped us but they works only if entity are both orm & apiPlatform
          */
 
-        $item = $em->find($id);
-
         /*$books = new ArrayCollection();
         foreach ($item->getBooks() as $book) {
             $bb = new Book();
@@ -70,7 +62,7 @@ class ReaderDataProvider implements ItemDataProviderInterface, CollectionDataPro
 
         $item->setBooks($books);*/
 
-        return $item;
+        return $em->find($id);
     }
 
     public function getCollection(string $resourceClass, string $operationName = null, array $context = [])

@@ -5,7 +5,6 @@
 namespace App\Tests\Api;
 
 use App\Tests\Common\ApiAbstract;
-use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 
 /**
@@ -21,14 +20,14 @@ class ApiDocTest extends ApiAbstract
     /**
      *
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
         $this->uriLogin = $this->getRouter()->generate('api_login_check', []);
         $this->uriSecured= $this->getRouter()->generate('api_ping_secureds_get_collection', []);
 
-        $this->client = $client = $this->getClient();
+        $this->client = $client = static::createClient();
     }
 
     /**

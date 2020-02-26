@@ -1,10 +1,8 @@
 <?php
 namespace App\EventListener;
 
-use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTCreatedEvent;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTInvalidEvent;
 use Lexik\Bundle\JWTAuthenticationBundle\Response\JWTAuthenticationFailureResponse;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 class JWTInvalidListener
 {

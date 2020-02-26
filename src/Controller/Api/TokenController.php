@@ -2,6 +2,7 @@
 
 namespace App\Controller\Api;
 
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -38,7 +39,7 @@ class TokenController extends AbstractController
             );
 
             return new JsonResponse($request->get($csrfTokenParameter));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // else create a new one and return it
             $token = $csrfTokenManager->getToken($csrfTokenId);
 

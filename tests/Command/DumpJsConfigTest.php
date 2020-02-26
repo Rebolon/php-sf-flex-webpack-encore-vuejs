@@ -3,17 +3,30 @@
  * run it with phpunit --group git-pre-push
  */
 namespace App\Tests\Command;
+use App\Command\DumpJsConfig;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\Routing\RouterInterface;
+use Twig\Environment;
 
 /**
  *
  */
-class DumpJsConfig extends WebTestCase
+class DumpJsConfigTest extends WebTestCase
 {
-    protected function setUp()
+    /**
+     * @var RouterInterface
+     */
+    protected $router;
+
+    /**
+     * @var Environment
+     */
+    protected $twig;
+
+    protected function setUp(): void
     {
         $this->router = $this->createMock('\Symfony\Component\Routing\RouterInterface');
-        $this->twig = $this->createMock('\Twig_Environment');
+        $this->twig = $this->createMock('\Twig\Environment');
     }
 
     /**
@@ -25,8 +38,11 @@ class DumpJsConfig extends WebTestCase
         $apiPlatformPrefix = '/api';
         $loginUsernamePath = 'login';
         $loginPasswordPath = 'pwd';
+        $tokenJwtBearer = 'Bearer';
+        // a folder with a config folder
+        $kernelProjectDir = __DIR__ . '/../fixtures/';
 
-        $tested = new \App\Command\DumpJsConfig($csrfTokenParameter, $apiPlatformPrefix, $loginUsernamePath, $loginPasswordPath, $this->twig, $this->router);
+        $tested = new DumpJsConfig($csrfTokenParameter, $apiPlatformPrefix, $loginUsernamePath, $loginPasswordPath, $tokenJwtBearer, $kernelProjectDir, $this->twig, $this->router);
         $this->assertTrue($tested->isEnabled(), 'Should be enabled');
         $this->assertEquals($tested->getName(), 'app:dump-js-config');
         $this->assertEquals($tested->getDescription(), 'Create the config.js file.');

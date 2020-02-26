@@ -1,6 +1,7 @@
 <?php
 namespace App\Command;
 
+use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -24,7 +25,7 @@ class DumpJsConfig extends Command
     const ARG_QUASAR_STYLE = 'quasarStyle';
 
     /**
-     * @var \Twig_Environment
+     * @var Environment
      */
     protected $twig;
 
@@ -114,6 +115,8 @@ class DumpJsConfig extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int|null|void
+     * @throws LoaderError
+     * @throws RuntimeError
      * @throws SyntaxError
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -150,7 +153,7 @@ class DumpJsConfig extends Command
             $config = $values['api_platform'];
 
             if (!($config['collection'] && $config['collection']['pagination'])) {
-                throw new \Exception('Missing pagination section in api_platform.yaml');
+                throw new Exception('Missing pagination section in api_platform.yaml');
             }
 
             foreach ($mandatoryKeys as $key) {
@@ -168,11 +171,11 @@ class DumpJsConfig extends Command
             }
 
             if (count($missingKeys)) {
-                throw new \Exception(sprintf('those keys are mandatory for the frontend configuration: %s', join(', ', $missingKeys)));
+                throw new Exception(sprintf('those keys are mandatory for the frontend configuration: %s', join(', ', $missingKeys)));
             }
 
             return $config['collection']['pagination'];
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $output->writeln(sprintf('api_platform.yaml error: "%s"', $e->getMessage()));
         }
 
@@ -268,7 +271,7 @@ class DumpJsConfig extends Command
      */
     protected function render($env, $host, $port, $quasarStyle, $apiPlatform): string
     {
-        $content = $this->twig->render('command/config.js.twig', [
+        return $this->twig->render('command/config.js.twig', [
             'env' => $env,
             'host' => trim($host),
             'port' => trim($port),
@@ -284,8 +287,6 @@ class DumpJsConfig extends Command
             'quasarStyle' => $quasarStyle,
             'apiPlatform' => $apiPlatform,
         ]);
-
-        return $content;
     }
 
     /**

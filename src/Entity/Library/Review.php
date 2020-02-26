@@ -5,14 +5,15 @@ use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
-use App\Entity\LoggerTrait;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\ORMInvalidArgumentException;
+use Exception;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
-use \DateTime;
 
 /**
  * @ApiResource(
@@ -29,8 +30,6 @@ use \DateTime;
  */
 class Review implements LibraryInterface
 {
-    use LoggerTrait;
-
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -113,15 +112,10 @@ class Review implements LibraryInterface
     /**
      * ProjectBookEdition constructor.
      *
-     * @param LoggerInterface $logger
-     * @throws \Exception
+     * @throws Exception
      */
-    public function __construct(?LoggerInterface $logger)
+    public function __construct()
     {
-        if ($logger) {
-            $this->setLogger($logger);
-        }
-
         // default value coz since mid-2018 (don't have exact DBAL version) there is no more default attributes for datetime
         $this->setPublicationDate(new DateTime());
     }
@@ -227,14 +221,14 @@ class Review implements LibraryInterface
                 } else {
                     $publicationDate = new DateTime($publicationDate);
                 }
-            } catch (\Exception $e) {
-                $this->logger->warning(sprintf('Wrong input for publicationDate, %s', $dateString));
+            } catch (Exception $e) {
+                throw new ORMInvalidArgumentException(sprintf('Wrong input for publicationDate, %s', $dateString), 500, $e);
             }
         } elseif (!($publicationDate instanceof DateTime)) {
-            $this->logger->warning(sprintf(
+            throw new ORMInvalidArgumentException(sprintf(
                 'Wrong input for publicationDate, should be \DateTime or valid date string or unixTimestamp, %s',
-                is_object($publicationDate) ? $publicationDate->__toString() : $publicationDate
-            ));
+                is_object($publicationDate) ? $publicationDate->format('r') : $publicationDate
+            ), 500);
         }
 
         $this->publicationDate = $publicationDate;

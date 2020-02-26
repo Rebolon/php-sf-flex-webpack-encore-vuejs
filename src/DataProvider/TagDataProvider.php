@@ -54,9 +54,8 @@ class TagDataProvider implements ItemDataProviderInterface, CollectionDataProvid
     public function getItem(string $resourceClass, $id, string $operationName = null, array $context = [])
     {
         $em = $this->managerRegistry->getRepository(Tag::class);
-        $tag = $em->find($id);
 
-        return $tag;
+        return $em->find($id);
     }
 
     public function getCollection(string $resourceClass, string $operationName = null, array $context = [])

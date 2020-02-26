@@ -11,7 +11,7 @@ use App\Tests\Common\WebPagesAbstract;
  */
 class HTTP200WebPagesTest extends WebPagesAbstract
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -28,7 +28,7 @@ class HTTP200WebPagesTest extends WebPagesAbstract
      */
     public function testLogin()
     {
-        $client = $this->getClient();
+        $client = static::createClient();
         $router = $this->getRouter();
         $uri = $router->generate('demo_login_standard', []);
 
@@ -66,7 +66,7 @@ class HTTP200WebPagesTest extends WebPagesAbstract
      */
     public function testHttp200OnAllPages()
     {
-        $client = $this->getClient();
+        $client = static::createClient();
         $router = $this->getRouter();
 
         $demoRoutes['basic: simple controller'] = ['uri'=> $router->generate('simple'), ];
@@ -112,7 +112,7 @@ class HTTP200WebPagesTest extends WebPagesAbstract
 
             $uri = $routeInfos['uri'];
 
-            $crawler = $client->request('GET', $uri, [], [], $headers);
+            $client->request('GET', $uri, [], [], $headers);
 
             $errMsg = sprintf("route: %s, headers: %s", $uri, json_encode($headers));
 

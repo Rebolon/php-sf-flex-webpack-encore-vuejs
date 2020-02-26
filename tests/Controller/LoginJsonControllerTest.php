@@ -29,7 +29,7 @@ class LoginJsonControllerTest extends PantherToolsAbstract
         $inputPwd->sendKeys('fakeUser11111');
 
         $form = $crawler->selectButton('LOGIN')->form();
-        $crawler = $client->submit($form);
+        $client->submit($form);
         $client->waitFor('div.q-alert.bg-warning');
         $this->assertContains($uri, $client->getCurrentURL());
 

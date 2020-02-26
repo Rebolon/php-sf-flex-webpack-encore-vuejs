@@ -7,8 +7,8 @@ use App\Entity\Library\Book;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\Event\GetResponseForControllerResultEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
 /**
@@ -37,7 +37,7 @@ final class BookSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function debugDenormalization(GetResponseEvent $event)
+    public function debugDenormalization(RequestEvent $event)
     {
         $book = $event->getRequest()->get('data');
         $method = $event->getRequest()->getMethod();
@@ -55,7 +55,7 @@ final class BookSubscriber implements EventSubscriberInterface
         }
     }
 
-    public function debugDenormalizationAfterPersist(GetResponseForControllerResultEvent $event)
+    public function debugDenormalizationAfterPersist(ViewEvent $event)
     {
         $book = $event->getControllerResult();
         $method = $event->getRequest()->getMethod();

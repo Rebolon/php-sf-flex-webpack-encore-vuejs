@@ -2,16 +2,17 @@
 
 namespace App\Tests\Common;
 
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\DomCrawler\Crawler;
 
 abstract class WebPagesAbstract extends ToolsAbstract
 {
     /**
+     * @param KernelBrowser $client
      * @return Crawler
      */
-    protected function doLogin(Client $client)
+    protected function doLogin(KernelBrowser $client)
     {
         $uri = $this->router->generate('demo_login_standard', [], Router::NETWORK_PATH);
         $crawler = $client->request('GET', $uri);
@@ -29,7 +30,7 @@ abstract class WebPagesAbstract extends ToolsAbstract
     /**
      * Test SEO basic fields
      *
-     * @param \Symfony\Component\DomCrawler\Crawler $crawler
+     * @param Crawler $crawler
      * @param string $errMsg
      * @return mixed
      */
@@ -45,7 +46,7 @@ abstract class WebPagesAbstract extends ToolsAbstract
     /**
      * Test SEO basic fields
      *
-     * @param \Symfony\Component\DomCrawler\Crawler $crawler
+     * @param Crawler $crawler
      * @param string $errMsg
      * @return mixed
      */

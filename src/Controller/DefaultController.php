@@ -78,14 +78,12 @@ class DefaultController extends AbstractController
             ];
         }
 
-        $render = $this->render(
+        return $this->render(
             'default/menu.html.twig',
             [
             'routes' => $demoRoutes,
             'isPhpBuiltInServer' => $isPhpBuiltInServer,
             ]
         );
-
-        return $render;
     }
 }

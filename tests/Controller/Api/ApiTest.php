@@ -5,6 +5,7 @@
 namespace App\Tests\Controller\Api;
 
 use App\Tests\Common\ApiAbstract;
+use Exception;
 use PHPUnit\Util\Printer;
 
 /**
@@ -17,7 +18,7 @@ class ApiTest extends ApiAbstract
      */
     public function testMain()
     {
-        $client = $this->getClient();
+        $client = static::createClient();
         $router = $this->getRouter();
 
         $routesName = $this->getApiRoutes($router);
@@ -52,7 +53,7 @@ class ApiTest extends ApiAbstract
             // $o->write(PHP_EOL.$uri.PHP_EOL);
             $errMsg = sprintf("route: %s, headers: %s", $uri, json_encode($headers));
 
-            $crawler = $client->request($method, $uri, [], [], $headers);
+            $client->request($method, $uri, [], [], $headers);
 
             $this->assertEquals(200, $client->getResponse()->getStatusCode(), $errMsg);
             $this->assertContains('application/json', $client->getResponse()->headers->get('content-type'), $errMsg);
@@ -63,22 +64,18 @@ class ApiTest extends ApiAbstract
 
             $this->assertContains($routePath, $availablePaths);
 
-            try {
-                if (is_array($json)) {
-                    $def = $schemas['paths'][$routePath][strtolower($method)]['responses']['200']['content']['application/json']['schema']['items']['$ref'];
-                } else {
-                    $def = $schemas['paths'][$routePath][strtolower($method)]['responses']['200']['content']['application/json']['schema']['$ref'];
-                }
-
-                $defPrefix = '#/components/schemas/';
-                if (false !== strpos($def, $defPrefix)) {
-                    $def = substr($def, strlen($defPrefix));
-                }
-
-                $this->assertPropsFromJson($def, is_array($json) ? $json[0] : $json);
-            } catch (\Exception $e) {
-                // do nothing
+            if (is_array($json)) {
+                $def = $schemas['paths'][$routePath][strtolower($method)]['responses']['200']['content']['application/json']['schema']['items']['$ref'];
+            } else {
+                $def = $schemas['paths'][$routePath][strtolower($method)]['responses']['200']['content']['application/json']['schema']['$ref'];
             }
+
+            $defPrefix = '#/components/schemas/';
+            if (false !== strpos($def, $defPrefix)) {
+                $def = substr($def, strlen($defPrefix));
+            }
+
+            $this->assertPropsFromJson($def, is_array($json) ? $json[0] : $json);
         }
         $o->flush();
     }

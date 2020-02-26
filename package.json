@@ -1,6 +1,6 @@
 {
     "name": "sf-flex-encore-vuejs",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "homepage": "https://github.com/Rebolon/php-sf-flex-webpack-encore-vuejs",
     "license": "MIT License",
     "private": true,
@@ -16,8 +16,8 @@
     "scripts": {
         "init-project": "[ -f .env ] && echo '.env file already exists' || cp .env.dist .env && cp phpunit.xml.dist phpunit.xml && composer install && npm install && npm run db-init && npm run dump-js-config && cd assets/js/form-devxpress-angular/ && npm install && cd ../../../ && npm run dev && php bin/console assets:install --symlink",
         "init-project:w": "cp .env.dist .env && cp phpunit.xml.dist phpunit.xml && composer install && npm install && npm run db-init:w && npm run dump-js-config:w && cd assets/js/form-devxpress-angular/ && npm install && cd ../../../ && npm run dev:w && cd vendor/bin/.phpunit/phpunit* && composer install && cd ../../../../ && php bin/console assets:install --symlink",
-        "db-init": "$npm_package_config_php bin/console doctrine:database:create && $npm_package_config_php bin/console doctrine:schema:create && $npm_package_config_php bin/console doctrine:fixtures:load -n",
-        "db-init:w": "%npm_package_config_php% bin/console doctrine:database:create && %npm_package_config_php% bin/console doctrine:schema:create && %npm_package_config_php% bin/console doctrine:fixtures:load -n",
+        "db-init": "$npm_package_config_php bin/console doctrine:database:create && $npm_package_config_php bin/console doctrine:schema:create && $npm_package_config_php bin/console doctrine:migrations:migrate -n && $npm_package_config_php bin/console doctrine:fixtures:load -n",
+        "db-init:w": "%npm_package_config_php% bin/console doctrine:database:create && %npm_package_config_php% bin/console doctrine:schema:create && %npm_package_config_php% bin/console doctrine:migrations:migrate -n && %npm_package_config_php% bin/console doctrine:fixtures:load -n",
         "jwt-init": "echo 'Use the same passphrase that is your .env file' && mkdir -p config/jwt && npm run jwt-generation && npm run jwt-generation-test",
         "jwt-init:w": "echo 'Use the same passphrase that is your .env file' && mkdir -p config\\jwt && npm run jwt-generation:win && npm run jwt-generation-test:win",
         "jwt-generation": "cd config/jwt && openssl genrsa -out private.pem -aes256 4096 && openssl rsa -pubout -in private.pem -out public.pem && cd ../..",

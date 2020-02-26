@@ -17,7 +17,7 @@ class BasicControllerTest extends PantherToolsAbstract
     public function testBasicController()
     {
         $client = static::createPantherClient(); // Your app is automatically started using the built-in web server
-        $crawler = $client->request('GET', $this->getRouter()->generate('simple'));
+        $client->request('GET', $this->getRouter()->generate('simple'));
 
         // because the BasicController only render text, we cannot use $crawler that expect a valid DOM. But we can use the client->getPageSource, except that it will embeed the text in an html>body node
         $this->assertContains($this->content, $client->getPageSource());

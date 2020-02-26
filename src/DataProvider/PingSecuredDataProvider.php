@@ -8,6 +8,7 @@ use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use ApiPlatform\Core\Exception\RuntimeException;
 use ApiPlatform\Core\Security\ResourceAccessCheckerInterface;
 use App\Entity\PingSecured;
+use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use function get_class;
@@ -60,6 +61,14 @@ class PingSecuredDataProvider implements ItemDataProviderInterface, CollectionDa
         $this->tokenStorage = $tokenStorage;
     }
 
+    /**
+     * @param string $resourceClass
+     * @param string|null $operationName
+     * @param array $context
+     * @return bool
+     * @throws ReflectionException
+     * @throws AnnotationException
+     */
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
     {
         $supports = PingSecured::class === $resourceClass;

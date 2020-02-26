@@ -6,7 +6,7 @@ use App\Tests\Common\PantherToolsAbstract;
 
 class LoginPhpControllerTest extends PantherToolsAbstract
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

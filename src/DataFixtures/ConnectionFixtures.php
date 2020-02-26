@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use Doctrine\DBAL\Connection;
+use RuntimeException;
 
 class ConnectionFixtures
 {
@@ -27,7 +28,7 @@ class ConnectionFixtures
     public function get()
     {
         if (!$this->connection) {
-            throw new \RuntimeException('Need to configure your ConnectionFixtures service');
+            throw new RuntimeException('Need to configure your ConnectionFixtures service');
         }
 
         return $this->connection;

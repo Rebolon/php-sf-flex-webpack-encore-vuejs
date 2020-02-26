@@ -32,9 +32,8 @@ class ReaderRepository extends EntityRepository
             ->setParameters($params);
 
         $qry = $qb->getQuery();
-        $res = $qry->getResult();
 
-        return $res;
+        return $qry->getResult();
     }
 
     /**
@@ -58,8 +57,7 @@ class ReaderRepository extends EntityRepository
             ->setParameters($params);
 
         $qry = $qb->getQuery();
-        $res = $qry->getResult();
 
-        return $res;
+        return $qry->getResult();
     }
 }

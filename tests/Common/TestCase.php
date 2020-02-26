@@ -3,17 +3,12 @@
 namespace App\Tests\Common;
 
 use Doctrine\DBAL\Connection;
-use PHPUnit\Util\Printer;
+use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Psr\Log\LoggerInterface;
-use Symfony\Bundle\FrameworkBundle\Client;
-use Symfony\Bundle\FrameworkBundle\Routing\Router;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\Console\Output\NullOutput;
-use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Routing\RouterInterface;
 
 trait TestCase
@@ -67,8 +62,9 @@ trait TestCase
      *  - create new one
      *  - init schema
      *  - backup schema in another file
+     * @throws Exception
      */
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
 
@@ -121,7 +117,7 @@ trait TestCase
      * Prepare each test methods:
      *  - init own properties
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -141,8 +137,8 @@ trait TestCase
         $this->logger = $this->createMock('\Psr\Log\LoggerInterface');
 
         // reuse service
-        $this->dbCon = $kernel->getContainer()->get('database_connection');
-        $this->em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
+        $this->dbCon = static::$container->get('database_connection');
+        $this->em = static::$container->get('doctrine.orm.entity_manager');
     }
 
 
@@ -156,7 +152,7 @@ trait TestCase
      *  - init schema
      *  - backup schema in another file
      */
-    public static function setUpAfterClass()
+    public static function setUpAfterClass(): void
     {
         parent::setUpBeforeClass();
 
@@ -172,12 +168,12 @@ trait TestCase
     }
 
     /**
-     * @return Router
+     * @return RouterInterface
      */
     protected function getRouter()
     {
         if (!$this->router) {
-            $this->router = static::$kernel->getContainer()->get("router");
+            $this->router = static::$container->get("router");
         }
 
         return $this->router;
