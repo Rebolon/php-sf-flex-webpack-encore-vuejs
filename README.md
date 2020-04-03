@@ -604,6 +604,15 @@ I wrote some articles on medium to explain some practices setup in this project:
  * https://stackoverflow.com/questions/51042516/how-to-use-graphiql-when-route-are-secured
  * https://github.com/symfony/webpack-encore/issues/256#issuecomment-471601797
 
+## Third-part licencing
+
+ * symfony: https://symfony.com/doc/current/contributing/code/license.html
+ * apiplatform: https://github.com/api-platform/api-platform/blob/master/LICENSE
+ * vuejs: https://github.com/vuejs/vue/blob/master/LICENSE
+ * react: https://github.com/facebook/react/blob/master/LICENSE
+ * angular: https://angular.io/license
+ * quasar: https://github.com/quasarframework/quasar/blob/dev/LICENSE
+ * devexpress: https://js.devexpress.com/EULAs/DevExtremeNonCommercial/
 
 ## License
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FRebolon%2Fphp-sf-flex-webpack-encore-vuejs.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FRebolon%2Fphp-sf-flex-webpack-encore-vuejs?ref=badge_large)
