@@ -47,7 +47,7 @@
     "prepare": "npm run snyk-protect"
   },
   "dependencies": {
-    "@api-platform/admin": "^0.6.2",
+    "@api-platform/admin": "^2.0.0",
     "@rebolon/json-reviver": "^0.0.9",
     "apollo-cache-inmemory": "^1.5.1",
     "apollo-client": "^2.5.1",
