@@ -71,7 +71,7 @@
     "vue-apollo": "^3.0.0-beta.28",
     "vue-router": "^3.0.2",
     "vuelidate": "^0.7.4",
-    "snyk": "^1.162.0"
+    "snyk": "^1.319.0"
   },
   "devDependencies": {
     "@angular/cli": "^7.3.4",
