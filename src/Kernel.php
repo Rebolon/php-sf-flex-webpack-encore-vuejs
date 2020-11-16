@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel as BaseKernel;
+use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 use Symfony\Component\Routing\RouteCollectionBuilder;
 
 class Kernel extends BaseKernel
@@ -46,15 +47,11 @@ class Kernel extends BaseKernel
         $loader->load($confDir . '/services_' . $this->environment . self::CONFIG_EXTS, 'glob');
     }
 
-    protected function configureRoutes(RouteCollectionBuilder $routes)
+    protected function configureRoutes(RoutingConfigurator $routes)
     {
-        $confDir = dirname(__DIR__) . '/config';
-        if (is_dir($confDir . '/routes/')) {
-            $routes->import($confDir . '/routes/*' . self::CONFIG_EXTS, '/', 'glob');
-        }
-        if (is_dir($confDir . '/routes/' . $this->environment)) {
-            $routes->import($confDir . '/routes/' . $this->environment . '/**/*' . self::CONFIG_EXTS, '/', 'glob');
-        }
-        $routes->import($confDir . '/routes' . self::CONFIG_EXTS, '/', 'glob');
+        $extensions = '{php,yaml}';
+        $routes->import('../config/{routes}/' . $this->environment . "/*.$extensions");
+        $routes->import("../config/{routes}/*.$extensions");
+        $routes->import("../config/{routes}.$extensions");
     }
 }

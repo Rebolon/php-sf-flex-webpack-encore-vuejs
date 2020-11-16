@@ -15,10 +15,8 @@ use DateTime;
 
 /**
  * @ApiResource(
- *     attributes={
- *          "access_control"="is_granted('ROLE_USER')",
- *          "pagination_client_enabled"=true
- *      }
+ *     security="is_granted('ROLE_USER')",
+ *     paginationClientEnabled=true
  * )
  * @ApiFilter(OrderFilter::class, properties={"id", "book", "editor", "publicationDate", "isbn", "collection"})
  * @ApiFilter(DateFilter::class, properties={"publicationDate"})
@@ -29,7 +27,7 @@ use DateTime;
 class ProjectBookEdition implements LibraryInterface
 {
     /**
-     * @Groups("book_detail_read")
+     * @Groups("book:detail:read")
      *
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -42,7 +40,7 @@ class ProjectBookEdition implements LibraryInterface
     protected $id;
 
     /**
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @Groups({"book:detail:read", "book:detail:write"})
      *
      * @ORM\Column(type="date", nullable=true, name="publication_date")
      *
@@ -53,7 +51,7 @@ class ProjectBookEdition implements LibraryInterface
     protected $publicationDate;
 
     /**
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @Groups({"book:detail:read", "book:detail:write"})
      *
      * @ORM\Column(type="string", nullable=true)
      *
@@ -67,7 +65,7 @@ class ProjectBookEdition implements LibraryInterface
      * @ApiProperty(
      *     iri="http://schema.org/isbn"
      * )
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @Groups({"book:detail:read", "book:detail:write"})
      *
      * @ORM\Column(nullable=true)
      *
@@ -78,7 +76,7 @@ class ProjectBookEdition implements LibraryInterface
     protected $isbn;
 
     /**
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @Groups({"book:detail:read", "book:detail:write"})
      *
      * @ORM\ManyToOne(
      *     targetEntity="App\Entity\Library\Editor",

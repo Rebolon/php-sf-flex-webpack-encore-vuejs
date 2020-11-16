@@ -38,7 +38,7 @@ final class SwaggerDecorator implements NormalizerInterface
     {
         $docs = $this->decorated->normalize($object, $format, $context);
 
-        $authDefinition = [
+/*        $authDefinition = [
             [
                 'name' => $this->loginUsernamePath,
                 'description' => 'Username for the current account',
@@ -101,7 +101,7 @@ final class SwaggerDecorator implements NormalizerInterface
                 ]
             ]
         ];
-
+*/
         $bookDefinition = [
             'name' => 'books',
             'definition' => <<<DEFINITION
@@ -109,13 +109,13 @@ final class SwaggerDecorator implements NormalizerInterface
     "book": {
         "title": "string",
         "editors": [{
-            "publication_date": "date", 
-            "collection": "string", 
-            "isbn": "string", 
+            "publication_date": "date",
+            "collection": "string",
+            "isbn": "string",
             "editor": editor
         },],
         "authors": [{
-            "role": job, 
+            "role": job,
             "author": author
         },],
         "serie": serie

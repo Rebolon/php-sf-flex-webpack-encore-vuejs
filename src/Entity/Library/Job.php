@@ -13,15 +13,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiResource(
  *     iri="http://schema.org/Role",
- *     attributes={
- *          "access_control"="is_granted('ROLE_USER')",
- *          "pagination_client_enabled"=true
- *      },
+ *     security="is_granted('ROLE_USER')",
+ *     paginationClientEnabled=true,
  *     collectionOperations={
- *          "get"={"method"="GET"}
+ *          "get"
  *     },
  *     itemOperations={
- *         "get"={"method"="GET"}
+ *         "get"
  *     }
  * )
  *
@@ -30,7 +28,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Job implements LibraryInterface
 {
     /**
-     * @Groups("book_detail_read")
+     * @Groups("book:detail:read")
      *
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -46,7 +44,7 @@ class Job implements LibraryInterface
      * @ApiProperty(
      *     iri="http://schema.org/name"
      * )
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @Groups({"book:detail:read", "book:detail:write"})
      *
      * @ORM\Column(type="string", length=256, nullable=false, name="translation_key")
      *

@@ -9,7 +9,7 @@ class BasicControllerTest extends PantherToolsAbstract
     /**
      * @var string
      */
-    protected $content = '<html xmlns="http://www.w3.org/1999/xhtml"><head></head><body>This is the index action !</body></html>';
+    protected $content = '<html><head></head><body>This is the index action !</body></html>';
 
     /**
      * @group git-pre-push

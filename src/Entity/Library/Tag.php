@@ -18,16 +18,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ApiResource(
  *     iri="http://schema.org/Tags",
- *     attributes={
- *          "normalization_context"={
- *              "groups"={"book_detail_read", "tag_detail_read"},
- *              "enable_max_depth"=true
- *          },
- *          "denormalization_context"={
- *              "groups"={"book_detail_write", "tag_detail_write"}
- *          },
- *          "pagination_client_enabled"=true
- *     }
+ *     normalizationContext={
+ *         "groups"={"book:detail:read", "tag:detail:read"},
+ *         "enable_max_depth"=true
+ *     },
+ *     denormalizationContext={
+ *         "groups"={"book:detail:write", "tag:detail:write"}
+ *     },
+ *     paginationClientEnabled=true
  * )
  * @ApiFilter(OrderFilter::class, properties={"id", "name"})
  * @ApiFilter(SearchFilter::class, properties={"id": "exact", "name": "istart"})
@@ -38,7 +36,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Tag implements LibraryInterface
 {
     /**
-     * @Groups({"book_detail_read", "tag_detail_read"})
+     * @Groups({"book:detail:read", "tag:detail:read"})
      *
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -50,7 +48,7 @@ class Tag implements LibraryInterface
 
     /**
      * @ApiProperty()
-     * @Groups({"book_detail_read", "tag_detail_read", "book_detail_write"})
+     * @Groups({"book:detail:read", "tag:detail:read", "book:detail:write"})
      *
      * @ORM\Column(type="string", length=512, nullable=false)
      *
@@ -66,7 +64,7 @@ class Tag implements LibraryInterface
      * @ApiSubresource(maxDepth=1)
      * @MaxDepth(1)
      * // If i want detail on books node instead of just IRI i need to set the group used in normalization context
-     * @Groups({"tag_detail_read"})
+     * @Groups({"tag:detail:read"})
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Library\Book", mappedBy="tags", orphanRemoval=false)
      */

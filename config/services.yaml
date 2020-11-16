@@ -76,6 +76,11 @@ services:
     App\Security\JwtTokenTools:
         public: true
 
+    App\Security\CsrfTokenAuthenticator:
+        arguments: #~
+        # for debug purpose, now we may only inject container this way, coz you should never inject the container, only specific services
+            $container: '@service_container'
+
     # needs to alias the current security.user.provider.concrete.in_memory to the class (seems not done in sf or security bundle)
     Symfony\Component\Security\Core\User\InMemoryUserProvider:
         alias: security.user.provider.concrete.in_memory
@@ -161,19 +166,19 @@ services:
         arguments:
             - '@Doctrine\Common\Persistence\ManagerRegistry'
             - '@App\Api\Config'
-            - !tagged api_platform.doctrine.orm.query_extension.item
-            - !tagged api_platform.doctrine.orm.query_extension.collection
+            - $collectionDataProvider: "@api_platform.doctrine.orm.default.collection_data_provider"
+            - $itemDataProvider: "@api_platform.doctrine.orm.default.item_data_provider"
 
     App\DataProvider\LoanDataProvider:
         arguments:
             - '@Doctrine\Common\Persistence\ManagerRegistry'
             - '@App\Api\Config'
-            - !tagged api_platform.doctrine.orm.query_extension.item
-            - !tagged api_platform.doctrine.orm.query_extension.collection
+            - $collectionDataProvider: "@api_platform.doctrine.orm.default.collection_data_provider"
+            - $itemDataProvider: "@api_platform.doctrine.orm.default.item_data_provider"
 
     App\DataProvider\ReaderDataProvider:
         arguments:
             - '@Doctrine\Common\Persistence\ManagerRegistry'
             - '@App\Api\Config'
-            - !tagged api_platform.doctrine.orm.query_extension.item
-            - !tagged api_platform.doctrine.orm.query_extension.collection
+            - $collectionDataProvider: "@api_platform.doctrine.orm.default.collection_data_provider"
+            - $itemDataProvider: "@api_platform.doctrine.orm.default.item_data_provider"

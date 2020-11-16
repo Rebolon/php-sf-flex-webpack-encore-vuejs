@@ -17,15 +17,13 @@ use \DateTime;
 
 /**
  * @ApiResource(
- *     attributes={
- *          "access_control"="is_granted('ROLE_USER')",
- *          "pagination_client_enabled"=true,
- *          "normalization_context"={
- *              "groups"={"loan_read"}
- *          },
- *          "denormalization_context"={
- *              "groups"={"loan_write"}
- *          }
+ *     security="is_granted('ROLE_USER')",
+ *     paginationClientEnabled=true,
+ *     normalizationContext={
+ *         "groups"={"loan:read"}
+ *     },
+ *     denormalizationContext={
+ *         "groups"={"loan:write"}
  *     }
  * )
  *
@@ -41,7 +39,7 @@ class Loan implements LibraryInterface
     /**
      * @ApiProperty(identifier=true)
      *
-     * @Groups({"loan_read"})
+     * @Groups({"loan:read"})
      *
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -56,7 +54,7 @@ class Loan implements LibraryInterface
     /**
      * @ApiSubresource(maxDepth=1)
      *
-     * @Groups({"loan_read"})
+     * @Groups({"loan:read"})
      * @MaxDepth(1)
      *
      * @ORM\ManyToOne(
@@ -76,7 +74,7 @@ class Loan implements LibraryInterface
      *
      * @ApiSubresource(maxDepth=1)
      *
-     * @Groups({"loan_read", "loan_write"})
+     * @Groups({"loan:read", "loan:write"})
      * @MaxDepth(1)
      *
      * @ORM\ManyToOne(
@@ -97,7 +95,7 @@ class Loan implements LibraryInterface
      *
      * @ApiSubresource(maxDepth=1)
      *
-     * @Groups({"loan_read", "loan_write"})
+     * @Groups({"loan:read", "loan:write"})
      * @MaxDepth(1)
      *
      * @ORM\ManyToOne(
@@ -114,7 +112,7 @@ class Loan implements LibraryInterface
     protected $loaner;
 
     /**
-     * @Groups({"loan_read", "loan_write"})
+     * @Groups({"loan:read", "loan:write"})
      *
      * @ORM\Column(type="datetime", nullable=false, name="start_loan")
      *
@@ -126,7 +124,7 @@ class Loan implements LibraryInterface
     protected $startLoan;
 
     /**
-     * @Groups({"loan_read", "loan_write"})
+     * @Groups({"loan:read", "loan:write"})
      *
      * @ORM\Column(type="datetime", nullable=true, name="end_loan")
      *

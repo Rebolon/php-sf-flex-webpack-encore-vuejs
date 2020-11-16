@@ -18,11 +18,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiResource(
  *     iri="http://schema.org/author",
- *     attributes={
- *          "access_control"="is_granted('ROLE_USER')",
- *          "status_code"=403,
- *          "pagination_client_enabled"=true,
- *     }
+ *     security="is_granted('ROLE_USER')",
+ *     paginationClientEnabled=true,
  * )
  * @ApiFilter(OrderFilter::class, properties={"id", "lastname", "firstname"})
  * @ApiFilter(SearchFilter::class, properties={"id": "exact", "firstname": "istart", "lastname": "istart"})
@@ -33,7 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Author implements LibraryInterface
 {
     /**
-     * @Groups("book_detail_read")
+     * @Groups("book:detail:read")
      *
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -49,7 +46,7 @@ class Author implements LibraryInterface
      * @ApiProperty (
      *     iri="http://schema.org/givenName"
      * )
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @Groups({"book:detail:read", "book:detail:write"})
      *
      * @ORM\Column(type="string", nullable=false)
      *
@@ -63,7 +60,7 @@ class Author implements LibraryInterface
      * @ApiProperty (
      *     iri="http://schema.org/familyName"
      * )
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @Groups({"book:detail:read", "book:detail:write"})
      *
      * @ORM\Column(type="string", nullable=true)
      *

@@ -18,10 +18,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ApiResource(
  *     iri="http://schema.org/Series",
- *     attributes={
- *          "access_control"="is_granted('ROLE_USER')",
- *          "pagination_client_enabled"=true
- *      }
+ *     security="is_granted('ROLE_USER')",
+ *     paginationClientEnabled=true
  * )
  * @ApiFilter(OrderFilter::class, properties={"id", "name"})
  * @ApiFilter(SearchFilter::class, properties={"id": "exact", "name": "istart"})
@@ -32,7 +30,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Serie implements LibraryInterface
 {
     /**
-     * @Groups("book_detail_read")
+     * @Groups("book:detail:read")
      *
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -46,7 +44,7 @@ class Serie implements LibraryInterface
      * @ApiProperty(
      *      iri="http://pending.schema.org/headline"
      * )
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @Groups({"book:detail:read", "book:detail:write"})
      *
      * @ORM\Column(type="string", length=512, nullable=false)
      *

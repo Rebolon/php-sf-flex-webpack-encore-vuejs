@@ -11,7 +11,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 
 /**
- * @todo Doesn't seem to be catched by Api-Platform
+ * @deprecated this is not recommended by ApiPlatform, you should prefer the usage of DataProvider/DataPersister and extensions
  *
  * Class BookSpecial
  * @package App\Action

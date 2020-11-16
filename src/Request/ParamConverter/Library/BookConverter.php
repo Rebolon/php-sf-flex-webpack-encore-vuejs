@@ -40,9 +40,9 @@ class BookConverter extends ItemAbstractConverter
     protected $serieConverter;
 
     /**
-     * @var BookTagConverter
+     * @var TagConverter
      */
-    protected $bookTagConverter;
+    protected $tagConverter;
 
     /**
      * BookConverter constructor.
@@ -62,7 +62,7 @@ class BookConverter extends ItemAbstractConverter
         ProjectBookCreationConverter $projectBookCreationConverter,
         ProjectBookEditionConverter $projectBookEditionConverter,
         SerieConverter $serieConverter,
-        //TagConverter $tagConverter,
+        TagConverter $tagConverter,
         LoggerInterface $logger
     ) {
         parent::__construct($validator, $serializer, $entityManager);
@@ -70,7 +70,7 @@ class BookConverter extends ItemAbstractConverter
         $this->projectBookCreationConverter = $projectBookCreationConverter;
         $this->projectBookEditionConverter = $projectBookEditionConverter;
         $this->serieConverter = $serieConverter;
-        //$this->tagConverter = $tagConverter;
+        $this->tagConverter = $tagConverter;
         $this->constructorParams[] = $logger;
     }
 
@@ -114,7 +114,10 @@ class BookConverter extends ItemAbstractConverter
             ],
             // this one is for auto generated Entity ManyToMany relationship
             'tags' => [
-                'converter' => $this, 'setter' => 'addTags',
+                'converter' => $this->tagConverter, 'setter' => 'addTags',
+                'cb' => function ($relation, $entity) {
+                    $relation->setBook($entity);
+                }
             ]
         ];
     }

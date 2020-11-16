@@ -16,3 +16,5 @@ framework:
     validation: { enable_annotations: true }
     php_errors:
         log: true
+    router:
+        utf8: true

@@ -10,7 +10,7 @@ use ApiPlatform\Core\Security\ResourceAccessCheckerInterface;
 use App\Entity\PingSecured;
 use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use function get_class;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use ReflectionClass;

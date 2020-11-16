@@ -4,6 +4,8 @@ namespace App\Security;
 
 /**
  * Class UserInfo
+ * A toolkit class to customize user information for Http Response. This is not an entity that represent a User
+ *
  * @package App\Security
  */
 class UserInfo

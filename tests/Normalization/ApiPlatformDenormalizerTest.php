@@ -28,7 +28,7 @@ class ApiPlatformDenormalizerTest extends ApiAbstract
      */
     public function testBookSpecialSample3WithAllEntitiesToBeCreated()
     {
-        $client = $this->getClient();
+        $client = static::createClient;
         $router = $this->getRouter();
         // $uri = $router->generate('book_special_sample3', []);
         // router fails to generate the route so for instance don't loose time and force uri @todo use the ApiPlatform Router instead, it will work
@@ -89,7 +89,7 @@ class ApiPlatformDenormalizerTest extends ApiAbstract
      */
     public function testBookSpecialSample3WithReuseOfEntityFromDoctrine()
     {
-        $client = $this->getClient();
+        $client = static::createClient;
         $router = $this->getRouter();
         // $uri = $router->generate('book_special_sample3', []);
         // router fails to generate the route so for instance don't loose time and force uri @todo use the ApiPlatform Router instead, it will work
@@ -142,7 +142,7 @@ class ApiPlatformDenormalizerTest extends ApiAbstract
      */
     public function testBookSpecialSample3WithErrors()
     {
-        $client = $this->getClient();
+        $client = static::createClient();
         $router = $this->getRouter();
         // $uri = $router->generate('book_special_sample3', []);
         // router fails to generate the route so for instance don't loose time and force uri @todo use the ApiPlatform Router instead, it will work

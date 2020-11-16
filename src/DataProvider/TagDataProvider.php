@@ -1,20 +1,18 @@
 <?php
 namespace App\DataProvider;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryResultCollectionExtensionInterface;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGenerator;
 use ApiPlatform\Core\DataProvider\CollectionDataProviderInterface;
+use ApiPlatform\Core\DataProvider\ContextAwareCollectionDataProviderInterface;
+use ApiPlatform\Core\DataProvider\DenormalizedIdentifiersAwareItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\ItemDataProviderInterface;
 use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use App\Api\Config;
 use App\Entity\Library\Tag;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * It override the default ApiPlatform system from classes that implement ORM and ApiResource annotations
+ * This is how i prefer to customize a DataProvider: use the decorated dataProvider to alter the queryBuilder
  *
- * Class TagDataProvider
- * @package App\DataProvider
  */
 class TagDataProvider implements ItemDataProviderInterface, CollectionDataProviderInterface, RestrictedDataProviderInterface
 {
@@ -29,21 +27,21 @@ class TagDataProvider implements ItemDataProviderInterface, CollectionDataProvid
     protected $apiPlatformConfig = [];
 
     /**
-     * @var iterable
+     * @var DenormalizedIdentifiersAwareItemDataProviderInterface
      */
-    protected $itemExtensions = [];
+    protected $itemDataProvider;
 
     /**
-     * @var iterable
+     * @var ContextAwareCollectionDataProviderInterface
      */
-    protected $collectionExtensions = [];
+    protected $collectionDataProvider;
 
-    public function __construct(ManagerRegistry $managerRegistry, Config $apiPlatformConfig, iterable $itemExtensions, iterable $collectionExtensions)
+    public function __construct(\Doctrine\Persistence\ManagerRegistry $managerRegistry, Config $apiPlatformConfig, ContextAwareCollectionDataProviderInterface $collectionDataProvider, DenormalizedIdentifiersAwareItemDataProviderInterface $itemDataProvider)
     {
         $this->managerRegistry = $managerRegistry;
         $this->apiPlatformConfig = $apiPlatformConfig;
-        $this->itemExtensions = $itemExtensions;
-        $this->collectionExtensions = $collectionExtensions;
+        $this->itemDataProvider = $itemDataProvider;
+        $this->collectionDataProvider = $collectionDataProvider;
     }
 
     public function supports(string $resourceClass, string $operationName = null, array $context = []): bool
@@ -53,27 +51,15 @@ class TagDataProvider implements ItemDataProviderInterface, CollectionDataProvid
 
     public function getItem(string $resourceClass, $id, string $operationName = null, array $context = [])
     {
-        $em = $this->managerRegistry->getRepository(Tag::class);
+        $item = $this->itemDataProvider->getItem($resourceClass, $id, $operationName, $context);
 
-        return $em->find($id);
+        return $item;
     }
 
     public function getCollection(string $resourceClass, string $operationName = null, array $context = [])
     {
-        $tags = [];
-        $em = $this->managerRegistry->getRepository(Tag::class);
-        $qb = $em->createQueryBuilder('t');
-        $queryNameGenerator = new QueryNameGenerator();
+        $items = $this->collectionDataProvider->getCollection($resourceClass, $operationName, $context);
 
-        foreach ($this->collectionExtensions as $extension) {
-            $extension->applyToCollection($qb, $queryNameGenerator, $resourceClass, $operationName, $context);
-            if ($extension instanceof QueryResultCollectionExtensionInterface
-                && $extension->supportsResult($resourceClass, $operationName, $context)) {
-                $tags = $extension->getResult($qb, $resourceClass, $operationName, $context);
-            }
-        }
-
-        return $tags;
+        return $items;
     }
-
 }

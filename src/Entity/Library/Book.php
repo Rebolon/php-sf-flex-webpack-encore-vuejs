@@ -20,26 +20,25 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ApiResource(
  *     iri="http://bib.schema.org/ComicStory",
+ *     security="is_granted('ROLE_USER')",
+ *     normalizationContext={
+ *         "groups"={"book:detail:read"}
+ *     },
+ *     denormalizationContext={
+ *         "groups"={"book:detail:write"}
+ *     },
+ *     paginationClientEnabled=true,
  *     collectionOperations={
- *          "get"={"method"="GET"},
- *          "post"={"method"="POST", "access_control"="is_granted('ROLE_USER')", "access_control_message"="Only authenticated users can add books."},
- *          "special_3"={"route_name"="book_special_sample3", "access_control"="is_granted('ROLE_USER')", "access_control_message"="Only authenticated users can add books."},
+ *          "get",
+ *          "post"={"security"="is_granted('ROLE_USER')", "securityMessage"="Only authenticated users can add books."},
+ *          "special_3"={"method"="POST", "route_name"="book_special_sample3", "security"="is_granted('ROLE_USER')", "securityMessage"="Only authenticated users can add books."},
  *     },
  *     itemOperations={
- *         "get"={"method"="GET"},
- *         "put"={"method"="PUT", "access_control"="is_granted('ROLE_USER')", "access_control_message"="Only authenticated users can modify books."},
- *         "delete"={"method"="delete", "access_control"="is_granted('ROLE_USER')", "access_control_message"="Only authenticated users can delete books."},
- *         "special_1"={"route_name"="book_special_sample1"},
- *         "special_2"={"route_name"="book_special_sample2"},
- *     },
- *     attributes={
- *          "normalization_context"={
- *              "groups"={"book_detail_read"}
- *          },
- *          "denormalization_context"={
- *              "groups"={"book_detail_write"}
- *          },
- *          "pagination_client_enabled"=true
+ *         "get",
+ *         "put"={"security"="is_granted('ROLE_USER')", "securityMessage"="Only authenticated users can modify books."},
+ *         "delete"={"security"="is_granted('ROLE_USER')", "securityMessage"="Only authenticated users can delete books."},
+ *         "special_1"={"method"="GET", "route_name"="book_special_sample1"},
+ *         "special_2"={"method"="GET", "route_name"="book_special_sample2"},
  *     }
  * )
  * @ApiFilter(OrderFilter::class, properties={"id", "title"})
@@ -54,7 +53,7 @@ class Book implements LibraryInterface
      * @ApiProperty(
      *     iri="http://schema.org/identifier"
      * )
-     * @Groups({"book_detail_read", "reader_read"})
+     * @Groups({"book:detail:read", "reader:read"})
      *
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -70,7 +69,7 @@ class Book implements LibraryInterface
      * @ApiProperty(
      *     iri="http://schema.org/headline"
      * )
-     * @Groups({"book_detail_read", "book_detail_write", "reader_read"})
+     * @Groups({"book:detail:read", "book:detail:write", "reader:read"})
      *
      * @ORM\Column(type="string", length=255, nullable=false)
      *
@@ -85,7 +84,7 @@ class Book implements LibraryInterface
      * @ApiProperty(
      *     iri="http://schema.org/description"
      * )
-     * @Groups({"book_detail_read", "book_detail_write", "reader_read"})
+     * @Groups({"book:detail:read", "book:detail:write", "reader:read"})
      *
      * @ORM\Column(type="text", nullable=true)
      *
@@ -102,7 +101,7 @@ class Book implements LibraryInterface
      *         }
      *     }
      * )
-     * @Groups({"book_detail_read", "book_detail_write", "reader_read"})
+     * @Groups({"book:detail:read", "book:detail:write", "reader:read"})
      *
      * @ORM\Column(type="integer", nullable=true, name="index_in_serie")
      *
@@ -131,7 +130,7 @@ class Book implements LibraryInterface
      *
      * @ApiSubresource(maxDepth=1)
      * @MaxDepth(1)
-     * @Groups({"book_detail_read", "book_detail_write", "reader_read"})
+     * @Groups({"book:detail:read", "book:detail:write", "reader:read"})
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookCreation", mappedBy="book", cascade={"persist", "remove"})
      */
@@ -142,7 +141,7 @@ class Book implements LibraryInterface
      *
      * @ApiSubresource(maxDepth=1)
      * @MaxDepth(1)
-     * @Groups({"book_detail_read", "book_detail_write", "reader_read"})
+     * @Groups({"book:detail:read", "book:detail:write", "reader:read"})
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookEdition", mappedBy="book", cascade={"persist", "remove"})
      */
@@ -151,7 +150,7 @@ class Book implements LibraryInterface
     /**
      * @ApiSubresource(maxDepth=1)
      * @MaxDepth(1)
-     * @Groups({"book_detail_read", "book_detail_write", "reader_read"})
+     * @Groups({"book:detail:read", "book:detail:write", "reader:read"})
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Library\Serie", inversedBy="books", cascade={"persist"})
      * @ORM\JoinColumn(name="serie_id", referencedColumnName="id")
@@ -163,7 +162,7 @@ class Book implements LibraryInterface
     /**
      * @ ApiSubresource(maxDepth=1)
      * @MaxDepth(1)
-     * @Groups({"book_detail_read", "book_detail_write", "reader_read"})
+     * @Groups({"book:detail:read", "book:detail:write", "reader:read"})
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Library\Tag", inversedBy="books", cascade={"persist"})
      *
@@ -176,7 +175,7 @@ class Book implements LibraryInterface
      * @ApiSubresource(maxDepth=1)
      *
      * @MaxDepth(1)
-     * @Groups({"reader_read"})
+     * @Groups({"reader:read"})
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\Loan", mappedBy="book")
      *

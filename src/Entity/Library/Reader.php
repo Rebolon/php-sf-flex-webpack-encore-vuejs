@@ -19,23 +19,21 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ApiResource(
  *     iri="http://bib.schema.org/user",
+ *     paginationClientEnabled=true,
+ *     normalizationContext={
+ *         "groups"={"reader:read"}
+ *     },
+ *     denormalizationContext={
+ *         "groups"={"reader:write"}
+ *     },
  *     collectionOperations={
- *          "get"={"method"="GET", "access_control"="is_granted('IS_AUTHENTICATED_ANONYMOUSLY')"},
- *          "post"={"method"="POST", "access_control"="is_granted('ROLE_ADMIN', 'ROLE_USER')", "access_control_message"="Only admin users can add users, or the user himself for their own informations."}
+ *          "get",
+ *          "post"={"security"="is_granted('ROLE_ADMIN')", "securityMessage"="Only admin users can add users, or the user himself for their own informations."}
  *     },
  *     itemOperations={
- *         "get"={"method"="GET"},
- *         "put"={"method"="PUT", "access_control"="is_granted('ROLE_ADMIN', 'ROLE_USER')", "access_control_message"="Only admin users can modify users, or the user himself for their own informations."},
- *         "delete"={"method"="delete", "access_control"="is_granted('ROLE_ADMIN', 'ROLE_USER')", "access_control_message"="Only admin users can delete users, or the user himself for his own informations."}
- *     },
- *     attributes={
- *          "normalization_context"={
- *              "groups"={"reader_read"}
- *          },
- *          "denormalization_context"={
- *              "groups"={"reader_write"}
- *          },
- *          "pagination_client_enabled"=true
+ *         "get",
+ *         "put"={"security"="is_granted('ROLE_ADMIN')", "securityMessage"="Only admin users can modify users, or the user himself for their own informations."},
+ *         "delete"={"security"="is_granted('ROLE_ADMIN')", "securityMessage"="Only admin users can delete users, or the user himself for his own informations."}
  *     }
  * )
  * @ApiFilter(OrderFilter::class, properties={"id", "lastname"})
@@ -52,7 +50,7 @@ class Reader implements LibraryInterface
      *     iri="http://schema.org/identifier"
      * )
      *
-     * @Groups({"reader_read"})
+     * @Groups({"reader:read"})
      *
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -69,7 +67,7 @@ class Reader implements LibraryInterface
      *     iri="http://schema.org/familyname"
      * )
      *
-     * @Groups({"reader_read", "reader_write"})
+     * @Groups({"reader:read", "reader:write"})
      *
      * @ORM\Column(type="string", length=255, nullable=false)
      *
@@ -85,7 +83,7 @@ class Reader implements LibraryInterface
      *     iri="http://schema.org/givenName"
      * )
      *
-     * @Groups({"reader_read", "reader_write"})
+     * @Groups({"reader:read", "reader:write"})
      *
      * @ORM\Column(type="text", nullable=true)
      *
@@ -101,7 +99,7 @@ class Reader implements LibraryInterface
      *
      * @ApiSubresource(maxDepth=1)
      *
-     * @Groups({"reader_read", "reader_write"})
+     * @Groups({"reader:read", "reader:write"})
      * @MaxDepth(1)
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Library\Book")
@@ -115,7 +113,7 @@ class Reader implements LibraryInterface
      *
      * @ApiSubresource(maxDepth=1)
      *
-     * @Groups({"reader_read"})
+     * @Groups({"reader:read"})
      * @MaxDepth(1)
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\Loan", mappedBy="loaner")
@@ -128,7 +126,7 @@ class Reader implements LibraryInterface
      *
      * @ApiSubresource(maxDepth=1)
      *
-     * @Groups({"reader_read"})
+     * @Groups({"reader:read"})
      * @MaxDepth(1)
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\Loan", mappedBy="borrower")
