@@ -82,8 +82,8 @@ services:
             $container: '@service_container'
 
     # needs to alias the current security.user.provider.concrete.in_memory to the class (seems not done in sf or security bundle)
-    Symfony\Component\Security\Core\User\InMemoryUserProvider:
-        alias: security.user.provider.concrete.in_memory
+    #Symfony\Component\Security\Core\User\InMemoryUserProvider:
+    #    alias: security.user.provider.concrete.in_memory
 
     # to overload tokenExtractor with specific Bearer, do this:
     lexik_jwt_authentication.extractor.authorization_header_extractor:

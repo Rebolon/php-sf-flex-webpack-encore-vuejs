@@ -32,7 +32,7 @@ use \DateTime;
  * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false}))
  *
  * @ORM\Entity(repositoryClass="App\Repository\Library\LoanRepository")
- * @ORM\Table()
+ * @ORM\Table(name="loan")
  */
 class Loan implements LibraryInterface
 {

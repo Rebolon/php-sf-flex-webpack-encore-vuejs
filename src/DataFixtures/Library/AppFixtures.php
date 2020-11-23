@@ -10,15 +10,21 @@ use App\Entity\Library\Loan;
 use App\Entity\Library\Reader;
 use App\Entity\Library\Serie;
 use App\Entity\Library\Tag;
+use App\Entity\User;
 use DateInterval;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DBALException;
 use Doctrine\Persistence\ObjectManager;
-use Doctrine\DBAL\Connection;
 use Exception;
-use \PDO;
+use PDO;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 
 class AppFixtures extends Fixture
 {
@@ -38,14 +44,26 @@ class AppFixtures extends Fixture
     protected $env;
 
     /**
+     * @var UserProviderInterface
+     */
+    protected $userProvider;
+
+    /**
+     * @var UserPasswordEncoderInterface
+     */
+    protected $pwdEncoder;
+
+    /**
      * AppFixtures constructor.
      * @param ConnectionFixtures $dbCon
      * @param KernelInterface $kernel
      */
-    public function __construct(ConnectionFixtures $dbCon, KernelInterface $kernel)
+    public function __construct(ConnectionFixtures $dbCon, KernelInterface $kernel, UserProviderInterface $userProvider, UserPasswordEncoderInterface $pwdEncoder)
     {
         $this->env = $kernel->getEnvironment();
         $this->dbCon = $dbCon->get();
+        $this->userProvider = $userProvider;
+        $this->pwdEncoder = $pwdEncoder;
     }
 
     /**
@@ -77,8 +95,12 @@ class AppFixtures extends Fixture
 
         // add extra readers
         foreach ([
-            ['fname' => 'Jane', 'lname' => 'Smith', ],
-            ['fname' => 'Antony', 'lname' => 'Durand', ],
+            ['fname' => 'Wayne', 'lname' => 'Nash', ],
+            ['fname' => 'Terrell', 'lname' => 'Buxton', ],
+            ['fname' => 'test_smith_borrow_2_books_from_durand', 'lname' => 'Smith', ],
+            ['fname' => 'test_durand_borrow_1_book_from_smith', 'lname' => 'Durand', ],
+            ['fname' => 'test_tancred_borrow_1_book_from_smith_and_1_book_durand', 'lname' => 'Tancred', ],
+            ['fname' => 'test_has_no_borrowed_any_books', 'lname' => 'Richardson', ],
          ] as $newReader) {
             $readers[] = new Reader();
             $readers[count($readers)-1]
@@ -94,8 +116,8 @@ class AppFixtures extends Fixture
             $qry .= ' LIMIT 20';
         }
 
-        $q = $dbh->query($qry);
-        foreach ($q->fetchAll() as $idx => $row) {
+        $q = $dbh->executeQuery($qry);
+        foreach ($q->fetchAllAssociative() as $idx => $row) {
             try {
                 $book = new Book();
                 $book->setTitle($row['title']);
@@ -151,7 +173,7 @@ SQL
         );
         $sth->bindParam('bookId', $bookId, PDO::PARAM_INT);
         $sth->execute();
-        $row = $sth->fetch();
+        $row = $sth->fetchAssociative();
 
         if ($row) {
             if (!in_array($row['id'], $this->cache['series'])) {
@@ -193,7 +215,7 @@ SQL
         );
         $sth->bindParam('bookId', $bookId, PDO::PARAM_INT);
         $sth->execute();
-        $row = $sth->fetch();
+        $row = $sth->fetchAssociative();
 
         if ($row) {
             if (!in_array($row['id'], $this->cache['tags'])) {
@@ -237,7 +259,7 @@ SQL
         );
         $sth->bindParam('bookId', $bookId, PDO::PARAM_INT);
         $sth->execute();
-        $row = $sth->fetch();
+        $row = $sth->fetchAssociative();
 
         if ($row) {
             if (!in_array($row['id'], $this->cache['editors'])) {
@@ -310,7 +332,7 @@ SQL
         $sth->bindParam('bookId', $bookId, PDO::PARAM_INT);
         $sth->execute();
 
-        return $sth->fetchAll();
+        return $sth->fetchAllAssociative();
     }
 
     /**
@@ -383,6 +405,13 @@ SQL
             $readers[2]->addBook($book);
         }
 
+        if ($idx < 4) {
+            $readers[3]->addBook($book);
+            $readers[4]->addBook($book);
+            $readers[5]->addBook($book);
+            $readers[6]->addBook($book);
+        }
+
         // an ended loan from reader 0 to 1
         if ($idx === 1) {
             $readers[1]->addBook($book);
@@ -430,6 +459,82 @@ SQL
             $loan->setBook($book)
                 ->setLoaner($readers[0])
                 ->setBorrower($readers[1])
+                ->setStartLoan($startLoan);
+
+            $loans[] = $loan;
+        }
+
+        // others loans for testing purpose with only pending loans
+        if ($idx === 4) {
+            $readers[4]->addBook($book);
+
+            $startLoan = new DateTime();
+            $startLoan->setDate(2019, 3, 22);
+
+            $loan = new Loan();
+            $loan->setBook($book)
+                ->setLoaner($readers[4])
+                ->setBorrower($readers[3])
+                ->setStartLoan($startLoan);
+
+            $loans[] = $loan;
+        }
+
+        if ($idx === 5) {
+            $readers[4]->addBook($book);
+
+            $startLoan = new DateTime();
+            $startLoan->setDate(2020, 2, 5);
+
+            $loan = new Loan();
+            $loan->setBook($book)
+                ->setLoaner($readers[4])
+                ->setBorrower($readers[3])
+                ->setStartLoan($startLoan);
+
+            $loans[] = $loan;
+        }
+
+        if ($idx === 6) {
+            $readers[3]->addBook($book);
+
+            $startLoan = new DateTime();
+            $startLoan->setDate(2019, 6, 10);
+
+            $loan = new Loan();
+            $loan->setBook($book)
+                ->setLoaner($readers[3])
+                ->setBorrower($readers[4])
+                ->setStartLoan($startLoan);
+
+            $loans[] = $loan;
+        }
+
+        if ($idx === 7) {
+            $readers[3]->addBook($book);
+
+            $startLoan = new DateTime();
+            $startLoan->setDate(2019, 11, 18);
+
+            $loan = new Loan();
+            $loan->setBook($book)
+                ->setLoaner($readers[3])
+                ->setBorrower($readers[5])
+                ->setStartLoan($startLoan);
+
+            $loans[] = $loan;
+        }
+
+        if ($idx === 8) {
+            $readers[4]->addBook($book);
+
+            $startLoan = new DateTime();
+            $startLoan->setDate(2019, 12, 2);
+
+            $loan = new Loan();
+            $loan->setBook($book)
+                ->setLoaner($readers[4])
+                ->setBorrower($readers[5])
                 ->setStartLoan($startLoan);
 
             $loans[] = $loan;

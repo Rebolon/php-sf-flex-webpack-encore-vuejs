@@ -6,6 +6,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryCollectionExtensionInter
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Extension\QueryItemExtensionInterface;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use App\Entity\Library\Loan;
+use App\Entity\Library\Reader;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Security;
@@ -53,11 +54,14 @@ class UserExtension implements QueryCollectionExtensionInterface, QueryItemExten
             return;
         }
 
+        $alias = $queryBuilder->getRootAliases()[0];
         switch ($resourceClass) {
             case Loan::class:
-                $loanAlias = $queryBuilder->getRootAliases()[0];
-                $queryBuilder->leftJoin("$loanAlias.loaner", "loaner", "WITH", "$loanAlias.id = loaner.id");
-                $queryBuilder->leftJoin("$loanAlias.borrower", "borrower", "WITH", "$loanAlias.id = borrower.id");
+                $queryBuilder->leftJoin("$alias.loaner", "loaner", "WITH", "$alias.id = loaner.id");
+                $queryBuilder->leftJoin("$alias.borrower", "borrower", "WITH", "$alias.id = borrower.id");
+                break;
+            case Reader::class:
+                $queryBuilder->leftJoin("$alias.reader", "reader", "WITH", "$alias.id = reader.id");
                 break;
             // do not break here ! or you can let DoctrineFilter taking part App\Filter\UserFilter
             /*case Booking::class:

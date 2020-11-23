@@ -2,14 +2,16 @@
 
 namespace App\Controller;
 
-use App\Security\UserInfo;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Core\Security as SecurityComponent;
 
 class LoginController extends AbstractController
 {
@@ -74,16 +76,19 @@ class LoginController extends AbstractController
      *     methods={"GET", "POST"}
      * )
      */
-    public function isLoggedIn()
+    public function isLoggedIn(TokenStorageInterface $token, SecurityComponent $security)
     {
-        $isGranted = function ($att) {
-            return $this->isGranted($att);
-        };
+        $isAuthenticated = $security->isGranted('IS_AUTHENTICATED_FULLY');
+        $data = ['isLoggedIn' => (int)$isAuthenticated];
 
-        $getUser = function () {
-            return $this->getUser();
-        };
+        if ($isAuthenticated) {
+            $user = $token->getToken()->getUser();
+            $data['me'] = [
+                'username' => $user->getUsername(),
+                'roles' => $user->getRoles(),
+            ];
+        }
 
-        return new JsonResponse(UserInfo::getUserInfo($isGranted, $getUser));
+        return new JsonResponse($data);
     }
 }
