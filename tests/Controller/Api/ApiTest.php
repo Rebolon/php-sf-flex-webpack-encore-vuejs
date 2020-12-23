@@ -18,7 +18,7 @@ class ApiTest extends ApiAbstract
      */
     public function testMain()
     {
-        $client = static::createClient();
+        $client = $this->client;
         $router = $this->getRouter();
 
         $routesName = $this->getApiRoutes($router);

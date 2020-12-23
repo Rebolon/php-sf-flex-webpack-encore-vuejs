@@ -25,7 +25,7 @@ class ApiPlatformCustomRoutesWithParamConverterTest extends ApiAbstract
         /**
          * @var KernelBrowser
          */
-        $client = static::createClient();
+        $client = $this->client;
         /**
          * @var Router
          */
@@ -89,7 +89,7 @@ class ApiPlatformCustomRoutesWithParamConverterTest extends ApiAbstract
      */
     public function testBookSpecialSample3WithReuseOfEntityFromDoctrine()
     {
-        $client = static::createClient();
+        $client = $this->client;
         $router = $this->getRouter();
         // $uri = $router->generate('book_special_sample3', []);
         // router fails to generate the route so for instance don't loose time and force uri @todo use the ApiPlatform Router instead, it will work
@@ -142,7 +142,7 @@ class ApiPlatformCustomRoutesWithParamConverterTest extends ApiAbstract
      */
     public function testBookSpecialSample3WithErrors()
     {
-        $client = static::createClient();
+        $client = $this->client;
         $router = $this->getRouter();
         // $uri = $router->generate('book_special_sample3', []);
         // router fails to generate the route so for instance don't loose time and force uri @todo use the ApiPlatform Router instead, it will work

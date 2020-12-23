@@ -8,9 +8,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class LoginJsonController extends AbstractController
 {
@@ -92,14 +94,18 @@ class LoginJsonController extends AbstractController
      */
     public function isLoggedIn()
     {
-        $isGranted = function ($att) {
-            return $this->isGranted($att);
-        };
+        // will be usefull if we decide to return always 200 + the real Json content represented by isLoggedIn: 0|1
+        $authenticated = $this->isGranted('IS_AUTHENTICATED_FULLY');
+        $data = ['isLoggedIn' => (int)$authenticated,];
 
-        $getUser = function () {
-            return $this->getUser();
-        };
+        if ($authenticated) {
+            $user = $this->getUser();
+            $data['me'] = [
+                'username' => $user->getUsername(),
+                'roles' => $user->getRoles(),
+            ];
+        }
 
-        return new JsonResponse(UserInfo::getUserInfo($isGranted, $getUser));
+        return new JsonResponse($data);
     }
 }

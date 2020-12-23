@@ -26,8 +26,6 @@ class ApiDocTest extends ApiAbstract
 
         $this->uriLogin = $this->getRouter()->generate('api_login_check', []);
         $this->uriSecured= $this->getRouter()->generate('api_ping_secureds_get_collection', []);
-
-        $this->client = $client = static::createClient();
     }
 
     /**

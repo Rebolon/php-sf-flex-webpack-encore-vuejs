@@ -5,27 +5,26 @@ namespace App\Tests\Repository;
 use App\Entity\Library\Book;
 use App\Entity\Library\Loan;
 use App\Entity\Library\Reader;
-use App\Tests\Common\TestCase;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use App\Tests\Common\ToolsAbstract;
 
-class LoanRepositoryTest extends KernelTestCase
+class LoanRepositoryTest extends ToolsAbstract
 {
-    use TestCase;
-
     public function testIsAvailable()
     {
-        $book = $this->em->find(Book::class, 4);
-        $loaner = $this->em->find(Reader::class, 1);
+        $em = static::$kernel->getContainer()->get('doctrine.orm.entity_manager');
 
-        $rep = $this->em->getRepository(Loan::class);
+        $book = $em->find(Book::class, 4);
+        $loaner = $em->find(Reader::class, 1);
+
+        $rep = $em->getRepository(Loan::class);
         $isAvailable = $rep->isBookAvailable($book, $loaner);
 
         $this->assertFalse($isAvailable);
 
-        $book = $this->em->find(Book::class, 3);
-        $loaner = $this->em->find(Reader::class, 2);
+        $book = $em->find(Book::class, 3);
+        $loaner = $em->find(Reader::class, 2);
 
-        $rep = $this->em->getRepository(Loan::class);
+        $rep = $em->getRepository(Loan::class);
         $isAvailable = $rep->isBookAvailable($book, $loaner);
 
         $this->assertTrue($isAvailable);

@@ -73,7 +73,7 @@ class Reader implements LibraryInterface
      *
      * @Groups({"reader:read", "reader:write"})
      *
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255, nullable=true)
      *
      * @Assert\Length(max="255")
      *
@@ -97,6 +97,22 @@ class Reader implements LibraryInterface
     protected $firstname;
 
     /**
+     * @ApiProperty(
+     *     iri="http://schema.org/email"
+     * )
+     *
+     * @Groups({"reader:read", "reader:write"})
+     *
+     * @ORM\Column(type="text", nullable=false)
+     *
+     * @Assert\Length(max="320")
+     * @Assert\Email()
+     *
+     * @var string
+     */
+    protected $email;
+
+    /**
      * @todo it may not be a list of books but a list of projectEdition coz you may get a book more than once but in
      * different edition ! For instance i keep this implementation for the sample but i might improve this in future
      *
@@ -106,6 +122,14 @@ class Reader implements LibraryInterface
      * @MaxDepth(1)
      *
      * @ORM\ManyToMany(targetEntity="App\Entity\Library\Book")
+     * @ORM\JoinTable(name="reader_collection",
+     *      joinColumns={
+     *          @ORM\JoinColumn(name="reader_id", referencedColumnName="id")
+     *      },
+     *      inverseJoinColumns={
+     *          @ORM\JoinColumn(name="book_id", referencedColumnName="id")
+     *      }
+     * )
      *
      * @var Collection|Book[]
      */
@@ -202,6 +226,25 @@ class Reader implements LibraryInterface
     public function setFirstname(?string $firstname): self
     {
         $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string|null $email
+     * @return self
+     */
+    public function setEmail(?string $email): self
+    {
+        $this->email = $email;
 
         return $this;
     }

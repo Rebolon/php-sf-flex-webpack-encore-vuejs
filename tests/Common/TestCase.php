@@ -76,6 +76,8 @@ trait TestCase
 
         if (file_exists($dbBkpFile)) {
             copy($dbBkpFile, $dbUriPath);
+            static::ensureKernelShutdown();
+
             return;
         }
 
@@ -111,6 +113,8 @@ trait TestCase
 
         // backup new generated test.db into test.db.bkp to improve next class test
         copy($dbUriPath, $dbBkpFile);
+
+        static::ensureKernelShutdown();
     }
 
     /**
@@ -128,7 +132,7 @@ trait TestCase
 
         $this->currentProfileIdx = 0;
 
-        $kernel = static::bootKernel();
+        //$kernel = static::bootKernel();
         if (method_exists($this, 'createClient')) {
             $this->client = self::createClient();
         }

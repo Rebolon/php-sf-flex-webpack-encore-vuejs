@@ -17,7 +17,7 @@ class LoginJsonTest extends ToolsAbstract
      */
     public function testLogin()
     {
-        $client = static::createClient();
+        $client = $this->client;
         $router = $this->getRouter();
         $uriSecured = $router->generate('demo_secured_page_json', []);
         $uriSecuredOnSameContext = $router->generate('demo_secured_page_standard', []);

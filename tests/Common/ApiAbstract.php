@@ -4,11 +4,9 @@ namespace App\Tests\Common;
 
 use ApiPlatform\Core\Exception\RuntimeException;
 use stdClass;
-use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\DomCrawler\Crawler;
-use PHPUnit\Util\Printer;
 
 abstract class ApiAbstract extends ToolsAbstract
 {
@@ -39,7 +37,7 @@ abstract class ApiAbstract extends ToolsAbstract
             $headers,
             json_encode([
                 static::$container->getParameter('login_username_path') => $user['login'],
-                static::$container->getContainer()->getParameter('login_password_path') => $user['pwd'],
+                static::$container->getParameter('login_password_path') => $user['pwd'],
             ])
         );
     }

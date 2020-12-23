@@ -16,7 +16,7 @@ class LoginJwtTest extends ToolsAbstract
      */
     public function testLogin()
     {
-        $client = static::createClient();
+        $client = $this->client;
         $router = $this->getRouter();
         $uriSecured = $router->generate('demo_secured_page_jwt', []);
         $uriLogin = $router->generate('api_login_check', []);

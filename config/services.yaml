@@ -166,19 +166,19 @@ services:
         arguments:
             - '@Doctrine\Common\Persistence\ManagerRegistry'
             - '@App\Api\Config'
-            - $collectionDataProvider: "@api_platform.doctrine.orm.default.collection_data_provider"
-            - $itemDataProvider: "@api_platform.doctrine.orm.default.item_data_provider"
+            - "@api_platform.doctrine.orm.default.collection_data_provider"
+            - "@api_platform.doctrine.orm.default.item_data_provider"
 
     App\DataProvider\LoanDataProvider:
         arguments:
             - '@Doctrine\Common\Persistence\ManagerRegistry'
             - '@App\Api\Config'
-            - $collectionDataProvider: "@api_platform.doctrine.orm.default.collection_data_provider"
-            - $itemDataProvider: "@api_platform.doctrine.orm.default.item_data_provider"
+            - '@api_platform.doctrine.orm.default.collection_data_provider'
+            - '@api_platform.doctrine.orm.default.item_data_provider'
 
     App\DataProvider\ReaderDataProvider:
         arguments:
             - '@Doctrine\Common\Persistence\ManagerRegistry'
             - '@App\Api\Config'
-            - $collectionDataProvider: "@api_platform.doctrine.orm.default.collection_data_provider"
-            - $itemDataProvider: "@api_platform.doctrine.orm.default.item_data_provider"
+            - '@api_platform.doctrine.orm.default.collection_data_provider'
+            - '@api_platform.doctrine.orm.default.item_data_provider'

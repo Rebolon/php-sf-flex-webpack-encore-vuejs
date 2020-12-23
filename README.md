@@ -109,6 +109,7 @@ The test_browser section represent all the browsers you want to use with the Pan
 * security-checker: a tool to check known securities vulnerabilities, to use it, run `php bin/console security:check`
 * [roave/security-advisories](https://www.websec.io/2018/03/10/Package-Protection-Roave-SecurityAdvisories.html): a tool that prevent the install of PHP package from composer with known vulnerabilities
 * [phpunit](https://phpunit.de/), crawler, browserkit, css-selector: php/symfony task for testing (@todo ll last 3 should be a recipe)
+* [alice](https://github.com/nelmio/alice): ApiPlatform recommend its usage for testing rollback with traits RefreshDatabaseTrait. Personnaly i don't use the main features which is about Fixtures. It requires a new learning steps whereas fixtures should be something easy. It's up to you to learn it, or not ;-)
 * [panther](https://github.com/symfony/panther): the symfony toolkit to manage testing throught a browser (before this compoennt, we had to use npm libraries to control browser)
 * babel-preset-env: do you really need explanation ? this is just for Babel7
 * ~~[testcafe](https://testcafe.devexpress.com/): an e2e test framework (might be changed with chimp or anything else, gimme better idea)~~
@@ -213,7 +214,7 @@ have to install [prettier tool](https://prettier.io/docs/en/editors.html).
 
 ## Tests
 
-On PHP we use PHPUnit and Symfony web testcase. For Javascript, we decided to work with testcafé.
+On PHP we use PHPUnit and Symfony web testcase.
 We have basic tests on PHP that will try to test that we have HTTP 200 OK on each routes. We should also tests Commands and
 other classes, but we should also test more finely the API content.
 Take care with Symfony4 to configure the config/packages/test/framework.yaml file to overload the session.storage_id with
@@ -269,7 +270,6 @@ Your cookies must have some specific attributes:
  * samesite (strict or lax...)
 
 You have to pay attention at them. And you can play with them on those sites: http://cookies.rocks and http://example-bar.com (source here: https://github.com/hsablonniere/cookies.rocks and related talk here: https://github.com/hsablonniere/talk-back-to-basics-cookies)
-
 
 ## API
 

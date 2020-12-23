@@ -34,20 +34,21 @@ class PingTest extends ApiAbstract
     {
         $headers = $this->prepareHeaders($this->headers);
         $errMsg = sprintf("route: %s", $this->uriGetCollection.'.json');
+        $client = $this->client;
 
-        $this->client->request('GET', $this->uriGetCollection, [], [], $headers);
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), $errMsg);
-        $json = $this->client->getResponse()->getContent();
+        $client->request('GET', $this->uriGetCollection, [], [], $headers);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(), $errMsg);
+        $json = $client->getResponse()->getContent();
         $jsonDecoded = json_decode($json);
         $this->assertJson($json);
-        $this->assertCount(2, $jsonDecoded);
+        $this->assertCount(10, $jsonDecoded);
         $this->assertPropsFromJson('Ping', $jsonDecoded[0]);
 
         $errMsg = sprintf("route: %s", $this->uriGetItem.'.json');
 
-        $this->client->request('GET', $this->uriGetItem, [], [], $headers);
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode(), $errMsg);
-        $json = $this->client->getResponse()->getContent();
+        $client->request('GET', $this->uriGetItem, [], [], $headers);
+        $this->assertEquals(200, $client->getResponse()->getStatusCode(), $errMsg);
+        $json = $client->getResponse()->getContent();
         $jsonDecoded = json_decode($json);
         $this->assertJson($json);
         $this->assertPropsFromJson('Ping', $jsonDecoded);

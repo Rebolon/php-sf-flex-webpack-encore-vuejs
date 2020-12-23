@@ -54,16 +54,16 @@ abstract class WebPagesAbstract extends ToolsAbstract
     {
         $filter = $crawler->filter('body nav h1');
         $this->assertCount(1, $filter, $errMsg);
-        $expected = '<a href="/"><u>Demo of symfony 4</u></a>
-                <span style="font-size: smaller">with flex,
-                    <span style="font-size: smaller">and webpack/encore,
-                        <span style="font-size: smaller">VueJS,
-                            <span style="font-size: smaller">ApiPlatform,
-                                <span style="font-size: smaller">HttpPlug,...</span>
+        $expected = '<a href="/"><u>Demo of symfony 5</u></a>
+                    <span style="font-size: smaller">with flex,
+                        <span style="font-size: smaller">and webpack/encore,
+                            <span style="font-size: smaller">VueJS,
+                                <span style="font-size: smaller">ApiPlatform,
+                                    <span style="font-size: smaller">HttpClient,...</span>
+                                </span>
                             </span>
                         </span>
                     </span>
-                </span>
 ';
         $this->assertEquals(
             trim(strtr($expected, ["\r\n" => "\n", ])),

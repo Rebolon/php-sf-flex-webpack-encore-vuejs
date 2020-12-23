@@ -10,7 +10,6 @@ use App\Entity\Library\Loan;
 use App\Entity\Library\Reader;
 use App\Entity\Library\Serie;
 use App\Entity\Library\Tag;
-use App\Entity\User;
 use DateInterval;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -20,9 +19,6 @@ use Doctrine\Persistence\ObjectManager;
 use Exception;
 use PDO;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
@@ -88,24 +84,22 @@ class AppFixtures extends Fixture
 
         $dbh = $this->dbCon;
 
-        // add main reader
-        $readers[] = new Reader();
-        $readers[0]->setFirstname('John')
-            ->setLastname('Doe');
-
-        // add extra readers
         foreach ([
-            ['fname' => 'Wayne', 'lname' => 'Nash', ],
-            ['fname' => 'Terrell', 'lname' => 'Buxton', ],
-            ['fname' => 'test_smith_borrow_2_books_from_durand', 'lname' => 'Smith', ],
-            ['fname' => 'test_durand_borrow_1_book_from_smith', 'lname' => 'Durand', ],
-            ['fname' => 'test_tancred_borrow_1_book_from_smith_and_1_book_durand', 'lname' => 'Tancred', ],
-            ['fname' => 'test_has_no_borrowed_any_books', 'lname' => 'Richardson', ],
+            // add main reader
+            ['fname' => 'John', 'lname' => 'Doe', 'email' => 'john.doe@lycos.com'],
+            // add extra readers
+            ['fname' => 'Wayne', 'lname' => 'Nash', 'email' => 'wayne.nash@live.com'],
+            ['fname' => 'Terrell', 'lname' => 'Buxton', 'email' => 'wayne.nash@live.com' ],
+            ['fname' => 'test_smith_borrow_2_books_from_durand', 'lname' => 'Smith', 'email' => 'smith@gmail.com' ],
+            ['fname' => 'test_durand_borrow_1_book_from_smith', 'lname' => 'Durand', 'email' => 'durand@orange.fr' ],
+            ['fname' => 'test_tancred_borrow_1_book_from_smith_and_1_book_durand', 'lname' => 'Tancred', 'email' => 'tancred@hotmail.com' ],
+            ['fname' => 'test_has_no_borrowed_any_books', 'lname' => 'Richardson', 'email' => 'richardson@protonmail.com' ],
          ] as $newReader) {
             $readers[] = new Reader();
             $readers[count($readers)-1]
                 ->setFirstname($newReader['fname'])
-                ->setLastname($newReader['lname']);
+                ->setLastname($newReader['lname'])
+                ->setEmail($newReader['email']);
         }
 
         // add books && author && editor
