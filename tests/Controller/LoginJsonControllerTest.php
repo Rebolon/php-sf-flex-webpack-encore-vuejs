@@ -57,7 +57,7 @@ class LoginJsonControllerTest extends PantherToolsAbstract
         $uri = $this->getRouter()->generate('vuejs_form_quasar');
         $crawler = $client->request('GET', $uri);
 
-        $this->assertContains('Welcome to', $crawler->filter('h5')->text()); // You can use any PHPUnit assertion
+        $this->assertStringContainsString('Welcome to', $crawler->filter('h5')->text()); // You can use any PHPUnit assertion
 
         $user = $this->profiles[$this->currentProfileIdx];
         $inputUserName = $crawler->filter('form.login input[name=username]')->getElement(0);

@@ -20,7 +20,7 @@ class BasicControllerTest extends PantherToolsAbstract
         $client->request('GET', $this->getRouter()->generate('simple'));
 
         // because the BasicController only render text, we cannot use $crawler that expect a valid DOM. But we can use the client->getPageSource, except that it will embeed the text in an html>body node
-        $this->assertContains($this->content, $client->getPageSource());
+        $this->assertStringContainsString($this->content, $client->getPageSource());
     }
 
     /**
@@ -35,6 +35,6 @@ class BasicControllerTest extends PantherToolsAbstract
         $client->click($link->first()->link());
 
         // because the BasicController only render text, we cannot use $crawler that expect a valid DOM. But we can use the client->getPageSource, except that it will embeed the text in an html>body node
-        $this->assertContains($this->content, $client->getPageSource());
+        $this->assertStringContainsString($this->content, $client->getPageSource());
     }
 }
