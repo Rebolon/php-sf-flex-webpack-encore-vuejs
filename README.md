@@ -1,7 +1,6 @@
 # Symfony sample
 
 <p align="center">
-  [![Build Status](https://travis-ci.org/Rebolon/php-sf-flex-webpack-encore-vuejs.png?branch=master)](https://travis-ci.org/Rebolon/php-sf-flex-webpack-encore-vuejs)
   [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/Rebolon/php-sf-flex-webpack-encore-vuejs/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/Rebolon/php-sf-flex-webpack-encore-vuejs/badges/quality-score.png?b=master)
   [![DeepScan grade](https://deepscan.io/api/teams/2301/projects/3192/branches/26485/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=2301&pid=3192&bid=26485)
   [![Known Vulnerabilities](https://snyk.io/test/github/rebolon/php-sf-flex-webpack-encore-vuejs/badge.svg?targetFile=package.json)](https://snyk.io/test/github/rebolon/php-sf-flex-webpack-encore-vuejs?targetFile=package.json)
@@ -251,7 +250,7 @@ On JS i use snyk services.
 @TODO help to setup security system: stateful app = take care at csrf ; stateless app = should i use jwt, api key, OAuth, anything else ?
 
 Don't forget to use HTTPS, even in local to help you find errors that will happen in production. One certificate has been generated for localhost (with http://www.selfsignedcertificate.com/) and is available in /var/certificates/*.cert|*.key
-There is a simple nginx conf (used for travis CI) that use those certificates so you can use nginx to work (just don't forget to change the port that is fixed to 80 like setup in the package.json).
+There is a simple nginx conf (used for travis CI) that use those certificates so you can use nginx to work (just don't forget to change the port that is fixed to 80 like setup in the package.json). Travis will no more be supported in 2021 because they change their business model. I may move on gitlabCI in future.
 
 TestCafé for functional testing generate an error when you don't use ssl: Uncaught (in promise) DOMException: Only secure origins are allowed (see: https://goo.gl/Y0ZkNV).
 But for instance i didn't found any solution to run it finely without --skip-js-errors parameters.
