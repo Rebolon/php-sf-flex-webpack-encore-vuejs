@@ -182,4 +182,26 @@ trait TestCase
 
         return $this->router;
     }
+
+    /**
+     * Because WebTestCase require HTTP headers to be prefixed with HTTP_
+     * This methods will do it for you, for specified headers
+     *
+     * @param array $headers
+     * @return array
+     */
+    protected function prepareHeaders($headers = [])
+    {
+        foreach ($headers as $keys => $value) {
+            $prefix = 'HTTP_';
+            if (strpos($keys, $prefix) === 0) {
+                continue;
+            }
+
+            $headers[$prefix . $keys] = $value;
+            unset($headers[$keys]);
+        }
+
+        return $headers;
+    }
 }

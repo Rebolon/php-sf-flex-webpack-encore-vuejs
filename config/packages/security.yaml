@@ -5,7 +5,7 @@ security:
 
     # https://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
-#        InMemory provider is just for testing purpose but it lacks id and a lot of other thing that prevent from using this with a real User like we could use in database. If you still want to play with, just replace `provider: app_user_provider` by `provider: in_memory` everywhere in this file
+#        InMemory provider is just for testing purpose but it lacks id and a lot of other thing that prevent from using this with a real User like we could use in database. You should create a new entity provider (https://symfony.com/doc/current/security/user_provider.html#entity-user-provider) with the name `app_user_provider` and replace `provider: in_memory` by `provider: app_user_provider` everywhere in this file
         in_memory:
             memory:
                 users:

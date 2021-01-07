@@ -7,10 +7,11 @@ use App\Entity\Library\Loan;
 use App\Entity\Library\Reader;
 use App\Tests\Common\TestCase;
 use App\Tests\Common\ToolsAbstract;
+use App\Tests\Common\WebPagesAbstract;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class ReaderRepositoryTest extends ToolsAbstract
+class ReaderRepositoryTest extends WebPagesAbstract
 {
     public function testWhoBorrowBook()
     {

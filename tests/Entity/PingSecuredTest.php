@@ -36,15 +36,13 @@ class PingSecuredTest extends ApiAbstract
         $errMsg = sprintf("route: %s", $this->uriGetCollection.'.json');
         $client = $this->client;
 
-        $client->request('GET', $this->uriGetCollection, [], [], $headers);
+        $client->request('GET', $this->uriGetCollection, ['headers' => $headers]);
         $this->assertEquals(401, $client->getResponse()->getStatusCode(), $errMsg);
-        $this->assertJson($client->getResponse()->getContent());
 
         $errMsg = sprintf("route: %s", $this->uriGetItem.'.json');
 
-        $this->client->request('GET', $this->uriGetItem, [], [], $headers);
+        $this->client->request('GET', $this->uriGetItem, ['headers' => $headers]);
         $this->assertEquals(401, $client->getResponse()->getStatusCode(), $errMsg);
-        $this->assertJson($client->getResponse()->getContent());
     }
 
     /**
@@ -52,26 +50,27 @@ class PingSecuredTest extends ApiAbstract
      */
     public function testMustSuccess()
     {
-        $headers = $this->setAuthorization($this->headers);
-        $headers = $this->prepareHeaders($headers);
+        $headers = $this->setAuthorization($this->prepareHeaders($this->headers));
         $errMsg = sprintf("route: %s", $this->uriGetCollection.'.json');
         $client = $this->client;
 
-        $client->request('GET', $this->uriGetCollection, [], [], $headers);
+        $client->request('GET', $this->uriGetCollection, ['headers' => $headers]);
         $this->assertEquals(200, $client->getResponse()->getStatusCode(), $errMsg);
         $json = $client->getResponse()->getContent();
         $jsonDecoded = json_decode($json);
         $this->assertJson($json);
-        $this->assertCount(10, $jsonDecoded);
-        $this->assertPropsFromJson('PingSecured', $jsonDecoded[0]);
+        $this->assertCount(10, $jsonDecoded->{'hydra:member'});
+        foreach ($jsonDecoded->{'hydra:member'} as $item) {
+            $this->assertTrue(property_exists($item, 'pong'));
+        }
 
         $errMsg = sprintf("route: %s", $this->uriGetItem.'.json');
 
-        $client->request('GET', $this->uriGetItem, [], [], $headers);
+        $client->request('GET', $this->uriGetItem, ['headers' => $headers]);
         $this->assertEquals(200, $client->getResponse()->getStatusCode(), $errMsg);
         $json = $client->getResponse()->getContent();
         $jsonDecoded = json_decode($json);
         $this->assertJson($json);
-        $this->assertPropsFromJson('PingSecured', $jsonDecoded);
+        $this->assertTrue(property_exists($jsonDecoded, 'pong'));
     }
 }

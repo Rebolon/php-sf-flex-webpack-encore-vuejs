@@ -8,6 +8,7 @@ use App\Entity\Library\Editor;
 use App\Entity\Library\Job;
 use App\Entity\Library\Loan;
 use App\Entity\Library\Reader;
+use App\Entity\Library\Review;
 use App\Entity\Library\Serie;
 use App\Entity\Library\Tag;
 use DateInterval;
@@ -71,6 +72,7 @@ class AppFixtures extends Fixture
     {
         // init some vars
         $loans = [];
+        $reviews = [];
 
         // add job (indexed are 0->writer, 1->cartoonist, 2->color)
         foreach (['writer', 'cartoonist', 'color', ] as $jobTitle) {
@@ -121,7 +123,8 @@ class AppFixtures extends Fixture
                 $this->addAuthor($row, $book, $dbh, $manager);
                 $this->addEditor($row, $book, $dbh, $manager);
 
-                $loans = $this->attachReadersAndLoans($readers, $book, $idx, $loans);
+                $loans = \array_merge($loans, $this->attachReadersAndLoans($readers, $book, $idx, $loans));
+                $reviews = \array_merge($reviews, $this->addReview($book, $idx, $manager));
 
                 $manager->persist($book);
                 $manager->flush();
@@ -140,12 +143,17 @@ class AppFixtures extends Fixture
                 $manager->persist($loan);
                 $manager->flush();
             }
+
+            foreach ($reviews as $review) {
+                $manager->persist($review);
+                $manager->flush();
+            }
         } catch (Exception $e) {
             throw $e;
         }
     }
 
-    /**
+/**
      * @param $bookFixture
      * @param Book $book
      * @param Connection $dbh
@@ -535,5 +543,45 @@ SQL
         }
 
         return $loans;
+    }
+
+    /**
+     * @param Book $book
+     * @param $idx
+     * @param ObjectManager $manager
+     * @return Review[]|array
+     */
+    protected function addReview(Book $book, $idx, ObjectManager $manager): array
+    {
+        if ($idx > 1) {
+            return [];
+        }
+
+        $reviews = [];
+        $review = (new Review())
+            ->setBody('Review of Book ' . $book->getTitle())
+            ->setRating($idx)
+            ->setUsername('UserName');
+
+        if ($idx === 0) {
+            $review->setPublicationDate((new DateTime())->setDate(2019, 12, 2));
+            $book->addReview($review);
+            $reviews[] = $review;
+        } elseif ($idx === 1) {
+            $firstReview = (clone $review)->setPublicationDate((new DateTime())->setDate(2019, 11, 25));
+            $book->addReview($firstReview);
+            $reviews[] = $firstReview;
+
+            $secondReview = (clone $review)->setRating($idx+1)
+                ->setPublicationDate((new DateTime())->setDate(2020, 1, 1));
+            $book->addReview($secondReview);
+            $reviews[] = $secondReview;
+        }
+
+        foreach ($reviews as $review) {
+            $manager->persist($review);
+        }
+
+        return $reviews;
     }
 }

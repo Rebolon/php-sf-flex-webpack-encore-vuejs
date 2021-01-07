@@ -24,11 +24,12 @@ use \DateTime;
  *     },
  *     denormalizationContext={
  *         "groups"={"loan:write"}
- *     }
+ *     },
+ *     forceEager=false
  * )
  *
  * @ApiFilter(OrderFilter::class, properties={"id", "title"})
- * @ApiFilter(SearchFilter::class, properties={"id": "exact", "title": "istart", "description": "partial", "tags.name"="exact"})
+ * @ApiFilter(SearchFilter::class, properties={"title": "istart", "description": "partial", "tags.name"="exact"})
  * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false}))
  *
  * @ORM\Entity(repositoryClass="App\Repository\Library\LoanRepository")
@@ -72,7 +73,8 @@ class Loan implements LibraryInterface
     /**
      * The reader that borrow the books
      *
-     * @ApiSubresource(maxDepth=1)
+     * // disable subResource coz it fails for instance
+     * @ ApiSubresource(maxDepth=1)
      *
      * @Groups({"loan:read", "loan:write"})
      * @MaxDepth(1)
@@ -93,7 +95,8 @@ class Loan implements LibraryInterface
     /**
      * The reader that loan the books (the owner in fact)
      *
-     * @ApiSubresource(maxDepth=1)
+     * // disable subResource coz it fails for instance
+     * @ ApiSubresource(maxDepth=1)
      *
      * @Groups({"loan:read", "loan:write"})
      * @MaxDepth(1)

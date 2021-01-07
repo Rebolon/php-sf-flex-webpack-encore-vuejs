@@ -101,7 +101,7 @@ class Review implements LibraryInterface
      * @MaxDepth(1)
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Library\Book", inversedBy="reviews")
-     * @ORM\JoinColumn(name="book_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="book_id", referencedColumnName="id")
      *
      * @var Book
      */
@@ -243,14 +243,19 @@ class Review implements LibraryInterface
     }
 
     /**
-     * Mandatory for EasyAdminBundle (if i don't want to do custom dev)
-     *
      * @param Book $book
-     * @return self
+     * @param bool $updateRelation
+     * @return $this
      */
-    public function setBook(Book $book): self
+    public function setBook(Book $book, bool $updateRelation = true): self
     {
         $this->book = $book;
+
+        if (!$updateRelation) {
+            return $this;
+        }
+
+        $book->addReview($this, false);
 
         return $this;
     }

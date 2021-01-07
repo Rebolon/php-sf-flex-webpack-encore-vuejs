@@ -6,12 +6,17 @@ use App\Entity\Library\Author;
 use App\Entity\Library\Book;
 use App\Entity\Library\Job;
 use App\Entity\Library\ProjectBookCreation;
+use App\Tests\Common\ApiAbstract;
 use App\Tests\Common\ToolsAbstract;
+use App\Tests\Common\WebPagesAbstract;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\DBAL\DBALException;
+use PHPUnit\Framework\TestCase;
 
-class BookTest extends ToolsAbstract
+class BookTest extends WebPagesAbstract
 {
+    use \App\Tests\Common\TestCase;
+
     /**
      * @var Book
      */

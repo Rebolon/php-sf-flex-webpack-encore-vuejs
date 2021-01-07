@@ -2,28 +2,36 @@
 
 namespace App\Tests\Common;
 
+use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\ApiTestCase;
+use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\Client;
+use ApiPlatform\Core\Bridge\Symfony\Bundle\Test\Response;
 use ApiPlatform\Core\Exception\RuntimeException;
 use stdClass;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 use Symfony\Component\DomCrawler\Crawler;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
-abstract class ApiAbstract extends ToolsAbstract
+abstract class ApiAbstract extends ApiTestCase
 {
+    use TestCase;
+
     /**
      * @var array
      */
     public $headers = [
-        'ACCEPT' => 'application/json',
-        'CONTENT_TYPE' => 'application/json',
+        'Accept' => 'application/json',
+        'Content-Type' => 'application/json',
     ];
 
     /**
-     * @param KernelBrowser $client
+     * @param Client $client
      * @param $uri
-     * @return Crawler
+     * @return Response|ResponseInterface
+     * @throws TransportExceptionInterface
      */
-    protected function doLoginApi(KernelBrowser $client, $uri)
+    protected function doLoginApi(Client $client, $uri)
     {
         $headers = $this->headers;
 
@@ -32,13 +40,13 @@ abstract class ApiAbstract extends ToolsAbstract
         return $client->request(
             'POST',
             $uri,
-            [],
-            [],
-            $headers,
-            json_encode([
-                static::$container->getParameter('login_username_path') => $user['login'],
-                static::$container->getParameter('login_password_path') => $user['pwd'],
-            ])
+            [
+                'json' => [
+                    static::$container->getParameter('login_username_path') => $user['login'],
+                    static::$container->getParameter('login_password_path') => $user['pwd'],
+                ],
+                'headers' => $headers,
+            ]
         );
     }
 
@@ -56,10 +64,14 @@ abstract class ApiAbstract extends ToolsAbstract
     }
 
     /**
-     * @param KernelBrowser $client
+     * @param Client $client
      * @return stdClass with token property
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws TransportExceptionInterface
      */
-    protected function doLoginJwt(KernelBrowser $client)
+    protected function doLoginJwt(Client $client)
     {
         $uri = $this->router->generate('api_login_check', [], Router::NETWORK_PATH);
 
@@ -88,6 +100,7 @@ abstract class ApiAbstract extends ToolsAbstract
     }
 
     /**
+     * @deprecated each route needs the class entity to check and i cannot get it by this way
      * return array of routes by method like:
      *  ["GET" => ['//localhost/api/books', ], "POST" => ...]
      *
@@ -119,18 +132,20 @@ abstract class ApiAbstract extends ToolsAbstract
                             $routerParams[$param] = 1;
                             break;
                         case '_format':
-                            $routerParams[$param] = 'json';
+                            $routerParams[$param] = '';
                             break;
                         default:
                             $routerParams[$param] = 'test';
                     }
-
                 }
             }
 
             $routeName = $router->generate($name, $routerParams, Router::NETWORK_PATH);
             foreach ($route->getMethods() as $method) {
-                $routesName[$method][strtr($route->getPath(), ['.{_format}' => '', ])] = $routeName;
+                $routesName[$method][strtr($route->getPath(), ['.{_format}' => '', ])] = [
+                    'uri' => $routeName,
+                    'resourceClass' => \array_key_exists('_api_resource_class', $route->getDefaults()) ? $route->getDefaults()['_api_resource_class'] : null,
+                ];
             }
         }
 
@@ -138,19 +153,38 @@ abstract class ApiAbstract extends ToolsAbstract
     }
 
     /**
+     * @param array $options
+     * @param array $server
+     * @return mixed|KernelBrowser
+     */
+    protected static function createClient(array $kernelOptions = [], array $defaultOptions = []): Client
+    {
+        $env = getenv();
+
+        $kernelOptions = array_merge(['debug' => false], $kernelOptions);
+
+        // when launched by npm  àtodo not sure it's required for Api vs WebTestCase
+        if (array_key_exists('npm_package_config_server_host_web', $env)) {
+            $defaultOptions = array_merge([
+                'HTTP_HOST' => $env['npm_package_config_server_host_web'] . ':' . $env['npm_package_config_server_port_web'],
+            ], $defaultOptions);
+        }
+
+        return parent::createClient($kernelOptions, $defaultOptions);
+    }
+
+    /**
+     * @deprecated
      * @return string
      */
     protected function getJsonSchema()
     {
-        $headers = $this->prepareHeaders($this->headers);
         $uri = $this->router->generate('api_doc', ['format' => 'json', 'spec_version' => 3, ], Router::NETWORK_PATH);
         $client = $this->client;
         $client->request(
             'GET',
             $uri,
-            [],
-            [],
-            $headers
+            ['headers' => $this->headers]
         );
 
         if (200 !== $client->getResponse()->getStatusCode()) {
@@ -161,6 +195,7 @@ abstract class ApiAbstract extends ToolsAbstract
     }
 
     /**
+     * @deprecated
      * @param $def
      * @return array
      */
@@ -179,6 +214,7 @@ abstract class ApiAbstract extends ToolsAbstract
     }
 
     /**
+     * @deprecated
      * @param $def
      * @param $json
      */
@@ -205,7 +241,14 @@ abstract class ApiAbstract extends ToolsAbstract
 
             if (array_key_exists('required', $schemas)
                 && in_array($prop, $schemas['required'])) {
-                $this->assertNotEmpty($json->$prop);
+                switch ($schemas['properties'][$prop]['type']) {
+                    case 'integer':
+                        $this->assertIsInt($json->$prop);
+                        break;
+                    case 'string':
+                    default:
+                        $this->assertNotEmpty($json->$prop);
+                }
             }
 
             // @todo it might be possible to do type checking coz in $ref i can know if prop is integer, string...

@@ -36,7 +36,7 @@ class ApiPlatformCustomRoutesWithParamConverterTest extends ApiAbstract
         $content = JsonBook::$bodyOk;
         $expected = json_decode($content);
 
-        $client->request('POST', $uri, [], [], [], $content);
+        $client->request('POST', $uri, [], ['json' => $content]);
         $response = $client->getResponse();
         $responseData = json_decode($response->getContent(), true);
 
@@ -97,7 +97,7 @@ class ApiPlatformCustomRoutesWithParamConverterTest extends ApiAbstract
         $content = JsonBook::$bodyOkWithExistingEntities;
         $expected = json_decode($content);
 
-        $client->request('POST', $uri, [], [], [], $content);
+        $client->request('POST', $uri, ['json' => $content]);
 
         $response = $client->getResponse();
         $responseData = json_decode($response->getContent(), true);
@@ -162,7 +162,7 @@ class ApiPlatformCustomRoutesWithParamConverterTest extends ApiAbstract
 JSON
         );
 
-        $client->request('POST', $uri, [], [], [], $content);
+        $client->request('POST', $uri, ['json' => $content]);
         $response = $client->getResponse();
         $responseData = json_decode($response->getContent());
 

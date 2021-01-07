@@ -39,7 +39,7 @@ use App\Validator\Constraints as AppAssert;
  *     }
  * )
  * @ApiFilter(OrderFilter::class, properties={"id", "lastname"})
- * @ApiFilter(SearchFilter::class, properties={"id": "exact", "lastname": "istart", "firstname": "istart"})
+ * @ApiFilter(SearchFilter::class, properties={"lastname": "istart", "firstname": "istart"})
  * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false}))
  *
  * @ORM\Entity(repositoryClass="App\Repository\Library\ReaderRepository")

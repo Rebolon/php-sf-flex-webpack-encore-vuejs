@@ -11,13 +11,6 @@ use App\Tests\Common\WebPagesAbstract;
  */
 class HTTP200WebPagesTest extends WebPagesAbstract
 {
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->testLogin = 'test_php';
-    }
-
     /**
      * @group git-pre-push
      *

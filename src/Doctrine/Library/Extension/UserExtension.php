@@ -61,14 +61,19 @@ class UserExtension implements QueryCollectionExtensionInterface, QueryItemExten
                 $queryBuilder->leftJoin("$alias.borrower", "borrower", "WITH", "$alias.id = borrower.id");
                 break;
             case Reader::class:
-                $queryBuilder->leftJoin("$alias.reader", "reader", "WITH", "$alias.id = reader.id");
+                // You need to change the Security Provider to use real User instead of inMemory (this provider does'nt allow id
+                if (method_exists($user, 'getId')) {
+                    $this->logger->warn('User does not have any id so it might be because you are using in_memory provider => it is not possible to use this provider with the UserExtension to protect Reader resource');
+                    break;
+                }
+
+                // This one is the standard one, when you have an Entity Provider in the security component that uses the Reader Entity to represent the logged User
+                $queryBuilder->andWhere("$alias.email = :userEmail");
+                if (!$queryBuilder->getParameter('userEmail')) {
+                    $queryBuilder->setParameter('userEmail', $user->getUsername());
+                }
                 break;
-            // do not break here ! or you can let DoctrineFilter taking part App\Filter\UserFilter
-            /*case Booking::class:
-                $booking = $booking ?? $queryBuilder->getRootAliases()[0];
-                $queryBuilder->innerJoin("$booking.user", 'user');
-                $queryBuilder->andWhere(':user = user');
-                $queryBuilder->setParameter(':user', $this->security->getUser());*/
+            default:
         }
     }
 }

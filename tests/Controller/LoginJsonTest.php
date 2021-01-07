@@ -4,13 +4,13 @@
  */
 namespace App\Tests\Controller;
 
-use App\Tests\Common\ToolsAbstract;
+use App\Tests\Common\WebPagesAbstract;
 
 /**
  * Test login with CSRF token on firewall security_json
  * It will also check that once logged on that firewall it's also logged on security_standard because they share the same context
  */
-class LoginJsonTest extends ToolsAbstract
+class LoginJsonTest extends WebPagesAbstract
 {
     /**
      * @group git-pre-push
@@ -61,13 +61,13 @@ class LoginJsonTest extends ToolsAbstract
 
         $crawler = $client->request('GET', $uriSecured);
         $this->assertEquals(200, $client->getResponse()->getStatusCode(), $errMsg);
-        $text = implode(' ', array_map($cbTrim, explode("\n", trim($crawler->filter('body div')->text()))));
+        $text = implode(' ', array_map($cbTrim, explode("\n", trim($crawler->filter('body div.container')->text()))));
         $this->assertEquals('Hello Test_js You are in', $text, $errMsg);
 
         // now test on standard login page that use the same security context whereas it's on another firewall
         $crawler = $client->request('GET', $uriSecuredOnSameContext);
         $this->assertEquals(200, $client->getResponse()->getStatusCode(), $errMsg);
-        $text = implode(' ', array_map($cbTrim, explode("\n", trim($crawler->filter('body div')->text()))));
+        $text = implode(' ', array_map($cbTrim, explode("\n", trim($crawler->filter('body div.container')->text()))));
         $this->assertEquals('Hello Test_js You are in', $text, $errMsg);
     }
 }

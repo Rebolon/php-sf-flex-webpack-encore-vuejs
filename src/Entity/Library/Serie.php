@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     paginationClientEnabled=true
  * )
  * @ApiFilter(OrderFilter::class, properties={"id", "name"})
- * @ApiFilter(SearchFilter::class, properties={"id": "exact", "name": "istart"})
+ * @ApiFilter(SearchFilter::class, properties={"name": "istart"})
  * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false}))
  *
  * @ORM\Entity
@@ -117,6 +117,26 @@ class Serie implements LibraryInterface
     public function getBooks(): Collection
     {
         return $this->books;
+    }
+
+    /**
+     * @param Book $book
+     * @param bool $updateRelation
+     * @return $this
+     */
+    public function addBook(Book $book, bool $updateRelation = true): self
+    {
+        if ($this->books->contains($book)) {
+            return $this;
+        }
+
+        if ($updateRelation) {
+            $book->setSerie($this, false);
+        }
+
+        $this->books[] = $book;
+
+        return $this;
     }
 
     /**

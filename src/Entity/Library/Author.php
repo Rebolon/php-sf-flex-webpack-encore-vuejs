@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     paginationClientEnabled=true,
  * )
  * @ApiFilter(OrderFilter::class, properties={"id", "lastname", "firstname"})
- * @ApiFilter(SearchFilter::class, properties={"id": "exact", "firstname": "istart", "lastname": "istart"})
+ * @ApiFilter(SearchFilter::class, properties={"firstname": "istart", "lastname": "istart"})
  * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false}))
  *
  * @ORM\Entity

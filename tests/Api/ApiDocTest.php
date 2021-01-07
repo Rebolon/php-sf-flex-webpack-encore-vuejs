@@ -41,12 +41,10 @@ class ApiDocTest extends ApiAbstract
         $client->request(
             'GET',
             $uri,
-            [],
-            [],
-            $headers
+            ['headers' => $headers]
         );
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode(), $errMsg);
-        $this->assertStringStartsWith('application/json', $client->getResponse()->headers->get('content-type'), $errMsg);
+        $this->assertStringStartsWith('application/ld+json', $client->getResponse()->getHeaders()['content-type'][0], $errMsg);
     }
 }

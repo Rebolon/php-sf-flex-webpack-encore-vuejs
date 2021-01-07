@@ -21,6 +21,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ApiResource(
  *     iri="http://bib.schema.org/ComicStory",
  *     security="is_granted('ROLE_USER')",
+ *
  *     normalizationContext={
  *         "groups"={"book:detail:read"}
  *     },
@@ -36,13 +37,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     itemOperations={
  *         "get",
  *         "put"={"security"="is_granted('ROLE_USER')", "securityMessage"="Only authenticated users can modify books."},
- *         "delete"={"security"="is_granted('ROLE_USER')", "securityMessage"="Only authenticated users can delete books."},
- *         "special_1"={"method"="GET", "route_name"="book_special_sample1"},
- *         "special_2"={"method"="GET", "route_name"="book_special_sample2"},
+ *         "delete"={"security"="is_granted('ROLE_USER')", "securityMessage"="Only authenticated users can delete books."}
  *     }
  * )
  * @ApiFilter(OrderFilter::class, properties={"id", "title"})
- * @ApiFilter(SearchFilter::class, properties={"id": "exact", "title": "istart", "description": "partial", "tags.name"="exact"})
+ * @ApiFilter(SearchFilter::class, properties={"title": "istart", "description": "partial", "tags.name"="exact"})
  * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false}))
  *
  * @ORM\Entity(repositoryClass="App\Repository\Library\BookRepository")
@@ -121,7 +120,7 @@ class Book implements LibraryInterface
      * @ApiSubresource(maxDepth=1)
      * @MaxDepth(1)
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\Library\Review", mappedBy="book", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Library\Review", mappedBy="book", orphanRemoval=true, cascade={"persist", "remove"})
      */
     protected $reviews;
 
@@ -281,22 +280,36 @@ class Book implements LibraryInterface
     }
 
     /**
-     * @param ArrayCollection $tags
+     * @param Tag[]|ArrayCollection $tags
+     * @param bool $updateRelation
      * @return self
      */
-    public function setTags(ArrayCollection $tags): self
+    public function setTags(ArrayCollection $tags, bool $updateRelation = true): self
     {
-        $this->tags = $tags;
+        $this->tags = [];
+
+        foreach ($tags as $tag) {
+            $this->addTag($tag, $updateRelation);
+        }
 
         return $this;
     }
 
     /**
      * @param Tag $tag
+     * @param bool $updateRelation
      * @return self
      */
-    public function addTag(Tag $tag): self
+    public function addTag(Tag $tag, bool $updateRelation = true): self
     {
+        if ($this->tags->contains($tag)) {
+            return $this;
+        }
+
+        if ($updateRelation) {
+            $tag->setBook($this, false);
+        }
+
         $this->tags[] = $tag;
 
         return $this;
@@ -311,22 +324,36 @@ class Book implements LibraryInterface
     }
 
     /**
-     * @param ArrayCollection $reviews
+     * @param Review[]|ArrayCollection $reviews
+     * @param bool $updateRelation
      * @return self
      */
-    public function setReviews(ArrayCollection $reviews): self
+    public function setReviews(ArrayCollection $reviews, bool $updateRelation = true): self
     {
-        $this->reviews = $reviews;
+        $this->reviews = [];
+
+        foreach ($reviews as $review) {
+            $this->addReview($review, $updateRelation);
+        }
 
         return $this;
     }
 
     /**
      * @param Review $review
+     * @param bool $updateRelation
      * @return self
      */
-    public function addReview(Review $review): self
+    public function addReview(Review $review, bool $updateRelation = true): self
     {
+        if ($this->reviews->contains($review)) {
+            return $this;
+        }
+
+        if ($updateRelation) {
+            $review->setBook($this, false);
+        }
+
         $this->reviews[] = $review;
 
         return $this;
@@ -342,11 +369,15 @@ class Book implements LibraryInterface
 
     /**
      * @param Serie $serie
-     *
+     * @param bool $updateRelation
      * @return self
      */
-    public function setSerie(Serie $serie): self
+    public function setSerie(Serie $serie, bool $updateRelation = true): self
     {
+        if ($updateRelation) {
+            $serie->setBook($this, false);
+        }
+
         $this->serie = $serie;
 
         return $this;
