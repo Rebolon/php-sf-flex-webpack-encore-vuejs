@@ -24,7 +24,7 @@ class FormDevXpressAngularController extends AbstractController
      */
     public function index(string $kernelProjectDir)
     {
-        $ngFiles = AngularCli::getNgBuildFiles($kernelProjectDir);
+        $ngFiles = AngularCli::getNgBuildFiles($kernelProjectDir, 'form-devxpress-angular');
 
         return $this->render('form-devxpress-angular/app.html.twig', [
             'ngFiles' => $ngFiles,

@@ -3,7 +3,7 @@ import {ApiService} from '../../services/api';
 import CustomStore from 'devextreme/data/custom_store';
 import {BookModel} from "../../models/book.model";
 import { apiConfig } from '../../../../lib/config'
-import {DxDataGridComponent} from "devextreme-angular";
+import {DxDataGridComponent, DxDataGridModule} from "devextreme-angular";
 import notify from 'devextreme/ui/notify';
 import {BroadcastChannelApi} from '../shared/services/broadcast-channel-api';
 

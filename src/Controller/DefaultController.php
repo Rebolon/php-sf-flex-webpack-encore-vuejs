@@ -42,7 +42,7 @@ class DefaultController extends AbstractController
 
         $demoRoutes['Form & grid: Quasar with Vuejs'] = $router->generate('vuejs_form_quasar');
         $demoRoutes['Form & grid: DevXpress with Vuejs'] = $router->generate('vuejs_form_devxpress');
-        $demoRoutes['Form & grid: DevXpress with Angular7'] = $router->generate('app_formdevxpressangular_index');
+        $demoRoutes['Form & grid: DevXpress with Angular11'] = $router->generate('app_formdevxpressangular_index');
 
         $demoRoutes['Api-platform: rest'] = $router->generate('api_entrypoint');
         $demoRoutes['Api-platform: graphql'] = $router->generate('api_graphql_entrypoint');

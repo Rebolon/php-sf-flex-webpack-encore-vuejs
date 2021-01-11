@@ -46,7 +46,7 @@ class AngularCli extends AbstractExtension
         ];
         $json = file_get_contents($kernelProjectDir . '/assets/js/' . $project . '/angular.json');
         $jsonDecoded = json_decode($json, true);
-        $path = $jsonDecoded['projects'][$project]['targets']['build']['options']['outputPath'];
+        $path = $jsonDecoded['projects'][$project]['architect']['build']['options']['outputPath'];
         $pathParts = explode('/', $path);
         $ngBuildDir = [];
         $startBuildBir = false;
@@ -64,7 +64,7 @@ class AngularCli extends AbstractExtension
 
         // find build files
         $ngBuildDirFromProject = '/' . implode('/', $ngBuildDir);
-        $ngBuildDirFromPublic = '/' . implode('/', array_slice($ngBuildDir, 1));
+        $ngBuildDirFromPublic = '/' . implode('/', array_slice($ngBuildDir, 1)) . '/';
         $dirIt = new DirectoryIterator($kernelProjectDir . $ngBuildDirFromProject);
         foreach ($dirIt as $iteration) {
             if ($iteration->isFile()) {

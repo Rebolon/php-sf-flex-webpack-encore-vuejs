@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import { Observable, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import {Subject} from 'rxjs';
+import {takeUntil} from 'rxjs/operators';
 import {ActivatedRoute} from '@angular/router';
 import {WizardBook} from '../../shared/services/wizard-book';
 import {BroadcastChannelApi} from '../../shared/services/broadcast-channel-api';
@@ -13,7 +13,7 @@ import {Book} from '../../../entities/library/book';
 })
 export class BookComponent implements OnInit, OnDestroy {
     protected ngUnsubscribe: Subject<void> = new Subject()
-    protected book: Book
+    protected book: undefined|Book
     public isLoading = true
 
     constructor(private route: ActivatedRoute, private bookService: WizardBook, private broadcastChannel: BroadcastChannelApi) {}
@@ -40,7 +40,7 @@ export class BookComponent implements OnInit, OnDestroy {
                 .pipe(
                   takeUntil(this.ngUnsubscribe)
                 )
-                .subscribe((res: Book) => {
+                .subscribe((res) => {
                   this.isLoading = false
                 })
             })
@@ -59,7 +59,11 @@ export class BookComponent implements OnInit, OnDestroy {
         this.broadcastChannel.sendBook(this.book)
     }
 
-    saveBookTitle(newTitle) {
+    saveBookTitle(newTitle: string) {
+      if (this.book === undefined) {
+        return
+      }
+
       this.book.title = newTitle
       this.bookService.updateBook(this.book)
       this.bookService.save()
