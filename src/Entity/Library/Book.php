@@ -6,81 +6,90 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
-use App\Entity\LoggerTrait;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
+use ApiPlatform\Core\Exception\InvalidArgumentException;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
  *     iri="http://bib.schema.org/ComicStory",
+ *     security="is_granted('ROLE_USER')",
+ *
+ *     normalizationContext={
+ *         "groups"={"book:detail:read"}
+ *     },
+ *     denormalizationContext={
+ *         "groups"={"book:detail:write"}
+ *     },
+ *     paginationClientEnabled=true,
  *     collectionOperations={
- *          "get"={"method"="GET"},
- *          "post"={"method"="POST", "access_control"="is_granted('ROLE_USER')", "access_control_message"="Only authenticated users can add books."},
- *          "special_3"={"route_name"="book_special_sample3", "access_control"="is_granted('ROLE_USER')", "access_control_message"="Only authenticated users can add books."},
+ *          "get",
+ *          "post"={"security"="is_granted('ROLE_USER')", "securityMessage"="Only authenticated users can add books."},
+ *          "special_3"={"method"="POST", "route_name"="book_special_sample3", "security"="is_granted('ROLE_USER')", "securityMessage"="Only authenticated users can add books."},
  *     },
  *     itemOperations={
- *         "get"={"method"="GET"},
- *         "put"={"method"="PUT", "access_control"="is_granted('ROLE_USER')", "access_control_message"="Only authenticated users can modify books."},
- *         "delete"={"method"="delete", "access_control"="is_granted('ROLE_USER')", "access_control_message"="Only authenticated users can delete books."},
- *         "special_1"={"route_name"="book_special_sample1"},
- *         "special_2"={"route_name"="book_special_sample2"},
- *     },
- *     attributes={
- *          "normalization_context"={
- *              "groups"={"book_detail_read"}
- *          },
- *          "denormalization_context"={
- *              "groups"={"book_detail_write"}
- *          }
+ *         "get",
+ *         "put"={"security"="is_granted('ROLE_USER')", "securityMessage"="Only authenticated users can modify books."},
+ *         "delete"={"security"="is_granted('ROLE_USER')", "securityMessage"="Only authenticated users can delete books."}
  *     }
  * )
- * @ApiFilter(OrderFilter::class, properties={"id", "title"}, arguments={"orderParameterName"="order"})
+ * @ApiFilter(OrderFilter::class, properties={"id", "title"})
+ * @ApiFilter(SearchFilter::class, properties={"title": "istart", "description": "partial", "tags.name"="exact"})
+ * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false}))
  *
- * @ORM\Entity(repositoryClass="BookRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\Library\BookRepository")
  */
 class Book implements LibraryInterface
 {
-    use LoggerTrait;
-
     /**
      * @ApiProperty(
      *     iri="http://schema.org/identifier"
      * )
-     * @Groups({"book_detail_read"})
+     * @Groups({"book:detail:read", "reader:read"})
      *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Assert\Uuid()
+     *
+     * @var int
      */
-    private $id;
+    protected $id;
 
     /**
      * @ApiProperty(
      *     iri="http://schema.org/headline"
      * )
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @Groups({"book:detail:read", "book:detail:write", "reader:read"})
      *
      * @ORM\Column(type="string", length=255, nullable=false)
      *
      * @Assert\NotBlank()
      * @Assert\Length(max="255")
      *
+     * @var string
      */
-    private $title;
+    protected $title;
 
     /**
      * @ApiProperty(
      *     iri="http://schema.org/description"
      * )
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @Groups({"book:detail:read", "book:detail:write", "reader:read"})
      *
      * @ORM\Column(type="text", nullable=true)
+     *
+     * @var string
      */
-    private $description;
+    protected $description;
 
     /**
      * @ApiProperty(
@@ -91,65 +100,95 @@ class Book implements LibraryInterface
      *         }
      *     }
      * )
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @Groups({"book:detail:read", "book:detail:write", "reader:read"})
      *
      * @ORM\Column(type="integer", nullable=true, name="index_in_serie")
      *
      * @Assert\Type(type="integer")
+     *
+     * @var int
      */
-    private $indexInSerie;
+    protected $indexInSerie;
 
     /**
-     * @var ArrayCollection of ProjectBookEdition
+     * @var Collection|ProjectBookEdition[]
      *
      * @ApiProperty(
      *     iri="http://schema.org/reviews"
      * )
      *
      * @ApiSubresource(maxDepth=1)
+     * @MaxDepth(1)
      *
-     * @ORM\OneToMany(targetEntity="App\Entity\Library\Review", mappedBy="book", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Library\Review", mappedBy="book", orphanRemoval=true, cascade={"persist", "remove"})
      */
-    private $reviews;
+    protected $reviews;
 
     /**
-     * @var ArrayCollection of ProjectBookCreation
+     * @var Collection|ProjectBookCreation[]
      *
      * @ApiSubresource(maxDepth=1)
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @MaxDepth(1)
+     * @Groups({"book:detail:read", "book:detail:write", "reader:read"})
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookCreation", mappedBy="book", cascade={"persist", "remove"})
      */
-    private $authors;
+    protected $authors;
 
     /**
-     * @var ArrayCollection of ProjectBookEdition
+     * @var Collection|ProjectBookEdition[]
      *
      * @ApiSubresource(maxDepth=1)
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @MaxDepth(1)
+     * @Groups({"book:detail:read", "book:detail:write", "reader:read"})
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookEdition", mappedBy="book", cascade={"persist", "remove"})
      */
-    private $editors;
+    protected $editors;
 
     /**
      * @ApiSubresource(maxDepth=1)
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @MaxDepth(1)
+     * @Groups({"book:detail:read", "book:detail:write", "reader:read"})
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Library\Serie", inversedBy="books", cascade={"persist"})
      * @ORM\JoinColumn(name="serie_id", referencedColumnName="id")
+     *
+     * @var Serie
      */
-    private $serie;
+    protected $serie;
+
+    /**
+     * @ ApiSubresource(maxDepth=1)
+     * @MaxDepth(1)
+     * @Groups({"book:detail:read", "book:detail:write", "reader:read"})
+     *
+     * @ORM\ManyToMany(targetEntity="App\Entity\Library\Tag", inversedBy="books", cascade={"persist"})
+     *
+     * @var Collection|Tag[]
+     */
+    protected $tags;
+
+    /**
+     * @todo ApiSubResource annotation make the app crash: An exception has been thrown during the rendering of a template ("Resource "App\Entity\Library\Loan" not found in . (which is being imported from "/dev/projects/php-sf-flex-webpack-encore-vuejs/config/routes/api_platform.yaml"). Make sure there is a loader supporting the "api_platform" type.").
+     * @ApiSubresource(maxDepth=1)
+     *
+     * @MaxDepth(1)
+     * @Groups({"reader:read"})
+     *
+     * @ORM\OneToMany(targetEntity="App\Entity\Library\Loan", mappedBy="book")
+     *
+     * @var Collection|Loan[]
+     */
+    protected $loans;
 
     /**
      * Book constructor.
-     * @param LoggerInterface $logger
      */
-    public function __construct(LoggerInterface $logger)
+    public function __construct()
     {
-        $this->setLogger($logger);
-
         $this->reviews = new ArrayCollection();
+        $this->tags = new ArrayCollection();
         $this->authors = new ArrayCollection();
         $this->editors = new ArrayCollection();
     }
@@ -157,7 +196,7 @@ class Book implements LibraryInterface
     /**
      * id can be null until flush is done
      *
-     * @return int
+     * @return int|null
      */
     public function getId(): ?int
     {
@@ -166,9 +205,9 @@ class Book implements LibraryInterface
 
     /**
      * @param mixed $id
-     * @return Book
+     * @return self
      */
-    public function setId($id): Book
+    public function setId($id): self
     {
         $this->id = $id;
 
@@ -176,7 +215,7 @@ class Book implements LibraryInterface
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
     public function getTitle(): ?string
     {
@@ -185,9 +224,9 @@ class Book implements LibraryInterface
 
     /**
      * @param mixed $title
-     * @return Book
+     * @return self
      */
-    public function setTitle($title): Book
+    public function setTitle($title): self
     {
         $this->title = $title;
 
@@ -195,7 +234,7 @@ class Book implements LibraryInterface
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
     public function getDescription(): ?string
     {
@@ -204,9 +243,9 @@ class Book implements LibraryInterface
 
     /**
      * @param mixed $description
-     * @return Book
+     * @return self
      */
-    public function setDescription($description): Book
+    public function setDescription($description): self
     {
         $this->description = $description;
 
@@ -214,7 +253,7 @@ class Book implements LibraryInterface
     }
 
     /**
-     * @return mixed
+     * @return int|null
      */
     public function getIndexInSerie(): ?int
     {
@@ -223,9 +262,9 @@ class Book implements LibraryInterface
 
     /**
      * @param mixed $indexInSerie
-     * @return Book
+     * @return self
      */
-    public function setIndexInSerie($indexInSerie): Book
+    public function setIndexInSerie($indexInSerie): self
     {
         $this->indexInSerie = $indexInSerie;
 
@@ -233,7 +272,51 @@ class Book implements LibraryInterface
     }
 
     /**
-     * @return Collection
+     * @return Collection|Tag[]
+     */
+    public function getTags(): Collection
+    {
+        return $this->tags;
+    }
+
+    /**
+     * @param Tag[]|ArrayCollection $tags
+     * @param bool $updateRelation
+     * @return self
+     */
+    public function setTags(ArrayCollection $tags, bool $updateRelation = true): self
+    {
+        $this->tags = [];
+
+        foreach ($tags as $tag) {
+            $this->addTag($tag, $updateRelation);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Tag $tag
+     * @param bool $updateRelation
+     * @return self
+     */
+    public function addTag(Tag $tag, bool $updateRelation = true): self
+    {
+        if ($this->tags->contains($tag)) {
+            return $this;
+        }
+
+        if ($updateRelation) {
+            $tag->setBook($this, false);
+        }
+
+        $this->tags[] = $tag;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Review[]
      */
     public function getReviews(): Collection
     {
@@ -241,29 +324,43 @@ class Book implements LibraryInterface
     }
 
     /**
-     * @param ArrayCollection $reviews
-     * @return Book
+     * @param Review[]|ArrayCollection $reviews
+     * @param bool $updateRelation
+     * @return self
      */
-    public function setReviews(ArrayCollection $reviews): Book
+    public function setReviews(ArrayCollection $reviews, bool $updateRelation = true): self
     {
-        $this->reviews = $reviews;
+        $this->reviews = [];
+
+        foreach ($reviews as $review) {
+            $this->addReview($review, $updateRelation);
+        }
 
         return $this;
     }
 
     /**
      * @param Review $review
-     * @return Book
+     * @param bool $updateRelation
+     * @return self
      */
-    public function addReview(Review $review): Book
+    public function addReview(Review $review, bool $updateRelation = true): self
     {
+        if ($this->reviews->contains($review)) {
+            return $this;
+        }
+
+        if ($updateRelation) {
+            $review->setBook($this, false);
+        }
+
         $this->reviews[] = $review;
 
         return $this;
     }
 
     /**
-     * @return Serie
+     * @return Serie|null
      */
     public function getSerie(): ?Serie
     {
@@ -272,22 +369,26 @@ class Book implements LibraryInterface
 
     /**
      * @param Serie $serie
-     *
-     * @return Book
+     * @param bool $updateRelation
+     * @return self
      */
-    public function setSerie(Serie $serie): Book
+    public function setSerie(Serie $serie, bool $updateRelation = true): self
     {
+        if ($updateRelation) {
+            $serie->setBook($this, false);
+        }
+
         $this->serie = $serie;
 
         return $this;
     }
 
     /**
-     * @param ArrayCollection|ArrayCollection $projects
+     * @param ArrayCollection $projects
      *
-     * @return Book
+     * @return self
      */
-    public function setAuthors($projects): Book
+    public function setAuthors($projects): self
     {
         $this->authors->clear();
 
@@ -301,9 +402,9 @@ class Book implements LibraryInterface
     /**
      * @param ProjectBookCreation $project
      *
-     * @return Book
+     * @return self
      */
-    public function addAuthors(ProjectBookCreation $project): Book
+    public function addAuthors(ProjectBookCreation $project): self
     {
         // Take care that contains will just do an in_array strict check
         if ($this->hasProjectBookCreation($project)) {
@@ -319,9 +420,9 @@ class Book implements LibraryInterface
     /**
      * @param Author $author
      * @param Job $job
-     * @return Book
+     * @return self
      */
-    public function addAuthor(Author $author, Job $job): Book
+    public function addAuthor(Author $author, Job $job): self
     {
         $project = (new ProjectBookCreation())
             ->setBook($this)
@@ -336,7 +437,7 @@ class Book implements LibraryInterface
     /**
      * Return the list of Authors with their job for this project book creation
      *
-     * @return Collection
+     * @return Collection|ProjectBookCreation[]
      */
     public function getAuthors(): Collection
     {
@@ -346,9 +447,9 @@ class Book implements LibraryInterface
 
     /**
      * @param array|ArrayCollection $projects
-     * @return Book
+     * @return self
      */
-    public function setEditors($projects): Book
+    public function setEditors($projects): self
     {
         $this->editors->clear();
 
@@ -361,9 +462,9 @@ class Book implements LibraryInterface
 
     /**
      * @param ProjectBookEdition $project
-     * @return Book
+     * @return self
      */
-    public function addEditors(ProjectBookEdition $project): Book
+    public function addEditors(ProjectBookEdition $project): self
     {
         if ($this->hasProjectBookEdition($project)) {
             return $this;
@@ -377,14 +478,14 @@ class Book implements LibraryInterface
 
     /**
      * @param Editor $editor
-     * @param \DateTime $date
+     * @param DateTime $date
      * @param string $isbn
      * @param string $collection
-     * @return $this
+     * @return self
      */
-    public function addEditor(Editor $editor, \DateTime $date, $isbn = null, $collection = null): Book
+    public function addEditor(Editor $editor, DateTime $date, $isbn = null, $collection = null): self
     {
-        $project = (new ProjectBookEdition($this->logger))
+        $project = (new ProjectBookEdition())
             ->setBook($this)
             ->setEditor($editor)
             ->setPublicationDate($date)
@@ -400,7 +501,7 @@ class Book implements LibraryInterface
      * @todo the content of the methods + the route mapping for the api
      * Return the list of Editors for all projects book edition of this book
      *
-     * @return Collection
+     * @return Collection|ProjectBookEdition[]
      */
     public function getEditors(): Collection
     {
@@ -425,6 +526,7 @@ class Book implements LibraryInterface
      */
     protected function hasProjectBookCreation(ProjectBookCreation $project)
     {
+        // @todo check performance: it may be better to do a DQL to check instead of doctrine call to properties that may do new DB call
         foreach ($this->authors as $projectToCheck) {
             if (
                 (
@@ -461,6 +563,7 @@ class Book implements LibraryInterface
      */
     protected function hasProjectBookEdition(ProjectBookEdition $project)
     {
+        // @todo check performance: it may be better to do a DQL to check instead of doctrine call to properties that may do new DB call
         foreach ($this->editors as $projectToCheck) {
             if (
                 (!is_null($project->getEditor()->getId())
@@ -472,6 +575,47 @@ class Book implements LibraryInterface
         }
 
         return false;
+    }
+
+    /**
+     * @return Loan[]|Collection
+     */
+    public function getLoans()
+    {
+        return $this->loans;
+    }
+
+    /**
+     * @param Loan[]|Collection $loans
+     */
+    public function setLoans($loans): void
+    {
+        $this->loans = $loans;
+    }
+
+    /**
+     * @param Loan $loan
+     * @return $this
+     */
+    public function addLoan(Loan $loan)
+    {
+        if (!$loan->getBook()) {
+            $loan->setBook($this);
+        }
+
+        if ($loan->getBook() !== $this) {
+            throw new InvalidArgumentException('A book can be added to its loan list only if he is the book in the Loan object');
+        }
+
+        if ($this->loans->contains($loan)) {
+            return $this;
+        }
+
+        // @todo check if the book of the owner is available or already borrowed by someone: throw an exception to explain that it must be returned before it can be loaned again
+
+        $this->loans->add($loan);
+
+        return $this;
     }
 
     /**

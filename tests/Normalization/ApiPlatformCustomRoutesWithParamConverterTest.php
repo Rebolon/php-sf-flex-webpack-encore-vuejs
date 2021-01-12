@@ -6,6 +6,7 @@ namespace App\Tests\Normalization;
 
 use App\Tests\Common\ApiAbstract;
 use App\Tests\Common\JsonBook;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Routing\Router;
 
 /**
@@ -21,15 +22,21 @@ class ApiPlatformCustomRoutesWithParamConverterTest extends ApiAbstract
      */
     public function testBookSpecialSample3WithAllEntitiesToBeCreated()
     {
-        $client = $this->getClient();
+        /**
+         * @var KernelBrowser
+         */
+        $client = $this->client;
+        /**
+         * @var Router
+         */
         $router = $this->getRouter();
         // $uri = $router->generate('book_special_sample3', []);
-        // router fails to generate the route so for instance don't loose time and force uri
+        // router fails to generate the route so for instance don't loose time and force uri @todo use the ApiPlatform Router instead, it will work
         $uri = '/api/booksiu/special_3';
         $content = JsonBook::$bodyOk;
         $expected = json_decode($content);
 
-        $client->request('POST', $uri, [], [], [], $content);
+        $client->request('POST', $uri, [], ['json' => $content]);
         $response = $client->getResponse();
         $responseData = json_decode($response->getContent(), true);
 
@@ -82,15 +89,15 @@ class ApiPlatformCustomRoutesWithParamConverterTest extends ApiAbstract
      */
     public function testBookSpecialSample3WithReuseOfEntityFromDoctrine()
     {
-        $client = $this->getClient();
+        $client = $this->client;
         $router = $this->getRouter();
         // $uri = $router->generate('book_special_sample3', []);
-        // router fails to generate the route so for instance don't loose time and force uri
+        // router fails to generate the route so for instance don't loose time and force uri @todo use the ApiPlatform Router instead, it will work
         $uri = '/api/booksiu/special_3';
         $content = JsonBook::$bodyOkWithExistingEntities;
         $expected = json_decode($content);
 
-        $client->request('POST', $uri, [], [], [], $content);
+        $client->request('POST', $uri, ['json' => $content]);
 
         $response = $client->getResponse();
         $responseData = json_decode($response->getContent(), true);
@@ -135,13 +142,14 @@ class ApiPlatformCustomRoutesWithParamConverterTest extends ApiAbstract
      */
     public function testBookSpecialSample3WithErrors()
     {
-        $client = $this->getClient();
+        $client = $this->client;
         $router = $this->getRouter();
         // $uri = $router->generate('book_special_sample3', []);
-        // router fails to generate the route so for instance don't loose time and force uri
+        // router fails to generate the route so for instance don't loose time and force uri @todo use the ApiPlatform Router instead, it will work
         $uri = '/api/booksiu/special_3';
         $content = JsonBook::$bodyNoEditor;
-        $expected = json_decode(<<<JSON
+        $expected = json_decode(
+            <<<JSON
 {
   "type": "https:\/\/tools.ietf.org\/html\/rfc2616#section-10",
   "title": "An error occurred",
@@ -152,9 +160,9 @@ class ApiPlatformCustomRoutesWithParamConverterTest extends ApiAbstract
   }]
 }
 JSON
-);
+        );
 
-        $client->request('POST', $uri, [], [], [], $content);
+        $client->request('POST', $uri, ['json' => $content]);
         $response = $client->getResponse();
         $responseData = json_decode($response->getContent());
 

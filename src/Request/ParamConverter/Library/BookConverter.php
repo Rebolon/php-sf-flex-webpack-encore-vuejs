@@ -40,6 +40,11 @@ class BookConverter extends ItemAbstractConverter
     protected $serieConverter;
 
     /**
+     * @var TagConverter
+     */
+    protected $tagConverter;
+
+    /**
      * BookConverter constructor.
      * @param ValidatorInterface $validator
      * @param SerializerInterface $serializer
@@ -47,6 +52,7 @@ class BookConverter extends ItemAbstractConverter
      * @param ProjectBookCreationConverter $projectBookCreationConverter
      * @param ProjectBookEditionConverter $projectBookEditionConverter
      * @param SerieConverter $serieConverter
+     * @param TagConverter $tagConverter
      * @param LoggerInterface $logger
      */
     public function __construct(
@@ -56,6 +62,7 @@ class BookConverter extends ItemAbstractConverter
         ProjectBookCreationConverter $projectBookCreationConverter,
         ProjectBookEditionConverter $projectBookEditionConverter,
         SerieConverter $serieConverter,
+        TagConverter $tagConverter,
         LoggerInterface $logger
     ) {
         parent::__construct($validator, $serializer, $entityManager);
@@ -63,6 +70,7 @@ class BookConverter extends ItemAbstractConverter
         $this->projectBookCreationConverter = $projectBookCreationConverter;
         $this->projectBookEditionConverter = $projectBookEditionConverter;
         $this->serieConverter = $serieConverter;
+        $this->tagConverter = $tagConverter;
         $this->constructorParams[] = $logger;
     }
 
@@ -92,18 +100,25 @@ class BookConverter extends ItemAbstractConverter
         return [
             'authors' => [
                 'converter' => $this->projectBookCreationConverter, 'setter' => 'addAuthors',
-                'cb' => function($relation, $entity) {
+                'cb' => function ($relation, $entity) {
                     // not mandatory coz you may do this in in the entity->addAuthors but this is for sample of 'cb' operations
                     $relation->setBook($entity);
                 },
             ],
             'editors' => [
                 'converter' => $this->projectBookEditionConverter, 'setter' => 'addEditors',
-                'cb' => function($relation, $entity) {
+                'cb' => function ($relation, $entity) {
                     // not mandatory coz you may do this in in the entity->addAuthors but this is for sample of 'cb' operations
                     $relation->setBook($entity);
                 },
             ],
+            // this one is for auto generated Entity ManyToMany relationship
+            'tags' => [
+                'converter' => $this->tagConverter, 'setter' => 'addTags',
+                'cb' => function ($relation, $entity) {
+                    $relation->setBook($entity);
+                }
+            ]
         ];
     }
 

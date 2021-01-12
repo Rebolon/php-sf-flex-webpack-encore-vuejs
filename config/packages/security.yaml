@@ -2,20 +2,27 @@ security:
     encoders:
         # @todo should use password encoding, more info here: https://symfony.com/doc/current/security.html#c-encoding-the-user-s-password
         Symfony\Component\Security\Core\User\User: plaintext
+
     # https://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
+#        InMemory provider is just for testing purpose but it lacks id and a lot of other thing that prevent from using this with a real User like we could use in database. You should create a new entity provider (https://symfony.com/doc/current/security/user_provider.html#entity-user-provider) with the name `app_user_provider` and replace `provider: in_memory` by `provider: app_user_provider` everywhere in this file
         in_memory:
             memory:
                 users:
-                    test_php:
-                        password:           test
-                        roles:              ROLE_USER
-                    test_js:
-                        password:           test
-                        roles:              ROLE_USER
                     admin:
-                        password:           admin
-                        roles:              [ROLE_USER, ROLE_ADMIN]
+                        password: admin
+                        roles:    [ ROLE_USER, ROLE_ADMIN ]
+                    test_php:
+                        password: test
+                        roles:    ROLE_USER
+                    test_js:
+                        password: test
+                        roles:    ROLE_USER
+
+    role_hierarchy:
+        ROLE_ADMIN: [ ROLE_USER ]
+
+# for authenticating user using Api Key
 #        api_key_user_provider:
 #            id: App\Security\ApiKeyUserProvider
 
@@ -25,23 +32,32 @@ security:
             security: false
 
         # for application with a lot of JS and that are stateless
+        login_jwt:
+            pattern:  ^/demo/security/login/jwt/authenticate
+            stateless: true
+            anonymous: true
+            json_login:
+                check_path:               api_login_check
+                success_handler:          lexik_jwt_authentication.handler.authentication_success
+                failure_handler:          lexik_jwt_authentication.handler.authentication_failure
+                username_path:            "%login_username_path%"
+                password_path:            "%login_password_path%"
+
+        # it could be merged with previous firewall taking care of pattern
         security_jwt:
             pattern: ^/(demo/security/login/jwt|demo/form|api)
-            anonymous: ~
             stateless:  true
-
+            anonymous: ~
             guard:
                 authenticators:
-                    - App\Security\JwtTokenAuthenticator
+                    - lexik_jwt_authentication.jwt_token_authenticator
 
         # like security_jwt but statefull
         security_json:
             pattern: ^/(demo/security/login/json|token)
             anonymous: ~
-
-            #share context with other firewalls (but needs to be statefull so don't use it with sull SPA)
+            #share context with other firewalls (but needs to be statefull so don't use it with full SPA)
             context: statefull_security
-
             # this guard solve this issue: https://github.com/symfony/symfony/issues/25806
             guard:
                 authenticators:
@@ -60,6 +76,7 @@ security:
                 path:   demo_login_json_logout
                 target: index
                 invalidate_session: true
+
         # for application built almost fully by PHP SF
         security_main:
             pattern: ^/demo/security/login/standard

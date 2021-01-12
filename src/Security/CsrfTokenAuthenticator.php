@@ -1,22 +1,23 @@
 <?php
 namespace App\Security;
 
-use http\Exception\RuntimeException;
+use ArrayObject;
 use Psr\Container\ContainerInterface;
-use Symfony\Component\HttpFoundation\Request;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
+use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Csrf\CsrfToken as SymfonyCsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 
 class CsrfTokenAuthenticator extends AbstractGuardAuthenticator
 {
@@ -87,7 +88,7 @@ class CsrfTokenAuthenticator extends AbstractGuardAuthenticator
      * @param CsrfTokenManagerInterface $csrfTokenManager
      * @param TokenStorageInterface $tokenStorage
      * @param RouterInterface $router
-     * @param ContainerInterface
+     * @param ?ContainerInterface $container
      */
     public function __construct(
         string $csrfTokenParameter,
@@ -100,7 +101,7 @@ class CsrfTokenAuthenticator extends AbstractGuardAuthenticator
         CsrfTokenManagerInterface $csrfTokenManager,
         TokenStorageInterface $tokenStorage,
         RouterInterface $router,
-        ContainerInterface $container
+        ?ContainerInterface $container
     ) {
         $this->csrfTokenParameter = $csrfTokenParameter;
         $this->csrfTokenId = $csrfTokenId;
@@ -123,6 +124,8 @@ class CsrfTokenAuthenticator extends AbstractGuardAuthenticator
      * to be skipped.
      *
      * Since this Authenticator must be used only for json_login form, then we must not check HTTP Method or Route path
+     * @param Request $request
+     * @return bool
      */
     public function supports(Request $request)
     {
@@ -146,6 +149,8 @@ class CsrfTokenAuthenticator extends AbstractGuardAuthenticator
     /**
      * Called on every request. Return whatever credentials you want to
      * be passed to getUser() as $credentials.
+     * @param Request $request
+     * @return array
      */
     public function getCredentials(Request $request)
     {
@@ -164,7 +169,7 @@ class CsrfTokenAuthenticator extends AbstractGuardAuthenticator
             $content = [];
         }
 
-        $json = new \ArrayObject($content, \ArrayObject::STD_PROP_LIST);
+        $json = new ArrayObject($content, ArrayObject::STD_PROP_LIST);
 
         if (!isset($json[$this->csrfTokenParameter])) {
             throw new AuthenticationException($this->csrfTokenParameter . ' mandatory', 420);
@@ -172,9 +177,9 @@ class CsrfTokenAuthenticator extends AbstractGuardAuthenticator
 
         // if not on login route return simple credentials with only token
         if ($this->router->generate('demo_login_json_check') !== $request->getPathInfo()) {
-            return array(
+            return [
                 'token' => $json[$this->csrfTokenParameter],
-            );
+            ];
         }
 
         return $this->checkAndBuildFullCredentials($json);
@@ -254,26 +259,29 @@ class CsrfTokenAuthenticator extends AbstractGuardAuthenticator
         $message = $exception->getMessage() ? $exception->getMessage() : strtr($exception->getMessageKey(), $exception->getMessageData());
         $code = $exception->getCode() ? $exception->getCode() : Response::HTTP_FORBIDDEN;
 
-        $data = array(
+        $data = [
             'error' => $message,
             'code' => $code,
 
             // or to translate this message
             // $this->translator->trans($exception->getMessageKey(), $exception->getMessageData())
-        );
+        ];
 
         return new JsonResponse($data, Response::HTTP_FORBIDDEN);
     }
 
     /**
      * Called when authentication is needed, but it's not sent
+     * @param Request $request
+     * @param AuthenticationException|null $authException
+     * @return JsonResponse
      */
     public function start(Request $request, AuthenticationException $authException = null)
     {
-        $data = array(
+        $data = [
             // you might translate this message
             'error' => 'Authentication Required'
-        );
+        ];
 
         return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
     }
@@ -300,10 +308,10 @@ class CsrfTokenAuthenticator extends AbstractGuardAuthenticator
             throw new AuthenticationException($this->loginPasswordPath . ' mandatory', 420);
         }
 
-        return array(
+        return [
             'token' => $json[$this->csrfTokenParameter],
             'username' => $json[$this->loginUsernamePath],
             'password' => $json[$this->loginPasswordPath]
-        );
+        ];
     }
 }

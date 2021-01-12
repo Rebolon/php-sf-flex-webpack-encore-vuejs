@@ -1,24 +1,86 @@
 {% extends 'base.html.twig' %}
 
+{% block menuPage %}
+    <ul class="nav nav-tabs bg-light" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Intro</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="demos-tab" data-toggle="tab" href="#demos" role="tab" aria-controls="demos" aria-selected="false">Demos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="extrainfos-tab" data-toggle="tab" href="#extrainfos" role="tab" aria-controls="extrainfos" aria-selected="false">Extra infos</a>
+        </li>
+    </ul>
+{% endblock %}
+
 {% block body %}
     <div class="container">
-        <h2>List of demos</h2>
-        <aside>
-            For login forms, you can use test_js/test or test_php/test !
-        </aside>
-        <ul class="list-group">
-        {% for routeName, route in routes %}
-            {% if route is iterable %}
-                <li class="list-group-item">
-                    <a href='{{ route.uri }}'>{{ routeName }}</a>
-                    <div class="alert alert-warning" role="alert">
-                        <span class="text-warning">&#9888;</span> {{ route.note | raw}}
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="demos" role="tabpanel" aria-labelledby="demos-tab">
+                <h2>List of demos</h2>
+                <aside>
+                    For login forms, you can use test_js/test or test_php/test !
+                </aside>
+                <ul class="list-group">
+                    {% for routeName, route in routes %}
+                        {% if route is iterable %}
+                            <li class="list-group-item">
+                                <a href='{{ route.uri }}'>{{ routeName }}</a>
+                                <div class="alert alert-warning" role="alert">
+                                    <span class="text-warning">&#9888;</span> {{ route.note | raw}}
+                                </div>
+                            </li>
+                        {% else %}
+                            <li class="list-group-item"><a href='{{ route }}'>{{ routeName }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <h2>Introduction</h2>
+                <div>
+                    Welcome on this demo application. It tries to show how to use Symfony4+ php web application framework in a modern ways. It covers different usage: simple controller, call to external API, twig usage for more classic (old school ;-)) usage, and almost real SPA with REST or GraphQL API.<br />
+                    So, for the most complex samples, i used the following db model. Usually tutorial will only use a classic Book vs Review models. So it doesn't cover more complex ManyToMany relations with specific properties in the join tables. My model tries to be more complex. It will certainly not cover everything, but it may helps you to understand some complex parts.<br/>
+                    <strong>You can participate on the github repository !</strong>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        Database model
                     </div>
-                </li>
-            {% else %}
-                <li class="list-group-item"><a href='{{ route }}'>{{ routeName }}</a></li>
-            {% endif %}
-        {% endfor %}
-        </ul>
+                    <img class="card-img-top" src="{{ asset('/img/db-model.png') }}" alt="DB model">
+                    <div class="card-body">
+                        <p class="card-text">Here is the model used for this demo. There is differents relations type:</p>
+                        <ul>
+                            <li>Books -> Serie: OneToMany - <details>a book can be in a serie, a serie may have many books</details></li>
+                            <li>Books -> Reviews: OneToMany - <details>one book can have many reviews, a review is for only one book</details></li>
+                            <li>Books -> Authors: ManyToMany through ProjectBookCreation join table that contains extra fields (so it's OneToMany between Book and ProjectBookCreation, and OneToMany between Editors and ProjectBookCreation - <details>a book can have many authors, an author can write/draw/colorize many books</details></li>
+                            <li>Books -> Editors: same as Authors but with ProjectBookEdition - <details>a book can be published by many editors, an editor can publish many books</details></li>
+                            <li>Books -> Tags: ManyToMany auto managed with Doctrine - <details>a book can have many tags, a tag can be applied to many books</details></li>
+                            <li>Readers -> Books: ManyToMany - <details>a reader can own many books, a book can be owned by only one reader</details></li>
+                            <li>Readers -> Loan: OneToMany - <details>a reader can loan/borrow many books a to/from many readers</details></li>
+                        </ul>
+
+                        You may find it strange that Readers and Books is a ManyToMany relatinship. This is just to simplify the sample. In fact in a real library, a book can be owned by only one reader. To do that, i should link Readers to a ProjectBookEdition, and not a simple Book. This is because a Reader may owned a Book in different Edition. So we should also add extra properties like a date_entry and a price per example. So the relation between Readers and Books is more complex than it appears first.<br />
+                        I will certainly improve this in future, but i wanted the sample to be as simple as possible, but not too much to be able to see some complex relations.
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade show active" id="extrainfos" role="tabpanel" aria-labelledby="extrainfos-tab">
+                <h2>Extra informations</h2>
+                <div class="jumbotron jumbotron-fluid">
+                    <div class="container">
+                        <h3 class="display-4">Api Platform usage</h3>
+                        <p class="lead">Except Tags entity, all mapping is done throught Doctrine Entities. It benefits of all native extensions from ApiPlatform like Pagination, Sorting, and all others Filtering systems.<br />
+                            Tags entity is managed with DataProvider and DataPersister which is the recommenced pattern from [official documentation](https://api-platform.com/docs/core/design/). With Tags, the aim is to show how to use finely DataProvider and DataPersister with extensions systems (this is a Work In Progress).</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('js/home') }}
 {% endblock %}

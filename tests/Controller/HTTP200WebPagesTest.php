@@ -11,13 +11,6 @@ use App\Tests\Common\WebPagesAbstract;
  */
 class HTTP200WebPagesTest extends WebPagesAbstract
 {
-    protected function setUp()
-    {
-        parent::setUp();
-
-        $this->testLogin = 'test_php';
-    }
-
     /**
      * @group git-pre-push
      *
@@ -28,7 +21,7 @@ class HTTP200WebPagesTest extends WebPagesAbstract
      */
     public function testLogin()
     {
-        $client = $this->getClient();
+        $client = $this->client;
         $router = $this->getRouter();
         $uri = $router->generate('demo_login_standard', []);
 
@@ -44,16 +37,17 @@ class HTTP200WebPagesTest extends WebPagesAbstract
         $this->checkSEO($crawler, $errMsg);
         $this->checkHeader($crawler, $errMsg);
 
+        $user = $this->profiles[$this->currentProfileIdx];
         $form = $crawler->selectButton('login')->form();
         $form->setValues([
-            'login_username' => $this->testLogin,
+            'login_username' => $user['login'],
             'login_password' => 'fake',
         ]);
         $crawler = $client->submit($form);
         $bc = $crawler->filter('body div.alert');
         $this->assertContains('Invalid credentials.', trim($bc->text()));
 
-        $crawler = $this->doLogin($client);
+        $crawler = $this->doLoginStandard($client);
         $bc = $crawler->filter('body div.container');
         $text = trim($bc->text());
         $this->assertContains('Hello Test_php', $text);
@@ -65,12 +59,12 @@ class HTTP200WebPagesTest extends WebPagesAbstract
      */
     public function testHttp200OnAllPages()
     {
-        $client = $this->getClient();
+        $client = $this->client;
         $router = $this->getRouter();
 
         $demoRoutes['basic: simple controller'] = ['uri'=> $router->generate('simple'), ];
         $demoRoutes['basic: hello controller with twig'] = ['uri'=> $router->generate('app_hello_world', ['name'=> 'world', ]), ];
-        $demoRoutes['basic: httpplug demo'] = ['uri'=> $router->generate('app_httpplug_call'), ];
+        $demoRoutes['basic: httpplug demo'] = ['uri'=> $router->generate('app_http_call'), ];
 
         $demoRoutes['login: standard - symfony secured page'] = ['uri'=> $router->generate('demo_login_standard_check'), 'statusCode' => 401, ];
         $demoRoutes['login: standard - symfony form page '] = ['uri'=> $router->generate('demo_secured_page_standard'), 'statusCode' => 401, ];
@@ -82,16 +76,16 @@ class HTTP200WebPagesTest extends WebPagesAbstract
         $demoRoutes['js: user login check for json login app'] = ['uri'=> $router->generate('demo_secured_page_json_is_logged_in'), 'statusCode' => 401, ];
         $demoRoutes['js: user login check for jwt app'] = ['uri'=> $router->generate('demo_secured_page_jwt_is_logged_in'), 'statusCode' => 401, ];
 
-        $demoRoutes['vuejs: page with vue-router'] = ['uri'=> $router->generate('app_vuejs_index'), ];
-        $demoRoutes['vuejs: with quasar and vue-router'] = ['uri'=> $router->generate('app_quasar_index'), ];
+        $demoRoutes['vuejs: page with vue-router'] = ['uri'=> $router->generate('vuejs'), ];
+        $demoRoutes['vuejs: with quasar and vue-router'] = ['uri'=> $router->generate('vuejs_quasar'), ];
 
-        $demoRoutes['form & grid: quasar with vuejs'] = ['uri'=> $router->generate('app_formquasarvuejs_index'), ];
+        $demoRoutes['form & grid: quasar with vuejs'] = ['uri'=> $router->generate('vuejs_form_quasar'), ];
         $demoRoutes['form & grid: devxpress with angular7'] = ['uri'=> $router->generate('app_formdevxpressangular_index', ['ngRouteName'=> 'home', ]), ];
 
         $demoRoutes['api-platform: rest'] = ['uri'=> $router->generate('api_entrypoint'), ];
         $demoRoutes['api-platform: graphql'] = ['uri'=> $router->generate('api_graphql_entrypoint'), ];
-        $demoRoutes['api-platform: admin react'] = ['uri'=> $router->generate('app_apiplatformadminreact_index'), ];
-        $demoRoutes['easy admin'] = ['uri'=> $router->generate('admin'), ];
+        $demoRoutes['api-platform: admin react'] = ['uri'=> $router->generate('admin'), ];
+        $demoRoutes['easy admin'] = ['uri'=> $router->generate('easyadmin'), ];
 
         foreach ($demoRoutes as $routeInfos) {
             $headers = [];
@@ -111,7 +105,7 @@ class HTTP200WebPagesTest extends WebPagesAbstract
 
             $uri = $routeInfos['uri'];
 
-            $crawler = $client->request('GET', $uri, [], [], $headers);
+            $client->request('GET', $uri, [], [], $headers);
 
             $errMsg = sprintf("route: %s, headers: %s", $uri, json_encode($headers));
 

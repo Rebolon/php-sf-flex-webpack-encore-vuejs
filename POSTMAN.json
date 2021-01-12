@@ -1,0 +1,785 @@
+{
+	"info": {
+		"_postman_id": "ac37e2f0-191c-4d01-924e-55a21f5534be",
+		"name": "Sf-vuejs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get valid csrf token",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{login_jwt}}"
+				},
+				"url": {
+					"raw": "{{host}}/token?XDEBUG_SESSION_START=1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"token"
+					],
+					"query": [
+						{
+							"key": "XDEBUG_SESSION_START",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login standard",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "login_username",
+							"value": "{{login_username}}",
+							"type": "text"
+						},
+						{
+							"key": "login_password",
+							"value": "{{login_password}}",
+							"type": "text"
+						},
+						{
+							"key": "_csrf_token",
+							"value": "{{csrf_token}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{host}}/demo/security/login/standard/authenticate?XDEBUG_SESSION_START=1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"demo",
+						"security",
+						"login",
+						"standard",
+						"authenticate"
+					],
+					"query": [
+						{
+							"key": "XDEBUG_SESSION_START",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login json",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{login_api_body}}"
+				},
+				"url": {
+					"raw": "{{host}}/demo/security/login/json/authenticate?XDEBUG_SESSION_START=1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"demo",
+						"security",
+						"login",
+						"json",
+						"authenticate"
+					],
+					"query": [
+						{
+							"key": "XDEBUG_SESSION_START",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login jwt",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "XDEBUG_SESSION_START",
+						"value": "1",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{{login_api_body}}"
+				},
+				"url": {
+					"raw": "{{host}}/demo/security/login/jwt/authenticate?",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"demo",
+						"security",
+						"login",
+						"jwt",
+						"authenticate"
+					],
+					"query": [
+						{
+							"key": "XDEBUG_SESSION_START",
+							"value": "1",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/books",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"disabled": true
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/api/books",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"books"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/authors",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/api/authors",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"authors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/editors",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/api/editors",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"editors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/serie",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/api/series",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"series"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/tags",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{host}}/api/tags",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"tags"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/reviews",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"url": {
+					"raw": "{{host}}/api/reviews",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"reviews"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/job",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/api/jobs",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"jobs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/project_book_creations",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/api/project_book_creations",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"project_book_creations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/project_book_editions",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/api/project_book_editions",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"project_book_editions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/readers",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/api/readers",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"readers"
+					],
+					"query": [
+						{
+							"key": "XDEBUG_SESSION_START",
+							"value": "1",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/loans",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/api/loans",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"loans"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/ping",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/api/pings",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"pings"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/ping_secureds",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{host}}/api/ping_secureds",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"ping_secureds"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/booksiu/special_3",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{host}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"book\": {\r\n        \"title\": \"test depuis special4\",\r\n        \"editors\": [{\r\n            \"publication_date\": \"1519664915\", \r\n            \"collection\": \"Hachette collection bis\", \r\n            \"isbn\": \"2-87764-257-7\", \r\n            \"editor\": {\r\n                \r\n            }\r\n        }, {\r\n            \"publication_date\": \"1519747464\", \r\n            \"collection\": \"Ma Tu vue\", \r\n            \"isbn\": \"2-87764-257-7\", \r\n            \"editor\": {\r\n                \"name\": \"JeanPaul Edition\"\r\n            }\r\n        }],\r\n        \"authors\": [{\r\n            \"role\": {\r\n                \"translation_key\": \"WRITER\"\r\n            }, \r\n            \"author\": {\r\n                \"firstname\": \"Marc\", \r\n                \"lastname\": \"Douche\"\r\n            }\r\n        }, {\r\n            \"role\": {\r\n                \"translation_key\": \"DRAWER\"\r\n            }, \r\n            \"author\": {\r\n                \"firstname\": \"Paul\", \r\n                \"lastname\": \"TRUC\"\r\n            }\r\n        }],\r\n        \"serie\": {\r\n            \"name\": \"ouaou ma serie\"\r\n        }\r\n    }\r\n}\r\n"
+				},
+				"url": {
+					"raw": "{{host}}/api/booksiu/special_3?XDEBUG_SESSION_START=1",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"booksiu",
+						"special_3"
+					],
+					"query": [
+						{
+							"key": "XDEBUG_SESSION_START",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "api/authors",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{bearer}}"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"firstname\": \"test no setter\", \n\t\"lastname\": \"test no setter\"\n}"
+				},
+				"url": {
+					"raw": "{{host}}/api/authors",
+					"host": [
+						"{{host}}"
+					],
+					"path": [
+						"api",
+						"authors"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GraphQL > Tags List + related total Books",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"query\": \"{\\n  tags{\\n    edges{\\n      node{\\n        name\\n books {\\n          totalCount\\n        }\\n      }\\n    }\\n  }\\n}\",\n    \"variables\": null,\n    \"operationName\": null\n}"
+				},
+				"url": {
+					"raw": "https://myalerts.org/api/graphql",
+					"protocol": "https",
+					"host": [
+						"myalerts",
+						"org"
+					],
+					"path": [
+						"api",
+						"graphql"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

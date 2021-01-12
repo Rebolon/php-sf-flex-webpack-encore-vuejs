@@ -3,9 +3,8 @@
 namespace App\Controller;
 
 use App\Security\UserInfo;
-use Psr\Http\Message\ResponseInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Cache;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -13,15 +12,20 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
-class LoginJsonController extends Controller
+class LoginJsonController extends AbstractController
 {
     /**
      * Try to test this security when the one on the bottom works Security("is_granted('IS_AUTHENTICATED_FULLY')")
      *
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     * @Route("/demo/security/login/json/secured", name="demo_secured_page_json")
-     * @Method({"GET"})
+     * @Route(
+     *     "/demo/security/login/json/secured",
+     *     name="demo_secured_page_json",
+     *     methods={"GET"}
+     *     )
+     * @Cache(maxage="2 weeks")
      *
      * @return Response
      */
@@ -34,8 +38,11 @@ class LoginJsonController extends Controller
 
     /**
      * The route that displays the JS form
-     * @Route("/demo/security/login/json/frontend", name="demo_login_json")
-     * @Method({"GET"})
+     * @Route(
+     *     "/demo/security/login/json/frontend",
+     *     name="demo_login_json",
+     *     methods={"GET"}
+     *     )
      *
      * @return Response
      */
@@ -48,7 +55,10 @@ class LoginJsonController extends Controller
      * New Json authentification system from Symfony 3.3
      * It relies on App\Security\ApiKeyAuthenticator for CSRF checks
      *
-     * @Route("/demo/security/login/json/authenticate", name="demo_login_json_check")
+     * @Route(
+     *     "/demo/security/login/json/authenticate",
+     *     name="demo_login_json_check"
+     *     )
      *
      * @var RouterInterface $router
      * @return Response
@@ -76,22 +86,26 @@ class LoginJsonController extends Controller
      * @Route(
      *     "/demo/security/login/json/isloggedin",
      *     name="demo_secured_page_json_is_logged_in",
-     *     defaults={"_format"="json"}
-     *     )
-     * @Method({"GET", "POST"})
+     *     defaults={"_format"="json"},
+     *     methods={"GET", "POST"}
+     * )
      *
      * @return Response
      */
     public function isLoggedIn()
     {
-        $isGranted = function($att) {
-            return $this->isGranted($att);
-        };
+        // will be usefull if we decide to return always 200 + the real Json content represented by isLoggedIn: 0|1
+        $authenticated = $this->isGranted('IS_AUTHENTICATED_FULLY');
+        $data = ['isLoggedIn' => (int)$authenticated,];
 
-        $getUser = function() {
-            return $this->getUser();
-        };
+        if ($authenticated) {
+            $user = $this->getUser();
+            $data['me'] = [
+                'username' => $user->getUsername(),
+                'roles' => $user->getRoles(),
+            ];
+        }
 
-        return new JsonResponse(UserInfo::getUserInfo($isGranted, $getUser));
+        return new JsonResponse($data);
     }
 }

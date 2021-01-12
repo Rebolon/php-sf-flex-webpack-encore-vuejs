@@ -3,7 +3,7 @@ import {ApiService} from '../../services/api';
 import CustomStore from 'devextreme/data/custom_store';
 import {BookModel} from "../../models/book.model";
 import { apiConfig } from '../../../../lib/config'
-import {DxDataGridComponent} from "devextreme-angular";
+import {DxDataGridComponent, DxDataGridModule} from "devextreme-angular";
 import notify from 'devextreme/ui/notify';
 import {BroadcastChannelApi} from '../shared/services/broadcast-channel-api';
 
@@ -85,12 +85,12 @@ export class DatagridComponent implements OnInit {
 
               // manage the pagination: ApiPlatform works with hydra system and so a page number whereas DevXpress datagrid uses a skip/take parameter, so it requires a small Math calc
               if (loadOptions.skip) {
-                  options.params['page'] = loadOptions.skip > 0 ? Math.ceil(loadOptions.skip / itemPerPage) +1 : 1
+                  options.params[this.apiConfig.pageParameterName] = loadOptions.skip > 0 ? Math.ceil(loadOptions.skip / itemPerPage) +1 : 1
               }
 
               if(loadOptions.sort && loadOptions.sort.length) {
                   loadOptions.sort.forEach(sort => {
-                      options.params[`order[${sort.selector}]`] = sort.desc ? 'desc' : 'asc'
+                      options.params[`${this.apiConfig.orderParameterName}[${sort.selector}]`] = sort.desc ? 'desc' : 'asc'
                   })
               }
 

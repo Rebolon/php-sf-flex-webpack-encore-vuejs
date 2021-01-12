@@ -6,8 +6,8 @@ import {Component, Input} from '@angular/core'
     styleUrls: ['./wizard-step.component.scss'],
 })
 export class WizardStepComponent {
-    @Input() title: string
-    @Input() currentStep: number
+    @Input() title: string = ''
+    @Input() currentStep: number = 0
     @Input() steps: [{
         title: string
     }]
@@ -17,11 +17,11 @@ export class WizardStepComponent {
     }
 
     //@todo use in direct this.router.isActive( "/parent/p1/child/p1-c1" /*, true */);
-    isActive(index) {
+    isActive(index: number) {
         return this.currentStep === index
     }
 
-    isPassed(index) {
+    isPassed(index: number) {
         return this.currentStep > index
     }
 

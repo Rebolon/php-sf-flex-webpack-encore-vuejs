@@ -1,7 +1,8 @@
 <?php
 namespace App\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Exception;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -10,8 +11,12 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Yaml\Yaml;
+use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
-class DumpJsConfig extends ContainerAwareCommand
+class DumpJsConfig extends Command
 {
     const ARG_HOST = 'host';
 
@@ -20,7 +25,7 @@ class DumpJsConfig extends ContainerAwareCommand
     const ARG_QUASAR_STYLE = 'quasarStyle';
 
     /**
-     * @var \Twig_Environment
+     * @var Environment
      */
     protected $twig;
 
@@ -66,7 +71,8 @@ class DumpJsConfig extends ContainerAwareCommand
      * @param string $loginUsernamePath
      * @param string $loginPasswordPath
      * @param string $tokenJwtBearer
-     * @param \Twig_Environment $twig
+     * @param string $kernelProjectDir
+     * @param Environment $twig
      * @param RouterInterface $router
      */
     public function __construct(
@@ -75,9 +81,10 @@ class DumpJsConfig extends ContainerAwareCommand
         string $loginUsernamePath,
         string $loginPasswordPath,
         string $tokenJwtBearer,
-        \Twig_Environment $twig,
-        RouterInterface $router)
-    {
+        string $kernelProjectDir,
+        Environment $twig,
+        RouterInterface $router
+    ) {
         parent::__construct();
 
         $this->twig = $twig;
@@ -87,6 +94,7 @@ class DumpJsConfig extends ContainerAwareCommand
         $this->loginUsernamePath = $loginUsernamePath;
         $this->loginPasswordPath = $loginPasswordPath;
         $this->tokenJwtBearer = $tokenJwtBearer;
+        $this->rootDir = $kernelProjectDir;
     }
 
     /**
@@ -107,13 +115,13 @@ class DumpJsConfig extends ContainerAwareCommand
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int|null|void
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $env = $this->getEnv('APP_ENV');
+        $env = $this->getEnv();
         $host = $input->getArgument(self::ARG_HOST);
         $port = $input->getArgument(self::ARG_PORT);
         $quasarStyle = $input->getArgument(self::ARG_QUASAR_STYLE);
@@ -139,13 +147,13 @@ class DumpJsConfig extends ContainerAwareCommand
     {
         try {
             $missingKeys = [];
-            $mandatoryKeys = ['items_per_page', 'client_items_per_page', 'items_per_page_parameter_name', 'maximum_items_per_page', ];
-            $configDir = $this->getContainer()->get('kernel')->getRootDir() . '/../config/';
+            $mandatoryKeys = ['items_per_page', 'client_items_per_page', 'items_per_page_parameter_name', 'maximum_items_per_page', 'page_parameter_name'];
+            $configDir = $this->rootDir . '/config/';
             $values = Yaml::parseFile($configDir . 'packages/api_platform.yaml');
             $config = $values['api_platform'];
 
             if (!($config['collection'] && $config['collection']['pagination'])) {
-                throw new \Exception('Missing pagination section in api_platform.yaml');
+                throw new Exception('Missing pagination section in api_platform.yaml');
             }
 
             foreach ($mandatoryKeys as $key) {
@@ -156,12 +164,18 @@ class DumpJsConfig extends ContainerAwareCommand
                 $missingKeys[] = $key;
             }
 
+            if (!array_key_exists('order_parameter_name', $config['collection'])) {
+                $missingKeys[] = 'order_parameter_name';
+            } else { // maybe a bad idea to move the node into pagination, it was originally because in js config file i did only one apiConfig var with only simple entries and not complex object => may need to refactor this later
+                $config['collection']['pagination']['order_parameter_name'] = $config['collection']['order_parameter_name'];
+            }
+
             if (count($missingKeys)) {
-                throw new \Exception(sprintf('those keys are mandatory for the frontend configuration: %s', join(', ', $missingKeys)));
+                throw new Exception(sprintf('those keys are mandatory for the frontend configuration: %s', join(', ', $missingKeys)));
             }
 
             return $config['collection']['pagination'];
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $output->writeln(sprintf('api_platform.yaml error: "%s"', $e->getMessage()));
         }
 
@@ -226,7 +240,7 @@ class DumpJsConfig extends ContainerAwareCommand
      */
     protected function displayJsConfigArguments(OutputInterface $output, $apiPlatform, $host, $port, $quasarStyle): void
     {
-        $apiPlatformOutput = function() use ($apiPlatform) {
+        $apiPlatformOutput = function () use ($apiPlatform) {
             $output = [];
             foreach ($apiPlatform as $key => $value) {
                 $output[] = $key . ': ' . $value;
@@ -251,13 +265,13 @@ class DumpJsConfig extends ContainerAwareCommand
      * @param $quasarStyle
      * @param $apiPlatform
      * @return string
-     * @throws \Twig_Error_Loader
-     * @throws \Twig_Error_Runtime
-     * @throws \Twig_Error_Syntax
+     * @throws LoaderError
+     * @throws RuntimeError
+     * @throws SyntaxError
      */
     protected function render($env, $host, $port, $quasarStyle, $apiPlatform): string
     {
-        $content = $this->twig->render('command/config.js.twig', [
+        return $this->twig->render('command/config.js.twig', [
             'env' => $env,
             'host' => trim($host),
             'port' => trim($port),
@@ -267,14 +281,12 @@ class DumpJsConfig extends ContainerAwareCommand
             'loginPasswordPath' => $this->loginPasswordPath,
             'tokenJwtBearer' => $this->tokenJwtBearer,
             'uriLoginJson' => $this->router->generate('demo_login_json_check'),
-            'uriLoginJwt' => $this->router->generate('app_loginjwt_newtoken'),
+            'uriLoginJwt' => $this->router->generate('api_login_check'),
             'uriIsLoggedInJson' => $this->router->generate('demo_secured_page_json_is_logged_in'),
             'uriIsLoggedInJwt' => $this->router->generate('demo_secured_page_jwt_is_logged_in'),
             'quasarStyle' => $quasarStyle,
             'apiPlatform' => $apiPlatform,
         ]);
-
-        return $content;
     }
 
     /**
@@ -298,7 +310,7 @@ class DumpJsConfig extends ContainerAwareCommand
     protected function writeJsConfigFile(InputInterface $input, OutputInterface $output, $content): void
     {
         $helper = $this->getHelper('question');
-        $projectDir = $this->getContainer()->get('kernel')->getRootDir() . '/..';
+        $projectDir = $this->rootDir;
         $configFilepath = '/assets/js/lib/config.js';
         $filepath = $projectDir . $configFilepath;
 

@@ -2,24 +2,28 @@
 
 namespace App\Controller;
 
-use App\Security\UserInfo;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Core\Security as SecurityComponent;
 
-class LoginController extends Controller
+class LoginController extends AbstractController
 {
     /**
      * Try to test this security when the one on the bottom works Security("is_granted('IS_AUTHENTICATED_FULLY')")
      *
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     * @Route("/demo/security/login/standard/secured", name="demo_secured_page_standard")
-     * @Method({"GET"})
+     * @Route(
+     *     "/demo/security/login/standard/secured",
+     *     name="demo_secured_page_standard",
+     *     methods={"GET"}
+     *     )
      */
     public function index()
     {
@@ -36,10 +40,14 @@ class LoginController extends Controller
      * @param AuthenticationUtils $authUtils
      * @param CsrfTokenManagerInterface $tokenManager
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param string $csrfTokenId
+     * @return Response
      */
-    public function loginStandard(AuthenticationUtils $authUtils, CsrfTokenManagerInterface $tokenManager)
-    {
+    public function loginStandard(
+        AuthenticationUtils $authUtils,
+        CsrfTokenManagerInterface $tokenManager,
+        string $csrfTokenId
+    ) {
         // get the login error if there is one
         $error = $authUtils->getLastAuthenticationError();
 
@@ -47,15 +55,14 @@ class LoginController extends Controller
         $lastUsername = $authUtils->getLastUsername();
 
         // token for csrf protection (no need to check validity from request coz it's up to Symfony to do this with
-        // internal mecanisms
-        $tokenId = $this->getParameter('csrf_token_id');
-        $token = $tokenManager->getToken($tokenId);
+        // internal mecanisms)
+        $token = $tokenManager->getToken($csrfTokenId);
 
-        return $this->render('login/login.html.twig', array(
+        return $this->render('login/login.html.twig', [
             'last_username' => $lastUsername,
             'token'         => $token,
             'error'         => $error,
-        ));
+        ]);
     }
 
     /**
@@ -65,20 +72,23 @@ class LoginController extends Controller
      * @Route(
      *     "/demo/security/login/standard/isloggedin",
      *     name="demo_secured_page_standard_is_logged_in",
-     *     defaults={"_format"="json"}
-     *     )
-     * @Method({"GET", "POST"})
+     *     defaults={"_format"="json"},
+     *     methods={"GET", "POST"}
+     * )
      */
-    public function isLoggedIn()
+    public function isLoggedIn(TokenStorageInterface $token, SecurityComponent $security)
     {
-        $isGranted = function($att) {
-            return $this->isGranted($att);
-        };
+        $isAuthenticated = $security->isGranted('IS_AUTHENTICATED_FULLY');
+        $data = ['isLoggedIn' => (int)$isAuthenticated];
 
-        $getUser = function() {
-            return $this->getUser();
-        };
+        if ($isAuthenticated) {
+            $user = $token->getToken()->getUser();
+            $data['me'] = [
+                'username' => $user->getUsername(),
+                'roles' => $user->getRoles(),
+            ];
+        }
 
-        return new JsonResponse(UserInfo::getUserInfo($isGranted, $getUser));
+        return new JsonResponse($data);
     }
 }

@@ -16,7 +16,7 @@ import {BookReviver} from '../../shared/services/reviver/library/bookReviver';
 // @todo may use of ActivatedRoute to prevent test in html to set Active class : routerLinkActive="active" in button
 export class WizardContainerComponent implements OnInit, OnDestroy {
     basePath = ''
-    currentStep: number
+    currentStep: number = 0
 
     // @todo find a better way to configure the routing in bot appModule and here in the component
     steps: Routes
@@ -30,7 +30,7 @@ export class WizardContainerComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         // manage the route prefix if we are embeded in another component
-        if (this.route.snapshot.routeConfig.path) {
+        if (this.route.snapshot && this.route.snapshot.routeConfig && this.route.snapshot.routeConfig.path) {
             this.basePath = this.route.snapshot.routeConfig.path + '/'
         }
 

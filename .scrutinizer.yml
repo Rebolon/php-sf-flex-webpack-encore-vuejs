@@ -3,9 +3,9 @@ build:
         redis: false
         postgresql: false
         php:
-            version: '7.1'
+            version: '7.4'
         node:
-            version: '8.10.0'
+            version: '15'
         hosts:
             localhost: 127.0.0.1
     nodes:

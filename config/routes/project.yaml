@@ -1,0 +1,60 @@
+admin:
+    path: /admin
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults:
+        template: admin.html.twig
+
+vuejs:
+    path: /demo/vuejs
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    methods: GET
+    defaults:
+        template: vuejs/app.html.twig
+        maxAge: 1209600
+
+        # whether or not caching should apply for client caches only
+        private: true
+
+        # optionally you can define some arguments passed to the template
+        context:
+            appName: 'vuejs'
+            useParent: true
+
+vuejs_quasar:
+    path: /demo/quasar
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    methods: GET
+    defaults:
+        template: quasar/app.html.twig
+        maxAge: 1209600
+        private: true
+        context:
+            appName: 'quasar'
+
+vuejs_form_quasar:
+    path: /demo/form/quasar-vuejs
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    methods: GET
+    defaults:
+        template: form-quasar-vuejs/app.html.twig
+        maxAge: 1209600
+        private: true
+        context:
+            appName: 'form-quasar-vuejs'
+
+vuejs_form_devxpress:
+    path: /demo/form/devxpress-vuejs/{routeName}
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    methods: GET
+    requirements:
+        page: '.*'
+    defaults:
+        template: form-quasar-vuejs/app.html.twig
+        maxAge: 1209600
+        private: true
+
+        # defaults route params
+        routeName: 'home'
+        context:
+            appName: 'form-devxpress-vuejs'
+            title: 'DevxpressVueJS'

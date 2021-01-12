@@ -6,7 +6,7 @@ class JsonBook
     /**
      * @var string allow to test a correct HTTP Post with the ability of the ParamConverter to de-duplicate entity like for editor in this sample
      */
-    static public $bodyOk = <<<JSON
+    public static $bodyOk = <<<JSON
 {
     "book": {
         "title": "Zombies in western culture",
@@ -55,7 +55,7 @@ JSON;
      *
      * @var string allow to test a correct HTTP Post with the ability of the ParamConverter to de-duplicate entity like for editor in this sample
      */
-    static public $bodyOkForDenormalizer = <<<JSON
+    public static $bodyOkForDenormalizer = <<<JSON
 {
     "title": "Zombies in western culture",
     "editors": [{
@@ -99,7 +99,7 @@ JSON;
     /**
      * @var string to test that the ParamConverter are abled to reuse entity from database
      */
-    static public $bodyOkWithExistingEntities = <<<JSON
+    public static $bodyOkWithExistingEntities = <<<JSON
 {
     "book": {
         "title": "Oh my god, how simple it is !",
@@ -136,7 +136,7 @@ JSON;
     /**
      * @var string allow to test a failed HTTP Post with expected JSON content
      */
-    static public $bodyNoEditor = <<<JSON
+    public static $bodyNoEditor = <<<JSON
 {
     "book": {
         "title": "Oh my god, how simple it is !",
@@ -150,5 +150,4 @@ JSON;
     }
 }
 JSON;
-
 }

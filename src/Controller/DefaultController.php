@@ -2,15 +2,18 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DefaultController extends Controller
+class DefaultController extends AbstractController
 {
     /**
-     * @Route(path="/")
+     * @Route(
+     *     path="/",
+     *     methods={"GET"}
+     *     )
      * @param Request $request
      * @return Response
      */
@@ -25,7 +28,7 @@ class DefaultController extends Controller
         $demoRoutes = [];
         $demoRoutes['Basic: Simple controller'] = $router->generate('simple');
         $demoRoutes['Basic: Hello controller with twig'] = $router->generate('app_hello_world', ['name' => 'world', ]);
-        $demoRoutes['Basic: HttpPlug demo'] = $router->generate('app_httpplug_call');
+        $demoRoutes['Basic: HttpPlug demo'] = $router->generate('app_http_call');
 
         $demoRoutes['Login: Symfony secured page with form_login'] = $router->generate('demo_secured_page_standard');
         $demoRoutes['Login: Vuejs secured page with json_login'] = $router->generate('demo_login_json_check'); // if i go to demo_secured_page_json i will just get a json string !!! user won't know how to go to the form uri (i may add the uri in the response, but if i link to the form and the user is already logged, it will then be redirected to the secured page)
@@ -34,17 +37,17 @@ class DefaultController extends Controller
         $demoRoutes['JS app: Csrf token generation for statefull app'] = $router->generate('token');
         $demoRoutes['JS app: User login check (security_json firewall)'] = $router->generate('demo_secured_page_json_is_logged_in');
 
-        $demoRoutes['Vuejs: page with vue-router'] = $router->generate('app_vuejs_index');
-        $demoRoutes['Vuejs: with quasar and vue-router'] = $router->generate('app_quasar_index');
+        $demoRoutes['Vuejs: page with vue-router'] = $router->generate('vuejs');
+        $demoRoutes['Vuejs: with quasar and vue-router'] = $router->generate('vuejs_quasar');
 
-        $demoRoutes['Form & grid: Quasar with Vuejs'] = $router->generate('app_formquasarvuejs_index');
-        $demoRoutes['Form & grid: DevXpress with Vuejs'] = $router->generate('app_formdevxpressvuejs_index');
-        $demoRoutes['Form & grid: DevXpress with Angular7'] = $router->generate('app_formdevxpressangular_index');
+        $demoRoutes['Form & grid: Quasar with Vuejs'] = $router->generate('vuejs_form_quasar');
+        $demoRoutes['Form & grid: DevXpress with Vuejs'] = $router->generate('vuejs_form_devxpress');
+        $demoRoutes['Form & grid: DevXpress with Angular11'] = $router->generate('app_formdevxpressangular_index');
 
         $demoRoutes['Api-platform: rest'] = $router->generate('api_entrypoint');
         $demoRoutes['Api-platform: graphql'] = $router->generate('api_graphql_entrypoint');
-        $demoRoutes['Api-platform: admin react'] = $router->generate('app_apiplatformadminreact_index');
-        $demoRoutes['Easy admin'] = $router->generate('admin');
+        $demoRoutes['Api-platform: admin react'] = $router->generate('admin');
+        $demoRoutes['Easy admin'] = $router->generate('easyadmin');
 
         if (!$hasPemCertificate) {
             $demoRoutes['Basic: HttpPlug demo'] = [
@@ -70,19 +73,17 @@ class DefaultController extends Controller
                 ];
 
             $demoRoutes['Api-platform: admin react'] = [
-                'uri' => $router->generate('app_apiplatformadminreact_index'),
+                'uri' => $router->generate('admin'),
                 'note' => $note,
             ];
         }
 
-        $render = $this->render(
+        return $this->render(
             'default/menu.html.twig',
             [
             'routes' => $demoRoutes,
             'isPhpBuiltInServer' => $isPhpBuiltInServer,
             ]
         );
-
-        return $render;
     }
 }

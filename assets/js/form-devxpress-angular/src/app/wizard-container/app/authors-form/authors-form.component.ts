@@ -14,6 +14,7 @@ import notify from 'devextreme/ui/notify';
 import {Author} from '../../../../entities/library/author';
 import {Job} from '../../../../entities/library/job';
 import {Book} from '../../../../entities/library/book';
+import {DxiItemComponent} from "devextreme-angular/ui/nested";
 
 @Component({
     selector: 'my-wizard-authors',
@@ -68,7 +69,7 @@ export class AuthorsFormComponent implements OnInit, OnDestroy {
 
                 // manage the pagination: ApiPlatform works with hydra system and so a page number whereas DevXpress datagrid uses a skip/take parameter, so it requires a small Math calc
                 if (loadOptions.skip) {
-                    options.params['page'] = loadOptions.skip > 0 ? Math.ceil(loadOptions.skip / itemPerPage) + 1 : 1
+                    options.params[this.apiConfig.pageParameterName] = loadOptions.skip > 0 ? Math.ceil(loadOptions.skip / itemPerPage) + 1 : 1
                 }
 
                 // search on Author name
@@ -122,9 +123,9 @@ export class AuthorsFormComponent implements OnInit, OnDestroy {
         this.bookService.setAuthors(this.authors)
 
         this.bookService.save()
-            .subscribe((book: Book) => {
+            .subscribe((book) => {
                 notify({
-                    message: 'New book created with ID: ' + book.id,
+                    message: 'New book created with ID: ' + (book as Book).id,
                     position: {
                         my: "center top",
                         at: "center top"
@@ -171,7 +172,7 @@ export class AuthorsFormComponent implements OnInit, OnDestroy {
     }
 
     // @todo how to reset only some fields ???
-    resetNameAuthor(ev, fieldFirstname, fieldLastname) {
+    resetNameAuthor(ev, fieldFirstname: DxiItemComponent, fieldLastname: DxiItemComponent) {
         if (ev.selectedItem) {
             // @todo don't undertand why but it also resets fieldLastname
             fieldFirstname.instance.resetValues()
@@ -191,7 +192,7 @@ export class AuthorsFormComponent implements OnInit, OnDestroy {
         return isValid
     }
 
-    addAuthor(ev, authorsForm) {
+    addAuthor(ev, authorsForm: DxFormComponent) {
         ev.preventDefault()
 
         // we should never enter this coz the button is disabled until everything is ok
@@ -250,7 +251,7 @@ export class AuthorsFormComponent implements OnInit, OnDestroy {
     /**
      * @param author
      */
-    removeAuthor(authorToRemove) {
+    removeAuthor(authorToRemove: Authors) {
         this.authors = this.authors.filter(author => author !== authorToRemove)
 
         // save in cache when user refresh or come back later

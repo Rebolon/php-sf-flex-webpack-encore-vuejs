@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -17,50 +18,62 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ApiResource(
  *     iri="http://schema.org/author",
- *     attributes={"access_control"="is_granted('ROLE_USER')", "status_code"=403}
+ *     security="is_granted('ROLE_USER')",
+ *     paginationClientEnabled=true,
  * )
- * @ApiFilter(OrderFilter::class, properties={"id", "lastname", "firstname"}, arguments={"orderParameterName"="order"})
- * @ApiFilter(SearchFilter::class, properties={"id": "exact", "firstname": "istart", "lastname": "istart"})
+ * @ApiFilter(OrderFilter::class, properties={"id", "lastname", "firstname"})
+ * @ApiFilter(SearchFilter::class, properties={"firstname": "istart", "lastname": "istart"})
+ * @ApiFilter(PropertyFilter::class, arguments={"parameterName": "properties", "overrideDefaultProperties": false}))
  *
  * @ORM\Entity
  */
 class Author implements LibraryInterface
 {
     /**
-     * @Groups("book_detail_read")
+     * @Groups("book:detail:read")
      *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Assert\Uuid()
+     *
+     * @var int
      */
-    private $id;
+    protected $id;
 
     /**
      * @ApiProperty (
      *     iri="http://schema.org/givenName"
      * )
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @Groups({"book:detail:read", "book:detail:write"})
      *
      * @ORM\Column(type="string", nullable=false)
      *
      * @Assert\NotBlank()
+     *
+     * @var string
      */
-    private $firstname;
+    protected $firstname;
 
     /**
      * @ApiProperty (
      *     iri="http://schema.org/familyName"
      * )
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @Groups({"book:detail:read", "book:detail:write"})
      *
      * @ORM\Column(type="string", nullable=true)
+     *
+     * @var string
      */
-    private $lastname;
+    protected $lastname;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookCreation", mappedBy="author")
+     *
+     * @var Collection|ProjectBookCreation[]
      */
-    private $books;
+    protected $books;
 
     /**
      * Author constructor.
@@ -72,7 +85,7 @@ class Author implements LibraryInterface
 
     /**
      * id can be null until flush is done
-     * @return int
+     * @return int|null
      */
     public function getId(): ?int
     {
@@ -81,9 +94,9 @@ class Author implements LibraryInterface
 
     /**
      * @param mixed $id
-     * @return Author
+     * @return self
      */
-    public function setId($id): Author
+    public function setId($id): self
     {
         $this->id = $id;
 
@@ -91,7 +104,7 @@ class Author implements LibraryInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getFirstname(): ?string
     {
@@ -100,9 +113,9 @@ class Author implements LibraryInterface
 
     /**
      * @param mixed $firstname
-     * @return Author
+     * @return self
      */
-    public function setFirstname($firstname): Author
+    public function setFirstname($firstname): self
     {
         $this->firstname = $firstname;
 
@@ -110,7 +123,7 @@ class Author implements LibraryInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getLastname(): ?string
     {
@@ -119,9 +132,9 @@ class Author implements LibraryInterface
 
     /**
      * @param mixed $lastname
-     * @return Author
+     * @return self
      */
-    public function setLastname($lastname): Author
+    public function setLastname($lastname): self
     {
         $this->lastname = $lastname;
 
@@ -141,9 +154,9 @@ class Author implements LibraryInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getName(): string
+    public function getName(): ?string
     {
         return trim($this->getFirstname() . ' ' . $this->getLastname());
     }
@@ -156,6 +169,6 @@ class Author implements LibraryInterface
      */
     public function __toString(): string
     {
-        return $this->getName();
+        return (string) $this->getName();
     }
 }

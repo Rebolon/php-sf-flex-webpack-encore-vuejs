@@ -11,6 +11,8 @@ parameters:
     api_platform_prefix: '/api'
     token_jwt_ttl: 3600
     token_jwt_bearer: 'Bearer'
+    # fallback if no VARNISH_URL env defined
+    env(VARNISH_URL): ''
 
 services:
     # default configuration for services in *this* file
@@ -28,9 +30,9 @@ services:
         bind:
             $csrfTokenParameter: '%csrf_token_parameter%'
             $csrfTokenId: '%csrf_token_id%'
-            $loginUsernamePath : '%login_username_path%'
-            $loginPasswordPath : '%login_password_path%'
-            $providerKey : '%provider_id%'
+            $loginUsernamePath: '%login_username_path%'
+            $loginPasswordPath: '%login_password_path%'
+            $providerKey: '%provider_id%'
             $apiPlatformPrefix: '%api_platform_prefix%'
             $tokenJwtTtl: '%token_jwt_ttl%'
             $tokenJwtBearer: '%token_jwt_bearer%'
@@ -56,10 +58,15 @@ services:
         tags: ['controller.service_arguments']
 
     # to overload the Swagger API documentation with my own decorator: App\Swagger\SwaggerDecorator.php
+    # do not move this into imported file, because all imported files are autowired, even with autowire false
     App\Swagger\SwaggerDecorator:
         decorates: 'api_platform.swagger.normalizer.documentation'
-        arguments: [ '@App\Swagger\SwaggerDecorator.inner' ]
+        arguments: [ '@App\Swagger\SwaggerDecorator.inner', '%login_username_path%', '%login_password_path%' ]
         autoconfigure: false
+
+    Symfony\Contracts\HttpClient\HttpClientInterface:
+        factory: ['Symfony\Component\HttpClient\HttpClient', 'create']
+        public: true
 
     App\DataFixtures\ConnectionFixtures:
         public: true
@@ -68,6 +75,55 @@ services:
 
     App\Security\JwtTokenTools:
         public: true
+
+    App\Security\CsrfTokenAuthenticator:
+        arguments: #~
+        # for debug purpose, now we may only inject container this way, coz you should never inject the container, only specific services
+            $container: '@service_container'
+
+    # needs to alias the current security.user.provider.concrete.in_memory to the class (seems not done in sf or security bundle)
+    #Symfony\Component\Security\Core\User\InMemoryUserProvider:
+    #    alias: security.user.provider.concrete.in_memory
+
+    # to overload tokenExtractor with specific Bearer, do this:
+    lexik_jwt_authentication.extractor.authorization_header_extractor:
+        class: Lexik\Bundle\JWTAuthenticationBundle\TokenExtractor\AuthorizationHeaderTokenExtractor
+        arguments:
+            - '%token_jwt_bearer%'
+            - 'Authorization'
+
+    # define JWT Listener to add extra public info into payload
+    acme_api.event.authentication_success_listener:
+        class: App\EventListener\AuthenticationSuccessListener
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccessResponse }
+
+    acme_api.event.jwt_created_listener:
+        class: App\EventListener\JWTCreatedListener
+        arguments: [ '@request_stack' ]
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
+
+    acme_api.event.jwt_decoded_listener:
+        class: App\EventListener\JWTDecodedListener
+        arguments: [ '@request_stack' ]
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_decoded, method: onJWTDecoded }
+
+    #acme_api.event.jwt_authenticated_listener:
+    #    class: App\EventListener\JWTAuthenticatedListener
+    #    tags:
+    #        - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_authenticated, method: onJWTAuthenticated }
+
+    acme_api.event.authentication_failure_listener:
+        class: App\EventListener\AuthenticationFailureListener
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_failure, method: onAuthenticationFailureResponse }
+
+    acme_api.event.jwt_invalid_listener:
+        class: App\EventListener\JWTInvalidListener
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_invalid, method: onJWTInvalid }
 
     App\Request\ParamConverter\Library\AuthorConverter:
         public: true
@@ -106,8 +162,10 @@ services:
         tags:
             - { name: request.param_converter, priority: -2, converter: serie }
 
-    # needs to alias the current security.user.provider.concrete.in_memory to the class (seems not done in sf or security bundle)
-    Symfony\Component\Security\Core\User\InMemoryUserProvider:
-        alias: security.user.provider.concrete.in_memory
-
-    App\DataProvider\PingDataProvider: ~
+##   Sample on how to create a custom DataProvider by injecting the original one inside yours (it's a Decorator pattern)
+#    App\DataProvider\TagDataProvider:
+#        arguments:
+#            - '@Doctrine\Common\Persistence\ManagerRegistry'
+#            - '@App\Api\Config'
+#            - "@api_platform.doctrine.orm.default.collection_data_provider"
+#            - "@api_platform.doctrine.orm.default.item_data_provider"

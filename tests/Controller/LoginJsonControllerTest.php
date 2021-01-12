@@ -12,7 +12,7 @@ class LoginJsonControllerTest extends PantherToolsAbstract
     public function testLoginFail()
     {
         $client = static::createPantherClient(); // Your app is automatically started using the built-in web server
-        $uri = $this->getRouter()->generate('app_formquasarvuejs_index');
+        $uri = $this->getRouter()->generate('vuejs_form_quasar');
         $crawler = $client->request('GET', $uri);
 
         $this->assertContains('Welcome to', $crawler->filter('h5')->text()); // You can use any PHPUnit assertion
@@ -29,7 +29,7 @@ class LoginJsonControllerTest extends PantherToolsAbstract
         $inputPwd->sendKeys('fakeUser11111');
 
         $form = $crawler->selectButton('LOGIN')->form();
-        $crawler = $client->submit($form);
+        $client->submit($form);
         $client->waitFor('div.q-alert.bg-warning');
         $this->assertContains($uri, $client->getCurrentURL());
 
@@ -54,18 +54,19 @@ class LoginJsonControllerTest extends PantherToolsAbstract
         //$this->markTestIncomplete('at the end of the test i dont know why but the crawler doesnot find the title `List of books`, instead it keeps the first title `Welcome to` ');
 
         $client = static::createPantherClient(); // Your app is automatically started using the built-in web server
-        $uri = $this->getRouter()->generate('app_formquasarvuejs_index');
+        $uri = $this->getRouter()->generate('vuejs_form_quasar');
         $crawler = $client->request('GET', $uri);
 
-        $this->assertContains('Welcome to', $crawler->filter('h5')->text()); // You can use any PHPUnit assertion
+        $this->assertStringContainsString('Welcome to', $crawler->filter('h5')->text()); // You can use any PHPUnit assertion
 
+        $user = $this->profiles[$this->currentProfileIdx];
         $inputUserName = $crawler->filter('form.login input[name=username]')->getElement(0);
         $inputUserName->clear();
-        $inputUserName->sendKeys('test_js');
+        $inputUserName->sendKeys($user['login']);
 
         $inputPwd = $crawler->filter('form.login input[name=password]')->getElement(0);
         $inputPwd->clear();
-        $inputPwd->sendKeys('test');
+        $inputPwd->sendKeys($user['pwd']);
 
         $form = $crawler->selectButton('LOGIN')->form();
         $crawler = $client->submit($form);

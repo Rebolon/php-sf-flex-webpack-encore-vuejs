@@ -1,6 +1,7 @@
 <?php
 namespace App\Security;
 
+use InvalidArgumentException;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class CsrfToken
@@ -34,7 +35,7 @@ class CsrfToken
         $token = new \Symfony\Component\Security\Csrf\CsrfToken($tokenId, $tokenValue);
 
         if (!$tokenValue || !$this->tokenManager->isTokenValid($token)) {
-            throw new \InvalidArgumentException('Invalid token');
+            throw new InvalidArgumentException('Invalid token');
         }
 
         return true;

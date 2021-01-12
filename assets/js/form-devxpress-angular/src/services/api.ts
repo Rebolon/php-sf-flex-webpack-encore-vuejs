@@ -23,7 +23,7 @@ export class ApiService {
     constructor(protected http: HttpClient, protected jwtInterceptorService: JwtInterceptorService) { }
 
     get(path: string, options: Object = {}): Observable<any> {
-        const init = Object.assign(options, this.options)
+        const init: {} = Object.assign(options, this.options)
         const uri = this.buildUri(path)
 
         return this.http
@@ -31,8 +31,7 @@ export class ApiService {
     }
 
     post(path: string, body: any, options: Object = {}): Observable<any> {
-        const init = Object.assign(options, this.options)
-        init.body = body
+        const init: {} = Object.assign(options, this.options, {body})
         const uri = this.buildUri(path)
 
         return this.http
@@ -40,8 +39,7 @@ export class ApiService {
     }
 
     put(path: string, body: any, options: Object = {}): Observable<any> {
-        const init = Object.assign(options, this.options)
-        init.body = body
+        const init: {} = Object.assign(options, this.options, {body})
         const uri = this.buildUri(path)
 
         return this.http
@@ -49,8 +47,7 @@ export class ApiService {
     }
 
     delete(path: string, options: Object = {}): Observable<any> {
-        const httpOptions = Object.assign(options, this.options)
-        httpOptions.body = null
+        const httpOptions: {} = Object.assign(options, this.options, {body: null})
         const uri = this.buildUri(path)
 
         return this.http

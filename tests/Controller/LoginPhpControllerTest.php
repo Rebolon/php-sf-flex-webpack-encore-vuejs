@@ -6,6 +6,13 @@ use App\Tests\Common\PantherToolsAbstract;
 
 class LoginPhpControllerTest extends PantherToolsAbstract
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->currentProfileIdx = 1;
+    }
+
     /**
      * @group git-pre-push
      */
@@ -16,7 +23,7 @@ class LoginPhpControllerTest extends PantherToolsAbstract
         $crawler = $client->request('GET', $uri);
 
         $this->assertCount(1, $crawler->filter('body')); // if i test on h5 it fails so for instance i do test on body... crappy
-        $this->assertContains('Welcome to', $crawler->filter('body')->text());
+        $this->assertStringContainsString('Welcome to', $crawler->filter('body')->text());
 
         // for instance method form with array of value fails because Quasar QInput add 2 elements with the same attribute name
         // and Browserkit require that form field input is lonely input with same name in all DOM
@@ -33,20 +40,21 @@ class LoginPhpControllerTest extends PantherToolsAbstract
         $crawler = $client->submit($form);
         $client->waitFor('div.alert.alert-danger');
         $this->assertEquals('Invalid credentials.', $crawler->filter('div.alert.alert-danger')->text());
-        $this->assertContains($uri, $client->getCurrentURL());
+        $this->assertStringContainsString($uri, $client->getCurrentURL());
 
+        $user = $this->profiles[$this->currentProfileIdx];
         $inputUserName = $crawler->filter('form #username')->getElement(0);
         $inputUserName->clear();
-        $inputUserName->sendKeys('test_php');
+        $inputUserName->sendKeys($user['login']);
 
         $inputPwd = $crawler->filter('form #password')->getElement(0);
         $inputPwd->clear();
-        $inputPwd->sendKeys('test');
+        $inputPwd->sendKeys($user['pwd']);
 
         $form = $crawler->selectButton('login')->form();
         $crawler = $client->submit($form);
 
         $hello = $crawler->filter('.container')->getElement(0)->getText();
-        $this->assertContains('Hello Test_php', $hello);
+        $this->assertStringContainsString('Hello Test_php', $hello);
     }
 }

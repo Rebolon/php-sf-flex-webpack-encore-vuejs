@@ -14,7 +14,7 @@ export const loginInfos = {
     },
     uriIsLoggedIn: {
         json: '{{ uriIsLoggedInJson | raw }}',
-        jwt: '{{ uriIsLoggedInJwt | raw }}',
+        jwt: '{{ uriIsLoggedInJwt | raw }}'
     },
     loginUsernamePath: '{{ loginUsernamePath }}',
     loginPasswordPath: '{{ loginPasswordPath }}'
@@ -24,8 +24,10 @@ export const loginInfos = {
 export const apiConfig = {
     itemsPerPage: {{ apiPlatform.items_per_page }},
     clientItemsPerPage: {{ apiPlatform.client_items_per_page }},
-    itemsPerPageParameterName: '{{ apiPlatform.items_per_page_parameter_name }}',
     maximumItemsPerPage: {{ apiPlatform.maximum_items_per_page }},
+    itemsPerPageParameterName: '{{ apiPlatform.items_per_page_parameter_name }}',
+    pageParameterName: '{{ apiPlatform.page_parameter_name }}',
+    orderParameterName: '{{ apiPlatform.order_parameter_name }}'
 }
 {% else %}
 /**
@@ -35,6 +37,8 @@ export const apiConfig = {
  *    client_items_per_page: true
  *    items_per_page_parameter_name: itemsPerPage
  *    maximum_items_per_page: 50
+ *    page_parameter_name: page
+ *    order_parameter_name: 50
  *
  * edit the file and run again: php bin/console app:dump-js-config
  */

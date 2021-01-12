@@ -6,17 +6,19 @@ use ApiPlatform\Core\Annotation\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
-use App\Entity\LoggerTrait;
 use Doctrine\ORM\Mapping as ORM;
-use Psr\Log\LoggerInterface;
+use Doctrine\ORM\ORMInvalidArgumentException;
+use Exception;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use DateTime;
 
 /**
  * @ApiResource(
- *     attributes={"access_control"="is_granted('ROLE_USER')"}
+ *     security="is_granted('ROLE_USER')",
+ *     paginationClientEnabled=true
  * )
- * @ApiFilter(OrderFilter::class, properties={"id", "book", "editor", "publicationDate", "isbn", "collection"}, arguments={"orderParameterName"="order"})
+ * @ApiFilter(OrderFilter::class, properties={"id", "book", "editor", "publicationDate", "isbn", "collection"})
  * @ApiFilter(DateFilter::class, properties={"publicationDate"})
  *
  * @ORM\Entity
@@ -24,49 +26,57 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ProjectBookEdition implements LibraryInterface
 {
-    use LoggerTrait;
-
     /**
-     * @Groups("book_detail_read")
+     * @Groups("book:detail:read")
      *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Assert\Uuid()
+     *
+     * @var int
      */
-    private $id;
+    protected $id;
 
     /**
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @Groups({"book:detail:read", "book:detail:write"})
      *
-     * @ORM\Column(type="date", nullable=true, options={"default":"now()"}, name="publication_date")
+     * @ORM\Column(type="date", nullable=true, name="publication_date")
      *
      * @Assert\DateTime()
+     *
+     * @var DateTime
      */
-    private $publicationDate;
+    protected $publicationDate;
 
     /**
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @Groups({"book:detail:read", "book:detail:write"})
      *
      * @ORM\Column(type="string", nullable=true)
      *
      * @Assert\Type(type="string")
+     *
+     * @var string
      */
-    private $collection;
+    protected $collection;
 
     /**
      * @ApiProperty(
      *     iri="http://schema.org/isbn"
      * )
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @Groups({"book:detail:read", "book:detail:write"})
      *
      * @ORM\Column(nullable=true)
      *
      * @Assert\Isbn()
+     *
+     * @var string
      */
-    private $isbn;
+    protected $isbn;
 
     /**
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @Groups({"book:detail:read", "book:detail:write"})
      *
      * @ORM\ManyToOne(
      *     targetEntity="App\Entity\Library\Editor",
@@ -75,8 +85,10 @@ class ProjectBookEdition implements LibraryInterface
      *     cascade={"remove", "persist"}
      * )
      * @ORM\JoinColumn(name="editor_id", referencedColumnName="id")
+     *
+     * @var Editor
      */
-    private $editor;
+    protected $editor;
 
     /**
      * @ORM\ManyToOne(
@@ -86,22 +98,24 @@ class ProjectBookEdition implements LibraryInterface
      *     cascade={"remove", "persist"}
      * )
      * @ORM\JoinColumn(name="book_id", referencedColumnName="id")
+     *
+     * @var Book
      */
-    private $book;
+    protected $book;
 
     /**
      * ProjectBookEdition constructor.
-     * @param LoggerInterface $logger
      */
-    public function __construct(LoggerInterface $logger)
+    public function __construct()
     {
-        $this->setLogger($logger);
+        // default value coz since mid-2018 (don't have exact DBAL version) there is no more default attributes for datetime
+        $this->setPublicationDate(new DateTime());
     }
 
     /**
      * mandatory for api-platform to get a valid IRI
      *
-     * @return int
+     * @return int|null
      */
     public function getId(): ?int
     {
@@ -110,9 +124,9 @@ class ProjectBookEdition implements LibraryInterface
 
     /**
      * @param mixed $id
-     * @return ProjectBookEdition
+     * @return self
      */
-    public function setId($id): ProjectBookEdition
+    public function setId($id): self
     {
         $this->id = $id;
 
@@ -120,36 +134,37 @@ class ProjectBookEdition implements LibraryInterface
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getPublicationDate(): \DateTime
+    public function getPublicationDate(): DateTime
     {
         return $this->publicationDate;
     }
 
     /**
-     * @param mixed $publicationDate
-     * @return ProjectBookEdition
+     * @param DateTime|string $publicationDate
+     * @return self
      */
-    public function setPublicationDate($publicationDate): ProjectBookEdition
+    public function setPublicationDate($publicationDate): self
     {
+        // @todo mutualize this code
         if (is_string($publicationDate)) {
             $dateString = $publicationDate;
             try {
                 if (preg_match('/\d*/', $publicationDate)) {
-                    $dateTime = new \DateTime();
+                    $dateTime = new DateTime();
                     $publicationDate = $dateTime->setTimestamp((int) $publicationDate);
                 } else {
-                    $publicationDate = new \DateTime($publicationDate);
+                    $publicationDate = new DateTime($publicationDate);
                 }
-            } catch (\Exception $e) {
-                $this->logger->warning(sprintf('Wrong input for publicationDate, %s', $dateString));
+            } catch (Exception $e) {
+                throw new ORMInvalidArgumentException(sprintf('Wrong input for publicationDate, %s', $dateString), 500, $e);
             }
-        } elseif (!($publicationDate instanceof \DateTime)) {
-            $this->logger->warning(sprintf(
-                'Wrong input for publicationDate, should be \\DateTime or valid date string or unixTimestamp, %s',
-                is_object($publicationDate) ? $publicationDate->__toString() : $publicationDate
-            ));
+        } elseif (!($publicationDate instanceof DateTime)) {
+            throw new ORMInvalidArgumentException(sprintf(
+                'Wrong input for publicationDate, should be \DateTime or valid date string or unixTimestamp, %s',
+                is_object($publicationDate) ? $publicationDate->format('r') : $publicationDate
+            ), 500);
         }
 
         $this->publicationDate = $publicationDate;
@@ -158,7 +173,7 @@ class ProjectBookEdition implements LibraryInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getCollection(): ?string
     {
@@ -167,9 +182,9 @@ class ProjectBookEdition implements LibraryInterface
 
     /**
      * @param mixed $collection
-     * @return ProjectBookEdition
+     * @return self
      */
-    public function setCollection($collection): ProjectBookEdition
+    public function setCollection($collection): self
     {
         $this->collection = $collection;
 
@@ -177,7 +192,7 @@ class ProjectBookEdition implements LibraryInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getIsbn(): ?string
     {
@@ -187,9 +202,9 @@ class ProjectBookEdition implements LibraryInterface
     /**
      * @param mixed $isbn
      *
-     * @return ProjectBookEdition
+     * @return self
      */
-    public function setIsbn($isbn): ProjectBookEdition
+    public function setIsbn($isbn): self
     {
         $this->isbn = $isbn;
 
@@ -206,9 +221,9 @@ class ProjectBookEdition implements LibraryInterface
 
     /**
      * @param Editor $editor
-     * @return $this
+     * @return self
      */
-    public function setEditor(Editor $editor): ProjectBookEdition
+    public function setEditor(Editor $editor): self
     {
         $this->editor = $editor;
 
@@ -216,7 +231,7 @@ class ProjectBookEdition implements LibraryInterface
     }
 
     /**
-     * @return Book
+     * @return Book|null
      */
     public function getBook(): ?Book
     {
@@ -225,9 +240,9 @@ class ProjectBookEdition implements LibraryInterface
 
     /**
      * @param Book $book
-     * @return $this
+     * @return self
      */
-    public function setBook(Book $book): ProjectBookEdition
+    public function setBook(Book $book): self
     {
         $this->book = $book;
 

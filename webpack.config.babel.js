@@ -44,13 +44,11 @@ Encore
           ]
      }
      */
-    .configureBabel(function(babelConfig) {
-        // add additional presets
-        //babelConfig.presets.push('@babel/preset-env');
-        //babelConfig.presets.push('@babel/preset-react');
 
-        // no plugins are added by default, but you can add some
-        // babelConfig.plugins.push('styled-jsx/babel');
+    // enables @babel/preset-env polyfills
+    .configureBabel(() => {}, {
+        useBuiltIns: 'usage',
+        corejs: 3 // unknown option, but added with latest update of Webpack/Encore
     })
 
     // uncomment to define the assets of the project
@@ -59,12 +57,13 @@ Encore
     .addEntry('service-worker', './assets/js/lib/service-worker.js')
 
     .addEntry('js/vendor', './assets/js/app.js')
+    .addEntry('js/home', './assets/js/home/app.js')
     .addEntry('js/vuejs', './assets/js/vuejs/app.js')
     .addEntry('js/quasar', './assets/js/quasar/app.js')
     .addEntry('js/login', './assets/js/login/app.js')
     .addEntry('js/form-quasar-vuejs', './assets/js/form-quasar-vuejs/app.js')
     .addEntry('js/form-devxpress-vuejs', './assets/js/form-devxpress-vuejs/app.js')
-    .addEntry('js/api-platform-admin-react', './assets/js/api-platform-admin-react/index.js')
+    .addEntry('js/api-platform-admin-react', './assets/js/api-platform-admin-react/App.js')
 
     // for specific page css (not managed by vue file per example
     .addStyleEntry('css/dx-overload', './assets/css/dx-overload.scss')
@@ -76,7 +75,7 @@ Encore
 
     // uncomment if you use Sass/SCSS files
     // parameters are not mandatory, only if webpack build is slow with bootstrap (http://symfony.com/doc/current/frontend/encore/bootstrap.html)
-    .enableSassLoader(function(sassOptions) {}, {
+    .enableSassLoader(sassOptions => {}, {
         resolveUrlLoader: false,
     })
 

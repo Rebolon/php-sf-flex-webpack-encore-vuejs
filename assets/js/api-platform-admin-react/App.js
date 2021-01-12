@@ -1,38 +1,57 @@
-import React, { Component } from 'react'
-import { HydraAdmin, hydraClient, fetchHydra } from '@api-platform/admin'
-import { authClient, initToken } from './authClient'
-import { host, apiPlatformPrefix } from '../lib/config'
+import React from 'react';
+import parseHydraDocumentation from '@api-platform/api-doc-parser/lib/hydra/parseHydraDocumentation';
+import { HydraAdmin, hydraClient, fetchHydra as baseFetchHydra } from '@api-platform/admin';
+import ReactDOM from 'react-dom';
+import authProvider from './src/authProvider';
+import { Route, Redirect } from 'react-router-dom';
+import {MyLoginPage} from "./src/components/login";
+import Api from '@api-platform/api-doc-parser/lib/Api';
 
-const entrypoint = `//${host}${apiPlatformPrefix}`
-const fetchHeaders = (options) => {
-    const token = localStorage.getItem('token');
+const entrypoint = document.getElementById('api-entrypoint').innerText;
+// original system with JWT
+const fetchHeaders = {'Authorization': `Bearer ${localStorage.getItem('token')}`};
+const fetchHydra = (url, options = {}) => baseFetchHydra(url, {
+    ...options,
+    headers: new Headers(fetchHeaders),
+});
+const dataProvider = api => hydraClient(api, fetchHydra);
+const apiDocumentationParser = entrypoint =>
+    parseHydraDocumentation(entrypoint, {
+        headers: new Headers(fetchHeaders),
+    }).then(
+        ({ api }) => ({ api }),
+        result => {
+            let { api, status } = result;
 
-    if (!token) {
-        return
-    }
+            // hack to make it works
+            if (!status) {
+                status = 401
+            }
 
-    options.headers.set('Authorization', `${token}`);
-};
-const fetchWithAuth = (url, options = {}) => {
-    if (!options.headers) options.headers = new Headers({ Accept: 'application/ld+json' });
-    fetchHeaders(options)
+            if (!api) {
+                api = new Api(entrypoint, {resources: []})
+            }
+            // end of hack
 
-    // fix https://github.com/api-platform/api-platform/issues/584
-    if (apiPlatformPrefix) {
-        url = url.replace(`${apiPlatformPrefix}${apiPlatformPrefix}/`, `${apiPlatformPrefix}/`)
-    }
+            if (status === 401 || status === 403) {
+                return Promise.resolve({
+                    api,
+                    status,
+                    customRoutes: [
+                        <Route path="/" render={() => <Redirect to="/login" />} />, // @todo should be in config or somewhere-else
+                    ],
+                });
+            }
 
-    return fetchHydra(url, options);
-};
+            return Promise.reject(result);
+        }
+    );
 
-const restClient = (api) => (hydraClient(api, fetchWithAuth));
-
-export default class extends Component {
-    componentWillMount() {
-        initToken()
-    }
-
-    render() {
-        return <HydraAdmin entrypoint={entrypoint} restClient={restClient} authClient={authClient}/>
-    }
-}
+ReactDOM.render(
+    <HydraAdmin
+        apiDocumentationParser={apiDocumentationParser}
+        authProvider={authProvider}
+        entrypoint={entrypoint}
+        dataProvider={dataProvider}
+        loginPage={MyLoginPage}
+    />, document.getElementById('api-platform-admin'));

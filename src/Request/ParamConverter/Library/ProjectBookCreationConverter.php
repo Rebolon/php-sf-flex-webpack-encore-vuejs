@@ -3,13 +3,10 @@
 namespace App\Request\ParamConverter\Library;
 
 use App\Entity\Library\ProjectBookCreation;
-use Rebolon\Request\ParamConverter\ListAbstractConverter;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Validator\ConstraintViolation;
-use Symfony\Component\Validator\ConstraintViolationList;
-use ApiPlatform\Core\Bridge\Symfony\Validator\Exception\ValidationException;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Rebolon\Request\ParamConverter\ListAbstractConverter;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class ProjectBookCreationConverter extends ListAbstractConverter
 {

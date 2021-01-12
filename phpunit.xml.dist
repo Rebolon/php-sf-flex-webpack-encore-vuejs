@@ -5,22 +5,23 @@
          xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/6.5/phpunit.xsd"
          backupGlobals="false"
          colors="true"
-         bootstrap="vendor/autoload.php"
+         bootstrap="tests/bootstrap.php"
          convertErrorsToExceptions="false"
          convertNoticesToExceptions="false"
          convertWarningsToExceptions="false"
 >
     <php>
         <ini name="error_reporting" value="-1" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak"/>
+        <env name="ENABLE_FUNCTIONAL_TESTS" value="1"/>
         <env name="KERNEL_CLASS" value="App\Kernel" />
-        <env name="APP_ENV" value="test" />
         <env name="APP_DEBUG" value="1" />
-        <env name="APP_SECRET" value="s$cretf0rt3st" />
+        <!--env name="APP_ENV" value="test" /-->
+        <!--env name="APP_SECRET" value="s$cretf0rt3st" /-->
         <env name="SHELL_VERBOSITY" value="-1" />
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="weak" />
+
         <!-- define your env variables for the test env here -->
-        <env name="FIXTURES_DATABASE_URL" value="sqlite:///%kernel.project_dir%/var/data/fixtures.db" />
-        <env name="DATABASE_URL" value="sqlite:///%kernel.project_dir%/var/data/test.db" />
 
         <!-- ###+ nelmio/cors-bundle ### -->
         <env name="CORS_ALLOW_ORIGIN" value="^https?://localhost:?[0-9]*$"/>
@@ -32,6 +33,17 @@
         <env name="JWT_PUBLIC_KEY_PATH" value="var/cache/config/jwt-test/public.pem"/>
         <env name="JWT_PASSPHRASE" value="test"/>
         <!-- ###- lexik/jwt-authentication-bundle ### -->
+
+        <!-- ###+ symfony/framework-bundle ### -->
+        <env name="APP_ENV" value="test"/>
+        <env name="APP_SECRET" value="s$cretf0rt3st"/>
+        <!-- env name="TRUSTED_PROXIES" value="127.0.0.1,127.0.0.2" -->
+        <!-- env name="TRUSTED_HOSTS" value="'^localhost|example\.com$'" -->
+        <!-- ###- symfony/framework-bundle ### -->
+
+        <!-- ###+ symfony/panther ### -->
+        <!-- env name="PANTHER_CHROME_DRIVER_BINARY" value="" /-->
+        <!-- ###- symfony/panther ### -->
     </php>
 
     <testsuites>

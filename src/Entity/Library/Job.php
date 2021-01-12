@@ -8,9 +8,19 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * @todo would be interesting to add cache here (seems to need a varnish server)
+ *     cacheHeaders={"max_age"=3600, "shared_max_age"=7200}
+ *
  * @ApiResource(
  *     iri="http://schema.org/Role",
- *     attributes={"access_control"="is_granted('ROLE_USER')"}
+ *     security="is_granted('ROLE_USER')",
+ *     paginationClientEnabled=true,
+ *     collectionOperations={
+ *          "get"
+ *     },
+ *     itemOperations={
+ *         "get"
+ *     }
  * )
  *
  * @ORM\Entity
@@ -18,30 +28,43 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Job implements LibraryInterface
 {
     /**
-     * @Groups("book_detail_read")
+     * @Groups("book:detail:read")
      *
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @Assert\Uuid()
+     *
+     * @var int
      */
-    private $id;
+    protected $id;
 
     /**
      * @ApiProperty(
      *     iri="http://schema.org/name"
      * )
-     * @Groups({"book_detail_read", "book_detail_write"})
+     * @Groups({"book:detail:read", "book:detail:write"})
      *
      * @ORM\Column(type="string", length=256, nullable=false, name="translation_key")
      *
      * @Assert\NotBlank()
      * @Assert\Length(max="256")
+     *
+     * @var string
      */
-    private $translationKey;
+    protected $translationKey;
+
+    /**
+     * Job constructor.
+     */
+    public function __construct()
+    {
+    }
 
     /**
      * id can be null until flush is done
-     * @return int
+     * @return int|null
      */
     public function getId(): ?int
     {
@@ -50,9 +73,9 @@ class Job implements LibraryInterface
 
     /**
      * @param mixed $id
-     * @return Job
+     * @return self
      */
-    public function setId($id): Job
+    public function setId($id): self
     {
         $this->id = $id;
 
@@ -60,7 +83,7 @@ class Job implements LibraryInterface
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getTranslationKey(): ?string
     {
@@ -69,9 +92,9 @@ class Job implements LibraryInterface
 
     /**
      * @param mixed $translationKey
-     * @return Job
+     * @return self
      */
-    public function setTranslationKey($translationKey): Job
+    public function setTranslationKey($translationKey): self
     {
         $this->translationKey = $translationKey;
 
@@ -86,6 +109,6 @@ class Job implements LibraryInterface
      */
     public function __toString(): string
     {
-        return $this->getTranslationKey() ? $this->getTranslationKey() : '';
+        return (string) $this->getTranslationKey();
     }
 }

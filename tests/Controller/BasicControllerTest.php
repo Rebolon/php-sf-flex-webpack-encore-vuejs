@@ -9,7 +9,7 @@ class BasicControllerTest extends PantherToolsAbstract
     /**
      * @var string
      */
-    protected $content = '<html xmlns="http://www.w3.org/1999/xhtml"><head></head><body>This is the index action !</body></html>';
+    protected $content = '<html><head></head><body>This is the index action !</body></html>';
 
     /**
      * @group git-pre-push
@@ -17,10 +17,10 @@ class BasicControllerTest extends PantherToolsAbstract
     public function testBasicController()
     {
         $client = static::createPantherClient(); // Your app is automatically started using the built-in web server
-        $crawler = $client->request('GET', $this->getRouter()->generate('simple'));
+        $client->request('GET', $this->getRouter()->generate('simple'));
 
         // because the BasicController only render text, we cannot use $crawler that expect a valid DOM. But we can use the client->getPageSource, except that it will embeed the text in an html>body node
-        $this->assertContains($this->content, $client->getPageSource());
+        $this->assertStringContainsString($this->content, $client->getPageSource());
     }
 
     /**
@@ -35,6 +35,6 @@ class BasicControllerTest extends PantherToolsAbstract
         $client->click($link->first()->link());
 
         // because the BasicController only render text, we cannot use $crawler that expect a valid DOM. But we can use the client->getPageSource, except that it will embeed the text in an html>body node
-        $this->assertContains($this->content, $client->getPageSource());
+        $this->assertStringContainsString($this->content, $client->getPageSource());
     }
 }
