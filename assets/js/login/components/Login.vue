@@ -3,7 +3,7 @@
         <form class="login" @submit="prevent">
             <label class="title">
                 <h5 class="welcome">Welcome to</h5>
-                the demo of Symfony 3.3+ / Webpack encore / Vuejs / Quasar
+                the demo of Symfony 5+ / Webpack encore / Vuejs
                 <h6 class="hint">You can login with test_js/test</h6>
             </label>
             <div class="login-group">
