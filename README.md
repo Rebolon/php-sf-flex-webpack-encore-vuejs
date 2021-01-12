@@ -257,7 +257,7 @@ But for instance i didn't found any solution to run it finely without --skip-js-
 
 ### Symfony security
 In Symfony i configured different firewalls:
- * *security_js* and *security_php* share the same context so when you are logged on one, you are also logged on the other. I did this because a firewall cannot use both form_login and json_login (or i didn't found the way), and i wnated you to understand the concept of context.
+ * *security_js* and *security_php* share the same context so when you are logged on one, you are also logged on the other. I did this because a firewall cannot use both form_login and json_login (or i didn't found the way), and i wanted you to understand the concept of context.
  * *security_jwt* is for stateless app. You can read the following tutorial to understand [https://knpuniversity.com/screencast/symfony-rest4](https://knpuniversity.com/screencast/symfony-rest4)
 
 If you doesn't need JWT, you can use ApiKey pattern. For this you have to implement the required Authenticator: https://symfony.com/doc/current/security/api_key_authentication.html
@@ -609,6 +609,15 @@ I wrote some articles on medium to explain some practices setup in this project:
  * https://github.com/symfony/webpack-encore/issues/256#issuecomment-471601797
  * https://stackoverflow.com/questions/57184540/react-admin-how-to-use-basic-authentification-in-my-sample-auth-headers-are-w/57217309#57217309
 
+## Third-part licencing
+
+ * symfony: https://symfony.com/doc/current/contributing/code/license.html
+ * apiplatform: https://github.com/api-platform/api-platform/blob/master/LICENSE
+ * vuejs: https://github.com/vuejs/vue/blob/master/LICENSE
+ * react: https://github.com/facebook/react/blob/master/LICENSE
+ * angular: https://angular.io/license
+ * quasar: https://github.com/quasarframework/quasar/blob/dev/LICENSE
+ * devexpress: https://js.devexpress.com/EULAs/DevExtremeNonCommercial/
 
 ## License
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FRebolon%2Fphp-sf-flex-webpack-encore-vuejs.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FRebolon%2Fphp-sf-flex-webpack-encore-vuejs?ref=badge_large)

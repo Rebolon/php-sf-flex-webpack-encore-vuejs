@@ -62,7 +62,6 @@
     "devextreme-vue": "^18.2.6",
     "graphql": "^14.1.1",
     "graphql-tag": "^2.10.1",
-    "jquery": "^3.4.1",
     "offline-plugin": "^5.0.6",
     "prop-types": "^15.7.2",
     "quasar-extras": "^1.0.3",
