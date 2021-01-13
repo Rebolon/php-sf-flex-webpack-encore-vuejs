@@ -28,7 +28,5 @@ class JWTAuthenticatedListener
     {
         $token = $event->getToken();
         $payload = $event->getPayload();
-
-        //$token->setAttribute('uuid', $payload['uuid']);
     }
 }

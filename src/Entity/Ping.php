@@ -20,7 +20,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Ping
 {
     /**
-     * @Assert\Uuid()
      * @ApiProperty(identifier=true)
      * @var int
      */

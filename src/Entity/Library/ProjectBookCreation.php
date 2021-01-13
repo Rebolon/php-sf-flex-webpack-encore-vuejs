@@ -30,11 +30,9 @@ class ProjectBookCreation implements LibraryInterface
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      *
-     * @Assert\Uuid()
-     *
-     * @var int
+     * @var ?int
      */
-    protected $id;
+    protected ?int $id = null;
 
     /**
      * @Groups({"book:detail:read", "book:detail:write"})
@@ -44,7 +42,7 @@ class ProjectBookCreation implements LibraryInterface
      *
      * @var Job
      */
-    protected $role;
+    protected Job $role;
 
     /**
      * @ORM\ManyToOne(
@@ -57,7 +55,7 @@ class ProjectBookCreation implements LibraryInterface
      *
      * @var Book
      */
-    protected $book;
+    protected Book $book;
 
     /**
      * @MaxDepth(1)
@@ -73,7 +71,7 @@ class ProjectBookCreation implements LibraryInterface
      *
      * @var Author
      */
-    protected $author;
+    protected Author $author;
 
     /**
      * ProjectBookCreation constructor.
@@ -93,10 +91,10 @@ class ProjectBookCreation implements LibraryInterface
     }
 
     /**
-     * @param mixed $id
+     * @param int $id
      * @return self
      */
-    public function setId($id): self
+    public function setId(int $id): self
     {
         $this->id = $id;
 

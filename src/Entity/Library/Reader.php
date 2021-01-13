@@ -60,11 +60,9 @@ class Reader implements LibraryInterface
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      *
-     * @Assert\Uuid()
-     *
-     * @var int
+     * @var ?int
      */
-    protected $id;
+    protected ?int $id = null;
 
     /**
      * @ApiProperty(
@@ -77,9 +75,9 @@ class Reader implements LibraryInterface
      *
      * @Assert\Length(max="255")
      *
-     * @var string
+     * @var ?string
      */
-    protected $lastname;
+    protected ?string $lastname = null;
 
     /**
      * @ApiProperty(
@@ -92,9 +90,9 @@ class Reader implements LibraryInterface
      *
      * @Assert\Length(max="255")
      *
-     * @var string
+     * @var ?string
      */
-    protected $firstname;
+    protected ?string $firstname = null;
 
     /**
      * @ApiProperty(
@@ -110,7 +108,7 @@ class Reader implements LibraryInterface
      *
      * @var string
      */
-    protected $email;
+    protected string $email;
 
     /**
      * @todo it may not be a list of books but a list of projectEdition coz you may get a book more than once but in
@@ -133,7 +131,7 @@ class Reader implements LibraryInterface
      *
      * @var Collection|Book[]
      */
-    protected $books;
+    protected Collection $books;
 
     /**
      * List of book a reader has borrowed to another reader
@@ -146,7 +144,7 @@ class Reader implements LibraryInterface
      * @ORM\OneToMany(targetEntity="App\Entity\Library\Loan", mappedBy="loaner")
      * @var Collection|Loan[]
      */
-    protected $loans;
+    protected Collection $loans;
 
     /**
      * List of book a reader has borrowed from another reader
@@ -159,7 +157,7 @@ class Reader implements LibraryInterface
      * @ORM\OneToMany(targetEntity="App\Entity\Library\Loan", mappedBy="borrower")
      * @var Collection|Loan[]
      */
-    protected $borrows;
+    protected Collection $borrows;
 
     /**
      * Book constructor.
@@ -201,7 +199,7 @@ class Reader implements LibraryInterface
     }
 
     /**
-     * @param string $lastname
+     * @param ?string $lastname
      * @return self
      */
     public function setLastname(?string $lastname): self
@@ -220,7 +218,7 @@ class Reader implements LibraryInterface
     }
 
     /**
-     * @param mixed $firstname
+     * @param ?string $firstname
      * @return self
      */
     public function setFirstname(?string $firstname): self
@@ -239,10 +237,10 @@ class Reader implements LibraryInterface
     }
 
     /**
-     * @param string|null $email
+     * @param string $email
      * @return self
      */
-    public function setEmail(?string $email): self
+    public function setEmail(string $email): self
     {
         $this->email = $email;
 
@@ -258,10 +256,10 @@ class Reader implements LibraryInterface
     }
 
     /**
-     * @param ArrayCollection $aLibrary
+     * @param Collection $aLibrary
      * @return self
      */
-    public function setBooks(ArrayCollection $aLibrary): self
+    public function setBooks(Collection $aLibrary): self
     {
         $this->books = $aLibrary;
 
@@ -314,32 +312,38 @@ class Reader implements LibraryInterface
     /**
      * @return Loan[]|Collection
      */
-    public function getLoans()
+    public function getLoans(): Collection
     {
         return $this->loans;
     }
 
     /**
      * @param Loan[]|Collection $loans
-     * @return Reader
+     * @param bool $updateRelation
+     * @return $this
      */
-    public function setLoans($loans): self
+    public function setLoans($loans, bool $updateRelation = true): self
     {
-        $this->loans = $loans;
+        $this->loans->clear();
+
+        foreach ($loans as $loan) {
+            $this->addLoan($loan, $updateRelation);
+        }
 
         return $this;
     }
 
     /**
+     * @param Loan $loan
+     * @param bool $updateRelation
+     * @return $this
      * @todo a large part of the code below should be moved into DTO
      *
-     * @param Loan $loan
-     * @return $this
      */
-    public function addLoan(Loan $loan)
+    public function addLoan(Loan $loan, bool $updateRelation = true): self
     {
-        if (!$loan->getLoaner()) {
-            $loan->setLoaner($this);
+        if ($updateRelation || !$loan->getLoaner()) {
+            $loan->setLoaner($this, false);
         }
 
         if ($loan->getLoaner() !== $this) {
@@ -368,32 +372,38 @@ class Reader implements LibraryInterface
     /**
      * @return Loan[]|Collection
      */
-    public function getBorrows()
+    public function getBorrows(): Collection
     {
         return $this->borrows;
     }
 
     /**
      * @param Loan[]|Collection $borrows
+     * @param bool $updateRelation
      * @return Reader
      */
-    public function setBorrows($borrows): self
+    public function setBorrows(Collection $borrows, bool $updateRelation = true): self
     {
-        $this->borrows = $borrows;
+        $this->borrows->clear();
+
+        foreach ($borrows as $borrow) {
+            $this->addBorrow($borrow, $updateRelation);
+        }
 
         return $this;
     }
 
     /**
+     * @param Loan $loan
+     * @param bool $updateRelation
+     * @return $this
      * @todo a large part of the code below should be moved into DTO
      *
-     * @param Loan $loan
-     * @return $this
      */
-    public function addBorrow(Loan $loan)
+    public function addBorrow(Loan $loan, bool $updateRelation = true)
     {
-        if (!$loan->getBorrower()) {
-            $loan->setBorrower($this);
+        if ($updateRelation || !$loan->getBorrower()) {
+            $loan->setBorrower($this, false);
         }
 
         if ($loan->getBorrower() !== $this

@@ -114,7 +114,6 @@ class BookTest extends WebPagesAbstract
             ->setFirstname('Paul')
             ->setLastname('Smith');
 
-        $this->getProjectCreation(null, $author, $jobWriter, $this->book);
         $this->book->addAuthor($author, $jobWriter);
 
         $this->em->persist($this->book);
@@ -170,8 +169,11 @@ class BookTest extends WebPagesAbstract
     {
         $project = new ProjectBookCreation();
 
+        if (!\is_null($id)) {
+            $project->setId($id);
+        }
+
         $project
-            ->setId($id)
             ->setAuthor($author)
             ->setRole($job)
             ->setBook($book)

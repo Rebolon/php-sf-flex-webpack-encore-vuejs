@@ -36,11 +36,9 @@ class Author implements LibraryInterface
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      *
-     * @Assert\Uuid()
-     *
-     * @var int
+     * @var ?int
      */
-    protected $id;
+    protected ?int $id = null;
 
     /**
      * @ApiProperty (
@@ -54,7 +52,7 @@ class Author implements LibraryInterface
      *
      * @var string
      */
-    protected $firstname;
+    protected string $firstname;
 
     /**
      * @ApiProperty (
@@ -64,9 +62,9 @@ class Author implements LibraryInterface
      *
      * @ORM\Column(type="string", nullable=true)
      *
-     * @var string
+     * @var string|null
      */
-    protected $lastname;
+    protected ?string $lastname = null;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookCreation", mappedBy="author")

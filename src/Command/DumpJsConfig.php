@@ -137,6 +137,8 @@ class DumpJsConfig extends Command
         $this->displayJsConfigOutput($output, $content);
 
         $this->writeJsConfigFile($input, $output, $content);
+
+        return 0;
     }
 
     /**

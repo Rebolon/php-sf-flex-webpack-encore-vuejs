@@ -34,11 +34,9 @@ class Editor implements LibraryInterface
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      *
-     * @Assert\Uuid()
-     *
-     * @var int
+     * @var ?int
      */
-    protected $id;
+    protected ?int $id = null;
 
     /**
      * @ApiProperty(
@@ -53,14 +51,14 @@ class Editor implements LibraryInterface
      *
      * @var string
      */
-    protected $name;
+    protected string $name;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookEdition", mappedBy="editor")
      *
      * @var Collection|ProjectBookEdition[]
      */
-    protected $books;
+    protected Collection $books;
 
     /**
      * Editor constructor.

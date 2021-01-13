@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace DoctrineMigrations;
+namespace App\Doctrine\Migrations;
 
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\Migrations\AbstractMigration;
@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20200226131747 extends AbstractMigration
+final class Version20210112234122 extends AbstractMigration
 {
     public function getDescription() : string
     {
@@ -69,19 +69,19 @@ final class Version20200226131747 extends AbstractMigration
         $this->addSql('DROP TABLE __temp__project_book_edition');
         $this->addSql('CREATE INDEX IDX_1116D4EA6995AC4C ON project_book_edition (editor_id)');
         $this->addSql('CREATE INDEX IDX_1116D4EA16A2B381 ON project_book_edition (book_id)');
-        $this->addSql('DROP INDEX IDX_2A3845F31717D737');
-        $this->addSql('DROP INDEX IDX_2A3845F316A2B381');
-        $this->addSql('CREATE TEMPORARY TABLE __temp__reader_book AS SELECT reader_id, book_id FROM reader_book');
-        $this->addSql('DROP TABLE reader_book');
-        $this->addSql('CREATE TABLE reader_book (reader_id INTEGER NOT NULL, book_id INTEGER NOT NULL, PRIMARY KEY(reader_id, book_id), CONSTRAINT FK_2A3845F31717D737 FOREIGN KEY (reader_id) REFERENCES reader (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_2A3845F316A2B381 FOREIGN KEY (book_id) REFERENCES book (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
-        $this->addSql('INSERT INTO reader_book (reader_id, book_id) SELECT reader_id, book_id FROM __temp__reader_book');
-        $this->addSql('DROP TABLE __temp__reader_book');
-        $this->addSql('CREATE INDEX IDX_2A3845F31717D737 ON reader_book (reader_id)');
-        $this->addSql('CREATE INDEX IDX_2A3845F316A2B381 ON reader_book (book_id)');
+        $this->addSql('DROP INDEX IDX_7BE733211717D737');
+        $this->addSql('DROP INDEX IDX_7BE7332116A2B381');
+        $this->addSql('CREATE TEMPORARY TABLE __temp__reader_collection AS SELECT reader_id, book_id FROM reader_collection');
+        $this->addSql('DROP TABLE reader_collection');
+        $this->addSql('CREATE TABLE reader_collection (reader_id INTEGER NOT NULL, book_id INTEGER NOT NULL, PRIMARY KEY(reader_id, book_id), CONSTRAINT FK_7BE733211717D737 FOREIGN KEY (reader_id) REFERENCES reader (id) NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7BE7332116A2B381 FOREIGN KEY (book_id) REFERENCES book (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('INSERT INTO reader_collection (reader_id, book_id) SELECT reader_id, book_id FROM __temp__reader_collection');
+        $this->addSql('DROP TABLE __temp__reader_collection');
+        $this->addSql('CREATE INDEX IDX_7BE733211717D737 ON reader_collection (reader_id)');
+        $this->addSql('CREATE INDEX IDX_7BE7332116A2B381 ON reader_collection (book_id)');
         $this->addSql('DROP INDEX IDX_794381C616A2B381');
         $this->addSql('CREATE TEMPORARY TABLE __temp__review AS SELECT id, book_id, rating, body, username, publication_date FROM review');
         $this->addSql('DROP TABLE review');
-        $this->addSql('CREATE TABLE review (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, book_id INTEGER DEFAULT NULL, rating INTEGER NOT NULL, body CLOB DEFAULT NULL COLLATE BINARY, username VARCHAR(512) DEFAULT NULL COLLATE BINARY, publication_date DATETIME NOT NULL, CONSTRAINT FK_794381C616A2B381 FOREIGN KEY (book_id) REFERENCES book (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE review (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, book_id INTEGER DEFAULT NULL, rating INTEGER NOT NULL, body CLOB DEFAULT NULL COLLATE BINARY, username VARCHAR(512) DEFAULT NULL COLLATE BINARY, publication_date DATETIME NOT NULL, CONSTRAINT FK_794381C616A2B381 FOREIGN KEY (book_id) REFERENCES book (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('INSERT INTO review (id, book_id, rating, body, username, publication_date) SELECT id, book_id, rating, body, username, publication_date FROM __temp__review');
         $this->addSql('DROP TABLE __temp__review');
         $this->addSql('CREATE INDEX IDX_794381C616A2B381 ON review (book_id)');
@@ -139,15 +139,15 @@ final class Version20200226131747 extends AbstractMigration
         $this->addSql('DROP TABLE __temp__project_book_edition');
         $this->addSql('CREATE INDEX IDX_1116D4EA6995AC4C ON project_book_edition (editor_id)');
         $this->addSql('CREATE INDEX IDX_1116D4EA16A2B381 ON project_book_edition (book_id)');
-        $this->addSql('DROP INDEX IDX_2A3845F31717D737');
-        $this->addSql('DROP INDEX IDX_2A3845F316A2B381');
-        $this->addSql('CREATE TEMPORARY TABLE __temp__reader_book AS SELECT reader_id, book_id FROM reader_book');
-        $this->addSql('DROP TABLE reader_book');
-        $this->addSql('CREATE TABLE reader_book (reader_id INTEGER NOT NULL, book_id INTEGER NOT NULL, PRIMARY KEY(reader_id, book_id))');
-        $this->addSql('INSERT INTO reader_book (reader_id, book_id) SELECT reader_id, book_id FROM __temp__reader_book');
-        $this->addSql('DROP TABLE __temp__reader_book');
-        $this->addSql('CREATE INDEX IDX_2A3845F31717D737 ON reader_book (reader_id)');
-        $this->addSql('CREATE INDEX IDX_2A3845F316A2B381 ON reader_book (book_id)');
+        $this->addSql('DROP INDEX IDX_7BE733211717D737');
+        $this->addSql('DROP INDEX IDX_7BE7332116A2B381');
+        $this->addSql('CREATE TEMPORARY TABLE __temp__reader_collection AS SELECT reader_id, book_id FROM reader_collection');
+        $this->addSql('DROP TABLE reader_collection');
+        $this->addSql('CREATE TABLE reader_collection (reader_id INTEGER NOT NULL, book_id INTEGER NOT NULL, PRIMARY KEY(reader_id, book_id))');
+        $this->addSql('INSERT INTO reader_collection (reader_id, book_id) SELECT reader_id, book_id FROM __temp__reader_collection');
+        $this->addSql('DROP TABLE __temp__reader_collection');
+        $this->addSql('CREATE INDEX IDX_7BE733211717D737 ON reader_collection (reader_id)');
+        $this->addSql('CREATE INDEX IDX_7BE7332116A2B381 ON reader_collection (book_id)');
         $this->addSql('DROP INDEX IDX_794381C616A2B381');
         $this->addSql('CREATE TEMPORARY TABLE __temp__review AS SELECT id, book_id, rating, body, username, publication_date FROM review');
         $this->addSql('DROP TABLE review');

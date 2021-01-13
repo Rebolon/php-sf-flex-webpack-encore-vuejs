@@ -36,9 +36,9 @@ class Serie implements LibraryInterface
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      *
-     * @Assert\Uuid()
+     * @var ?int
      */
-    protected $id;
+    protected ?int $id = null;
 
     /**
      * @ApiProperty(
@@ -51,7 +51,7 @@ class Serie implements LibraryInterface
      * @Assert\NotBlank()
      * @Assert\Length(max="512")
      */
-    protected $name;
+    protected string $name;
 
     /**
      * @ApiProperty(
@@ -62,7 +62,7 @@ class Serie implements LibraryInterface
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\Book", mappedBy="serie", orphanRemoval=true)
      */
-    protected $books;
+    protected Collection $books;
 
     /**
      * Serie constructor.

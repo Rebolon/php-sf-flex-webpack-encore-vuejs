@@ -34,11 +34,9 @@ class Job implements LibraryInterface
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      *
-     * @Assert\Uuid()
-     *
-     * @var int
+     * @var ?int
      */
-    protected $id;
+    protected ?int $id = null;
 
     /**
      * @ApiProperty(
@@ -53,7 +51,7 @@ class Job implements LibraryInterface
      *
      * @var string
      */
-    protected $translationKey;
+    protected string $translationKey;
 
     /**
      * Job constructor.

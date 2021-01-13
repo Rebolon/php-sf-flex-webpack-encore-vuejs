@@ -14,8 +14,8 @@
     "app_version_prefix": "v1.0"
   },
   "scripts": {
-    "init-project": "[ -f .env ] && echo '.env file already exists' || cp .env.dist .env && cp phpunit.xml.dist phpunit.xml && composer install && npm install && npm run db-init && npm run dump-js-config && cd assets/js/form-devxpress-angular/ && npm install && cd ../../../ && npm run dev && php bin/console assets:install --symlink",
-    "init-project:w": "cp .env.dist .env && cp phpunit.xml.dist phpunit.xml && composer install && npm install && npm run db-init:w && npm run dump-js-config:w && cd assets/js/form-devxpress-angular/ && npm install && cd ../../../ && npm run dev:w && cd vendor/bin/.phpunit/phpunit* && composer install && cd ../../../../ && php bin/console assets:install --symlink",
+    "init-project": "[ -f .env ] && echo '.env file already exists' || cp .env.dist .env && cp phpunit.xml.dist phpunit.xml && composer install && npm install && npm run db-init && npm run dump-js-config && cd assets/js/form-devxpress-angular/ && npm install && cd ../../../ && npm run dev && php bin/console assets:install --symlink && npm run jwt-init && echo 'change right on config/jwt/* to 444 for your web user' && composer dump-env prod",
+    "init-project:w": "cp .env.dist .env && cp phpunit.xml.dist phpunit.xml && composer install && npm install && npm run db-init:w && npm run dump-js-config:w && cd assets/js/form-devxpress-angular/ && npm install && cd ../../../ && npm run dev:w && cd vendor/bin/.phpunit/phpunit* && composer install && cd ../../../../ && php bin/console assets:install --symlink && npm run jwt-init:w && echo 'change right on config/jwt/* to 444 for your web user' && composer dump-env prod",
     "db-init": "$npm_package_config_php bin/console doctrine:database:create && $npm_package_config_php bin/console doctrine:schema:create && $npm_package_config_php bin/console doctrine:migrations:migrate -n && $npm_package_config_php bin/console doctrine:fixtures:load -n",
     "db-init:w": "%npm_package_config_php% bin/console doctrine:database:create && %npm_package_config_php% bin/console doctrine:schema:create && %npm_package_config_php% bin/console doctrine:migrations:migrate -n && %npm_package_config_php% bin/console doctrine:fixtures:load -n",
     "jwt-init": "echo 'Use the same passphrase that is your .env file' && mkdir -p config/jwt && npm run jwt-generation && npm run jwt-generation-test",
@@ -62,6 +62,7 @@
     "devextreme-vue": "^18.2.6",
     "graphql": "^14.1.1",
     "graphql-tag": "^2.10.1",
+    "jquery": "^3.5.1",
     "offline-plugin": "^5.0.6",
     "prop-types": "^15.7.2",
     "quasar-extras": "^1.0.3",

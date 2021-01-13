@@ -33,11 +33,9 @@ class Review implements LibraryInterface
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      *
-     * @Assert\Uuid()
-     *
-     * @var int
+     * @var ?int
      */
-    protected $id;
+    protected ?int $id = null;
 
     /**
      * @ApiProperty(
@@ -51,7 +49,7 @@ class Review implements LibraryInterface
      *
      * @var int
      */
-    protected $rating;
+    protected int $rating;
 
     /**
      * @ApiProperty(
@@ -60,9 +58,9 @@ class Review implements LibraryInterface
      *
      * @ORM\Column(type="text", nullable=true)
      *
-     * @var string
+     * @var ?string
      */
-    protected $body;
+    protected ?string $body = null;
 
     /**
      * @todo change username by user and map ManyToOne on Reader => only user that has read the book can set a review ;-)
@@ -75,9 +73,9 @@ class Review implements LibraryInterface
      *
      * @Assert\Length(max="512")
      *
-     * @var string
+     * @var ?string
      */
-    protected $username;
+    protected ?string $username = null;
 
     /**
      * @ApiProperty(
@@ -91,7 +89,7 @@ class Review implements LibraryInterface
      *
      * @var DateTime
      */
-    protected $publicationDate;
+    protected DateTime $publicationDate;
 
     /**
      * @ApiProperty(
@@ -105,7 +103,7 @@ class Review implements LibraryInterface
      *
      * @var Book
      */
-    protected $book;
+    protected Book $book;
 
     /**
      * ProjectBookEdition constructor.
@@ -251,11 +249,9 @@ class Review implements LibraryInterface
     {
         $this->book = $book;
 
-        if (!$updateRelation) {
-            return $this;
+        if ($updateRelation) {
+            $book->addReview($this, false);
         }
-
-        $book->addReview($this, false);
 
         return $this;
     }

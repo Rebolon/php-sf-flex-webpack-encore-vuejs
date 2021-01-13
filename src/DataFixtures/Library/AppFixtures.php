@@ -70,10 +70,6 @@ class AppFixtures extends Fixture
      */
     public function load(ObjectManager $manager)
     {
-        // init some vars
-        $loans = [];
-        $reviews = [];
-
         // add job (indexed are 0->writer, 1->cartoonist, 2->color)
         foreach (['writer', 'cartoonist', 'color', ] as $jobTitle) {
             $job = (new Job())
@@ -116,18 +112,21 @@ class AppFixtures extends Fixture
         foreach ($q->fetchAllAssociative() as $idx => $row) {
             try {
                 $book = new Book();
-                $book->setTitle($row['title']);
+                $book->setTitle($row['title'])
+                    ->setDescription('');
 
                 $this->addSerie($row, $book, $dbh, $manager);
                 $this->addTags($row, $book, $dbh, $manager);
                 $this->addAuthor($row, $book, $dbh, $manager);
                 $this->addEditor($row, $book, $dbh, $manager);
 
-                $loans = \array_merge($loans, $this->attachReadersAndLoans($readers, $book, $idx, $loans));
-                $reviews = \array_merge($reviews, $this->addReview($book, $idx, $manager));
+                $this->attachReadersAndLoans($readers, $book, $idx, $manager);
+                $this->addReview($book, $idx, $manager);
 
                 $manager->persist($book);
                 $manager->flush();
+
+                $memory = memory_get_usage()/1000000;
             } catch (Exception $e) {
                 throw $e;
             }
@@ -136,16 +135,6 @@ class AppFixtures extends Fixture
         try {
             foreach ($readers as $reader) {
                 $manager->persist($reader);
-                $manager->flush();
-            }
-
-            foreach ($loans as $loan) {
-                $manager->persist($loan);
-                $manager->flush();
-            }
-
-            foreach ($reviews as $review) {
-                $manager->persist($review);
                 $manager->flush();
             }
         } catch (Exception $e) {
@@ -398,8 +387,9 @@ SQL
      * @return Loan|array
      * @throws Exception
      */
-    protected function attachReadersAndLoans($readers, Book $book, $idx, $loans)
+    protected function attachReadersAndLoans($readers, Book $book, $idx, ObjectManager $manager)
     {
+        $loans = [];
         $readers[0]->addBook($book);
 
         if ($idx === 0) {
@@ -540,6 +530,10 @@ SQL
                 ->setStartLoan($startLoan);
 
             $loans[] = $loan;
+        }
+
+        foreach ($loans as $loan) {
+            $manager->persist($loan);
         }
 
         return $loans;

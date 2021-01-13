@@ -163,9 +163,9 @@ services:
             - { name: request.param_converter, priority: -2, converter: serie }
 
 ##   Sample on how to create a custom DataProvider by injecting the original one inside yours (it's a Decorator pattern)
-#    App\DataProvider\TagDataProvider:
-#        arguments:
-#            - '@Doctrine\Common\Persistence\ManagerRegistry'
-#            - '@App\Api\Config'
-#            - "@api_platform.doctrine.orm.default.collection_data_provider"
-#            - "@api_platform.doctrine.orm.default.item_data_provider"
+    App\DataProvider\TagDataProvider:
+        arguments:
+            - '@Doctrine\Common\Persistence\ManagerRegistry'
+            - '@App\Api\Config'
+            - "@api_platform.doctrine.orm.default.collection_data_provider"
+            - "@api_platform.doctrine.orm.default.item_data_provider"

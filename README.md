@@ -118,7 +118,7 @@ The test_browser section represent all the browsers you want to use with the Pan
 * ~~[testcafe](https://testcafe.devexpress.com/): an e2e test framework (might be changed with chimp or anything else, gimme better idea)~~
 * [jasmine](https://jasmine.github.io/) & [karma](https://karma-runner.github.io/2.0/index.html): a stack for unit & e2e tests (a more standard stack to replace testcafé)
 * sass: hey, we are not in nineties, we don't write css now
-* [bootstrap](https://getbootstrap.com/): the 4th version of the first class css framework (not used with quasar)
+* [bootstrap](https://getbootstrap.com/): the 4th version of the first class css framework (not used with quasar). The bad thing is that it requires Jquery... that's why i import jquery-slim
 * axios: the library to perform http calls
 * [rxjs](http://reactivex.io/rxjs/): THE library to replace the usage of Promise !
 

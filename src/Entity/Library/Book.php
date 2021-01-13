@@ -58,11 +58,9 @@ class Book implements LibraryInterface
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      *
-     * @Assert\Uuid()
-     *
-     * @var int
+     * @var ?int
      */
-    protected $id;
+    protected ?int $id = null;
 
     /**
      * @ApiProperty(
@@ -77,7 +75,7 @@ class Book implements LibraryInterface
      *
      * @var string
      */
-    protected $title;
+    protected string $title;
 
     /**
      * @ApiProperty(
@@ -87,9 +85,9 @@ class Book implements LibraryInterface
      *
      * @ORM\Column(type="text", nullable=true)
      *
-     * @var string
+     * @var string|null
      */
-    protected $description;
+    protected ?string $description;
 
     /**
      * @ApiProperty(
@@ -106,12 +104,12 @@ class Book implements LibraryInterface
      *
      * @Assert\Type(type="integer")
      *
-     * @var int
+     * @var int|null
      */
-    protected $indexInSerie;
+    protected ?int $indexInSerie;
 
     /**
-     * @var Collection|ProjectBookEdition[]
+     * @var Collection|Review[]
      *
      * @ApiProperty(
      *     iri="http://schema.org/reviews"
@@ -122,7 +120,7 @@ class Book implements LibraryInterface
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\Review", mappedBy="book", orphanRemoval=true, cascade={"persist", "remove"})
      */
-    protected $reviews;
+    protected Collection $reviews;
 
     /**
      * @var Collection|ProjectBookCreation[]
@@ -133,7 +131,7 @@ class Book implements LibraryInterface
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookCreation", mappedBy="book", cascade={"persist", "remove"})
      */
-    protected $authors;
+    protected Collection $authors;
 
     /**
      * @var Collection|ProjectBookEdition[]
@@ -144,7 +142,7 @@ class Book implements LibraryInterface
      *
      * @ORM\OneToMany(targetEntity="App\Entity\Library\ProjectBookEdition", mappedBy="book", cascade={"persist", "remove"})
      */
-    protected $editors;
+    protected Collection $editors;
 
     /**
      * @ApiSubresource(maxDepth=1)
@@ -156,10 +154,10 @@ class Book implements LibraryInterface
      *
      * @var Serie
      */
-    protected $serie;
+    protected Serie $serie;
 
     /**
-     * @ ApiSubresource(maxDepth=1)
+     * @ApiSubresource(maxDepth=1)
      * @MaxDepth(1)
      * @Groups({"book:detail:read", "book:detail:write", "reader:read"})
      *
@@ -167,10 +165,9 @@ class Book implements LibraryInterface
      *
      * @var Collection|Tag[]
      */
-    protected $tags;
+    protected Collection $tags;
 
     /**
-     * @todo ApiSubResource annotation make the app crash: An exception has been thrown during the rendering of a template ("Resource "App\Entity\Library\Loan" not found in . (which is being imported from "/dev/projects/php-sf-flex-webpack-encore-vuejs/config/routes/api_platform.yaml"). Make sure there is a loader supporting the "api_platform" type.").
      * @ApiSubresource(maxDepth=1)
      *
      * @MaxDepth(1)
@@ -180,7 +177,7 @@ class Book implements LibraryInterface
      *
      * @var Collection|Loan[]
      */
-    protected $loans;
+    protected Collection $loans;
 
     /**
      * Book constructor.
@@ -191,6 +188,7 @@ class Book implements LibraryInterface
         $this->tags = new ArrayCollection();
         $this->authors = new ArrayCollection();
         $this->editors = new ArrayCollection();
+        $this->loans = new ArrayCollection();
     }
 
     /**
@@ -280,13 +278,13 @@ class Book implements LibraryInterface
     }
 
     /**
-     * @param Tag[]|ArrayCollection $tags
+     * @param Tag[]|Collection $tags
      * @param bool $updateRelation
      * @return self
      */
-    public function setTags(ArrayCollection $tags, bool $updateRelation = true): self
+    public function setTags(Collection $tags, bool $updateRelation = true): self
     {
-        $this->tags = [];
+        $this->tags->clear();
 
         foreach ($tags as $tag) {
             $this->addTag($tag, $updateRelation);
@@ -307,7 +305,7 @@ class Book implements LibraryInterface
         }
 
         if ($updateRelation) {
-            $tag->setBook($this, false);
+            $tag->addBook($this, false);
         }
 
         $this->tags[] = $tag;
@@ -324,13 +322,13 @@ class Book implements LibraryInterface
     }
 
     /**
-     * @param Review[]|ArrayCollection $reviews
+     * @param Review[]|Collection $reviews
      * @param bool $updateRelation
      * @return self
      */
-    public function setReviews(ArrayCollection $reviews, bool $updateRelation = true): self
+    public function setReviews(Collection $reviews, bool $updateRelation = true): self
     {
-        $this->reviews = [];
+        $this->reviews->clear();
 
         foreach ($reviews as $review) {
             $this->addReview($review, $updateRelation);
@@ -375,7 +373,7 @@ class Book implements LibraryInterface
     public function setSerie(Serie $serie, bool $updateRelation = true): self
     {
         if ($updateRelation) {
-            $serie->setBook($this, false);
+            $serie->addBook($this, false);
         }
 
         $this->serie = $serie;
@@ -384,11 +382,11 @@ class Book implements LibraryInterface
     }
 
     /**
-     * @param ArrayCollection $projects
+     * @param Collection $projects
      *
      * @return self
      */
-    public function setAuthors($projects): self
+    public function setAuthors(Collection $projects): self
     {
         $this->authors->clear();
 
@@ -446,7 +444,7 @@ class Book implements LibraryInterface
     }
 
     /**
-     * @param array|ArrayCollection $projects
+     * @param Collection|ProjectBookEdition[] $projects
      * @return self
      */
     public function setEditors($projects): self
@@ -587,20 +585,29 @@ class Book implements LibraryInterface
 
     /**
      * @param Loan[]|Collection $loans
+     * @param bool $updateRelation
+     * @return $this
      */
-    public function setLoans($loans): void
+    public function setLoans(Collection $loans, bool $updateRelation = true): self
     {
-        $this->loans = $loans;
+        $this->loans->clear();
+
+        foreach ($loans as $loan) {
+            $this->addLoan($loan, $updateRelation);
+        }
+
+        return $this;
     }
 
     /**
      * @param Loan $loan
+     * @param bool $updateRelation
      * @return $this
      */
-    public function addLoan(Loan $loan)
+    public function addLoan(Loan $loan, bool $updateRelation = true): self
     {
-        if (!$loan->getBook()) {
-            $loan->setBook($this);
+        if ($updateRelation || !$loan->getBook()) {
+            $loan->setBook($this, false);
         }
 
         if ($loan->getBook() !== $this) {

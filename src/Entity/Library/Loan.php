@@ -46,11 +46,9 @@ class Loan implements LibraryInterface
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      *
-     * @Assert\Uuid()
-     *
-     * @var int
+     * @var ?int
      */
-    protected $id;
+    protected ?int $id = null;
 
     /**
      * @ApiSubresource(maxDepth=1)
@@ -68,7 +66,7 @@ class Loan implements LibraryInterface
      *
      * @var Book
      */
-    protected $book;
+    protected Book $book;
 
     /**
      * The reader that borrow the books
@@ -82,7 +80,8 @@ class Loan implements LibraryInterface
      * @ORM\ManyToOne(
      *     targetEntity="App\Entity\Library\Reader",
      *     inversedBy="borrows",
-     *     fetch="EAGER"
+     *     fetch="EAGER",
+     *     cascade={"persist"}
      * )
      * @ORM\JoinColumn(name="borrower_id", referencedColumnName="id")
      *
@@ -90,7 +89,7 @@ class Loan implements LibraryInterface
      *
      * @var Reader
      */
-    protected $borrower;
+    protected Reader $borrower;
 
     /**
      * The reader that loan the books (the owner in fact)
@@ -104,7 +103,8 @@ class Loan implements LibraryInterface
      * @ORM\ManyToOne(
      *     targetEntity="App\Entity\Library\Reader",
      *     inversedBy="loans",
-     *     fetch="EAGER"
+     *     fetch="EAGER",
+     *     cascade={"persist"}
      * )
      * @ORM\JoinColumn(name="loaner_id", referencedColumnName="id")
      *
@@ -112,7 +112,7 @@ class Loan implements LibraryInterface
      *
      * @var Reader
      */
-    protected $loaner;
+    protected Reader $loaner;
 
     /**
      * @Groups({"loan:read", "loan:write"})
@@ -124,7 +124,7 @@ class Loan implements LibraryInterface
      *
      * @var DateTime
      */
-    protected $startLoan;
+    protected DateTime $startLoan;
 
     /**
      * @Groups({"loan:read", "loan:write"})
@@ -136,7 +136,7 @@ class Loan implements LibraryInterface
      *
      * @var DateTime|null
      */
-    protected $endLoan;
+    protected ?DateTime $endLoan;
 
     /**
      * Loan constructor.
@@ -180,11 +180,16 @@ class Loan implements LibraryInterface
 
     /**
      * @param Book $book
+     * @param bool $updateRelation
      * @return $this
      */
-    public function setBook(Book $book): self
+    public function setBook(Book $book, bool $updateRelation = true): self
     {
         $this->book = $book;
+
+        if ($updateRelation) {
+            $this->book->addLoan($this, false);
+        }
 
         return $this;
     }
@@ -199,11 +204,16 @@ class Loan implements LibraryInterface
 
     /**
      * @param Reader $reader
+     * @param bool $updateRelation
      * @return self
      */
-    public function setBorrower(Reader $reader): self
+    public function setBorrower(Reader $reader, bool $updateRelation = true): self
     {
         $this->borrower = $reader;
+
+        if ($updateRelation) {
+            $this->borrower->addLoan($this, false);
+        }
 
         return $this;
     }
@@ -218,11 +228,16 @@ class Loan implements LibraryInterface
 
     /**
      * @param Reader $reader
+     * @param bool $updateRelation
      * @return self
      */
-    public function setLoaner(Reader $reader): self
+    public function setLoaner(Reader $reader, bool $updateRelation = true): self
     {
         $this->loaner = $reader;
+
+        if ($updateRelation) {
+            $this->loaner->addLoan($this, false);
+        }
 
         return $this;
     }

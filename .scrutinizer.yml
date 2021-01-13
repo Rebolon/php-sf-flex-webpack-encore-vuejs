@@ -5,7 +5,7 @@ build:
         php:
             version: '7.4'
         node:
-            version: '15'
+            version: '12'
         hosts:
             localhost: 127.0.0.1
     nodes:
@@ -29,7 +29,6 @@ build:
             root_path: './'
             tests:
                 override:
-                    # for test-cafe, but it still fails
                     - npm run sf-dev &
                     - npm run test-karma
                     - php-scrutinizer-run
@@ -43,8 +42,6 @@ build:
                         coverage:
                             file: 'var/report/clover.xml'
                             format: 'clover'
-                    #it fails look at this build where localhost doesn't seem to respond https://scrutinizer-ci.com/g/Rebolon/php-sf-flex-webpack-encore-vuejs/inspections/b75b10a6-6e41-4936-a453-da3632eda436
-                    #- npm run test-cafe
 
 filter:
     excluded_paths:
