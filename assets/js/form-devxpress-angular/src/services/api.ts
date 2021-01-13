@@ -1,10 +1,12 @@
-import { Injectable } from '@angular/core'
+import {Inject, Injectable} from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
 import { environment } from '../environments/environment'
 import {apiPlatformPrefix, tokenJwtBearer} from '../../../lib/config'
 import { map, tap } from 'rxjs/operators'
 import {JwtInterceptorService} from "./jwt-interceptor";
+import {TokenService} from "./token.service";
+import {UserToken} from "./token.interface";
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +22,9 @@ export class ApiService {
         headers: {}
     }
 
-    constructor(protected http: HttpClient, protected jwtInterceptorService: JwtInterceptorService) { }
+    constructor(protected http: HttpClient, protected jwtInterceptorService: JwtInterceptorService, @Inject('TokenServiceJwt') protected tokenStorage: TokenService) {
+      this.enableJwtToken();
+    }
 
     get(path: string, options: Object = {}): Observable<any> {
         const init: {} = Object.assign(options, this.options)
@@ -72,5 +76,27 @@ export class ApiService {
         uri += path
 
         return uri
+    }
+
+    enableCredentials() {
+        this.options.withCredentials = true;
+    }
+
+    disableCredentials() {
+        this.options.withCredentials = false;
+    }
+
+    enableJwtToken() {
+        if (this.tokenStorage.getAccessToken()) {
+            const user: UserToken = this.tokenStorage.getAccessToken();
+
+            if (user) {
+              this.jwtInterceptorService.setJwtToken(user.token)
+            }
+        }
+    }
+
+    disableJwtToken() {
+        this.jwtInterceptorService.setJwtToken("")
     }
 }

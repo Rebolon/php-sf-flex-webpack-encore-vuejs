@@ -28,14 +28,14 @@ class DefaultController extends AbstractController
         $demoRoutes = [];
         $demoRoutes['Basic: Simple controller'] = $router->generate('simple');
         $demoRoutes['Basic: Hello controller with twig'] = $router->generate('app_hello_world', ['name' => 'world', ]);
-        $demoRoutes['Basic: HttpPlug demo'] = $router->generate('app_http_call');
+        $demoRoutes['Basic: HttpClient demo'] = $router->generate('app_http_call');
 
-        $demoRoutes['Login: Symfony secured page with form_login'] = $router->generate('demo_secured_page_standard');
-        $demoRoutes['Login: Vuejs secured page with json_login'] = $router->generate('demo_login_json_check'); // if i go to demo_secured_page_json i will just get a json string !!! user won't know how to go to the form uri (i may add the uri in the response, but if i link to the form and the user is already logged, it will then be redirected to the secured page)
-        $demoRoutes['Login: Quasar secured page with JWT system'] = $router->generate('demo_login_jwt');
+        $demoRoutes['Login: Symfony secured page with form_login (statefull)'] = $router->generate('demo_secured_page_standard');
+        $demoRoutes['Login: Vuejs secured page with json_login (statefull)'] = $router->generate('demo_login_json_check'); // if i go to demo_secured_page_json i will just get a json string !!! user won't know how to go to the form uri (i may add the uri in the response, but if i link to the form and the user is already logged, it will then be redirected to the secured page)
+        $demoRoutes['Login: Quasar secured page with JWT system (stateless)'] = $router->generate('demo_login_jwt');
 
         $demoRoutes['JS app: Csrf token generation for statefull app'] = $router->generate('token');
-        $demoRoutes['JS app: User login check (security_json firewall)'] = $router->generate('demo_secured_page_json_is_logged_in');
+        $demoRoutes['JS app: User login check (statefull)'] = $router->generate('demo_secured_page_json_is_logged_in');
 
         $demoRoutes['Vuejs: page with vue-router'] = $router->generate('vuejs');
         $demoRoutes['Vuejs: with quasar and vue-router'] = $router->generate('vuejs_quasar');
@@ -50,8 +50,8 @@ class DefaultController extends AbstractController
         $demoRoutes['Easy admin'] = $router->generate('easyadmin');
 
         if (!$hasPemCertificate) {
-            $demoRoutes['Basic: HttpPlug demo'] = [
-                'uri' => $demoRoutes['Basic: HttpPlug demo'],
+            $demoRoutes['Basic: HttpClient demo'] = [
+                'uri' => $demoRoutes['Basic: HttpClient demo'],
                 'note' => 'You need to set php.ini vars: curl.cainfo and openssl.cafile to the path of the pem file.'
                     . ' if you need one, <a href="https://curl.haxx.se/docs/caextract.html">download the certificate</a>',
             ];

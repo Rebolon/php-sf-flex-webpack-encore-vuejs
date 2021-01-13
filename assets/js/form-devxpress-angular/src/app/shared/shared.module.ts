@@ -6,6 +6,8 @@ import {WizardListAuthorsComponent} from './wizard-list-authors/wizard-list-auth
 import {WizardListEditorsComponent} from './wizard-list-editors/wizard-list-editors.component';
 import {LoginComponent} from "./login/login.component";
 import {CommonModule} from '@angular/common';
+import {TokenService} from "../../services/token.service";
+import {environment} from "../../environments/environment";
 
 @NgModule({
     imports: [
@@ -28,6 +30,14 @@ import {CommonModule} from '@angular/common';
         WizardListEditorsComponent,
         WizardSumupComponent,
     ],
+    providers: [
+      {
+        provide: 'TokenServiceJwt',
+        useFactory: () => {
+          return new TokenService(environment.tokenKey)
+        }
+      }
+    ]
 })
 export class SharedModule {
 }

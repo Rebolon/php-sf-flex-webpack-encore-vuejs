@@ -6,4 +6,5 @@ export const environment = {
   rest: {
     baseUrl: `//${host}${apiPlatformPrefix}/`
   },
+  tokenKey: 'rememberMe'
 };
