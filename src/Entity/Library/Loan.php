@@ -8,12 +8,13 @@ use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
+use DateTimeInterface;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
-use \DateTime;
 
 /**
  * @ApiResource(
@@ -122,9 +123,9 @@ class Loan implements LibraryInterface
      * @Assert\DateTime()
      * @Assert\NotBlank()
      *
-     * @var DateTime
+     * @var DateTimeInterface
      */
-    protected DateTime $startLoan;
+    protected DateTimeInterface $startLoan;
 
     /**
      * @Groups({"loan:read", "loan:write"})
@@ -134,9 +135,9 @@ class Loan implements LibraryInterface
      * @Assert\DateTime()
      * @Assert\Blank()
      *
-     * @var DateTime|null
+     * @var DateTimeInterface|null
      */
-    protected ?DateTime $endLoan;
+    protected ?DateTimeInterface $endLoan;
 
     /**
      * Loan constructor.
@@ -212,7 +213,7 @@ class Loan implements LibraryInterface
         $this->borrower = $reader;
 
         if ($updateRelation) {
-            $this->borrower->addLoan($this, false);
+            $this->borrower->addBorrow($this, false);
         }
 
         return $this;
@@ -243,18 +244,18 @@ class Loan implements LibraryInterface
     }
 
     /**
-     * @return DateTime|null
+     * @return DateTimeInterface|null
      */
-    public function getStartLoan(): ?DateTime
+    public function getStartLoan(): ?DateTimeInterface
     {
         return $this->startLoan;
     }
 
     /**
-     * @param DateTime $startLoan
+     * @param DateTimeInterface $startLoan
      * @return self
      */
-    public function setStartLoan(DateTime $startLoan): self
+    public function setStartLoan(DateTimeInterface $startLoan): self
     {
         $this->startLoan = $startLoan;
 
@@ -262,18 +263,18 @@ class Loan implements LibraryInterface
     }
 
     /**
-     * @return DateTime|null
+     * @return DateTimeInterface|null
      */
-    public function getEndLoan(): ?DateTime
+    public function getEndLoan(): ?DateTimeInterface
     {
         return $this->endLoan;
     }
 
     /**
-     * @param DateTime $endLoan
+     * @param DateTimeInterface $endLoan
      * @return Loan
      */
-    public function setEndLoan(DateTime $endLoan): self
+    public function setEndLoan(DateTimeInterface $endLoan): self
     {
         $this->endLoan = $endLoan;
 

@@ -11,6 +11,7 @@ use Doctrine\ORM\ORMInvalidArgumentException;
 use Exception;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use DateTimeInterface;
 use DateTime;
 
 /**
@@ -44,9 +45,9 @@ class ProjectBookEdition implements LibraryInterface
      *
      * @Assert\DateTime()
      *
-     * @var ?DateTime
+     * @var ?DateTimeInterface
      */
-    protected ?DateTime $publicationDate;
+    protected ?DateTimeInterface $publicationDate;
 
     /**
      * @Groups({"book:detail:read", "book:detail:write"})
@@ -132,15 +133,15 @@ class ProjectBookEdition implements LibraryInterface
     }
 
     /**
-     * @return DateTime
+     * @return DateTimeInterface
      */
-    public function getPublicationDate(): DateTime
+    public function getPublicationDate(): DateTimeInterface
     {
         return $this->publicationDate;
     }
 
     /**
-     * @param DateTime|string $publicationDate
+     * @param DateTimeInterface|string $publicationDate
      * @return self
      */
     public function setPublicationDate($publicationDate): self
@@ -158,9 +159,9 @@ class ProjectBookEdition implements LibraryInterface
             } catch (Exception $e) {
                 throw new ORMInvalidArgumentException(sprintf('Wrong input for publicationDate, %s', $dateString), 500, $e);
             }
-        } elseif (!($publicationDate instanceof DateTime)) {
+        } elseif (!($publicationDate instanceof DateTimeInterface)) {
             throw new ORMInvalidArgumentException(sprintf(
-                'Wrong input for publicationDate, should be \DateTime or valid date string or unixTimestamp, %s',
+                'Wrong input for publicationDate, should be \DateTimeInterface or valid date string or unixTimestamp, %s',
                 is_object($publicationDate) ? $publicationDate->format('r') : $publicationDate
             ), 500);
         }

@@ -7,6 +7,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use DateTimeInterface;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\ORMInvalidArgumentException;
@@ -87,9 +88,9 @@ class Review implements LibraryInterface
      * @Assert\NotBlank()
      * @Assert\DateTime()
      *
-     * @var DateTime
+     * @var DateTimeInterface
      */
-    protected DateTime $publicationDate;
+    protected DateTimeInterface $publicationDate;
 
     /**
      * @ApiProperty(
@@ -194,15 +195,15 @@ class Review implements LibraryInterface
     }
 
     /**
-     * @return DateTime|null
+     * @return DateTimeInterface|null
      */
-    public function getPublicationDate(): ?DateTime
+    public function getPublicationDate(): ?DateTimeInterface
     {
         return $this->publicationDate;
     }
 
     /**
-     * @param DateTime|string $publicationDate
+     * @param DateTimeInterface|string $publicationDate
      * @return self
      */
     public function setPublicationDate($publicationDate): self
@@ -220,9 +221,9 @@ class Review implements LibraryInterface
             } catch (Exception $e) {
                 throw new ORMInvalidArgumentException(sprintf('Wrong input for publicationDate, %s', $dateString), 500, $e);
             }
-        } elseif (!($publicationDate instanceof DateTime)) {
+        } elseif (!($publicationDate instanceof DateTimeInterface)) {
             throw new ORMInvalidArgumentException(sprintf(
-                'Wrong input for publicationDate, should be \DateTime or valid date string or unixTimestamp, %s',
+                'Wrong input for publicationDate, should be \DateTimeInterface or valid date string or unixTimestamp, %s',
                 is_object($publicationDate) ? $publicationDate->format('r') : $publicationDate
             ), 500);
         }

@@ -9,7 +9,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Serializer\Filter\PropertyFilter;
 use ApiPlatform\Core\Exception\InvalidArgumentException;
-use DateTime;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -476,12 +476,12 @@ class Book implements LibraryInterface
 
     /**
      * @param Editor $editor
-     * @param DateTime $date
+     * @param DateTimeInterface $date
      * @param string $isbn
      * @param string $collection
      * @return self
      */
-    public function addEditor(Editor $editor, DateTime $date, $isbn = null, $collection = null): self
+    public function addEditor(Editor $editor, DateTimeInterface $date, string $isbn = null, string $collection = null): self
     {
         $project = (new ProjectBookEdition())
             ->setBook($this)
