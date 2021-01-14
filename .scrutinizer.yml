@@ -24,8 +24,7 @@ build:
         karma:
             project_setup:
                 after:
-                    - npm run init-project
-                    - npm run jwt-generation-test
+                    - npm run init-project-test
             root_path: './'
             tests:
                 override:
