@@ -56,7 +56,7 @@
     "git-get-version-from-git": "app_version=$(npm run git-count-commit | sed '$!d') && [ $(expr $app_version : '[0-9]*$') -gt 0 ] && app_version=${npm_package_config_app_version_prefix}.${tom_version} && [ -z \"$VERSION_POSTFIX\" ] && echo 'Variable VERSION_POSTFIX not setted' || app_version=$app_version-$VERSION_POSTFIX && app_version_hash=$(git log -n 1 --pretty=format:%H) && npm config set app_version $app_version && npm config set appversion_hash $app_version_hash"
   },
   "dependencies": {
-    "@api-platform/admin": "0.6.2",
+    "@api-platform/admin": "3.4.3",
     "@rebolon/json-reviver": "^0.0.9",
     "apollo-cache-inmemory": "^1.5.1",
     "apollo-client": "^2.5.1",
