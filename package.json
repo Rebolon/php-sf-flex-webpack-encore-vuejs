@@ -63,7 +63,7 @@
     "apollo-link": "^1.2.9",
     "apollo-link-error": "^1.1.8",
     "apollo-link-http": "^1.5.12",
-    "axios": "^0.18.0",
+    "axios": "^1.6.4",
     "devextreme": "^18.2.6",
     "devextreme-vue": "^18.2.6",
     "graphql": "^14.1.1",
