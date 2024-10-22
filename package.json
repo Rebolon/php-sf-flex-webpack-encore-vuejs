@@ -77,7 +77,7 @@
     "react-dom": "^16.8.6",
     "rxjs": "^6.4.0",
     "uglifyjs-webpack-plugin": "^2.1.2",
-    "vue": "^2.6.8",
+    "vue": "^3.0.0",
     "vue-apollo": "^3.0.0-beta.28",
     "vue-router": "^3.0.2",
     "vuelidate": "^0.7.4"
